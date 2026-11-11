@@ -1,0 +1,50 @@
+{
+  "angelegt": "2026-11-11T10:30:00Z",
+  "beispiel": true,
+  "css": "/* Eigene Styles für Hammer */\nheader b {\n  letter-spacing: .02em;\n}\n",
+  "farbe": "#c8102e",
+  "gewerk": "Dachdecker & Zimmerei",
+  "js": "// Sonderwunsch Hammer: Sturm-Hinweis auf der Startseite\nconst WIND_GRENZE = 50; // km/h, ab hier kein Dach betreten\n\nfunction sturmHinweis(wind) {\n  if (wind < WIND_GRENZE) return;\n  app.hinweis(`Windwarnung: ${wind} km/h – Dacharbeiten pausieren`);\n}\n\nsturmHinweis(62);\n",
+  "kontakt": "Ludwig Hammer",
+  "mitarbeiter": 12,
+  "module": [
+    "auftraege",
+    "zeiten",
+    "lieferscheine",
+    "einsatz",
+    "material",
+    "fotos",
+    "team"
+  ],
+  "name": "Ludwig Hammer Dachdeckerei & Zimmerei GmbH",
+  "notiz": "Musterbetrieb für den Prototyp Hammer Betriebszentrale.",
+  "ort": "Hamburg",
+  "personen": [
+    {
+      "funktion": "Geschäftsführer, Dachdeckermeister",
+      "name": "Thomas Hammer",
+      "rolle": "chef"
+    },
+    {
+      "funktion": "Büro & Buchhaltung",
+      "name": "Simone Berger",
+      "rolle": "buero"
+    },
+    {
+      "funktion": "Personal & Lohn",
+      "name": "Sandra Keller",
+      "rolle": "hr"
+    },
+    {
+      "funktion": "Vorarbeiter Dach",
+      "name": "Tomasz Nowak",
+      "rolle": "vorarbeiter"
+    },
+    {
+      "funktion": "Dachdeckergeselle",
+      "name": "Andrei Popescu",
+      "rolle": "geselle"
+    }
+  ],
+  "status": "einrichtung"
+}
