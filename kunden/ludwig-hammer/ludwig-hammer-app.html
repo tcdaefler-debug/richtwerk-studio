@@ -227,6 +227,30 @@ tbody tr.click:hover td{background:var(--surface-2)}
 .ios-pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.75)}
 .ios-pill.ok{color:var(--good)}.ios-pill.warn{color:var(--warn)}.ios-pill.bad{color:var(--bad)}
 
+/* Version 6: Kalender, Wochenplan */
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
+.cal>span{font-size:11px;color:rgba(27,18,20,.55);font-weight:600;padding:2px 0}
+.cal button{border:0;background:transparent;border-radius:10px;padding:4px 0 3px;font-size:14px;font-weight:600;color:#1b1214;display:flex;flex-direction:column;align-items:center;gap:2px;min-height:40px}
+.cal button.o{color:rgba(27,18,20,.35)}
+.cal button.sel{background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.cal button.today{box-shadow:inset 0 0 0 1.5px var(--brand)}
+.cal button.sel.today{box-shadow:0 2px 8px rgba(0,0,0,.12),inset 0 0 0 1.5px var(--brand)}
+.cal .dots{display:flex;gap:2px;height:6px}
+.cal .dots i{width:6px;height:6px;border-radius:50%;background:transparent}
+.cal i.e{background:var(--info)}.cal i.u{background:var(--good)}.cal i.k{background:var(--bad)}.cal i.b{background:var(--warn)}
+.cal i.r{box-shadow:inset 0 0 0 1.5px var(--good)}.cal i.v{background:#1b1214}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.cal-nav button{border:0;background:rgba(255,255,255,.7);border-radius:50%;width:34px;height:34px;font-size:18px;font-weight:700;color:#1b1214}
+.cal-leg{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:11.5px;color:rgba(27,18,20,.65);margin-top:8px}
+.cal-leg i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:middle}
+.ph-person{display:flex;align-items:center;gap:12px;border:0;background:transparent;text-align:left;width:100%;padding:6px 0;font:inherit;color:#1b1214}
+.ph-person .av{width:40px;height:40px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;box-shadow:0 1px 4px rgba(0,0,0,.1);flex:none}
+.ph-person b{display:block;font-size:15px}.ph-person small{font-size:12.5px;color:rgba(27,18,20,.65)}
+.ph-who{display:flex;align-items:center;gap:8px;border:0;background:rgba(255,255,255,.7);border-radius:999px;padding:4px 6px 4px 4px;margin:0 0 8px 2px;font:inherit;font-size:13px;font-weight:600;color:#1b1214}
+.ph-who .av{width:26px;height:26px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:11px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.ph-who b{background:#1b1214;color:#fff;border-radius:999px;padding:4px 10px;font-size:12px}
+.wp-sel{width:100%;min-width:92px;padding:6px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;font:inherit;font-size:12.5px}
+.wp-nav{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
 /* Version 4: ruhigere Übersicht */
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .kpi{background:#fff;padding:14px 18px;min-width:0}
@@ -546,6 +570,7 @@ const NAV=[
  {k:'aufmasse',n:'Aufmaße',i:'ruler',mod:'aufmass'},
  {grp:'Personal'},
  {k:'hr',n:'HR & Anwesenheit',i:'calendar',mod:'hr',badge:3},
+ {k:'wochenplan',n:'Wochenplan',i:'calendar'},
  {k:'zeiten',n:'Zeiterfassung',i:'clock',mod:'zeit'},
  {k:'lohn',n:'Lohnzettel',i:'wallet',mod:'lohn'},
  {k:'personal',n:'Personal',i:'people'},
@@ -562,9 +587,9 @@ const NAV=[
 /* v = sehen, e = bearbeiten, f = freigeben */
 const RECHTE={
  chef:{all:'f'},
- buero:{start:'v',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
- hr:{start:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'v',firma:'v',verbindungen:'v'},
- vorarbeiter:{start:'v',baustellen:'v',lieferscheine:'e',dokumente:'v',aufmasse:'e',hr:'v',zeiten:'e'},
+ buero:{start:'v',wochenplan:'e',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
+ hr:{start:'v',wochenplan:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'v',firma:'v',verbindungen:'v'},
+ vorarbeiter:{start:'v',wochenplan:'v',baustellen:'v',lieferscheine:'e',dokumente:'v',aufmasse:'e',hr:'v',zeiten:'e'},
  geselle:{}
 };
 const ICONS={
@@ -580,13 +605,48 @@ const ICONS={
 };
 const svgI=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
 
-let state={view:'start',role:'chef',ribbon:0,lsSel:1,aiRun:false,phone:'heute',stamped:true,abwArt:'Urlaub',rec:false,hrTab:0,dock:false,bvSel:0,phFotos:0,phText:'',showForm:''};
+let state={view:'start',role:'chef',ribbon:0,lsSel:1,aiRun:false,phone:'heute',stamped:true,abwArt:'Urlaub',rec:false,hrTab:0,dock:false,bvSel:0,phFotos:0,phText:'',showForm:'',phoneUser:null,calM:'2026-11',calDay:'2026-11-11',wpWeek:'2026-11-09'};
 const de=iso=>iso?iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(0,4):'';
 const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const IMG={};
 /* Speichern im Browser, damit Ausprobiertes erhalten bleibt */
 const KEY='lh-demo-v5';
-const STORE={ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF};
+/* ---------- Wochenpläne und Kalender ---------- */
+const HEUTE='2026-11-11';
+const PLAN_MA=PERSONAL.filter(p=>/[Mm]eister|Vorarbeiter|[Gg]eselle|Azubi|Helfer/.test(p.r)&&!/Geschäftsführer/.test(p.r)).map(p=>p.n);
+const sur=n=>n.split(' ').pop();
+function planBasis(){const z={};PLAN_MA.forEach(n=>{const b=BAUSTELLEN.find(b=>b.id!=='BV-2617'&&b.team.includes(sur(n)));z[n]=[0,1,2,3,4].map(()=>b?b.id:'')});return z}
+const PLAENE={'2026-11-09':{publ:true,z:planBasis()},'2026-11-16':{publ:false,z:planBasis()}};
+const EREIGNISSE={'2026-11-18':'Abnahme Halle Steiner, Landsberg','2026-11-24':'Start Gaubeneinbau Hofer, Utting','2026-11-15':'Löhne werden überwiesen','2026-12-24':'Betriebsruhe bis 31.12.'};
+const MONATE=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const WTAG=['Mo','Di','Mi','Do','Fr','Sa','So'];
+function addTage(iso,n){const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function tagIdx(iso){return (new Date(iso+'T12:00:00Z').getUTCDay()+6)%7}
+function wocheStart(iso){return addTage(iso,-tagIdx(iso))}
+function kwNr(iso){const d=new Date(iso+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+3-tagIdx(iso));const y=new Date(Date.UTC(d.getUTCFullYear(),0,4));return 1+Math.round(((d-y)/86400000-3+tagIdx(y.toISOString().slice(0,10)))/7)}
+const kurzDatum=iso=>iso.slice(8,10)+'.'+iso.slice(5,7)+'.';
+function abwCode(n,iso){const i=WOCHE_ISO.indexOf(iso);if(i>=0)return (ABW[n]||[])[i]||'A';
+  if(ANTRAEGE.some(a=>a.n===n&&a.done==='ok'&&iso>=a.von&&iso<=a.bis))return 'U';
+  if(KRANK.some(k=>k.n===n&&iso>=k.von&&iso<=k.bis))return 'K';
+  if(ANTRAEGE.some(a=>a.n===n&&!a.done&&iso>=a.von&&iso<=a.bis))return 'R';return 'A'}
+const bvName=id=>id==='LAGER'?'Lager Landsberg':((BAUSTELLEN.find(b=>b.id===id)||{}).kurz||id);
+const phRolle=n=>n==='Thomas Hammer'?'chef':((PERSONAL.find(p=>p.n===n)||{}).app==='Vorarbeiter'?'vor':'ma');
+const PH_LEUTE=PERSONAL.filter(p=>/iPhone/.test(p.handy)&&!/will kein/.test(p.handy));
+function tagInfo(n,iso){const w=tagIdx(iso);
+  if(w>4)return{k:'W',t:'Wochenende'};
+  if(iso>='2026-12-24'&&iso<='2026-12-31')return{k:'F',t:'Betriebsruhe'};
+  const c=abwCode(n,iso);
+  if(c==='U')return{k:'U',t:'Urlaub'};if(c==='K')return{k:'K',t:'krank'};if(c==='B')return{k:'B',t:'Berufsschule'};if(c==='R')return{k:'R',t:'Urlaub beantragt'};
+  const p=PLAENE[wocheStart(iso)];
+  if(!p||(!p.publ&&phRolle(n)!=='chef'))return{k:'-',t:'noch kein Plan'};
+  const bv=(p.z[n]||[])[w];if(!bv)return{k:'frei',t:'nicht eingeplant'};
+  return{k:'E',bv,t:bvName(bv),entwurf:!p.publ}}
+function teamAm(bv,iso,ohne){const p=PLAENE[wocheStart(iso)];if(!p||!bv)return[];return PLAN_MA.filter(n=>n!==ohne&&(p.z[n]||[])[tagIdx(iso)]===bv&&abwCode(n,iso)==='A')}
+function tagListe(iso){const r={E:{},U:[],K:[],B:[],publ:null};const p=PLAENE[wocheStart(iso)];if(p)r.publ=p.publ;
+  if(tagIdx(iso)>4)return r;
+  PLAN_MA.forEach(n=>{const c=abwCode(n,iso);if(c==='U'||c==='R')r.U.push(n);else if(c==='K')r.K.push(n);else if(c==='B')r.B.push(n);else if(p){const bv=(p.z[n]||[])[tagIdx(iso)];if(bv)(r.E[bv]=r.E[bv]||[]).push(n)}});return r}
+function offeneFreigaben(){return ANTRAEGE.filter(a=>!a.done).length+['kraus','pfister'].filter(k=>!FLAGS.frei[k]).length+Object.values(PLAENE).filter(p=>!p.publ).length}
+const STORE={ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
 let INITIAL=null;
 function snapshot(){const o={};for(const k in STORE)o[k]=k==='POS'?POS:STORE[k];o.stamped=state.stamped;return JSON.parse(JSON.stringify(o))}
 function restore(o){for(const k in o){if(k==='stamped'){state.stamped=o[k];continue}const t=k==='POS'?POS:STORE[k];if(!t)continue;if(Array.isArray(t))t.splice(0,t.length,...o[k]);else{for(const x in t)delete t[x];Object.assign(t,o[k])}}}
@@ -972,30 +1032,114 @@ function connAct(x,k){const c=connBy(k);
 }
 /* ---------- Mitarbeiter-App (iPhone) ---------- */
 const PH={};
-const ME='Andrei Popescu';
+let ME='';
+const vorname=()=>ME.split(' ')[0];
+const myLang=()=>{const p=PERSONAL.find(p=>p.n===ME);return p?p.spr.split(',')[0].trim():'Deutsch'};
 const meStamp=()=>STEMPEL.find(s=>s.n===ME);
-PH.heute=()=>{const s=meStamp();const inn=s&&s.g==='—'&&s.k!=='—';
- return `<div class="ios-title">Hallo Andrei</div><p class="ios-sub">Mittwoch, 11. November</p>
- <div class="ios-stack">
-  <div class="glass" style="text-align:center"><p class="ios-cap">${inn?'Eingestempelt seit '+s.k:s&&s.g!=='—'?'Ausgestempelt um '+s.g:'Nicht eingestempelt'}</p>
+const dockText=()=>state.phoneUser?`Handy von ${state.phoneUser} (${({chef:'Chef',vor:'Vorarbeiter',ma:'Mitarbeiter'})[phRolle(state.phoneUser)]}). Was du hier machst, erscheint links sofort.`:'Handy: Wähle zuerst, wer du bist. Chef, Vorarbeiter und Mitarbeiter sehen unterschiedliche Dinge.';
+PH.login=()=>`<div class="ios-title">Wer bist du?</div><p class="ios-sub">Einmal auswählen, danach ist die App auf dich eingestellt.</p>
+ <div class="ios-stack"><div class="glass">${PH_LEUTE.map(p=>`<button class="ph-person" data-ph-user="${esc(p.n)}"><span class="av">${p.n.split(' ').map(x=>x[0]).join('')}</span><span><b>${esc(p.n)}</b><small>${esc(phRolle(p.n)==='chef'?'Chef · sieht alles, gibt frei':p.r)}</small></span></button>`).join('')}</div>
+ <p style="font-size:12.5px;color:rgba(27,18,20,.6);margin:0 6px">Im echten Betrieb meldet sich jeder mit seiner Nummer oder Face ID an. Hier reicht ein Tipp.</p></div>`;
+const logoutBtn=()=>`<button class="ios-link" data-ph-act="logout">Nicht ${esc(vorname())}? Anderen auswählen</button>`;
+PH.heute=()=>phRolle(ME)==='chef'?PH.heuteChef():PH.heuteMa();
+PH.heuteMa=()=>{const s=meStamp();const inn=s&&s.g==='—'&&s.k!=='—';const ti=tagInfo(ME,HEUTE);const bv=ti.bv||'';const ort=bvName(bv);const vor=phRolle(ME)==='vor';
+ const b=BAUSTELLEN.find(x=>x.id===bv);const team=teamAm(bv,HEUTE,ME).map(sur);
+ const ws=wocheStart(HEUTE);const woche=[0,1,2,3,4].map(i=>[WTAG[i]+' '+kurzDatum(addTage(ws,i)),tagInfo(ME,addTage(ws,i)),addTage(ws,i)]);
+ const stempelKarte=ti.k==='E'?`<div class="glass" style="text-align:center"><p class="ios-cap">${inn?'Eingestempelt seit '+s.k:s&&s.g!=='—'?'Ausgestempelt um '+s.g:'Nicht eingestempelt'}</p>
    <div style="font-size:40px;font-weight:700;letter-spacing:-.02em;margin:2px 0 4px">${inn?'läuft':s&&s.g!=='—'?s.k+'–'+s.g:'—'}</div>
-   <div style="font-size:14px;margin-bottom:14px;color:rgba(27,18,20,.7)">Sonnenstraße 4, Kaufering</div>
+   <div style="font-size:14px;margin-bottom:14px;color:rgba(27,18,20,.7)">${esc(ort)}</div>
    <button class="big-btn ${inn?'out':''}" data-ph-act="stamp">${inn?'Ausstempeln':'Einstempeln'}</button>
-   <div style="font-size:12px;margin-top:10px;color:rgba(27,18,20,.6)">Standort wird nur beim Stempeln gespeichert</div></div>
+   <div style="font-size:12px;margin-top:10px;color:rgba(27,18,20,.6)">Standort wird nur beim Stempeln gespeichert</div></div>`
+  :`<div class="glass" style="text-align:center"><p class="ios-cap">Heute</p><div style="font-size:28px;font-weight:700;margin:6px 0">${esc(ti.t)}</div><div style="font-size:14px;color:rgba(27,18,20,.7)">${ti.k==='K'?'Gute Besserung!':ti.k==='-'?'Dein Plan kommt vom Büro.':ti.k==='frei'?'Du bist heute nicht eingeplant.':'Du musst nicht stempeln.'}</div></div>`;
+ return `<div class="ios-title">Hallo ${esc(vorname())}</div><p class="ios-sub">Mittwoch, 11. November</p>
+ <div class="ios-stack">${stempelKarte}
   <div class="tile-grid">
    <button class="glass tile" data-ph="belege">${svgI('camera')}Beleg fotografieren</button>
    <button class="glass tile" data-ph="tagebuch">${svgI('mic')}Tagebuch sprechen</button>
    <button class="glass tile" data-ph="ich" data-art="Urlaub">${svgI('sun')}Urlaub beantragen</button>
    <button class="glass tile" data-ph="ich" data-art="Krank">${svgI('user')}Krank melden</button></div>
-  <div class="glass"><p class="ios-cap">Heute auf der Baustelle</p>
-   <div class="ios-row"><span>Team</span><span style="color:rgba(27,18,20,.7)">Nowak, Kowalski, Brandner</span></div>
-   <div class="ios-row"><span>Aufgabe</span><span style="color:rgba(27,18,20,.7)">Biber eindecken Nordseite</span></div>
-   <div class="ios-row"><span>Wetter morgen</span><span style="color:var(--warn);font-weight:600">Wind ab 14 Uhr</span></div></div>
+  ${ti.k==='E'?`<div class="glass"><p class="ios-cap">Heute auf der Baustelle</p>
+   <div class="ios-row"><span>Baustelle</span><span style="color:rgba(27,18,20,.7);text-align:right">${esc(ort)}</span></div>
+   <div class="ios-row"><span>Team</span><span style="color:rgba(27,18,20,.7);text-align:right">${team.length?esc(team.join(', ')):'—'}</span></div>
+   <div class="ios-row"><span>Wetter</span><span style="color:var(--warn);font-weight:600">${esc(b&&b.wetter||'—')}</span></div></div>`:''}
+  <div class="glass"><p class="ios-cap">Mein Wochenplan · KW ${kwNr(HEUTE)}</p>
+   ${woche.map(w=>`<div class="ios-row" data-cal-day="${w[2]}" style="cursor:pointer"><span style="font-weight:${w[2]===HEUTE?700:500}">${w[0]}</span><span style="color:rgba(27,18,20,.7);text-align:right">${esc(w[1].t)}</span></div>`).join('')}</div>
+  ${vor?`<button class="glass tile" style="width:100%;min-height:0" data-ph="team">${svgI('people')}Mein Trupp heute</button>`:''}
+  ${logoutBtn()}
  </div>`};
-PH.stunden=()=>{const s=meStamp();const p=PROTOKOLL.find(x=>x.t.startsWith('10.11. Popescu'));const offen=p&&p.s==='warn';
+PH.heuteChef=()=>{const h=anwesenheitHeute();const off=offeneFreigaben();const da=STEMPEL.filter(s=>s.g==='—'&&s.k!=='—').length;
+ return `<div class="ios-title">Guten Tag, ${esc(vorname())}</div><p class="ios-sub">Mittwoch, 11. November</p>
+ <div class="ios-stack"><div class="tile-grid">
+  <button class="glass tile" data-ph="team"><span style="font-size:34px;font-weight:700">${da}</span>auf Baustellen eingestempelt</button>
+  <button class="glass tile" data-ph="freigaben"><span style="font-size:34px;font-weight:700;color:${off?'var(--bad)':'inherit'}">${off}</span>warten auf deine Freigabe</button></div>
+  <div class="glass"><p class="ios-cap">Heute im Betrieb</p>
+   <div class="ios-row"><span>Da</span><b>${h.a}</b></div>
+   <div class="ios-row"><span>Krank</span><span style="color:var(--bad);font-weight:600">${h.k.length?esc(h.k.map(sur).join(', ')):'—'}</span></div>
+   <div class="ios-row"><span>Urlaub</span><span style="font-weight:600">${h.u.length?esc(h.u.map(sur).join(', ')):'—'}</span></div>
+   <div class="ios-row"><span>Berufsschule</span><span style="font-weight:600">${h.b.length?esc(h.b.map(sur).join(', ')):'—'}</span></div></div>
+  <div class="glass"><p class="ios-cap">Zahlen</p>
+   <div class="ios-row"><span>Auftragsbestand</span><b>${eur(BAUSTELLEN.reduce((x,y)=>x+y.summe,0)).replace(',00','')}</b></div>
+   <div class="ios-row"><span>Offene Rechnungen</span><b>${eur(71480).replace(',00','')}</b></div>
+   <div class="ios-row"><span>Geschäftskonto</span><b>${eur(84320).replace(',00','')}</b></div></div>
+  <p style="font-size:12.5px;color:rgba(27,18,20,.6);margin:0 6px">Diese Zahlen sehen nur du und das Büro. Mitarbeiter sehen sie nicht.</p>
+  ${logoutBtn()}</div>`};
+PH.kalender=()=>{const chef=phRolle(ME)==='chef';const [y,m]=state.calM.split('-').map(Number);const first=state.calM+'-01';const lead=tagIdx(first);const dim=new Date(Date.UTC(y,m,0)).getUTCDate();
+ let cells='';for(let i=0;i<lead;i++)cells+='<i></i>';
+ for(let d=1;d<=dim;d++){const iso=state.calM+'-'+String(d).padStart(2,'0');let dots=[];
+  if(chef){const l=tagListe(iso);if(Object.keys(l.E).length)dots.push('e');if(l.U.length)dots.push('u');if(l.K.length)dots.push('k');if(l.B.length)dots.push('b')}
+  else{const t=tagInfo(ME,iso);if(({E:'e',U:'u',K:'k',B:'b',R:'r'})[t.k])dots.push(({E:'e',U:'u',K:'k',B:'b',R:'r'})[t.k])}
+  if(EREIGNISSE[iso])dots.push('v');
+  cells+=`<button class="${iso===state.calDay?'sel ':''}${iso===HEUTE?'today ':''}" data-cal-day="${iso}" aria-label="${d}. ${MONATE[m-1]}"><span>${d}</span><span class="dots">${dots.slice(0,3).map(c=>`<i class="${c}"></i>`).join('')}</span></button>`}
+ const day=state.calDay,w=tagIdx(day);let detail;
+ if(chef){const l=tagListe(day);const bvs=Object.keys(l.E);
+  detail=(w>4?'<div style="font-size:14px">Wochenende</div>':
+   (l.publ===null?'<div style="font-size:14px;color:rgba(27,18,20,.7)">Für diese Woche gibt es noch keinen Plan.</div>':'')
+   +bvs.map(id=>`<div class="ios-row"><span><b>${esc(bvName(id))}</b><br><small style="color:rgba(27,18,20,.65)">${esc(l.E[id].map(sur).join(', '))}</small></span><span class="ios-pill">${l.E[id].length}</span></div>`).join('')
+   +(l.U.length?`<div class="ios-row"><span>Urlaub</span><span style="text-align:right">${esc(l.U.map(sur).join(', '))}</span></div>`:'')
+   +(l.K.length?`<div class="ios-row"><span>Krank</span><span style="text-align:right;color:var(--bad)">${esc(l.K.map(sur).join(', '))}</span></div>`:'')
+   +(l.B.length?`<div class="ios-row"><span>Berufsschule</span><span style="text-align:right">${esc(l.B.map(sur).join(', '))}</span></div>`:'')
+   +(l.publ===false?'<div style="font-size:12.5px;margin-top:8px;color:var(--warn);font-weight:600">Plan ist noch Entwurf, Mitarbeiter sehen ihn erst nach deiner Freigabe.</div>':''))}
+ else{const t=tagInfo(ME,day);const team=t.k==='E'?teamAm(t.bv,day,ME).map(sur):[];
+  detail=`<div class="ios-row"><span>Mein Tag</span><b style="text-align:right">${esc(t.t)}</b></div>`+(t.k==='E'?`<div class="ios-row"><span>Team</span><span style="text-align:right;color:rgba(27,18,20,.7)">${team.length?esc(team.join(', ')):'—'}</span></div>`:'')}
+ if(EREIGNISSE[day])detail+=`<div class="ios-row"><span>Termin</span><span style="text-align:right">${esc(EREIGNISSE[day])}</span></div>`;
+ const ws=wocheStart(day);const pl=PLAENE[ws];
+ const wochenKarte=chef?`<div class="glass"><p class="ios-cap">Wochenplan KW ${kwNr(day)}</p>${pl?`<div class="ios-row"><span>${pl.publ?'Veröffentlicht':'Entwurf'}</span>${pl.publ?'<span class="ios-pill ok">sichtbar für alle</span>':`<button class="ios-pill warn" style="border:0" data-ph-act="plan-publ-${ws}">Veröffentlichen</button>`}</div>`:'<div style="font-size:14px;color:rgba(27,18,20,.7)">Noch kein Plan. Das Büro legt ihn im Programm unter „Wochenplan“ an.</div>'}</div>`
+  :`<div class="glass"><p class="ios-cap">Meine Woche · KW ${kwNr(day)}</p>${[0,1,2,3,4].map(i=>{const iso=addTage(ws,i);return `<div class="ios-row" data-cal-day="${iso}" style="cursor:pointer"><span style="font-weight:${iso===day?700:500}">${WTAG[i]} ${kurzDatum(iso)}</span><span style="color:rgba(27,18,20,.7);text-align:right">${esc(tagInfo(ME,iso).t)}</span></div>`}).join('')}</div>`;
+ return `<div class="ios-title">Kalender</div><p class="ios-sub">${chef?'Der ganze Betrieb':'Dein Plan, Urlaub und Termine'}</p>
+ <div class="ios-stack"><div class="glass"><div class="cal-nav"><button data-cal="-1" aria-label="Vorheriger Monat">‹</button><b>${MONATE[m-1]} ${y}</b><button data-cal="1" aria-label="Nächster Monat">›</button></div>
+  <div class="cal">${WTAG.map(x=>`<span>${x}</span>`).join('')}${cells}</div>
+  <div class="cal-leg"><span><i style="background:var(--info)"></i>Einsatz</span><span><i style="background:var(--good)"></i>Urlaub</span><span><i style="background:var(--bad)"></i>krank</span><span><i style="background:var(--warn)"></i>Schule</span><span><i style="background:#1b1214"></i>Termin</span></div></div>
+  <div class="glass"><p class="ios-cap">${WTAG[w]} ${de(day).slice(0,6)}</p>${detail}</div>
+  ${wochenKarte}
+  ${chef?'':`<button class="ios-link" data-ph="ich" data-art="Urlaub">Urlaub beantragen</button>`}</div>`};
+PH.team=()=>{const chef=phRolle(ME)==='chef';const ti=tagInfo(ME,HEUTE);
+ const leute=chef?PLAN_MA:[ME].concat(teamAm(ti.bv,HEUTE,ME));
+ const zeile=n=>{const t=tagInfo(n,HEUTE);const s=STEMPEL.find(x=>x.n===n);
+  let r;if(t.k==='E'){r=s&&s.k!=='—'?(s.g==='—'?`<span class="ios-pill ok">seit ${s.k}</span>`:`<span class="ios-pill">${s.k}–${s.g}</span>`):'<span class="ios-pill warn">noch nicht da</span>'}
+  else r=`<span class="ios-pill ${t.k==='K'?'bad':''}">${esc(t.t)}</span>`;
+  return `<div class="ios-row"><span><b>${esc(n)}</b>${t.k==='E'?`<br><small style="color:rgba(27,18,20,.65)">${esc(t.t)}</small>`:''}</span>${r}</div>`};
+ return `<div class="ios-title">${chef?'Team heute':'Mein Trupp'}</div><p class="ios-sub">${chef?'Wer ist wo, wer fehlt':esc(ti.k==='E'?ti.t:'Heute kein Einsatz')}</p>
+ <div class="ios-stack"><div class="glass">${ti.k!=='E'&&!chef?'<div style="font-size:14px">Du bist heute keiner Baustelle zugeteilt.</div>':leute.map(zeile).join('')}</div></div>`};
+PH.freigaben=()=>{const off=ANTRAEGE.map((a,i)=>[a,i]).filter(x=>!x[0].done);
+ const zahl=[['kraus','Abdichtung Kraus KG',9180.4,'Skonto 2 % bis 14.11.'],['pfister','Gerüstbau Pfister (NU)',4250,'Freistellung gültig bis 03/2027']];
+ const entw=Object.keys(PLAENE).sort().filter(k=>!PLAENE[k].publ);
+ const leer=!off.length&&!entw.length&&zahl.every(z=>FLAGS.frei[z[0]]);
+ return `<div class="ios-title">Freigaben</div><p class="ios-sub">${leer?'Alles erledigt.':'Das wartet auf dich.'}</p>
+ <div class="ios-stack">
+  ${entw.map(k=>`<div class="glass"><p class="ios-cap">Wochenplan</p><div class="ios-row"><span>KW ${kwNr(k)} · ${kurzDatum(k)}–${kurzDatum(addTage(k,4))}</span><button class="ios-pill ok" style="border:0;padding:8px 14px" data-ph-act="plan-publ-${k}">Veröffentlichen</button></div><div style="font-size:12.5px;color:rgba(27,18,20,.65);margin-top:6px">Danach sieht jeder Mitarbeiter seinen Plan im Handy-Kalender.</div></div>`).join('')}
+  ${off.map(x=>{const a=x[0];return `<div class="glass"><p class="ios-cap">${esc(a.art)}antrag</p><b>${esc(a.n)}</b><div style="font-size:14px;margin:2px 0 4px">${de(a.von).slice(0,6)}${a.von===a.bis?'':'–'+de(a.bis).slice(0,6)} · ${a.tage} Tag${a.tage===1?'':'e'}</div>${a.info?`<div style="font-size:13px;color:${a.konflikt?'var(--bad)':'rgba(27,18,20,.65)'}">${esc(a.info)}</div>`:''}
+   <div style="display:flex;gap:8px;margin-top:10px"><button class="ios-pill ok" style="border:0;padding:8px 14px" data-hr="${x[1]}" data-ok="1">Genehmigen</button><button class="ios-pill bad" style="border:0;padding:8px 14px" data-hr="${x[1]}" data-ok="0">Ablehnen</button></div></div>`}).join('')}
+  ${zahl.filter(z=>!FLAGS.frei[z[0]]).map(z=>`<div class="glass"><p class="ios-cap">Zahlung</p><div class="ios-row"><span><b>${z[1]}</b><br><small style="color:rgba(27,18,20,.65)">${z[3]}</small></span><b>${eur(z[2])}</b></div><button class="big-btn" style="margin-top:12px;padding:12px;font-size:16px" data-frei="${z[0]}">Freigeben</button></div>`).join('')}
+ </div>`};
+PH.baustellen=()=>`<div class="ios-title">Baustellen</div><p class="ios-sub">${BAUSTELLEN.filter(b=>b.stand<100).length} laufende Projekte</p>
+ <div class="ios-stack">${BAUSTELLEN.filter(b=>b.stand<100).map(b=>`<div class="glass"><div class="ios-row"><b>${esc(b.kurz)}</b><span class="ios-pill ${b.stand>=90?'ok':'warn'}">${esc(b.status)}</span></div>
+  <div style="height:6px;border-radius:3px;background:rgba(27,18,20,.1);margin:10px 0 6px"><i style="display:block;height:100%;width:${b.stand}%;border-radius:3px;background:var(--brand)"></i></div>
+  <div style="font-size:13px;color:rgba(27,18,20,.65)">${b.stand} % fertig · ${eur(b.summe).replace(',00','')}${b.wetter?' · '+esc(b.wetter):''}</div>
+  <div style="font-size:13px;margin-top:4px">${esc(b.team.join(', '))}</div></div>`).join('')}</div>`;
+PH.stunden=()=>{const s=meStamp();const p=PROTOKOLL.find(x=>x.t.startsWith('10.11. Popescu'));const offen=ME==='Andrei Popescu'&&p&&p.s==='warn';
  return `<div class="ios-title">Meine Stunden</div><p class="ios-sub">Woche 46 · 9.–13. November</p>
  <div class="ios-stack"><div class="glass">
-  ${[['Mo 09.11.','07:00 – 16:30','8,75 h'],['Di 10.11.','06:55 – 17:25','9,75 h'],['Mi 11.11.',s&&s.k!=='—'?(s.k+' – '+(s.g==='—'?'läuft':s.g)):'—',s&&s.g==='—'&&s.k!=='—'?'läuft':''],['Do 12.11.','',''],['Fr 13.11.','','']].map(r=>`<div class="ios-row"><span style="font-weight:600">${r[0]}</span><span style="color:rgba(27,18,20,.7)">${r[1]}</span><span style="font-weight:600">${r[2]}</span></div>`).join('')}
+  ${[...[0,1].map(i=>{const c=(ABW[ME]||[])[i]||'A';return c==='A'?[WOCHE[i],i?'06:55 – 17:25':'07:00 – 16:30',i?'9,75 h':'8,75 h']:[WOCHE[i],({U:'Urlaub',K:'krank',B:'Berufsschule'})[c]||'frei','']}),['Mi 11.11.',s&&s.k!=='—'?(s.k+' – '+(s.g==='—'?'läuft':s.g)):'—',s&&s.g==='—'&&s.k!=='—'?'läuft':''],['Do 12.11.','',''],['Fr 13.11.','','']].map(r=>`<div class="ios-row"><span style="font-weight:600">${r[0]}</span><span style="color:rgba(27,18,20,.7)">${r[1]}</span><span style="font-weight:600">${r[2]}</span></div>`).join('')}
  </div>
  <div class="glass"><div class="ios-row"><span>Diese Woche bisher</span><b>18,5 h</b></div><div class="ios-row"><span>Überstunden-Konto</span><b>+ 14,0 h</b></div></div>
  ${offen?`<div class="glass" style="font-size:14px"><b>Di 10.11. wurde geändert</b><br><span style="color:rgba(27,18,20,.7)">Gehen 16:10 → 17:25 durch T. Nowak. Stimmt das?</span>
@@ -1014,7 +1158,7 @@ PH.tagebuch=()=>{const mine=TAGEBUCH.filter(t=>t.von===ME).slice().reverse();
  <div class="ios-stack"><div class="glass" style="text-align:center">
   <button class="mic ${state.rec?'rec':''}" data-ph-act="rec" aria-label="Sprachnachricht aufnehmen">${svgI('mic').replace('aria-hidden','style="width:34px;height:34px" aria-hidden')}</button>
   <div style="font-weight:600;margin-top:6px">${state.rec?'Aufnahme läuft … tippen zum Beenden':'Tippen und sprechen'}</div>
-  <div style="font-size:12.5px;color:rgba(27,18,20,.6);margin:4px 0 10px">Rumänisch erkannt · wird übersetzt</div>
+  <div style="font-size:12.5px;color:rgba(27,18,20,.6);margin:4px 0 10px">${myLang()} erkannt · ${myLang()==='Deutsch'?'wird direkt gespeichert':'wird übersetzt'}</div>
   <textarea class="ios-area" id="ph-text" aria-label="Was hast du heute gemacht?" placeholder="Oder hier schreiben: Was hast du heute gemacht?">${esc(state.phText)}</textarea>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px"><button class="ios-link" data-ph-act="foto">+ Foto (${state.phFotos})</button><button class="big-btn" style="padding:10px;font-size:15px" data-ph-act="tb-save">Speichern</button></div></div>
   ${mine.map(t=>`<div class="glass"><p class="ios-cap">${t.datum} · ${BAUSTELLEN.find(b=>b.id===t.bv).kurz}</p>
@@ -1037,11 +1181,34 @@ PH.ich=()=>{const mine=ANTRAEGE.filter(a=>a.n===ME).map(a=>[a.art+' '+(a.von===a
   <div class="glass"><p class="ios-cap">Lohnzettel</p>
    <div class="ios-row"><span>Oktober 2026</span><span class="ios-pill ok">neu</span></div>
    <div class="ios-row"><span>September 2026</span><span style="color:rgba(27,18,20,.6)">gelesen</span></div></div></div>`};
-const TABS=[['heute','Heute','home'],['stunden','Stunden','clock'],['belege','Belege','camera'],['tagebuch','Tagebuch','book'],['ich','Anträge','user']];
-function phoneHTML(){return `<div class="iphone"><div class="screen"><div class="island"></div><div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div>
-   <div class="scr" id="scr">${PH[state.phone]()}</div>
-   <div class="tabbar glass" role="tablist">${TABS.map(t=>`<button role="tab" aria-selected="${state.phone===t[0]}" data-ph="${t[0]}">${svgI(t[2])}${t[1]}</button>`).join('')}</div>
+const PH_TAB={heute:['Heute','home'],kalender:['Kalender','calendar'],stunden:['Stunden','clock'],belege:['Belege','camera'],tagebuch:['Tagebuch','book'],ich:['Anträge','user'],team:['Team','people'],freigaben:['Freigaben','lock'],baustellen:['Baustellen','roof']};
+const PH_TABS={ma:['heute','kalender','stunden','belege','tagebuch'],vor:['heute','kalender','team','belege','tagebuch'],chef:['heute','kalender','freigaben','baustellen','team']};
+const PH_EXTRA={ma:['ich'],vor:['ich','stunden'],chef:[]};
+function phoneHTML(){ME=state.phoneUser||'';const rolle=ME?phRolle(ME):'';const tabs=ME?PH_TABS[rolle]:[];
+ if(ME&&!tabs.concat(PH_EXTRA[rolle]).includes(state.phone))state.phone='heute';
+ const body=ME?PH[state.phone]():PH.login();
+ return `<div class="iphone"><div class="screen"><div class="island"></div><div class="statusbar"><span>9:41</span><span>●●● 5G ▮</span></div>
+   <div class="scr" id="scr">${ME?`<button class="ph-who" data-ph-act="logout" aria-label="Anderen Mitarbeiter auswählen"><span class="av">${ME.split(' ').map(x=>x[0]).join('')}</span>${esc(vorname())} · ${({chef:'Chef',vor:'Vorarbeiter',ma:'Mitarbeiter'})[rolle]}<b>Wechseln</b></button>`:''}${body}</div>
+   ${tabs.length?`<div class="tabbar glass" role="tablist">${tabs.map(k=>`<button role="tab" aria-selected="${state.phone===k}" data-ph="${k}">${svgI(PH_TAB[k][1])}${PH_TAB[k][0]}</button>`).join('')}</div>`:''}
    <div class="home-ind"></div></div></div>`}
+V.wochenplan=()=>{const ws=state.wpWeek,p=PLAENE[ws];const can=right('wochenplan')!=='v';const tage=[0,1,2,3,4].map(i=>addTage(ws,i));
+ const bvOpt=['',...BAUSTELLEN.filter(b=>b.stand<100||b.id==='BV-26R').map(b=>b.id),'LAGER'];
+ const kopf=`<div class="page-head"><div><h1>Wochenplan</h1><p class="lead">Lege fest, wer in der Woche wo arbeitet. Wenn du den Plan veröffentlichst, sieht jeder Mitarbeiter sofort seinen eigenen Plan im Handy-Kalender. Urlaub, Krankheit und Berufsschule werden automatisch eingetragen.</p></div></div>
+  <div class="wp-nav"><button class="tool" data-wpw="-1" aria-label="Vorwoche">‹ Vorwoche</button><b>KW ${kwNr(ws)} · ${kurzDatum(ws)}–${kurzDatum(tage[4])}2026</b><button class="tool" data-wpw="1" aria-label="Nächste Woche">Nächste Woche ›</button>
+   ${p?`<span class="pill ${p.publ?'good':'warn'}">${p.publ?'veröffentlicht':'Entwurf'}</span>`:''}${p&&can?`<button class="tool primary" data-wpa="publ">${p.publ?'Zurückziehen':'Veröffentlichen'}</button>`:''}${p&&can?`<button class="tool" data-wpa="next">Als nächste Woche kopieren</button>`:''}</div>`;
+ if(!p)return kopf+`<div class="panel"><p>Für diese Woche gibt es noch keinen Plan.</p>${can?`<button class="tool primary" data-wpa="neu">Plan anlegen (aus Vorwoche)</button>`:''}</div>`;
+ const rows=PLAN_MA.map((n,ri)=>`<tr><td><b>${esc(n)}</b><div class="small muted">${esc(PERSONAL.find(x=>x.n===n).r)}</div></td>${tage.map((iso,i)=>{const c=abwCode(n,iso);const lock={U:'Urlaub',K:'krank',B:'Schule',R:'Urlaub beantragt'}[c];
+   if(lock)return `<td><span class="pill ${c==='K'?'bad':c==='B'?'warn':'neutral'}">${lock}</span></td>`;
+   const v=(p.z[n]||[])[i]||'';
+   return `<td>${can?`<select class="wp-sel" data-wp="${ri}.${i}" aria-label="${esc(n)} ${WTAG[i]}">${bvOpt.map(o=>`<option value="${o}"${o===v?' selected':''}>${o?esc(bvName(o)):'—'}</option>`).join('')}</select>`:esc(v?bvName(v):'—')}</td>`}).join('')}</tr>`).join('');
+ const bes=tage.map((iso,i)=>PLAN_MA.filter(n=>!{U:1,K:1,B:1,R:1}[abwCode(n,iso)]&&(p.z[n]||[])[i]).length);
+ return kopf+`<div class="panel table-wrap"><table class="matrix"><thead><tr><th>Mitarbeiter</th>${tage.map((iso,i)=>`<th>${WTAG[i]} ${kurzDatum(iso)}</th>`).join('')}</tr></thead><tbody>${rows}
+  <tr><td><b>Eingeplant</b></td>${bes.map(x=>`<td><b>${x}</b> Personen</td>`).join('')}</tr></tbody></table></div>
+  <div class="note" style="margin-top:12px">${p.publ?'Der Plan ist veröffentlicht. Änderungen sind sofort auf den Handys.':'Das ist ein Entwurf. Mitarbeiter sehen ihn erst, wenn du ihn veröffentlichst.'} Jeder Mitarbeiter sieht nur seine eigene Zeile, der Chef sieht den ganzen Betrieb.</div>`};
+function wpAct(x){const ws=state.wpWeek;
+ if(x==='publ'){const p=PLAENE[ws];p.publ=!p.publ;commit(p.publ?`Plan KW ${kwNr(ws)} veröffentlicht. Jeder sieht jetzt seinen Plan im Handy.`:'Plan zurückgezogen. Mitarbeiter sehen ihn nicht mehr.');return}
+ if(x==='neu'){const vor=PLAENE[addTage(ws,-7)];PLAENE[ws]={publ:false,z:JSON.parse(JSON.stringify(vor?vor.z:planBasis()))};commit(`Plan KW ${kwNr(ws)} als Entwurf angelegt.`);return}
+ if(x==='next'){const nx=addTage(ws,7);if(PLAENE[nx]&&!confirm('Der Plan der nächsten Woche wird überschrieben. Weiter?'))return;PLAENE[nx]={publ:false,z:JSON.parse(JSON.stringify(PLAENE[ws].z))};state.wpWeek=nx;commit(`Als Entwurf für KW ${kwNr(nx)} kopiert.`)}}
 V.app=()=>`<div class="page-head"><div><h1>Mitarbeiter-App</h1><p class="lead">So sieht die App auf dem Firmen-iPhone eines Gesellen aus. Tipp: Oben „Handy daneben“ in einer Büro-Ansicht zeigt das Handy neben dem Büro, dann siehst du sofort, wo deine Eingaben ankommen.</p></div></div>
  <div class="phone-stage">${phoneHTML()}
   <div class="phone-notes">
@@ -1055,6 +1222,7 @@ V.app=()=>`<div class="page-head"><div><h1>Mitarbeiter-App</h1><p class="lead">S
   </div></div>`;
 /* ---------- Rendering und Ereignisse ---------- */
 function render(){
+  ME=state.phoneUser||'';
   const phone=state.role==='geselle';
   $('#app').classList.toggle('phone-mode',phone);
   renderTop();
@@ -1064,7 +1232,7 @@ function render(){
   let html;
   if(phone){state.view='app';html=V.app()}
   else{if(state.view==='app'||!right(state.view))state.view='start';renderNav();renderRibbon();
-    html=state.dock?`<div class="with-dock"><div style="min-width:0">${V[state.view]()}</div><div class="dock"><div class="dock-head">Handy von Andrei Popescu (Geselle). Was du hier machst, erscheint links sofort.</div>${phoneHTML()}</div></div>`:V[state.view]()}
+    html=state.dock?`<div class="with-dock"><div style="min-width:0">${V[state.view]()}</div><div class="dock"><div class="dock-head">${dockText()}</div>${phoneHTML()}</div></div>`:V[state.view]()}
   $('#content').innerHTML=`<div class="sim-banner">Musterfirma, alle Daten erfunden · Änderungen bleiben in diesem Browser gespeichert</div>`+html;
   if($('#scr'))$('#scr').scrollTop=keepScroll;
   $('#app').classList.remove('menu-open');
@@ -1084,6 +1252,11 @@ function go(v){state.view=v;state.ribbon=0;try{history.replaceState(null,'','#'+
 document.addEventListener('click',e=>{
   const ro=e.target.closest('[data-role]');if(ro){state.role=ro.dataset.role;render();toast('Ansicht: '+role().n+' ('+role().who+')');return}
   const ph=e.target.closest('[data-ph]');if(ph){state.phone=ph.dataset.ph;if(ph.dataset.art)state.abwArt=ph.dataset.art;if($('#scr'))$('#scr').scrollTop=0;render();if($('#scr'))$('#scr').scrollTop=0;return}
+  const pu=e.target.closest('[data-ph-user]');if(pu){state.phoneUser=pu.dataset.phUser;ME=state.phoneUser;state.phone='heute';render();toast('Angemeldet als '+vorname()+'.');return}
+  const cm=e.target.closest('[data-cal]');if(cm){const [yy,mm]=state.calM.split('-').map(Number);state.calM=new Date(Date.UTC(yy,mm-1+(+cm.dataset.cal),1)).toISOString().slice(0,7);render();return}
+  const cd=e.target.closest('[data-cal-day]');if(cd){state.calDay=cd.dataset.calDay;state.calM=state.calDay.slice(0,7);state.phone='kalender';render();return}
+  const ww=e.target.closest('[data-wpw]');if(ww){state.wpWeek=addTage(state.wpWeek,7*(+ww.dataset.wpw));render();return}
+  const wa=e.target.closest('[data-wpa]');if(wa){wpAct(wa.dataset.wpa);return}
   const ab=e.target.closest('[data-abw]');if(ab){state.abwArt=ab.dataset.abw;render();return}
   const pa=e.target.closest('[data-ph-act]');if(pa){phAct(pa.dataset.phAct);return}
   const ht=e.target.closest('[data-hrtab]');if(ht){state.hrTab=+ht.dataset.hrtab;render();return}
@@ -1105,7 +1278,8 @@ document.addEventListener('click',e=>{
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flow&&flow.step!=='busy')flowStep(flow.step==='done'?'fertig':'abbrechen')});
 document.addEventListener('input',e=>{if(e.target.id==='ph-text')state.phText=e.target.value});
 document.addEventListener('change',e=>{
-  const t=e.target;const pm=t.dataset.pm,pe=t.dataset.pe;
+  const t=e.target;
+  if(t.dataset&&t.dataset.wp!==undefined){const [ri,di]=t.dataset.wp.split('.').map(Number);const p=PLAENE[state.wpWeek];const n=PLAN_MA[ri];p.z[n]=p.z[n]||[0,1,2,3,4].map(()=>'');p.z[n][di]=t.value;commit(p.publ?`${n.split(' ')[0]}: ${WTAG[di]} geändert, steht sofort auf seinem Handy.`:'');return}const pm=t.dataset.pm,pe=t.dataset.pe;
   if(pm!==undefined||pe!==undefined){const v=parseFloat(t.value.replace(/\./g,'').replace(',','.'));if(isNaN(v)){toast('Bitte eine Zahl eingeben, z.B. 640 oder 52,90');render();return}
     if(pm!==undefined)POS[+pm].m=v;else POS[+pe].ep=v;commit('Neu berechnet');return}
   if(t.id==='phFile'&&t.files&&t.files[0]){const f=t.files[0];const r=new FileReader();r.onload=()=>{neuerLieferschein(r.result)};r.readAsDataURL(f);t.value=''}
@@ -1126,12 +1300,14 @@ function neuerLieferschein(img){
     commit(ohneDatum?`${l.id} gelesen: Datum fehlt, liegt zur Prüfung bei Lieferscheine.`:`${l.id} erkannt und der Baustelle Sonnenstraße zugeordnet.`)},1400);
 }
 function phAct(x){
-  const s=meStamp();
-  if(x==='stamp'){const t=nowHM();if(s.g==='—'&&s.k!=='—'){s.g=t;commit('Ausgestempelt um '+t+'. Steht jetzt in der Zeiterfassung.')}else{s.k=t;s.g='—';s.via='Mitarbeiter-App';commit('Eingestempelt um '+t+', Sonnenstraße 4.')}return}
+  if(x==='logout'){state.phoneUser=null;state.phone='heute';ME='';render();return}
+  if(x.startsWith('plan-publ-')){const k=x.slice(10);if(PLAENE[k]){PLAENE[k].publ=true;commit(`Wochenplan KW ${kwNr(k)} veröffentlicht. Alle sehen ihren Plan im Handy.`)}return}
+  if(x==='stamp'){const ti=tagInfo(ME,HEUTE);let s=meStamp();if(!s){s={n:ME,k:'—',g:'—',ort:bvName(ti.bv),via:'Mitarbeiter-App'};STEMPEL.push(s)}const t=nowHM();if(s.g==='—'&&s.k!=='—'){s.g=t;commit('Ausgestempelt um '+t+'. Steht jetzt in der Zeiterfassung.')}else{s.k=t;s.g='—';s.via='Mitarbeiter-App';s.ort=bvName(ti.bv);commit('Eingestempelt um '+t+', '+bvName(ti.bv)+'.')}return}
   if(x==='rec'){state.rec=!state.rec;if(!state.rec){state.phText=(state.phText?state.phText+' ':'')+'Nordseite fertig eingedeckt, 14 Reihen. Am Ortgang fehlen 20 Ortgangziegel. Morgen wegen Wind nur bis Mittag aufs Dach.';toast('Übersetzt aus Rumänisch. Prüfen und speichern.')}render();return}
   if(x==='foto'){state.phFotos++;render();return}
   if(x==='tb-save'){const t=(state.phText||'').trim();if(!t){toast('Erst sprechen oder etwas schreiben.');return}
-    TAGEBUCH.push({bv:'BV-2611',von:ME,datum:'11.11.2026',text:t,fotos:state.phFotos,spr:state.rec?'':'aus Rumänisch übersetzt'});state.phText='';state.phFotos=0;state.rec=false;commit('Gespeichert. Steht jetzt bei der Baustelle Sonnenstraße.');return}
+    const ti=tagInfo(ME,HEUTE);const bv=ti.bv&&ti.bv!=='LAGER'?ti.bv:'BV-2611';const L=myLang();
+    TAGEBUCH.push({bv,von:ME,datum:'11.11.2026',text:t,fotos:state.phFotos,spr:L==='Deutsch'?'':'aus '+L+' übersetzt'});state.phText='';state.phFotos=0;state.rec=false;commit('Gespeichert. Steht jetzt bei der Baustelle '+bvName(bv)+'.');return}
   if(x==='beleg-ls'){neuerLieferschein(null);return}
   if(x==='upload'){$('#phFile').click();return}
   if(x.startsWith('beleg-')){const art=x.slice(6);BELEGE.push({art,von:ME,datum:'11.11.2026',betrag:art==='Tankbeleg'?'92,40 €':'37,85 €',status:'erkannt'});commit(art+' erkannt und an die Buchhaltung weitergeleitet.');return}
