@@ -31,6 +31,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .brand-sub{font-size:11.5px;opacity:.9;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .icon-btn{background:transparent;border:1px solid rgba(255,255,255,.4);border-radius:6px;color:var(--brand-ink);padding:6px 9px;line-height:1}
 .icon-btn:hover{background:rgba(255,255,255,.14)}
+.views[hidden]{display:none!important}
 .views{display:flex;gap:4px;margin-left:auto;background:rgba(0,0,0,.14);border-radius:8px;padding:3px;overflow-x:auto;max-width:100%}
 .views button{border:0;background:transparent;color:var(--brand-ink);padding:6px 12px;border-radius:6px;font-weight:600;font-size:13px;white-space:nowrap;opacity:.88}
 .views button:hover{opacity:1;background:rgba(255,255,255,.12)}
@@ -454,15 +455,13 @@ const FIRMA={
 };
 const ROLES=[
  {k:'chef',n:'Chef',who:'Thomas Hammer',ini:'TH',job:'Geschäftsführer'},
- {k:'buero',n:'Büro',who:'Simone Berger',ini:'SB',job:'Büro & Buchhaltung'},
- {k:'hr',n:'HR',who:'Sandra Keller',ini:'SK',job:'Personal & Lohn'},
+ {k:'buero',n:'Büro',who:'Simone Berger',ini:'SB',job:'Büro, Buchhaltung & Personal'},
  {k:'vorarbeiter',n:'Vorarbeiter',who:'Tomasz Nowak',ini:'TN',job:'Vorarbeiter Dach'},
  {k:'geselle',n:'Mitarbeiter-App',who:'Andrei Popescu',ini:'AP',job:'Dachdeckergeselle, nutzt die Handy-App'}
 ];
 const PERSONAL=[
  {n:'Thomas Hammer',r:'Geschäftsführer, Dachdeckermeister',spr:'Deutsch',app:'Voll',handy:'iPhone (Firma)',soka:'—',ur:[30,12]},
- {n:'Simone Berger',r:'Büro / Buchhaltung, 25 h',spr:'Deutsch',app:'Büro',handy:'—',soka:'—',ur:[30,8]},
- {n:'Sandra Keller',r:'Personal & Lohn (HR), 20 h',spr:'Deutsch',app:'HR',handy:'—',soka:'—',ur:[28,6]},
+ {n:'Simone Berger',r:'Büro, Buchhaltung & Personal (HR), 25 h',spr:'Deutsch',app:'Büro',handy:'—',soka:'—',ur:[30,8]},
  {n:'Michael Rauch',r:'Zimmerermeister, Bauleitung Holzbau',spr:'Deutsch',app:'Vorarbeiter',handy:'iPhone (Firma)',soka:'SOKA-BAU',ur:[30,5]},
  {n:'Tomasz Nowak',r:'Vorarbeiter Dach',spr:'Polnisch, Deutsch',app:'Vorarbeiter',handy:'iPhone (Firma)',soka:'SOKA-DACH',ur:[30,7]},
  {n:'Stefan Huber',r:'Vorarbeiter Dach',spr:'Deutsch',app:'Vorarbeiter',handy:'iPhone (Firma)',soka:'SOKA-DACH',ur:[30,3]},
@@ -615,7 +614,7 @@ const NAV=[
 /* v = sehen, e = bearbeiten, f = freigeben */
 const RECHTE={
  chef:{all:'f'},
- buero:{start:'v',wochenplan:'e',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
+ buero:{start:'v',wochenplan:'e',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'f',zeiten:'e',lohn:'e',personal:'e',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
  hr:{start:'v',wochenplan:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'e',firma:'v',verbindungen:'v'},
  vorarbeiter:{start:'v',wochenplan:'v',baustellen:'v',lieferscheine:'e',dokumente:'e',aufmasse:'e',hr:'v',zeiten:'e'},
  geselle:{}
@@ -697,10 +696,10 @@ function offeneFreigaben(){return ANTRAEGE.filter(a=>!a.done).length+['kraus','p
 const ORDNER=[['baustelle','Baustellen'],['lieferscheine','Lieferscheine'],['rechnungen','Rechnungen'],['angebote','Angebote'],['vertraege','Verträge'],['behoerden','Behörden & Kassen'],['personal','Personal'],['steuer','Steuerbüro'],['pruefen','Zu prüfen']];
 const DOKS=[
  {id:'D1',name:'Bauvertrag_BV-2611_Sonnenstrasse.pdf',ordner:'vertraege',bv:'BV-2611',art:'Vertrag',datum:'03.11.2026',gr:'412 KB',conf:.98,von:'Simone Berger'},
- {id:'D2',name:'SOKA-DACH_Meldung_Oktober.pdf',ordner:'behoerden',bv:'',art:'Behörde / Kasse',datum:'28.10.2026',gr:'96 KB',conf:.95,von:'Sandra Keller'},
+ {id:'D2',name:'SOKA-DACH_Meldung_Oktober.pdf',ordner:'behoerden',bv:'',art:'Behörde / Kasse',datum:'28.10.2026',gr:'96 KB',conf:.95,von:'Simone Berger'},
  {id:'D3',name:'Freistellungsbescheinigung_Pfister.pdf',ordner:'behoerden',bv:'',art:'Behörde / Kasse',datum:'28.10.2026',gr:'148 KB',conf:.97,von:'Simone Berger'},
  {id:'D4',name:'Statik_EFH_Brandl.pdf',ordner:'baustelle',bv:'BV-2614',art:'Plan / Aufmaß',datum:'10.11.2026',gr:'2,4 MB',conf:.96,von:'Michael Rauch'},
- {id:'D5',name:'Unterweisung_Absturzsicherung_DE-RO.pdf',ordner:'personal',bv:'',art:'Personal',datum:'21.10.2026',gr:'310 KB',conf:.94,von:'Sandra Keller'},
+ {id:'D5',name:'Unterweisung_Absturzsicherung_DE-RO.pdf',ordner:'personal',bv:'',art:'Personal',datum:'21.10.2026',gr:'310 KB',conf:.94,von:'Simone Berger'},
  {id:'D6',name:'BWA_Oktober_2026.pdf',ordner:'steuer',bv:'',art:'Steuerbüro',datum:'04.11.2026',gr:'188 KB',conf:.99,von:'Simone Berger'},
  {id:'D7',name:'Angebot_A-2026-084_Sonnenstrasse.pdf',ordner:'angebote',bv:'BV-2611',art:'Angebot',datum:'05.11.2026',gr:'260 KB',conf:.99,von:'Thomas Hammer'},
  {id:'D8',name:'Scan_20261110_0042.pdf',ordner:'pruefen',bv:'',art:'unklar',datum:'10.11.2026',gr:'1,1 MB',conf:.31,von:'Simone Berger'}
@@ -716,7 +715,7 @@ function klassifiziere(name){const n=name.toLowerCase();
  if(m[1]==='baustelle'&&!bv)return{ordner:'pruefen',bv:'',art:m[2]+' (Baustelle unklar)',conf:.45};
  return{ordner:m[1],bv,art:m[2],conf:bv||m[1]!=='baustelle'?.93:.8}}
 const ordnerName=d=>d.ordner==='baustelle'?'Baustellen / '+d.bv+' '+bvName(d.bv):(ORDNER.find(o=>o[0]===d.ordner)||[0,d.ordner])[1];
-function dokSichtbar(d){const r=state.role;if(r==='chef')return true;if(r==='buero')return d.ordner!=='personal';if(r==='hr')return['vertraege','behoerden','personal','steuer','pruefen'].includes(d.ordner);if(r==='vorarbeiter')return['baustelle','lieferscheine','pruefen'].includes(d.ordner);return false}
+function dokSichtbar(d){const r=state.role;if(r==='chef')return true;if(r==='buero')return true;if(r==='hr')return['vertraege','behoerden','personal','steuer','pruefen'].includes(d.ordner);if(r==='vorarbeiter')return['baustelle','lieferscheine','pruefen'].includes(d.ordner);return false}
 function dokAufnehmen(files){const von=(state.role==='geselle'||state.phoneUser&&state.role==='geselle')?(state.phoneUser||'Mitarbeiter'):role().who;let ok=0,pr=0;
  [...files].forEach(f=>{const k=klassifiziere(f.name);const id='D'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
   try{DOKFILES[id]={url:URL.createObjectURL(f),typ:f.type}}catch(e){}
@@ -756,7 +755,7 @@ const RIBBON={
  default:[['Start',[['Neu','',1],['Importieren','',0],['Exportieren (Excel)','',0]]],['Ansicht',[['Liste','',0],['Nach Baustelle','',0],['Filter','',0]]]]
 };
 function renderTop(){
-  $('#views').innerHTML=ROLES.map(r=>`<button role="tab" aria-selected="${r.k===state.role}" data-role="${r.k}">${r.n}</button>`).join('');
+  $('#views').innerHTML='';$('#views').hidden=true;
   $('#whoName').textContent=role().who;$('#avatar').textContent=role().ini;
 }
 function renderRibbon(){
@@ -792,8 +791,8 @@ V.start=()=>{
   if(r!=='geselle'&&badgeFor('dokumente'))todos.push(['warn',`${badgeFor('dokumente')} Dokument${badgeFor('dokumente')===1?'':'e'} zuordnen`,'Die KI war sich nicht sicher, wohin es gehört','dokumente']);
   if(geld&&FLAGS.lechtal==='offen')todos.push(['bad','Baustoffe Lechtal: 2 Paletten zu viel berechnet','Differenz '+eur(1104)+', Zahlung gesperrt','rechnungen']);
   const offen=ANTRAEGE.filter(a=>!a.done);
-  if((r==='chef'||r==='hr')&&offen.length)todos.push(['info',`${offen.length} ${offen.length===1?'Antrag':'Anträge'} entscheiden`,offen.map(a=>a.n.split(' ')[0]).join(', ')+(offen.some(a=>a.konflikt)?' · 1 Konflikt mit Baustelle':''),'hr']);
-  if(r==='chef'||r==='hr')KRANK.filter(k=>k.offen).forEach(k=>todos.push(['warn',`${k.n} krank`,'seit '+de(k.von).slice(0,6)+', bis '+de(k.bis).slice(0,6),'hr']));
+  if((r==='chef'||r==='hr'||r==='buero')&&offen.length)todos.push(['info',`${offen.length} ${offen.length===1?'Antrag':'Anträge'} entscheiden`,offen.map(a=>a.n.split(' ')[0]).join(', ')+(offen.some(a=>a.konflikt)?' · 1 Konflikt mit Baustelle':''),'hr']);
+  if(r==='chef'||r==='hr'||r==='buero')KRANK.filter(k=>k.offen).forEach(k=>todos.push(['warn',`${k.n} krank`,'seit '+de(k.von).slice(0,6)+', bis '+de(k.bis).slice(0,6),'hr']));
   if(geld)todos.push(['warn','Abschlagsrechnung Nr. 3 Sonnenstraße','Baufortschritt 55 %, Aufmaß liegt vor','rechnungen']);
   if(geld&&FREI_RW.includes('datev')&&!istVerb('datev'))todos.push(['info','DATEV mit der Kanzlei verbinden','Belege und Stunden gehen dann automatisch ans Steuerbüro','verbindungen']);
   if(r==='chef'&&!(FLAGS.frei.kraus&&FLAGS.frei.pfister))todos.push(['info','Zahlungen freigeben','Kraus KG (Skonto bis 14.11.), Gerüstbau Pfister','finanzen']);
@@ -959,7 +958,7 @@ V.hr=()=>{
      <tr><td>Führerscheinkontrolle (halbjährlich)</td><td>8 Fahrer</td><td>15.12.2026</td><td><span class="pill bad">2 fehlen</span></td></tr>
      <tr><td>Arbeitsmedizinische Vorsorge Absturzgefahr</td><td>Kowalski, Al-Khalil</td><td>01/2027</td><td><span class="pill neutral">Termin anfragen</span></td></tr>
      <tr><td>Ersthelfer-Auffrischung</td><td>Nowak, Rauch</td><td>03/2027</td><td><span class="pill good">gebucht</span></td></tr>
-     <tr><td>Probezeit endet</td><td>Sandra Keller</td><td>31.12.2026</td><td><span class="pill info">Gespräch planen</span></td></tr>
+     <tr><td>Probezeit endet</td><td>Simone Berger</td><td>31.12.2026</td><td><span class="pill info">Gespräch planen</span></td></tr>
      <tr><td>Saison-Kurzarbeitergeld anzeigen</td><td>Dach und Zimmerei</td><td>ab 01.12.</td><td><span class="pill warn">vorbereiten</span></td></tr>
      <tr><td>Berichtsheft-Kontrolle Azubis</td><td>Brandner, Yilmaz</td><td>monatlich</td><td><span class="pill good">aktuell</span></td></tr></tbody></table></div>`,
    ()=>`<div class="panel table-wrap"><h2>Bewerbungen</h2><table><thead><tr><th>Name</th><th>Stelle</th><th>Eingang</th><th>Status</th></tr></thead><tbody>
@@ -1337,7 +1336,7 @@ function enterAnim(el,k){if(!el)return;if(el._k!==k){el._k=k;el.classList.remove
 function commit(msg){syncPlanMA();save();render();if(msg)toast(msg)}
 let loginSel=null;
 function showLogin(){loginSel=null;$('#login').hidden=false;
-  $('#loginList').innerHTML=ROLES.map(r=>`<button type="button" class="login-p" aria-pressed="false" data-login="${r.k}"><span class="avatar">${r.ini}</span><span><b>${r.who}</b><small>${r.job}</small></span></button>`).join('');
+  $('#loginList').innerHTML=ROLES.filter(r=>r.k!=='vorarbeiter'&&r.k!=='geselle').map(r=>`<button type="button" class="login-p" aria-pressed="false" data-login="${r.k}"><span class="avatar">${r.ini}</span><span><b>${r.who}</b><small>${r.job}</small></span></button>`).join('');
   $('#loginGo').disabled=true;$('#loginGo').textContent='Anmelden'}
 $('#loginList').addEventListener('click',e=>{const b=e.target.closest('[data-login]');if(!b)return;loginSel=b.dataset.login;
   document.querySelectorAll('.login-p').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
