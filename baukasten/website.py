@@ -54,7 +54,16 @@ STAGE='''<div id="stage" aria-hidden="true"><div class="bar"><button id="stBack"
 (function(){
 var APPS=/*APPS*/,LINKS=/*LINKS*/;
 var st=document.getElementById('stage'),fr=document.getElementById('stFrame'),vw=document.getElementById('stView'),cur=null,origin=null;
-function load(k,m){var h=APPS[k];if(m==='handy')h='<script>location.hash="#handy"<\\/script>'+h;
+var SHIM='<script>(function(){var cbs={},n=0;window.addEventListener("message",function(e){var d=e.data;if(!d||d.rw!==2)return;(cbs[d.path]||[]).forEach(function(f){f.ok({exists:d.exists,data:function(){return d.data}})})});window.claude={use:function(){return Promise.resolve({doc:function(p){return{set:function(v){parent.postMessage({rw:1,op:"set",path:p,data:v},"*");return Promise.resolve()},onSnapshot:function(ok,er){(cbs[p]=cbs[p]||[]).push({ok:ok});parent.postMessage({rw:1,op:"watch",path:p},"*");return function(){}}}}})}}})()<\/script>';
+var dbp=null;try{dbp=(window.claude&&window.claude.use)?window.claude.use('db').then(function(d){if(!d)dbp=null;return d},function(){dbp=null;return null}):null}catch(e){dbp=null}
+var watching={};
+window.addEventListener('message',function(e){var d=e.data;if(!d||d.rw!==1||e.source!==fr.contentWindow||!cur||!dbp)return;
+ var k=cur.k;dbp.then(function(db){var path='demo-'+k+'/'+d.path.replace(/\//g,'-');
+  if(d.op==='set'){try{db.doc(path).set(d.data)}catch(x){}}
+  else if(d.op==='watch'){if(watching[path])watching[path]();
+   watching[path]=db.doc(path).onSnapshot(function(sn){try{fr.contentWindow.postMessage({rw:2,path:d.path,exists:sn.exists,data:sn.exists?sn.data():null},'*')}catch(x){}},function(){})}
+ }).catch(function(){})});
+function load(k,m){var h=APPS[k];if(dbp)h=SHIM+h;if(m==='handy')h='<script>location.hash="#handy"<\\/script>'+h;
  vw.classList.toggle('ph',m==='handy');fr.srcdoc=h;cur={k:k,m:m};
  document.querySelectorAll('[data-sm]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.sm===m))});
  var e=document.getElementById('stExt');e.href=LINKS[k]+(m==='handy'?'#handy':'');}
