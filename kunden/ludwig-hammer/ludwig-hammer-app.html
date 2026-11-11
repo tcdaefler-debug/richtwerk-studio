@@ -227,6 +227,17 @@ tbody tr.click:hover td{background:var(--surface-2)}
 .ios-pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.75)}
 .ios-pill.ok{color:var(--good)}.ios-pill.warn{color:var(--warn)}.ios-pill.bad{color:var(--bad)}
 
+/* Version 7: Dokumentenablage */
+.dropz{border:2px dashed var(--brand-line);background:var(--brand-soft);border-radius:12px;padding:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;text-align:center}
+.dropz.over{border-color:var(--brand);background:#fff}
+.dropz b{font-size:16px}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 10px}
+.dchips button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.dchips button[aria-pressed="true"]{background:var(--brand);color:#fff;border-color:var(--brand)}
+.dchips button.warn{border-color:var(--warn)}
+.dtools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.dtools input{flex:1;min-width:180px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:inherit}
+.dprev{margin-bottom:12px}.dprev img{max-width:100%;max-height:420px;border-radius:8px;border:1px solid var(--line)}.dprev iframe{width:100%;height:420px;border:1px solid var(--line);border-radius:8px}
 /* Version 6: Kalender, Wochenplan */
 .cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;text-align:center}
 .cal>span{font-size:11px;color:rgba(27,18,20,.55);font-weight:600;padding:2px 0}
@@ -380,6 +391,7 @@ tbody tr.click:hover td{background:var(--surface-2)}
     <button class="top-btn ghost" id="resetBtn" title="Alle Änderungen verwerfen">Zurücksetzen</button>
     <button class="who" id="whoBtn" title="Abmelden und anderen Benutzer wählen"><span id="whoName"></span><span class="avatar" id="avatar">TH</span></button>
     <input type="file" id="phFile" accept="image/*" hidden>
+    <input type="file" id="docFile" accept=".pdf,image/*" multiple hidden>
   </header>
   <div class="ribbon" id="ribbon">
     <div class="ribbon-tabs" role="tablist" id="ribbonTabs"></div>
@@ -588,8 +600,8 @@ const NAV=[
 const RECHTE={
  chef:{all:'f'},
  buero:{start:'v',wochenplan:'e',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
- hr:{start:'v',wochenplan:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'v',firma:'v',verbindungen:'v'},
- vorarbeiter:{start:'v',wochenplan:'v',baustellen:'v',lieferscheine:'e',dokumente:'v',aufmasse:'e',hr:'v',zeiten:'e'},
+ hr:{start:'v',wochenplan:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'e',firma:'v',verbindungen:'v'},
+ vorarbeiter:{start:'v',wochenplan:'v',baustellen:'v',lieferscheine:'e',dokumente:'e',aufmasse:'e',hr:'v',zeiten:'e'},
  geselle:{}
 };
 const ICONS={
@@ -605,7 +617,7 @@ const ICONS={
 };
 const svgI=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
 
-let state={view:'start',role:'chef',ribbon:0,lsSel:1,aiRun:false,phone:'heute',stamped:true,abwArt:'Urlaub',rec:false,hrTab:0,dock:false,bvSel:0,phFotos:0,phText:'',showForm:'',phoneUser:null,calM:'2026-11',calDay:'2026-11-11',wpWeek:'2026-11-09'};
+let state={view:'start',role:'chef',ribbon:0,lsSel:1,aiRun:false,phone:'heute',stamped:true,abwArt:'Urlaub',rec:false,hrTab:0,dock:false,bvSel:0,dokF:'alle',dokQ:'',dokOpen:'',phFotos:0,phText:'',showForm:'',phoneUser:null,calM:'2026-11',calDay:'2026-11-11',wpWeek:'2026-11-09'};
 const de=iso=>iso?iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(0,4):'';
 const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const IMG={};
@@ -646,13 +658,50 @@ function tagListe(iso){const r={E:{},U:[],K:[],B:[],publ:null};const p=PLAENE[wo
   if(tagIdx(iso)>4)return r;
   PLAN_MA.forEach(n=>{const c=abwCode(n,iso);if(c==='U'||c==='R')r.U.push(n);else if(c==='K')r.K.push(n);else if(c==='B')r.B.push(n);else if(p){const bv=(p.z[n]||[])[tagIdx(iso)];if(bv)(r.E[bv]=r.E[bv]||[]).push(n)}});return r}
 function offeneFreigaben(){return ANTRAEGE.filter(a=>!a.done).length+['kraus','pfister'].filter(k=>!FLAGS.frei[k]).length+Object.values(PLAENE).filter(p=>!p.publ).length}
-const STORE={ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
+/* ---------- Dokumentenablage ---------- */
+const ORDNER=[['baustelle','Baustellen'],['lieferscheine','Lieferscheine'],['rechnungen','Rechnungen'],['angebote','Angebote'],['vertraege','Verträge'],['behoerden','Behörden & Kassen'],['personal','Personal'],['steuer','Steuerbüro'],['pruefen','Zu prüfen']];
+const DOKS=[
+ {id:'D1',name:'Bauvertrag_BV-2611_Sonnenstrasse.pdf',ordner:'vertraege',bv:'BV-2611',art:'Vertrag',datum:'03.11.2026',gr:'412 KB',conf:.98,von:'Simone Berger'},
+ {id:'D2',name:'SOKA-DACH_Meldung_Oktober.pdf',ordner:'behoerden',bv:'',art:'Behörde / Kasse',datum:'28.10.2026',gr:'96 KB',conf:.95,von:'Sandra Keller'},
+ {id:'D3',name:'Freistellungsbescheinigung_Pfister.pdf',ordner:'behoerden',bv:'',art:'Behörde / Kasse',datum:'28.10.2026',gr:'148 KB',conf:.97,von:'Simone Berger'},
+ {id:'D4',name:'Statik_EFH_Brandl.pdf',ordner:'baustelle',bv:'BV-2614',art:'Plan / Aufmaß',datum:'10.11.2026',gr:'2,4 MB',conf:.96,von:'Michael Rauch'},
+ {id:'D5',name:'Unterweisung_Absturzsicherung_DE-RO.pdf',ordner:'personal',bv:'',art:'Personal',datum:'21.10.2026',gr:'310 KB',conf:.94,von:'Sandra Keller'},
+ {id:'D6',name:'BWA_Oktober_2026.pdf',ordner:'steuer',bv:'',art:'Steuerbüro',datum:'04.11.2026',gr:'188 KB',conf:.99,von:'Simone Berger'},
+ {id:'D7',name:'Angebot_A-2026-084_Sonnenstrasse.pdf',ordner:'angebote',bv:'BV-2611',art:'Angebot',datum:'05.11.2026',gr:'260 KB',conf:.99,von:'Thomas Hammer'},
+ {id:'D8',name:'Scan_20261110_0042.pdf',ordner:'pruefen',bv:'',art:'unklar',datum:'10.11.2026',gr:'1,1 MB',conf:.31,von:'Simone Berger'}
+];
+const DOKFILES={};
+const fmtGr=b=>b<1048576?Math.max(1,Math.round(b/1024))+' KB':(b/1048576).toFixed(1).replace('.',',')+' MB';
+function klassifiziere(name){const n=name.toLowerCase();
+ let bv=(n.match(/bv[-_ ]?(\d{4}|26r)/)||[])[1];bv=bv?'BV-'+bv.toUpperCase():'';
+ if(!bv){const o=[['sonnenstr','BV-2611'],['kaufering','BV-2611'],['brandl','BV-2614'],['dießen','BV-2614'],['diessen','BV-2614'],['steiner','BV-2609'],['landsberg','BV-2609'],['hofer','BV-2617'],['utting','BV-2617']].find(o=>n.includes(o[0]));if(o)bv=o[1]}
+ const R=[[/lieferschein|\bls[-_ ]?\d|lieferung/,'lieferscheine','Lieferschein'],[/rechnung|\bre[-_ ]?\d|invoice|abschlag/,'rechnungen','Rechnung'],[/angebot|kostenvoranschlag/,'angebote','Angebot'],[/vertrag|nachunternehmer|auftragsbest/,'vertraege','Vertrag'],[/soka|bg[-_ ]?bau|freistellung|finanzamt|berufsgenossenschaft|bescheid|krankenkasse|aok|tüv|tuev/,'behoerden','Behörde / Kasse'],[/arbeitsvertrag|lohn|krankmeld|unterweisung|führerschein|fuehrerschein|zeugnis|bewerbung|personal/,'personal','Personal'],[/bwa|datev|steuer|jahresabschluss|buchhaltung|kontoauszug/,'steuer','Steuerbüro'],[/plan|statik|abbund|zeichnung|aufma|leistungsverzeichnis/,'baustelle','Plan / Aufmaß'],[/foto|bauzustand|baustelle/,'baustelle','Foto']];
+ const m=R.find(r=>r[0].test(n));
+ if(!m)return{ordner:'pruefen',bv,art:'unklar',conf:.3};
+ if(m[1]==='baustelle'&&!bv)return{ordner:'pruefen',bv:'',art:m[2]+' (Baustelle unklar)',conf:.45};
+ return{ordner:m[1],bv,art:m[2],conf:bv||m[1]!=='baustelle'?.93:.8}}
+const ordnerName=d=>d.ordner==='baustelle'?'Baustellen / '+d.bv+' '+bvName(d.bv):(ORDNER.find(o=>o[0]===d.ordner)||[0,d.ordner])[1];
+function dokSichtbar(d){const r=state.role;if(r==='chef')return true;if(r==='buero')return d.ordner!=='personal';if(r==='hr')return['vertraege','behoerden','personal','steuer','pruefen'].includes(d.ordner);if(r==='vorarbeiter')return['baustelle','lieferscheine','pruefen'].includes(d.ordner);return false}
+function dokAufnehmen(files){const von=(state.role==='geselle'||state.phoneUser&&state.role==='geselle')?(state.phoneUser||'Mitarbeiter'):role().who;let ok=0,pr=0;
+ [...files].forEach(f=>{const k=klassifiziere(f.name);const id='D'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  try{DOKFILES[id]={url:URL.createObjectURL(f),typ:f.type}}catch(e){}
+  DOKS.unshift({id,name:f.name,ordner:k.ordner,bv:k.bv,art:k.art,datum:'11.11.2026',gr:fmtGr(f.size),conf:k.conf,von});k.ordner==='pruefen'?pr++:ok++});
+ commit(`${ok+pr} Dokument${ok+pr===1?'':'e'} abgelegt und sortiert${pr?`. ${pr} brauch${pr===1?'t':'en'} noch eine Zuordnung (Zu prüfen).`:'.'}`)}
+function dokZeile(d){const pruef=d.ordner==='pruefen';
+ const opts=ORDNER.filter(o=>o[0]!=='baustelle'&&o[0]!=='pruefen').map(o=>`<option value="${o[0]}">${o[1]}</option>`).join('')+BAUSTELLEN.map(b=>`<option value="baustelle:${b.id}">Baustellen / ${b.id} ${esc(b.kurz)}</option>`).join('');
+ return `<tr><td><b>${esc(d.name)}</b><div class="small muted">${esc(d.gr)} · ${esc(d.von)}, ${esc(d.datum)}</div></td>
+  <td>${pruef?`<select class="wp-sel" data-dok-mv="${d.id}" aria-label="Ablegen in"><option value="">Ablegen in …</option>${opts}</select>`:esc(ordnerName(d))}</td>
+  <td>${esc(d.art)}</td><td><span class="pill ${d.conf>=.9?'good':d.conf>=.6?'warn':'bad'}">${d.conf===1?'manuell':Math.round(d.conf*100)+' %'}</span></td>
+  <td style="white-space:nowrap"><button class="tool" data-dok-open="${d.id}">Öffnen</button> <button class="tool" data-dok-del="${d.id}" aria-label="Löschen">Löschen</button></td></tr>`}
+function dokListe(){const q=state.dokQ.trim().toLowerCase();const l=DOKS.filter(dokSichtbar).filter(d=>state.dokF==='alle'||(state.dokF.startsWith('b:')?d.ordner==='baustelle'&&d.bv===state.dokF.slice(2):d.ordner===state.dokF)).filter(d=>!q||(d.name+' '+d.art+' '+ordnerName(d)).toLowerCase().includes(q));
+ return l.length?`<table><thead><tr><th>Datei</th><th>Abgelegt in</th><th>Art</th><th>Sicherheit</th><th></th></tr></thead><tbody>${l.map(dokZeile).join('')}</tbody></table>`:'<div class="empty" style="padding:18px">Hier liegt noch nichts.</div>'}
+const STORE={DOKS,ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
 let INITIAL=null;
 function snapshot(){const o={};for(const k in STORE)o[k]=k==='POS'?POS:STORE[k];o.stamped=state.stamped;return JSON.parse(JSON.stringify(o))}
 function restore(o){for(const k in o){if(k==='stamped'){state.stamped=o[k];continue}const t=k==='POS'?POS:STORE[k];if(!t)continue;if(Array.isArray(t))t.splice(0,t.length,...o[k]);else{for(const x in t)delete t[x];Object.assign(t,o[k])}}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(snapshot()))}catch(e){}}
 function load(){INITIAL=snapshot();try{const s=localStorage.getItem(KEY);if(s)restore(JSON.parse(s))}catch(e){}}
-function badgeFor(k){if(k==='lieferscheine')return LS.filter(l=>l.status==='fehlt').length;if(k==='hr')return ANTRAEGE.filter(a=>!a.done).length;return 0}
+function badgeFor(k){if(k==='lieferscheine')return LS.filter(l=>l.status==='fehlt').length;if(k==='hr')return ANTRAEGE.filter(a=>!a.done).length;if(k==='dokumente')return DOKS.filter(d=>d.ordner==='pruefen'&&dokSichtbar(d)).length;return 0}
 function tagesIndex(iso){return WOCHE_ISO.indexOf(iso)}
 function markAbw(n,von,bis,code){WOCHE_ISO.forEach((d,i)=>{if(d>=von&&d<=bis){if(!ABW[n])ABW[n]=['A','A','A','A','A'];ABW[n][i]=code}})}
 function tage(von,bis){let c=0,d=new Date(von+'T12:00:00'),e=new Date(bis+'T12:00:00');while(d<=e){const w=d.getDay();if(w>0&&w<6)c++;d.setDate(d.getDate()+1)}return c}
@@ -703,6 +752,7 @@ V.start=()=>{
   const r=state.role,geld=r==='chef'||r==='buero';
   const todos=[];
   if(r!=='hr'&&badgeFor('lieferscheine'))todos.push(['warn',`${badgeFor('lieferscheine')} Lieferscheine prüfen`,'Fehlende Felder ergänzen und weiterleiten','lieferscheine']);
+  if(r!=='geselle'&&badgeFor('dokumente'))todos.push(['warn',`${badgeFor('dokumente')} Dokument${badgeFor('dokumente')===1?'':'e'} zuordnen`,'Die KI war sich nicht sicher, wohin es gehört','dokumente']);
   if(geld&&FLAGS.lechtal==='offen')todos.push(['bad','Baustoffe Lechtal: 2 Paletten zu viel berechnet','Differenz '+eur(1104)+', Zahlung gesperrt','rechnungen']);
   const offen=ANTRAEGE.filter(a=>!a.done);
   if((r==='chef'||r==='hr')&&offen.length)todos.push(['info',`${offen.length} ${offen.length===1?'Antrag':'Anträge'} entscheiden`,offen.map(a=>a.n.split(' ')[0]).join(', ')+(offen.some(a=>a.konflikt)?' · 1 Konflikt mit Baustelle':''),'hr']);
@@ -765,10 +815,16 @@ V.lieferscheine=()=>{
    </div>
   </div>`;
 };
-V.dokumente=()=>{const rows=[['Baustellen / BV-2611 Sonnenstraße','Fotos (214), Tagesberichte (31), Pläne (6)','gestern'],['Baustellen / BV-2614 Brandl','Abbundliste, Statik, Fotos (88)','heute'],['Verträge','Bauverträge, Nachunternehmer, Mietvertrag Halle','03.11.'],['Behörden & Kassen','SOKA-DACH, SOKA-BAU, BG BAU, Freistellungsbescheinigung §48b','28.10.'],['Personal','Arbeitsverträge, Unterweisungen (DE/PL/RO/AR/TR), Führerscheinkontrolle','21.10.'],['Steuerbüro','Monatsunterlagen, BWA, Lohnjournal','04.11.']];
- const vis=state.role==='hr'?[2,3,4,5]:state.role==='vorarbeiter'?[0,1]:[0,1,2,3,4,5];
- return `<div class="page-head"><div><h1>Dokumente</h1><p class="lead">Alles liegt in SharePoint. Die App zeigt es nach Baustelle sortiert, die Rechte gelten wie in der App.</p></div></div>
- <div class="panel table-wrap"><table><thead><tr><th>Ordner</th><th>Inhalt</th><th>Zuletzt geändert</th></tr></thead><tbody>${vis.map(i=>rows[i]).map(r=>`<tr><td><b>${r[0]}</b></td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody></table></div>`};
+V.dokumente=()=>{const vis=DOKS.filter(dokSichtbar);const cnt=k=>vis.filter(d=>k==='alle'||d.ordner===k).length;const open=state.dokOpen&&DOKS.find(d=>d.id===state.dokOpen);
+ const fi=open&&DOKFILES[open.id];
+ const prev=open?`<div class="panel dprev"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px"><b>${esc(open.name)}</b><span><button class="tool" data-dok-open="">Schließen</button></span></div>
+  ${fi?(fi.typ.startsWith('image/')?`<img src="${fi.url}" alt="${esc(open.name)}">`:`<iframe src="${fi.url}" title="${esc(open.name)}"></iframe>`)+`<p class="small"><a href="${fi.url}" download="${esc(open.name)}">Datei herunterladen</a></p>`:'<p class="muted">Beispieldokument. Im echten System öffnet sich hier die Datei aus SharePoint.</p>'}</div>`:'';
+ return `<div class="page-head"><div><h1>Dokumente</h1><p class="lead">PDFs und Scans einfach hier ablegen. Die KI liest Dateiname und Inhalt und sortiert sie in den richtigen Ordner, bei Baustellen auch in die richtige Baustelle. Was sie nicht sicher weiß, landet unter „Zu prüfen“. Die Rechte gelten wie in der App.</p></div></div>
+ <div class="dropz" id="dokzone"><b>PDFs und Scans hier ablegen</b><span class="muted">oder</span><button class="tool primary" data-dok-pick="1">Dateien auswählen</button></div>
+ <div class="dchips" role="group" aria-label="Ordner">${[['alle','Alle']].concat(ORDNER.filter(o=>cnt(o[0])||o[0]==='pruefen'&&false)).map(o=>`<button aria-pressed="${state.dokF===o[0]}" data-dokf="${o[0]}" class="${o[0]==='pruefen'?'warn':''}">${o[1]} (${cnt(o[0])})</button>`).join('')}</div>
+ <div class="dtools"><input id="dokq" type="search" placeholder="Suchen, z.B. Brandl, Vertrag, BWA" value="${esc(state.dokQ)}" aria-label="Dokumente suchen"></div>
+ ${prev}<div class="panel table-wrap" id="dokList">${dokListe()}</div>
+ <div class="note" style="margin-top:12px">In der Demo wird nach Dateiname und Dateityp sortiert. Im echten System liest die KI den Inhalt (Absender, Datum, Baustellennummer) und die Datei liegt in SharePoint oder OneDrive. Beispiel-Dateinamen zum Testen: „Lieferschein_BV-2611.pdf“, „Rechnung_Kraus.pdf“, „Soka_Bescheid.pdf“, „Statik_Brandl.pdf“.</div>`};
 
 const POS=[
  {p:'01.01',t:'Gerüst stellen, vorhalten 4 Wochen, abbauen',m:186,e:'m²',ep:14.5},
@@ -1150,7 +1206,8 @@ PH.belege=()=>{const mine=LS.filter(l=>l.von===ME).map(l=>[l.id+' · '+l.lief,l.
   <button class="glass tile" data-ph-act="beleg-ls">${svgI('truck')}Lieferschein</button>
   <button class="glass tile" data-ph-act="beleg-Tankbeleg">${svgI('fuel')}Tankbeleg</button>
   <button class="glass tile" data-ph-act="beleg-Quittung">${svgI('receipt')}Einkauf / Quittung</button>
-  <button class="glass tile" data-ph-act="upload">${svgI('camera')}Eigenes Foto hochladen</button></div>
+  <button class="glass tile" data-ph-act="upload">${svgI('camera')}Eigenes Foto hochladen</button>
+  <button class="glass tile" data-ph-act="doc-scan" style="grid-column:1/-1;min-height:70px">${svgI('folder')}Dokument scannen oder PDF ablegen</button></div>
   <div class="glass"><p class="ios-cap">Zuletzt hochgeladen</p>
    ${mine.length?mine.slice(0,6).map(m=>`<div class="ios-row"><span>${esc(m[0])}</span><span class="ios-pill ${m[1][0]}">${m[1][1]}</span></div>`).join(''):'<div style="font-size:14px;color:rgba(27,18,20,.6)">Noch nichts hochgeladen.</div>'}</div></div>`};
 PH.tagebuch=()=>{const mine=TAGEBUCH.filter(t=>t.von===ME).slice().reverse();
@@ -1252,6 +1309,10 @@ function go(v){state.view=v;state.ribbon=0;try{history.replaceState(null,'','#'+
 document.addEventListener('click',e=>{
   const ro=e.target.closest('[data-role]');if(ro){state.role=ro.dataset.role;render();toast('Ansicht: '+role().n+' ('+role().who+')');return}
   const ph=e.target.closest('[data-ph]');if(ph){state.phone=ph.dataset.ph;if(ph.dataset.art)state.abwArt=ph.dataset.art;if($('#scr'))$('#scr').scrollTop=0;render();if($('#scr'))$('#scr').scrollTop=0;return}
+  const dk=e.target.closest('[data-dokf]');if(dk){state.dokF=dk.dataset.dokf;render();return}
+  if(e.target.closest('[data-dok-pick]')){$('#docFile').click();return}
+  const dop=e.target.closest('[data-dok-open]');if(dop){state.dokOpen=dop.dataset.dokOpen===state.dokOpen?'':dop.dataset.dokOpen;render();return}
+  const ddl=e.target.closest('[data-dok-del]');if(ddl){const i=DOKS.findIndex(d=>d.id===ddl.dataset.dokDel);if(i>=0){const d=DOKS.splice(i,1)[0];if(state.dokOpen===d.id)state.dokOpen='';commit(d.name+' gelöscht.')}return}
   const pu=e.target.closest('[data-ph-user]');if(pu){state.phoneUser=pu.dataset.phUser;ME=state.phoneUser;state.phone='heute';render();toast('Angemeldet als '+vorname()+'.');return}
   const cm=e.target.closest('[data-cal]');if(cm){const [yy,mm]=state.calM.split('-').map(Number);state.calM=new Date(Date.UTC(yy,mm-1+(+cm.dataset.cal),1)).toISOString().slice(0,7);render();return}
   const cd=e.target.closest('[data-cal-day]');if(cd){state.calDay=cd.dataset.calDay;state.calM=state.calDay.slice(0,7);state.phone='kalender';render();return}
@@ -1276,9 +1337,14 @@ document.addEventListener('click',e=>{
   const a=e.target.closest('[data-act]');if(a){act(a.dataset.act)}
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flow&&flow.step!=='busy')flowStep(flow.step==='done'?'fertig':'abbrechen')});
-document.addEventListener('input',e=>{if(e.target.id==='ph-text')state.phText=e.target.value});
+document.addEventListener('input',e=>{if(e.target.id==='ph-text')state.phText=e.target.value;if(e.target.id==='dokq'){state.dokQ=e.target.value;const l=$('#dokList');if(l)l.innerHTML=dokListe()}});
+document.addEventListener('dragover',e=>{if(e.target.closest&&e.target.closest('#dokzone')){e.preventDefault();$('#dokzone').classList.add('over')}});
+document.addEventListener('dragleave',e=>{const z=$('#dokzone');if(z)z.classList.remove('over')});
+document.addEventListener('drop',e=>{if(e.target.closest&&e.target.closest('#dokzone')){e.preventDefault();if(e.dataTransfer&&e.dataTransfer.files.length)dokAufnehmen(e.dataTransfer.files)}});
 document.addEventListener('change',e=>{
   const t=e.target;
+  if(t.id==='docFile'&&t.files&&t.files.length){dokAufnehmen(t.files);t.value='';return}
+  if(t.dataset&&t.dataset.dokMv!==undefined){if(!t.value)return;const d=DOKS.find(x=>x.id===t.dataset.dokMv);const[o,bv]=t.value.split(':');d.ordner=o;d.bv=bv||d.bv||'';if(o!=='baustelle'&&o!=='pruefen'&&!bv)d.bv=d.bv||'';d.conf=1;d.art=(ORDNER.find(x=>x[0]===o)||[0,d.art])[1];commit(d.name+' abgelegt in '+ordnerName(d));return}
   if(t.dataset&&t.dataset.wp!==undefined){const [ri,di]=t.dataset.wp.split('.').map(Number);const p=PLAENE[state.wpWeek];const n=PLAN_MA[ri];p.z[n]=p.z[n]||[0,1,2,3,4].map(()=>'');p.z[n][di]=t.value;commit(p.publ?`${n.split(' ')[0]}: ${WTAG[di]} geändert, steht sofort auf seinem Handy.`:'');return}const pm=t.dataset.pm,pe=t.dataset.pe;
   if(pm!==undefined||pe!==undefined){const v=parseFloat(t.value.replace(/\./g,'').replace(',','.'));if(isNaN(v)){toast('Bitte eine Zahl eingeben, z.B. 640 oder 52,90');render();return}
     if(pm!==undefined)POS[+pm].m=v;else POS[+pe].ep=v;commit('Neu berechnet');return}
@@ -1310,6 +1376,7 @@ function phAct(x){
     TAGEBUCH.push({bv,von:ME,datum:'11.11.2026',text:t,fotos:state.phFotos,spr:L==='Deutsch'?'':'aus '+L+' übersetzt'});state.phText='';state.phFotos=0;state.rec=false;commit('Gespeichert. Steht jetzt bei der Baustelle '+bvName(bv)+'.');return}
   if(x==='beleg-ls'){neuerLieferschein(null);return}
   if(x==='upload'){$('#phFile').click();return}
+  if(x==='doc-scan'){$('#docFile').click();return}
   if(x.startsWith('beleg-')){const art=x.slice(6);BELEGE.push({art,von:ME,datum:'11.11.2026',betrag:art==='Tankbeleg'?'92,40 €':'37,85 €',status:'erkannt'});commit(art+' erkannt und an die Buchhaltung weitergeleitet.');return}
   if(x==='antrag'){const v=$('#ph-von').value,b=$('#ph-bis').value||v,g=$('#ph-grund').value.trim();if(!v){toast('Bitte ein Datum wählen.');return}if(b<v){toast('„Bis“ liegt vor „Von“.');return}
     if(state.abwArt==='Krank'){KRANK.push({n:ME,von:v,bis:b,text:'über die App gemeldet'+(g?': '+g:'')+'. eAU wird bei der Krankenkasse abgerufen.',offen:true});markAbw(ME,v,b,'K');commit('Krankmeldung ist bei HR. Gute Besserung!')}
