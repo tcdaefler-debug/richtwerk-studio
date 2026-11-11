@@ -621,11 +621,40 @@ const KUNDE_CSS=`#dockBtn{display:none!important}
 .iphone .screen{border-radius:24px;border:1px solid #e3dcdc;box-shadow:0 10px 30px rgba(0,0,0,.10)}
 .iphone .island,.iphone .statusbar{display:none}
 .iphone .scr{inset:0;padding-top:16px}`;
+/* Läuft in der Kunden-Ansicht der Hammer-App: Mitarbeiter-App nur als Widget unten rechts */
+const KUNDE_JS="("+function(){
+  var st=document.createElement("style");
+  st.textContent='[data-role="geselle"],[data-login="geselle"]{display:none!important}'
+   +'#rwW{position:fixed;right:12px;bottom:64px;z-index:60;width:46px;height:46px;border-radius:50%;border:0;background:var(--brand,#c8102e);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25);cursor:pointer;display:grid;place-items:center}'
+   +'#rwW:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 5px var(--brand,#c8102e)}'
+   +'#rwW svg{width:22px;height:22px}'
+   +'#rwP{position:fixed;right:12px;bottom:118px;z-index:60;width:min(360px,calc(100vw - 24px));height:min(680px,calc(100vh - 200px));display:none;flex-direction:column;background:#fff;border-radius:22px;box-shadow:0 18px 50px rgba(0,0,0,.28);overflow:hidden;border:1px solid #e3dcdc}'
+   +'#rwP.on{display:flex}'
+   +'#rwP .rwh{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;font:600 13px system-ui,sans-serif;border-bottom:1px solid #eee;flex:none}'
+   +'#rwP .rwh button{border:0;background:none;font-size:22px;cursor:pointer;line-height:1;padding:0 4px}'
+   +'#rwP .iphone{flex:1;height:auto;min-height:0;width:100%;border:0;box-shadow:none;border-radius:0;padding:0;background:none}'
+   +'#rwP .iphone .screen{border-radius:0;border:0;box-shadow:none}';
+  document.head.appendChild(st);
+  var b=document.createElement("button");b.id="rwW";b.type="button";b.title="Mitarbeiter-App";b.setAttribute("aria-label","Mitarbeiter-App öffnen");
+  b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg>';
+  var p=document.createElement("div");p.id="rwP";
+  document.body.appendChild(p);document.body.appendChild(b);
+  function fill(){
+    if(!p.classList.contains("on"))return;
+    var s=document.getElementById("scr"),top=s?s.scrollTop:0;
+    p.innerHTML='<div class="rwh"><span>Mitarbeiter-App · Andrei Popescu</span><button type="button" id="rwX" aria-label="Schließen">\u00d7</button></div>'+phoneHTML();
+    s=document.getElementById("scr");if(s)s.scrollTop=top;
+  }
+  b.onclick=function(){p.classList.toggle("on");fill()};
+  document.addEventListener("click",function(e){if(e.target.closest("#rwX"))p.classList.remove("on")});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")p.classList.remove("on")});
+  var r0=render;render=function(){r0.apply(this,arguments);fill()};
+}.toString()+")()";
 function hammerApp(k,modus){
   let h="<script>window.RICHTWERK={verbindungen:"+JSON.stringify(verbKunde(k))+"};<\/script>\n"+HAMMER_HTML;
   if(modus!=="studio"){
     h=h.replace("So sieht die App auf dem Firmen-iPhone eines Gesellen aus. Tipp: Oben „Handy daneben“ in einer Büro-Ansicht zeigt das Handy neben dem Büro, dann siehst du sofort, wo deine Eingaben ankommen.","So arbeitet ein Geselle mit seiner App auf dem Handy.");
-    h+="\n<style>"+KUNDE_CSS+"</style>";
+    h+="\n<style>"+KUNDE_CSS+"</style>\n<script>"+KUNDE_JS+"<\/script>";
   }
   const css=(k.css||"").replace(/<\/style/gi,"<\\/style"), js=(k.js||"").replace(/<\/script/gi,"<\\/script");
   if(css.trim())h+="\n<style>"+css+"</style>";
