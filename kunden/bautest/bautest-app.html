@@ -1486,6 +1486,35 @@ const h=(location.hash||'').slice(1);if(h==='app')state.role='geselle';else if(V
 if(h!=='app')showLogin();else $('#login').hidden=true;
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(v==='app'){state.role='geselle';render()}else if(V[v]&&v!==state.view){state.view=v;render()}});
 render();
+/* ---------- Logo, Entwickler-Ansicht (Zahlen ausgeblendet) ---------- */
+(function(){
+ const hex=(CFG.firma&&CFG.firma.farbe)||'#c8102e';
+ const name=(CFG.leer&&CFG.firma&&CFG.firma.name)||'Ludwig Hammer';
+ const words=name.replace(/\b(GmbH|e\.K\.|KG|UG|&|und|Dachdeckerei|Zimmerei)\b/g,'').trim().split(/\s+/).filter(Boolean);
+ const ini=(CFG.leer?words.map(x=>x[0]).join('').slice(0,2):'LH').toUpperCase();
+ const dach=CFG.leer?/dach|zimmer/i.test((CFG.firma&&CFG.firma.gewerk)||''):true;
+ const dark=(h,a)=>'#'+[1,3,5].map(i=>Math.round(parseInt(h.slice(i,i+2),16)*(1-a)).toString(16).padStart(2,'0')).join('');
+ const gid='lg'+Math.random().toString(36).slice(2,6);
+ const svg=`<svg width="40" height="40" viewBox="0 0 40 40" role="img" aria-label="Logo ${esc(name)}"><defs><linearGradient id="${gid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f1e9ea"/></linearGradient></defs><rect x="1" y="1" width="38" height="38" rx="11" fill="url(#${gid})"/>${dach?`<path d="M9 17.5 L20 8 L31 17.5" fill="none" stroke="${hex}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`:''}<text x="20" y="${dach?31:27}" text-anchor="middle" font-family="Barlow Semi Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="${dach?17:20}" letter-spacing="-.3" fill="${dark(hex,.12)}">${esc(ini)}</text></svg>`;
+ const el=document.querySelector('.brand svg');if(el)el.outerHTML=svg;
+})();
+if(CFG.mask){(function(){
+ const st=document.createElement('style');st.textContent='.dev-note{position:fixed;left:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:80;background:#1d1617;color:#fff;font-size:12px;padding:5px 12px;border-radius:999px;opacity:.9;pointer-events:none}';
+ document.head.appendChild(st);
+ const note=document.createElement('div');note.className='dev-note';note.textContent='Entwickler-Ansicht: Beträge und Kennzahlen sind ausgeblendet';document.body.appendChild(note);
+ const MONEY=/-?\d{1,3}(?:\.\d{3})*(?:,\d{1,2})?\s?(?:€|EUR|Euro)|€\s?\d[\d.,]*/g,IBAN=/[A-Z]{2}\d{2}(?:\s?\d{4}){3,5}\s?\d{0,2}/g;
+ const SEL='.kpi .v,.stat .v,td.num,.num';
+ let busy=false;
+ function run(root){if(busy)return;busy=true;try{
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const hit=[];let n;
+  while(n=w.nextNode()){const t=n.nodeValue;if(!t||!/[\d]/.test(t))continue;if(n.parentNode&&/^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(n.parentNode.nodeName))continue;if(MONEY.test(t)||IBAN.test(t))hit.push(n);MONEY.lastIndex=0;IBAN.lastIndex=0}
+  hit.forEach(n=>{n.nodeValue=n.nodeValue.replace(MONEY,'••••').replace(IBAN,'•••• •••• ••••')});
+  root.querySelectorAll&&root.querySelectorAll(SEL).forEach(e=>{if(!e.dataset.rd&&/\d/.test(e.textContent)){e.dataset.rd='1';e.textContent='••••'}});
+ }finally{busy=false}}
+ new MutationObserver(()=>{if(!busy)run(document.body)}).observe(document.body,{childList:true,subtree:true,characterData:true});
+ run(document.body);
+})()}
+
 /* ---------- Eigenständige App: Büro-Seite und Handy-Seite, abgeglichen über die Datenbank ---------- */
 if(CFG.sync){(function(){
  const handy=()=>(location.hash||'').slice(1)==='handy';
@@ -1521,7 +1550,7 @@ body.handy-only #syncDot{right:auto;left:50%;transform:translateX(-50%);bottom:c
  const cid=Math.random().toString(36).slice(2);let ref=null,timer=null,applying=false;
  const pushNow=()=>{if(!ref)return;try{ref.set({data:JSON.stringify(snapshot()),by:cid,t:Date.now()}).then(()=>setDot(true,'Abgeglichen'),()=>setDot(false,'Speichern ging nicht'))}catch(e){}};
  const o=save;save=function(){o();if(applying||!ref)return;clearTimeout(timer);timer=setTimeout(pushNow,300)};
- (async()=>{try{const c=window.claude&&window.claude.use?await window.claude.use('db'):null;if(!c)return;ref=c.doc('betrieb/daten');
+ (async()=>{try{const c=window.claude&&window.claude.use?await window.claude.use('db'):null;if(!c){setDot(false,'Nur dieser Browser');window.addEventListener('storage',e=>{if(e.key===KEY&&e.newValue){applying=true;try{restore(JSON.parse(e.newValue));syncPlanMA();render()}catch(x){}applying=false}});return}ref=c.doc('betrieb/daten');
   ref.onSnapshot(sn=>{if(!sn.exists){pushNow();return}const d=sn.data();setDot(true,'Abgeglichen');if(!d||d.by===cid)return;
    applying=true;try{restore(JSON.parse(d.data));syncPlanMA();if(state.dokOpen&&!DOKS.some(x=>x.id===state.dokOpen))state.dokOpen='';render()}catch(e){}applying=false},()=>setDot(false,'Keine Verbindung'));
  }catch(e){}})();

@@ -5,10 +5,12 @@ Aufruf: python3 baukasten/standalone.py kunden/bautest/kunde.json kunden/bautest
 import json,sys,pathlib
 root=pathlib.Path(__file__).resolve().parent.parent
 cfg=json.loads(pathlib.Path(sys.argv[1]).read_text(encoding='utf-8'))
-cfg.update({'leer':True,'sync':True})
+cfg.setdefault('leer',True)
+cfg['sync']=True
 src=(root/'kunden/ludwig-hammer/ludwig-hammer-app.html').read_text(encoding='utf-8')
 js=json.dumps(cfg,ensure_ascii=False).replace('<','\\u003c')
-src=src.replace('<title>Hammer Betriebszentrale</title>',f"<title>{cfg['firma']['name']}</title>")
+if cfg.get('firma'):
+    src=src.replace('<title>Hammer Betriebszentrale</title>',f"<title>{cfg['firma']['name']}</title>")
 out=f'<script>window.RICHTWERK={js};</script>\n'+src
 pathlib.Path(sys.argv[2]).write_text(out,encoding='utf-8')
 print('geschrieben',sys.argv[2],len(out))

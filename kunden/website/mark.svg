@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" role="img" aria-label="Richtwerk">
+  <rect width="64" height="64" rx="16" fill="#0C1424"/>
+  <path d="M21 50V14.5H34a9.5 9.5 0 010 19H21" fill="none" stroke="#6F94FF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M33 34L46 50" fill="none" stroke="#FF6B3D" stroke-width="8.5" stroke-linecap="round"/>
+</svg>

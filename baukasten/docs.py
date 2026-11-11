@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""Erzeugt den Ordner docs/ für GitHub Pages (Einstellungen → Pages → Branch main, Ordner /docs).
+Alles sind Einzeldateien ohne Server. Büro und Handy gleichen sich im selben Browser ab (Reiter nebeneinander)."""
+import pathlib,subprocess,sys
+root=pathlib.Path(__file__).resolve().parent.parent
+py=sys.executable
+subprocess.check_call([py,str(root/'baukasten/einbetten.py')])
+subprocess.check_call([py,str(root/'baukasten/standalone.py'),str(root/'kunden/ludwig-hammer/standalone.json'),str(root/'kunden/ludwig-hammer/ludwig-hammer-standalone.html')])
+subprocess.check_call([py,str(root/'baukasten/standalone.py'),str(root/'kunden/bautest/kunde.json'),str(root/'kunden/bautest/bautest-app.html')])
+d=root/'docs'
+for sub,src in [('studio','baukasten/richtwerk-studio.html'),('hammer','kunden/ludwig-hammer/ludwig-hammer-standalone.html'),('bautest','kunden/bautest/bautest-app.html')]:
+    (d/sub).mkdir(parents=True,exist_ok=True)
+    html=(root/src).read_text(encoding='utf-8')
+    if '<meta name="viewport"' not in html:
+        html='<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>\n'+html+'\n</body></html>'
+    (d/sub/'index.html').write_text(html,encoding='utf-8')
+import shutil
+w=d/'website';(w/'img').mkdir(parents=True,exist_ok=True)
+src=(root/'kunden/website/index.html').read_text(encoding='utf-8')
+if '<meta name="viewport"' not in src:
+    src='<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>\n'+src+'\n</body></html>'
+(w/'index.html').write_text(src,encoding='utf-8')
+for f in (root/'kunden/website/img').glob('*.svg'):shutil.copy(f,w/'img'/f.name)
+logo='<svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#0C1424"/><path d="M21 50V14.5H34a9.5 9.5 0 010 19H21" fill="none" stroke="#6F94FF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 34L46 50" fill="none" stroke="#FF6B3D" stroke-width="8.5" stroke-linecap="round"/></svg>'
+(d/'index.html').write_text(f'''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Richtwerk</title>
+<style>
+:root{{--bg:#F5F7FA;--ink:#0C1424;--muted:#56637A;--card:#fff;--line:#DCE2EC;--blue:#2457F5}}
+@media(prefers-color-scheme:dark){{:root{{--bg:#080D18;--ink:#EAF0FB;--muted:#9AA8C2;--card:#101828;--line:#202C47;--blue:#6F94FF}}}}
+*{{box-sizing:border-box}}body{{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,sans-serif;padding:max(20px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}}
+main{{max-width:920px;margin:0 auto}}h1{{font:800 clamp(34px,6vw,56px)/1.05 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.03em;margin:28px 0 12px}}
+.logo{{display:flex;align-items:center;gap:10px;font:800 26px "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.04em}}p{{color:var(--muted);max-width:40em}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px}}
+a.card{{display:block;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s}}
+a.card:hover{{transform:translateY(-3px);box-shadow:0 14px 34px rgba(12,20,36,.12)}}a.card b{{display:block;font-size:19px;margin-bottom:4px}}a.card span{{color:var(--muted);font-size:14.5px}}
+h2{{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin:36px 0 0}}</style></head><body><main>
+<div class="logo">{logo}richtwerk</div>
+<h1>Drei Teile, ein System.</h1>
+<p>Das Entwickler-Tool verwaltet die Betriebe. Jeder Betrieb hat sein eigenes Büro-Tool und eine eigene Handy-App. Büro und Handy gleichen sich im selben Browser ab: Öffne beide in zwei Reitern nebeneinander.</p>
+<h2>Website</h2><div class="grid"><a class="card" href="website/"><b>Richtwerk Website</b><span>Die Seite für Handwerksbetriebe mit Logo und Erstgespräch</span></a></div>
+<h2>Entwickler-Tool</h2><div class="grid"><a class="card" href="studio/"><b>Richtwerk Studio</b><span>Betriebe verwalten, Bausteine freischalten. Betriebsdaten sind hier ausgeblendet.</span></a></div>
+<h2>Ludwig Hammer (großer Betrieb)</h2><div class="grid"><a class="card" href="hammer/"><b>Büro-Tool</b><span>Betriebszentrale für Chef, Büro, HR und Vorarbeiter</span></a><a class="card" href="hammer/#handy"><b>Handy-App</b><span>Stempeln, Plan, Belege, Tagebuch, Freigaben</span></a></div>
+<h2>Bautest (leerer Testbetrieb)</h2><div class="grid"><a class="card" href="bautest/"><b>Büro-Tool</b><span>Alles leer, zum Selbst-Einrichten</span></a><a class="card" href="bautest/#handy"><b>Handy-App</b><span>Mit „Test Chef“ und „Test Mitarbeiter“</span></a></div>
+</main></body></html>''',encoding='utf-8')
+print('docs/ erzeugt')

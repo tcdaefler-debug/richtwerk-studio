@@ -1,0 +1,296 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
+<title>Richtwerk</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: Vollbild-Bilder wie bei einem Bauunternehmen, riesige Typo, klare Kacheln. Farben: Tinte, Richtwerk-Blau, Orange als Signal. */
+:root{
+  --bg:#FFFFFF; --soft:#F3F5F9; --card:#FFFFFF; --ink:#0C1424; --muted:#56637A; --line:#DDE3EC;
+  --blue:#2457F5; --blue-ink:#FFFFFF; --blue-soft:#E7EDFF; --orange:#FF6B3D; --good:#1C8A5B; --warn:#B7791F; --clay:#D9471F;
+  --display:'Bricolage Grotesque','Space Grotesk',system-ui,sans-serif;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#080D18; --soft:#0D1424; --card:#101828; --ink:#EAF0FB; --muted:#9AA8C2; --line:#202C47;
+  --blue:#6F94FF; --blue-ink:#07101F; --blue-soft:#13203F; --good:#4CC38A; --warn:#E5B04F; --clay:#FF7A52; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#080D18; --soft:#0D1424; --card:#101828; --ink:#EAF0FB; --muted:#9AA8C2; --line:#202C47;
+  --blue:#6F94FF; --blue-ink:#07101F; --blue-soft:#13203F; --good:#4CC38A; --warn:#E5B04F; --clay:#FF7A52; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);line-height:1.04;letter-spacing:-.025em;margin:0;text-wrap:balance}
+h1{font-size:clamp(42px,8vw,104px);font-weight:800}
+h2{font-size:clamp(30px,4.6vw,56px);font-weight:700}
+h3{font-size:22px;font-weight:700;letter-spacing:-.015em;line-height:1.15}
+p{margin:0}
+.wrap{max-width:1240px;margin:0 auto}
+.bleed{margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--blue)}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:14px 26px;font:600 15px/1 var(--body);background:var(--orange);color:#fff;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor;opacity:.92}
+/* Navigation */
+.nav{position:fixed;top:0;left:0;right:0;z-index:30;padding:env(safe-area-inset-top,0px) max(16px,env(safe-area-inset-left,0px)) 0;color:#fff;transition:background .25s,color .25s,box-shadow .25s}
+.nav.solid{background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(12px);color:var(--ink);box-shadow:0 1px 0 var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font:800 26px/1 var(--display);letter-spacing:-.045em}
+.logo svg{width:36px;height:36px;flex:none}
+.nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0;font-size:15px;font-weight:500}
+.nav ul a{text-decoration:none;opacity:.88}.nav ul a:hover{opacity:1}
+.nav .btn{padding:11px 20px}
+@media(max-width:900px){.nav ul{display:none}}
+/* Hero */
+.hero{position:relative;min-height:min(92vh,860px);display:grid;align-items:end;color:#fff;background:#14102a url(img/hero.svg) center/cover;overflow:hidden;margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)))}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,10,28,.55) 0%,rgba(8,10,28,0) 35%,rgba(8,10,28,.72) 100%)}
+.hero .in{position:relative;z-index:2;padding:150px max(16px,env(safe-area-inset-left,0px)) 56px}
+.hero h1{max-width:11em;text-shadow:0 2px 30px rgba(0,0,0,.25)}
+.hero p.lead{font-size:clamp(17px,1.8vw,21px);max-width:32em;margin-top:24px;opacity:.94}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:56px;border-top:1px solid rgba(255,255,255,.35)}
+.facts div{padding:18px 18px 0 0;font-size:14px}
+.facts b{display:block;font:700 22px/1.2 var(--display);letter-spacing:-.01em}
+.facts span{opacity:.8}
+@media(max-width:760px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* Aussage */
+.statement{padding:110px 0 80px}
+.statement p{font:700 clamp(28px,4.4vw,56px)/1.12 var(--display);letter-spacing:-.025em;max-width:20em}
+.statement p span{color:var(--blue)}
+.statement .sub{font:400 18px/1.6 var(--body);letter-spacing:0;color:var(--muted);max-width:40em;margin-top:26px}
+/* Kacheln mit Bild */
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tile{position:relative;min-height:440px;border-radius:24px;overflow:hidden;color:#fff;display:grid;align-items:end;background-size:cover;background-position:center;isolation:isolate}
+.tile::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,20,0) 30%,rgba(6,8,20,.82));z-index:-1}
+.tile div{padding:32px}
+.tile p{margin-top:10px;max-width:28em;opacity:.9;font-size:16px}
+.tile .k{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;opacity:.8;margin-bottom:12px;display:block}
+@media(max-width:760px){.tiles{grid-template-columns:minmax(0,1fr)}.tile{min-height:360px}}
+/* Geteilte Fläche */
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:640px;margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)))}
+.split .img{background-size:cover;background-position:center;min-height:360px}
+.split .txt{padding:clamp(36px,6vw,96px) max(16px,env(safe-area-inset-right,0px)) clamp(36px,6vw,96px) clamp(24px,5vw,80px);display:grid;gap:22px;align-content:center;background:var(--soft)}
+.split .txt p{color:var(--muted);font-size:18px}
+.split ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.split li{padding-left:28px;position:relative}
+.split li::before{content:"";position:absolute;left:0;top:.6em;width:12px;height:2px;background:var(--clay)}
+.split li.ok::before{height:8px;width:8px;border-radius:50%;background:var(--good);top:.5em}
+@media(max-width:860px){.split{grid-template-columns:minmax(0,1fr)}.split .txt{padding-left:max(16px,env(safe-area-inset-left,0px))}}
+/* Produkt */
+.product{background:var(--ink);color:#EAF0FB;padding:100px 0 110px;margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.product .cols{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:64px;align-items:center}
+.product .eyebrow{color:#8FB0FF}
+.product p.t{color:#A9B6D0;font-size:18px;margin-top:20px;max-width:30em}
+.product ul{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:12px}
+.product li{padding-left:28px;position:relative;color:#D5DEF0}
+.product li::before{content:"";position:absolute;left:0;top:.5em;width:9px;height:9px;border-radius:50%;background:var(--orange)}
+@media(max-width:900px){.product .cols{grid-template-columns:minmax(0,1fr);gap:48px}}
+
+.stage{position:relative;padding:0 0 70px}
+.board{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 60px -28px rgba(12,20,36,.35);overflow:hidden}
+.board-h{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font:500 12px/1 var(--mono);color:var(--muted);letter-spacing:.04em}
+.board-h b{color:var(--ink);font-weight:500}
+.grid{display:grid;grid-template-columns:92px repeat(5,minmax(0,1fr));gap:6px;padding:14px 16px 18px;font-size:12px}
+.grid .h{font:500 11px/1 var(--mono);color:var(--muted);text-align:center;padding-bottom:4px}
+.grid .n{font-weight:600;align-self:center;white-space:nowrap}
+.chip{border-radius:8px;padding:7px 4px;text-align:center;font-weight:600;font-size:11px;background:var(--blue-soft);color:var(--blue);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chip.b{background:color-mix(in srgb,var(--clay) 14%,transparent);color:var(--clay)}
+.chip.u{background:color-mix(in srgb,var(--good) 16%,transparent);color:var(--good)}
+.chip.k{background:color-mix(in srgb,var(--warn) 18%,transparent);color:var(--warn)}
+.phone{position:absolute;right:-6px;bottom:-14px;width:196px;background:var(--ink);border-radius:30px;padding:6px;box-shadow:0 24px 50px -16px rgba(12,20,36,.55)}
+.phone .s{background:var(--bg);border-radius:25px;padding:18px 14px 14px;display:grid;gap:10px}
+.phone .t{font:700 20px/1.1 var(--display)}
+.phone .c{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;text-align:center}
+.phone .c small{display:block;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.phone .c b{display:block;font:800 26px/1.2 var(--display)}
+.phone .go{background:var(--ink);color:var(--bg);border-radius:999px;padding:10px;font-weight:600;font-size:13px;margin-top:8px}
+.phone .row{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted)}
+@media(max-width:560px){.phone{position:relative;right:auto;bottom:auto;margin:-24px 0 0 auto;width:180px}.stage{padding-bottom:0}.grid{grid-template-columns:70px repeat(5,minmax(0,1fr));font-size:11px;padding-inline:10px}.chip{font-size:10px;padding:6px 2px}}
+
+
+.product .board{--card:#101828;--ink:#EAF0FB;--line:#26335A;--muted:#9AA8C2;--blue:#8FB0FF;--blue-soft:#17264B;background:var(--card);color:var(--ink)}
+.product .phone{--ink:#EAF0FB;--bg:#0B1220;--card:#101828;--line:#26335A;--muted:#9AA8C2;background:#05080F}
+.product .phone .go{background:var(--orange);color:#fff}
+/* Gewerke */
+.pad{padding:110px 0}
+.sec-h{display:grid;gap:16px;max-width:760px;margin-bottom:48px}
+.sec-h p{color:var(--muted);font-size:18px}
+.trades{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.trade{position:relative;min-height:340px;border-radius:20px;overflow:hidden;color:#fff;display:grid;align-items:end;background-size:cover;background-position:center;isolation:isolate}
+.trade::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,8,20,.05) 35%,rgba(6,8,20,.85));z-index:-1}
+.trade div{padding:22px}.trade small{display:block;font-size:13px;opacity:.82;margin-top:4px}
+.trade.plain{background:var(--soft);color:var(--ink);border:1px dashed var(--line)}.trade.plain::before{display:none}
+@media(max-width:980px){.trades{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.trades{grid-template-columns:minmax(0,1fr)}.trade{min-height:260px}}
+/* Ablauf */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:2px solid var(--ink)}
+.steps article{padding:30px 32px 10px 0;display:grid;gap:12px;align-content:start}
+.steps .n{font:800 clamp(60px,8vw,110px)/.9 var(--display);letter-spacing:-.05em;color:var(--blue)}
+.steps p{color:var(--muted)}
+@media(max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}.steps article{border-bottom:1px solid var(--line);padding-bottom:26px}}
+/* Über mich */
+.about{position:relative;min-height:620px;display:grid;align-items:center;color:#fff;background:#d9a36f url(img/team.svg) center/cover;margin-left:calc(-1*max(16px,env(safe-area-inset-left,0px)));margin-right:calc(-1*max(16px,env(safe-area-inset-right,0px)));isolation:isolate}
+.about::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,28,.86),rgba(8,10,28,.45) 60%,rgba(8,10,28,.15));z-index:-1}
+.about .in{padding:90px max(16px,env(safe-area-inset-left,0px));display:grid;gap:26px}
+.about .q{font:700 clamp(28px,4.2vw,54px)/1.1 var(--display);letter-spacing:-.025em;max-width:16em}
+.about p{max-width:36em;opacity:.92;font-size:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.45);font-size:14px}
+.chips span.first{background:#fff;color:#0C1424;border-color:#fff;font-weight:600}
+/* FAQ */
+details{border-bottom:1px solid var(--line);padding:20px 0}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;font:600 20px/1.35 var(--display);list-style:none;display:flex;justify-content:space-between;gap:16px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:26px;line-height:1;color:var(--orange)}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin-top:12px;max-width:44em}
+/* Kontakt */
+.contact{position:relative;color:#fff;background:#0B0920 url(img/buero.svg) center/cover;border-radius:28px;overflow:hidden;isolation:isolate;padding:clamp(28px,5vw,64px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px}
+.contact::before{content:"";position:absolute;inset:0;background:rgba(8,10,28,.72);z-index:-1}
+.contact .eyebrow{color:#9DB8FF}
+.contact p{opacity:.88;font-size:18px}
+.contact form{display:grid;gap:12px}
+.contact label{font-size:13px;display:grid;gap:6px;opacity:.95}
+.contact input,.contact textarea{font:inherit;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;width:100%}
+.contact input::placeholder,.contact textarea::placeholder{color:rgba(255,255,255,.55)}
+.contact .btn{justify-content:center}
+.contact .out{font-size:13px;min-height:1.4em}
+@media(max-width:820px){.contact{grid-template-columns:minmax(0,1fr)}}
+footer{padding:40px 0;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+footer .ph{font-family:var(--mono);font-size:12px;background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:2px 7px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.nav{transition:none}}
+</style>
+
+<header class="nav" id="nav"><div class="wrap">
+  <a class="logo" href="#top" aria-label="Richtwerk, zur Startseite"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#0C1424"/><path d="M21 50V14.5H34a9.5 9.5 0 010 19H21" fill="none" stroke="#6F94FF" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M33 34L46 50" fill="none" stroke="#FF6B3D" stroke-width="8.5" stroke-linecap="round"/></svg>richtwerk</a>
+  <ul><li><a href="#leistung">Leistungen</a></li><li><a href="#app">Die App</a></li><li><a href="#gewerke">Gewerke</a></li><li><a href="#ablauf">Ablauf</a></li><li><a href="#ueber">Über mich</a></li><li><a href="#fragen">Fragen</a></li></ul>
+  <a class="btn" href="#kontakt">Erstgespräch</a>
+</div></header>
+
+<main id="top">
+  <section class="hero"><div class="in"><div class="wrap">
+    <h1>Das Büro, das mitläuft.</h1>
+    <p class="lead">Richtwerk digitalisiert kleine Handwerksbetriebe: Zeiten, Belege, Pläne und Dokumente. Wir richten alles ein, schulen dein Team und betreuen dich danach jeden Monat.</p>
+    <div class="cta"><a class="btn" href="#kontakt">Erstgespräch vereinbaren</a><a class="btn ghost" href="#leistung">Leistungen ansehen</a></div>
+    <div class="facts"><div><b>Ein Ansprechpartner</b><span>für Einrichtung und Betreuung</span></div><div><b>Handy und Rechner</b><span>läuft auf jedem Gerät</span></div><div><b>Deine Daten</b><span>gehören dir, jederzeit exportierbar</span></div><div><b>Nur was du brauchst</b><span>Bausteine statt Komplettpaket</span></div></div>
+  </div></div></section>
+
+  <section class="statement"><div class="wrap">
+    <p>Wir bauen die Verwaltung so, dass <span>sie nebenbei passiert.</span> Damit du dich um das kümmerst, was du gelernt hast.</p>
+    <p class="sub">Viele Betriebe verlieren Stunden an Stundenzetteln, Lieferscheinen und Suchen nach Unterlagen. Richtwerk nimmt dir genau diese Arbeit ab, mit einer Software, die dein Team wirklich benutzt.</p>
+  </div></section>
+
+  <section id="leistung" class="pad" style="padding-top:20px"><div class="wrap">
+    <div class="tiles">
+      <article class="tile" style="background-image:url(img/team.svg)"><div><span class="k">Zeit und Plan</span><h3>Stempeln, planen, Urlaub</h3><p>Das Team stempelt am Handy. Du planst die Woche, jeder sieht seinen Plan. Urlaub beantragen und genehmigen geht in zwei Tipps.</p></div></article>
+      <article class="tile" style="background-image:url(img/buero.svg)"><div><span class="k">Belege und Dokumente</span><h3>Foto machen, fertig</h3><p>Lieferscheine und PDFs werden gelesen und automatisch in den richtigen Ordner und zur richtigen Baustelle sortiert.</p></div></article>
+      <article class="tile" style="background-image:url(img/holzbau.svg)"><div><span class="k">Baustelle</span><h3>Bautagebuch per Sprache</h3><p>Das Team spricht den Tagesbericht ins Handy, auch in der eigenen Sprache. Im Büro steht er auf Deutsch bei der richtigen Baustelle.</p></div></article>
+      <article class="tile" style="background-image:url(img/technik.svg)"><div><span class="k">Anbindungen</span><h3>Verbunden mit deinem Steuerbüro</h3><p>Stunden und Belege gehen auf Wunsch an DATEV, dein Rechnungsprogramm oder deine Bank. Du legst fest, wer was sehen darf.</p></div></article>
+    </div>
+  </div></section>
+
+  <section class="split">
+    <div class="img" style="background-image:url(img/buero.svg)" role="img" aria-label="Büro am Abend mit Stapeln von Papier"></div>
+    <div class="txt"><p class="eyebrow">Das Problem</p><h2>Feierabend? Nicht für den Chef.</h2>
+      <p>Wenn abends noch jemand über Zetteln sitzt, kostet das Zeit und Nerven. Fehler fallen oft erst auf, wenn die Rechnung schon raus ist.</p>
+      <ul><li>Stundenzettel auf Papier, abends abgetippt</li><li>Lieferscheine liegen im Auto oder in der Jacke</li><li class="ok">Mit Richtwerk: Stempeln am Handy, Daten sofort im Büro</li><li class="ok">Mit Richtwerk: Belege per Foto, sortiert und zugeordnet</li></ul></div>
+  </section>
+
+  <section id="app" class="product"><div class="wrap cols">
+    <div><p class="eyebrow">Die App</p><h2>Im Büro am Rechner. Auf der Baustelle im Handy.</h2>
+      <p class="t">Jeder sieht genau das, was er braucht. Der Chef hat den Überblick und gibt frei, der Vorarbeiter sieht seinen Trupp, der Geselle seinen eigenen Plan.</p>
+      <ul><li>Wochenplan mit Urlaub, Krankheit und Berufsschule</li><li>Kalender und Einsatzplan im Handy</li><li>Rechte je Rolle: Chef, Vorarbeiter, Mitarbeiter</li><li>Läuft im Browser, ohne App-Store</li></ul></div>
+    <div class="stage" aria-label="Beispiel: Wochenplan am Rechner und Stempeluhr am Handy">
+      <div class="board">
+        <div class="board-h"><b>Wochenplan</b><span>KW 47 · 16.–20.11.</span></div>
+        <div class="grid">
+          <span></span><span class="h">MO</span><span class="h">DI</span><span class="h">MI</span><span class="h">DO</span><span class="h">FR</span>
+          <span class="n">Nowak</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span>
+          <span class="n">Popescu</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span><span class="chip">Sonnenstr.</span><span class="chip b">Steiner</span><span class="chip b">Steiner</span>
+          <span class="n">Maier</span><span class="chip u">Urlaub</span><span class="chip u">Urlaub</span><span class="chip u">Urlaub</span><span class="chip u">Urlaub</span><span class="chip u">Urlaub</span>
+          <span class="n">Ott</span><span class="chip k">krank</span><span class="chip k">krank</span><span class="chip k">krank</span><span class="chip k">krank</span><span class="chip k">krank</span>
+          <span class="n">Rauch</span><span class="chip">Brandl</span><span class="chip">Brandl</span><span class="chip">Brandl</span><span class="chip">Brandl</span><span class="chip">Brandl</span>
+        </div>
+      </div>
+      <div class="phone" aria-hidden="true"><div class="s">
+        <div class="t">Hallo Andrei</div>
+        <div class="c"><small>Eingestempelt seit</small><b>06:59</b><div class="go">Ausstempeln</div></div>
+        <div class="row"><span>Baustelle</span><span>Sonnenstraße</span></div>
+      </div></div>
+    </div>
+  </div></section>
+
+  <section id="gewerke" class="pad"><div class="wrap">
+    <div class="sec-h"><p class="eyebrow">Gewerke</p><h2>Für Betriebe, die mit den Händen arbeiten</h2><p>Wir fangen bei Dachdeckern und Zimmerern an, weil wir diese Betriebe kennen. Die Bausteine passen aber genauso zu anderen Gewerken. Die Größe spielt keine Rolle, solange du Bedarf hast.</p></div>
+    <div class="trades">
+      <div class="trade" style="background-image:url(img/hero.svg)"><div><h3>Dachdecker</h3><small>Zuerst dabei</small></div></div>
+      <div class="trade" style="background-image:url(img/holzbau.svg)"><div><h3>Zimmerer</h3><small>Zuerst dabei</small></div></div>
+      <div class="trade" style="background-image:url(img/technik.svg)"><div><h3>Elektro</h3><small>Auf Anfrage</small></div></div>
+      <div class="trade plain"><div><h3>Sanitär, Maler, Tischler und mehr</h3><small>Sprich mich an</small></div></div>
+    </div>
+  </div></section>
+
+  <section id="ablauf" class="pad" style="padding-top:0"><div class="wrap">
+    <div class="sec-h"><p class="eyebrow">Ablauf</p><h2>Du sagst, was nervt. Den Rest übernehme ich.</h2></div>
+    <div class="steps">
+      <article><span class="n">1</span><h3>Gespräch</h3><p>Wir schauen gemeinsam, wo im Büro und auf der Baustelle Zeit verloren geht. Daraus ergibt sich, welche Bausteine du brauchst.</p></article>
+      <article><span class="n">2</span><h3>Einrichtung und Schulung</h3><p>Ich richte alles ein, übernehme vorhandene Daten und zeige deinem Team, wie es funktioniert. Auf Wunsch vor Ort.</p></article>
+      <article><span class="n">3</span><h3>Betreuung</h3><p>Danach bin ich dein Ansprechpartner. Fragen, Änderungen und neue Bausteine laufen direkt über mich.</p></article>
+    </div>
+  </div></section>
+
+  <section id="ueber" class="about"><div class="in"><div class="wrap" style="display:grid;gap:26px">
+    <p class="eyebrow" style="color:#FFB08F">Über mich</p>
+    <p class="q">Ich kenne den Betrieb von innen. Darum baue ich nichts, was auf der Baustelle keiner benutzt.</p>
+    <p>Ausbildung zum Zimmerer in einem Betrieb mit sechs Leuten, danach Fachabitur Bautechnik und vier Monate in einem kleinen Dachdeckerbetrieb in Hamburg. Dort habe ich gesehen, was passiert, wenn der Chef auf dem Dach steht und im Büro niemand sitzt.</p>
+    <div class="chips"><span class="first">Dachdecker</span><span class="first">Zimmerer</span><span>Elektro</span><span>Sanitär und Heizung</span><span>Maler</span><span>Tischler</span></div>
+  </div></div></section>
+
+  <section id="fragen" class="pad"><div class="wrap">
+    <div class="sec-h"><p class="eyebrow">Fragen</p><h2>Was Betriebe vor dem ersten Gespräch wissen wollen</h2></div>
+    <div style="max-width:820px">
+    <details><summary>Was kostet das?</summary><p>Es gibt eine einmalige Einrichtung und eine monatliche Betreuung. Beides hängt davon ab, welche Bausteine du brauchst und wie viele Leute im Betrieb arbeiten. Nach dem Erstgespräch bekommst du ein festes Angebot, ohne versteckte Kosten.</p></details>
+    <details><summary>Muss mein Team ein neues Handy kaufen?</summary><p>Nein. Die App läuft auf jedem aktuellen Smartphone, auch auf dem privaten, und braucht keine Installation aus dem App-Store. Wer kein Handy nutzen will, kann zum Beispiel per Chip im Firmenwagen oder über das Büro stempeln.</p></details>
+    <details><summary>Wem gehören meine Daten?</summary><p>Dir. Du kannst jederzeit alles exportieren und mitnehmen. Ich lege gemeinsam mit dir fest, wer im Betrieb was sehen darf: Der Chef sieht alles, ein Geselle nur seine eigenen Zeiten und Anträge.</p></details>
+    <details><summary>Ersetzt das mein Steuerbüro oder meine Buchhaltung?</summary><p>Nein. Richtwerk nimmt dir die Vorarbeit ab, also Stunden, Belege und Ablage, und kann die Daten an dein Steuerbüro weitergeben. Rechnungen und Buchhaltung bleiben dort, wo sie heute sind.</p></details>
+    <details><summary>Was, wenn ich später mehr brauche?</summary><p>Neue Bausteine kommen einfach dazu, zum Beispiel Leistungsverzeichnisse oder Großbaustellen. Du bezahlst nur, was du freischalten lässt.</p></details>
+  </div>
+  </div></section>
+
+  <section id="kontakt" style="padding-bottom:40px"><div class="wrap">
+    <div class="contact">
+      <div style="display:grid;gap:16px;align-content:start"><p class="eyebrow">Erstgespräch</p><h2>Erzähl mir kurz, was bei dir im Büro nervt.</h2><p>Das Gespräch ist unverbindlich und dauert eine halbe Stunde. Du weißt danach, ob und wie ich dir helfen kann.</p></div>
+      <form id="anfrage" novalidate>
+        <label for="f-name">Name<input id="f-name" autocomplete="name" placeholder="Vor- und Nachname"></label>
+        <label for="f-firma">Betrieb und Gewerk<input id="f-firma" placeholder="z. B. Müller Dachdeckerei"></label>
+        <label for="f-tel">Telefon oder E-Mail<input id="f-tel" placeholder="Wie erreiche ich dich?"></label>
+        <label for="f-msg">Was kostet dich aktuell die meiste Zeit?<textarea id="f-msg" rows="3" placeholder="z. B. Stundenzettel abtippen"></textarea></label>
+        <button class="btn" type="submit">Anfrage kopieren</button>
+        <p class="out" id="out" role="status"></p>
+      </form>
+    </div>
+  </div></section>
+</main>
+<footer class="wrap"><span>© 2026 Richtwerk · <span class="ph">Anschrift und Kontakt folgen</span></span><span><span class="ph">Impressum folgt</span> · <span class="ph">Datenschutz folgt</span></span></footer>
+<script>
+(function(){
+  var f=document.getElementById('anfrage'),out=document.getElementById('out');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var v=function(id){return document.getElementById(id).value.trim()};
+    if(!v('f-name')||!v('f-tel')){out.textContent='Bitte Name und Kontaktweg ausfüllen.';return}
+    var t='Erstgespräch Richtwerk\nName: '+v('f-name')+'\nBetrieb: '+v('f-firma')+'\nKontakt: '+v('f-tel')+'\nThema: '+v('f-msg');
+    var done=function(){out.textContent='Kopiert. Schick den Text per E-Mail oder WhatsApp an Richtwerk, sobald die Kontaktdaten hier stehen.'};
+    var fail=function(){document.getElementById('f-msg').value=t;out.textContent='Kopieren nicht möglich. Der Text steht im Feld und kann von dort kopiert werden.'};
+    try{navigator.clipboard.writeText(t).then(done,fail)}catch(err){fail()}
+  });
+})();
+</script>
+<script>
+(function(){var n=document.getElementById('nav');function u(){n.classList.toggle('solid',window.scrollY>60)}u();window.addEventListener('scroll',u,{passive:true})})();
+</script>
+
+</body></html>

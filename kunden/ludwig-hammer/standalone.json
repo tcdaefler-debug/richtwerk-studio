@@ -1,0 +1,5 @@
+{
+  "id": "ludwig-hammer",
+  "leer": false,
+  "verbindungen": ["datev","lexoffice","sevdesk","bank","m365","google"]
+}
