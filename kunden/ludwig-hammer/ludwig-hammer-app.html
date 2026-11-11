@@ -1537,12 +1537,12 @@ body.handy-only #syncDot{right:auto;left:50%;transform:translateX(-50%);bottom:c
  render=function(){
   if(handy()){document.body.classList.add('handy-only');ME=state.phoneUser||'';
    const sc=document.getElementById('scr');const top=sc?sc.scrollTop:0;
-   root.innerHTML=phoneHTML()+'<a class="hlink" href="#buero">Büro-Ansicht</a>';
+   root.innerHTML=phoneHTML();
    const s2=document.getElementById('scr');if(s2){s2.scrollTop=top;enterAnim(s2,'h'+state.phone+(state.phoneUser||''))}
    try{localStorage.setItem('rw-pu-'+CFG.id,state.phoneUser||'')}catch(e){}
   }else{document.body.classList.remove('handy-only');r0.apply(this,arguments)}
  };
- const tb=document.getElementById('toHandy');if(tb){tb.hidden=false;tb.addEventListener('click',()=>{location.hash='#handy'})}
+ const tb=document.getElementById('toHandy');if(tb){tb.hidden=true}
  window.addEventListener('hashchange',()=>{render()});
  try{const u=localStorage.getItem('rw-pu-'+CFG.id);if(u&&PERSONAL.some(p=>p.n===u))state.phoneUser=u}catch(e){}
  const cid=Math.random().toString(36).slice(2);let ref=null,timer=null,applying=false;

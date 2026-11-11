@@ -16,7 +16,8 @@ for sub,src in [('studio','baukasten/richtwerk-studio.html'),('hammer','kunden/l
     (d/sub/'index.html').write_text(html,encoding='utf-8')
 import shutil
 w=d/'website';(w/'img').mkdir(parents=True,exist_ok=True)
-src=(root/'kunden/website/index.html').read_text(encoding='utf-8')
+subprocess.check_call([py,str(root/'baukasten/website.py')])
+src=(root/'kunden/website/richtwerk-website-pages.html').read_text(encoding='utf-8')
 if '<meta name="viewport"' not in src:
     src='<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>\n'+src+'\n</body></html>'
 (w/'index.html').write_text(src,encoding='utf-8')
