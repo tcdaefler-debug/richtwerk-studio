@@ -12,11 +12,11 @@
   --good:#1f7a4a; --good-soft:#e5f4eb; --warn:#a35f00; --warn-soft:#fff3dc; --bad:#c8102e; --bad-soft:#fdecee; --info:#2c5aa0; --info-soft:#e8effa;
   --display:"Barlow Semi Condensed","Arial Narrow",Arial,sans-serif;
   --body:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
-  --ios:-apple-system,"SF Pro Text",Inter,system-ui,sans-serif;
+  --ios:Inter,-apple-system,"SF Pro Text",system-ui,sans-serif;
   color-scheme:light;
 }
 html,body{height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:14px;line-height:1.45}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--brand)}
 *{box-sizing:border-box}
 table{font-size:inherit}
@@ -227,6 +227,21 @@ tbody tr.click:hover td{background:var(--surface-2)}
 .ios-pill{font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px;background:rgba(255,255,255,.75)}
 .ios-pill.ok{color:var(--good)}.ios-pill.warn{color:var(--warn)}.ios-pill.bad{color:var(--bad)}
 
+/* Version 8: weichere Übergänge, einheitliche Schrift */
+:root{--ease:cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.enter>*{animation:rise .42s var(--ease) both}
+.enter>*:nth-child(2){animation-delay:.05s}.enter>*:nth-child(3){animation-delay:.1s}.enter>*:nth-child(4){animation-delay:.15s}.enter>*:nth-child(n+5){animation-delay:.2s}
+button,.nav,.tool,.glass,.tile,.pill,.login-p,.chip,summary,select,input,textarea{transition:background-color .2s var(--ease),color .2s var(--ease),border-color .2s var(--ease),box-shadow .25s var(--ease),transform .2s var(--ease),opacity .2s var(--ease)}
+.tool:hover,.top-btn:hover,.login-p:hover{transform:translateY(-1px)}
+.tile:hover,.glass.tile:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(27,18,20,.12)}
+button:active{transform:scale(.98)}
+.toast{transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.panel,.site,.kpi{transition:box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.panel:hover{box-shadow:0 6px 22px rgba(27,18,20,.06)}
+@media (max-width:720px){input,select,textarea,.ios-input,.ios-area{font-size:16px!important}h1{font-size:24px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;transition-duration:.01ms!important}}
 /* Version 7: Dokumentenablage */
 .dropz{border:2px dashed var(--brand-line);background:var(--brand-soft);border-radius:12px;padding:22px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;text-align:center}
 .dropz.over{border-color:var(--brand);background:#fff}
@@ -387,6 +402,7 @@ tbody tr.click:hover td{background:var(--surface-2)}
       <div><div class="brand-name">Ludwig Hammer</div><div class="brand-sub">Dachdeckerei &amp; Zimmerei GmbH</div></div>
     </div>
     <div class="views" role="tablist" aria-label="Ansicht wählen" id="views"></div>
+    <button class="top-btn" id="toHandy" hidden title="Handy-Seite dieses Betriebs öffnen">Handy-Seite</button>
     <button class="top-btn" id="dockBtn" aria-pressed="false" title="Mitarbeiter-Handy neben dem Büro anzeigen">Handy daneben</button>
     <button class="top-btn ghost" id="resetBtn" title="Alle Änderungen verwerfen">Zurücksetzen</button>
     <button class="who" id="whoBtn" title="Abmelden und anderen Benutzer wählen"><span id="whoName"></span><span class="avatar" id="avatar">TH</span></button>
@@ -714,8 +730,8 @@ function dokZeile(d){const pruef=d.ordner==='pruefen';
   <td style="white-space:nowrap"><button class="tool" data-dok-open="${d.id}">Öffnen</button> <button class="tool" data-dok-del="${d.id}" aria-label="Löschen">Löschen</button></td></tr>`}
 function dokListe(){const q=state.dokQ.trim().toLowerCase();const l=DOKS.filter(dokSichtbar).filter(d=>state.dokF==='alle'||(state.dokF.startsWith('b:')?d.ordner==='baustelle'&&d.bv===state.dokF.slice(2):d.ordner===state.dokF)).filter(d=>!q||(d.name+' '+d.art+' '+ordnerName(d)).toLowerCase().includes(q));
  return l.length?`<table><thead><tr><th>Datei</th><th>Abgelegt in</th><th>Art</th><th>Sicherheit</th><th></th></tr></thead><tbody>${l.map(dokZeile).join('')}</tbody></table>`:'<div class="empty" style="padding:18px">Hier liegt noch nichts.</div>'}
-if(CFG.leer){DOKS.splice(0);Object.keys(EREIGNISSE).forEach(k=>delete EREIGNISSE[k])}
-const STORE={DOKS,ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
+if(CFG.leer){Object.values(PLAENE).forEach(p=>p.publ=false);DOKS.splice(0);Object.keys(EREIGNISSE).forEach(k=>delete EREIGNISSE[k])}
+const STORE={DOKS,BAUSTELLEN,ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
 let INITIAL=null;
 function snapshot(){const o={};for(const k in STORE)o[k]=k==='POS'?POS:STORE[k];o.stamped=state.stamped;return JSON.parse(JSON.stringify(o))}
 function restore(o){for(const k in o){if(k==='stamped'){state.stamped=o[k];continue}const t=k==='POS'?POS:STORE[k];if(!t)continue;if(Array.isArray(t))t.splice(0,t.length,...o[k]);else{for(const x in t)delete t[x];Object.assign(t,o[k])}}}
@@ -1311,10 +1327,13 @@ function render(){
   if(phone){state.view='app';html=V.app()}
   else{if(state.view==='app'||!right(state.view))state.view='start';renderNav();renderRibbon();
     html=state.dock?`<div class="with-dock"><div style="min-width:0">${V[state.view]()}</div><div class="dock"><div class="dock-head">${dockText()}</div>${phoneHTML()}</div></div>`:V[state.view]()}
-  $('#content').innerHTML=`<div class="sim-banner">${CFG.leer?'Neuer Betrieb ohne Daten · Änderungen bleiben in diesem Browser gespeichert':'Musterfirma, alle Daten erfunden · Änderungen bleiben in diesem Browser gespeichert'}</div>`+html;
+  const _ek=state.view+'|'+state.role+'|'+(phone?state.phone:'');
+  $('#content').innerHTML=`<div class="sim-banner">${CFG.sync?'Neuer Betrieb ohne Daten · Büro und Handy gleichen sich live ab':CFG.leer?'Neuer Betrieb ohne Daten · Änderungen bleiben in diesem Browser gespeichert':'Musterfirma, alle Daten erfunden · Änderungen bleiben in diesem Browser gespeichert'}</div>`+html;
   if($('#scr'))$('#scr').scrollTop=keepScroll;
+  enterAnim($('#content'),_ek);if($('#scr'))enterAnim($('#scr'),'p'+state.phone+(state.phoneUser||''));
   $('#app').classList.remove('menu-open');
 }
+function enterAnim(el,k){if(!el)return;if(el._k!==k){el._k=k;el.classList.remove('enter');void el.offsetWidth;el.classList.add('enter')}}
 function commit(msg){syncPlanMA();save();render();if(msg)toast(msg)}
 let loginSel=null;
 function showLogin(){loginSel=null;$('#login').hidden=false;
@@ -1437,7 +1456,7 @@ if(CFG.leer){
  const hex=CFG.firma&&CFG.firma.farbe||'#2457f5';
  const mix=(h,t,a)=>{const n=x=>parseInt(h.slice(x,x+2),16),m=x=>parseInt(t.slice(x,x+2),16);return '#'+[1,3,5].map(i=>Math.round(n(i)*(1-a)+m(i)*a).toString(16).padStart(2,'0')).join('')};
  const st=document.createElement('style');st.textContent=`:root{--brand:${hex};--brand-deep:${mix(hex,'#000000',.25)};--brand-soft:${mix(hex,'#ffffff',.9)};--brand-line:${mix(hex,'#ffffff',.72)}}`;document.head.appendChild(st);
- document.title=APPN;
+ document.title=APPN;st.textContent+='.screen::before{display:none}';
  const ini=FIRMA.name.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
  const logo=document.querySelector('.brand svg');if(logo)logo.outerHTML=`<svg width="38" height="38" viewBox="0 0 38 38" role="img" aria-label="${esc(FIRMA.name)}"><rect x="1" y="1" width="36" height="36" rx="7" fill="#ffffff"/><text x="19" y="25" text-anchor="middle" font-family="Barlow Semi Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="17" fill="${hex}">${esc(ini)}</text></svg>`;
  const bn=document.querySelector('.brand-name');if(bn)bn.textContent=FIRMA.name;
@@ -1466,5 +1485,46 @@ const h=(location.hash||'').slice(1);if(h==='app')state.role='geselle';else if(V
 if(h!=='app')showLogin();else $('#login').hidden=true;
 window.addEventListener('hashchange',()=>{const v=location.hash.slice(1);if(v==='app'){state.role='geselle';render()}else if(V[v]&&v!==state.view){state.view=v;render()}});
 render();
+/* ---------- Eigenständige App: Büro-Seite und Handy-Seite, abgeglichen über die Datenbank ---------- */
+if(CFG.sync){(function(){
+ const handy=()=>(location.hash||'').slice(1)==='handy';
+ const root=document.createElement('div');root.id='handyRoot';document.body.appendChild(root);
+ const st=document.createElement('style');st.textContent=`#handyRoot{display:none}
+body.handy-only #app,body.handy-only #login,body.handy-only .toast.hide{display:none!important}
+body.handy-only #handyRoot{display:flex;justify-content:center;position:fixed;inset:0;background:#efe9e9}
+#handyRoot .iphone{width:min(460px,100vw);height:100dvh;border-radius:0;padding:0;background:none;box-shadow:0 0 0 1px rgba(27,18,20,.08),0 0 60px rgba(27,18,20,.08)}
+#handyRoot .iphone .screen{border-radius:0;border:0;background:var(--bg)}
+#handyRoot .iphone .island,#handyRoot .iphone .statusbar{display:none}
+#handyRoot .iphone .scr{inset:0;padding-top:max(16px,env(safe-area-inset-top,0px));padding-bottom:calc(120px + env(safe-area-inset-bottom,0px))}
+#handyRoot .tabbar{bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+#handyRoot .home-ind{display:none}
+#handyRoot .hlink{position:fixed;top:max(10px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));z-index:5;background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;text-decoration:none;color:var(--brand);box-shadow:0 1px 6px rgba(0,0,0,.1)}
+#syncDot{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:9;font-size:11.5px;color:var(--muted);background:rgba(255,255,255,.9);border-radius:999px;padding:4px 10px;box-shadow:0 1px 6px rgba(0,0,0,.08);display:flex;gap:6px;align-items:center}
+body.handy-only #syncDot{right:auto;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));opacity:.85}
+#syncDot i{width:8px;height:8px;border-radius:50%;background:#bbb}#syncDot.on i{background:var(--good)}`;
+ document.head.appendChild(st);
+ const dot=document.createElement('div');dot.id='syncDot';dot.innerHTML='<i></i><span>Nur auf diesem Gerät</span>';document.body.appendChild(dot);
+ const setDot=(on,t)=>{dot.classList.toggle('on',on);dot.lastChild.textContent=t};
+ const r0=render;
+ render=function(){
+  if(handy()){document.body.classList.add('handy-only');ME=state.phoneUser||'';
+   const sc=document.getElementById('scr');const top=sc?sc.scrollTop:0;
+   root.innerHTML=phoneHTML()+'<a class="hlink" href="#buero">Büro-Ansicht</a>';
+   const s2=document.getElementById('scr');if(s2){s2.scrollTop=top;enterAnim(s2,'h'+state.phone+(state.phoneUser||''))}
+   try{localStorage.setItem('rw-pu-'+CFG.id,state.phoneUser||'')}catch(e){}
+  }else{document.body.classList.remove('handy-only');r0.apply(this,arguments)}
+ };
+ const tb=document.getElementById('toHandy');if(tb){tb.hidden=false;tb.addEventListener('click',()=>{location.hash='#handy'})}
+ window.addEventListener('hashchange',()=>{render()});
+ try{const u=localStorage.getItem('rw-pu-'+CFG.id);if(u&&PERSONAL.some(p=>p.n===u))state.phoneUser=u}catch(e){}
+ const cid=Math.random().toString(36).slice(2);let ref=null,timer=null,applying=false;
+ const pushNow=()=>{if(!ref)return;try{ref.set({data:JSON.stringify(snapshot()),by:cid,t:Date.now()}).then(()=>setDot(true,'Abgeglichen'),()=>setDot(false,'Speichern ging nicht'))}catch(e){}};
+ const o=save;save=function(){o();if(applying||!ref)return;clearTimeout(timer);timer=setTimeout(pushNow,300)};
+ (async()=>{try{const c=window.claude&&window.claude.use?await window.claude.use('db'):null;if(!c)return;ref=c.doc('betrieb/daten');
+  ref.onSnapshot(sn=>{if(!sn.exists){pushNow();return}const d=sn.data();setDot(true,'Abgeglichen');if(!d||d.by===cid)return;
+   applying=true;try{restore(JSON.parse(d.data));syncPlanMA();if(state.dokOpen&&!DOKS.some(x=>x.id===state.dokOpen))state.dokOpen='';render()}catch(e){}applying=false},()=>setDot(false,'Keine Verbindung'));
+ }catch(e){}})();
+ render();
+})()}
 </script>
 

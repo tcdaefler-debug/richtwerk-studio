@@ -1,0 +1,10 @@
+{
+  "id": "bautest",
+  "firma": {"name": "Bautest", "gewerk": "Dachdecker", "ort": "", "farbe": "#2457f5"},
+  "personen": [
+    {"name": "Test Chef", "funktion": "Inhaber", "rolle": "chef"},
+    {"name": "Test Mitarbeiter", "funktion": "Mitarbeiter", "rolle": "geselle"}
+  ],
+  "module": ["auftraege", "zeiten", "lieferscheine", "einsatz", "material", "angebote", "rechnungen", "fotos", "team"],
+  "verbindungen": ["datev","lexoffice","sevdesk","bank","m365","google"]
+}
