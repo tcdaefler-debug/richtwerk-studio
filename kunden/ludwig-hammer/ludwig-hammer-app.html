@@ -622,10 +622,29 @@ const de=iso=>iso?iso.slice(8,10)+'.'+iso.slice(5,7)+'.'+iso.slice(0,4):'';
 const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const IMG={};
 /* Speichern im Browser, damit Ausprobiertes erhalten bleibt */
-const KEY='lh-demo-v5';
+const KEY='lh-demo-v5'+((window.RICHTWERK||{}).id?'-'+window.RICHTWERK.id:'');
+/* ---------- Betriebs-Konfiguration (vom Richtwerk Studio) ----------
+   Gleicher Aufbau für jeden Betrieb: Hammer ist der Musterbetrieb mit Daten, alle anderen starten leer. */
+const CFG=window.RICHTWERK||{};
+const APPN=(CFG.firma&&CFG.firma.name?CFG.firma.name:'Hammer')+' Betriebszentrale';
+const NAVMOD={baustellen:'auftraege',lieferscheine:'lieferscheine',angebote:'angebote',aufmasse:'angebote',rechnungen:'rechnungen',finanzen:'rechnungen',bilanz:'rechnungen',hr:'team',personal:'team',lohn:'team',wochenplan:'einsatz',zeiten:'zeiten',inventar:'material'};
+if(CFG.leer){
+ [ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,BAUSTELLEN,VLOG].forEach(a=>a.splice(0));
+ Object.keys(ABW).forEach(k=>delete ABW[k]);Object.keys(VERB).forEach(k=>delete VERB[k]);
+ FLAGS.lechtal='erledigt';
+ const F0=CFG.firma||{};Object.keys(FIRMA).forEach(k=>FIRMA[k]='');FIRMA.name=F0.name||'Neuer Betrieb';FIRMA.gewerk=F0.gewerk||'';FIRMA.ort=F0.ort||'';
+ const LAB={chef:'Chef',buero:'Büro',hr:'HR',vorarbeiter:'Vorarbeiter',geselle:'Mitarbeiter-App'};
+ const P=(CFG.personen||[]);
+ PERSONAL.splice(0,PERSONAL.length,...P.map(p=>({n:p.name,r:p.funktion||LAB[p.rolle],rolle:p.rolle,spr:'Deutsch',app:p.rolle==='chef'?'Voll':p.rolle==='buero'?'Büro':p.rolle==='hr'?'HR':p.rolle==='vorarbeiter'?'Vorarbeiter':'Mitarbeiter-App',handy:'iPhone (Firma)',soka:'—',ur:[30,30]})));
+ const seen={};ROLES.splice(0,ROLES.length,...P.filter(p=>!seen[p.rolle]&&(seen[p.rolle]=1)).map(p=>({k:p.rolle,n:LAB[p.rolle]||p.rolle,who:p.name,ini:p.name.split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase(),job:p.funktion||LAB[p.rolle]})));
+ CONN.forEach(c=>{if(c.konto)c.konto=c.konto.replace('Hammer Dach GmbH',FIRMA.name)});
+ MODULE.forEach(m=>{m.on=true});
+}
 /* ---------- Wochenpläne und Kalender ---------- */
 const HEUTE='2026-11-11';
-const PLAN_MA=PERSONAL.filter(p=>/[Mm]eister|Vorarbeiter|[Gg]eselle|Azubi|Helfer/.test(p.r)&&!/Geschäftsführer/.test(p.r)).map(p=>p.n);
+const PLAN_MA=[];
+function syncPlanMA(){PLAN_MA.splice(0,PLAN_MA.length,...PERSONAL.filter(p=>p.rolle?['vorarbeiter','geselle'].includes(p.rolle):(/[Mm]eister|Vorarbeiter|[Gg]eselle|Azubi|Helfer|[Mm]itarbeiter/.test(p.r)&&!/Geschäftsf|Inhaber/.test(p.r))).map(p=>p.n))}
+syncPlanMA();
 const sur=n=>n.split(' ').pop();
 function planBasis(){const z={};PLAN_MA.forEach(n=>{const b=BAUSTELLEN.find(b=>b.id!=='BV-2617'&&b.team.includes(sur(n)));z[n]=[0,1,2,3,4].map(()=>b?b.id:'')});return z}
 const PLAENE={'2026-11-09':{publ:true,z:planBasis()},'2026-11-16':{publ:false,z:planBasis()}};
@@ -642,8 +661,8 @@ function abwCode(n,iso){const i=WOCHE_ISO.indexOf(iso);if(i>=0)return (ABW[n]||[
   if(KRANK.some(k=>k.n===n&&iso>=k.von&&iso<=k.bis))return 'K';
   if(ANTRAEGE.some(a=>a.n===n&&!a.done&&iso>=a.von&&iso<=a.bis))return 'R';return 'A'}
 const bvName=id=>id==='LAGER'?'Lager Landsberg':((BAUSTELLEN.find(b=>b.id===id)||{}).kurz||id);
-const phRolle=n=>n==='Thomas Hammer'?'chef':((PERSONAL.find(p=>p.n===n)||{}).app==='Vorarbeiter'?'vor':'ma');
-const PH_LEUTE=PERSONAL.filter(p=>/iPhone/.test(p.handy)&&!/will kein/.test(p.handy));
+const phRolle=n=>{const a=(PERSONAL.find(p=>p.n===n)||{}).app;return a==='Voll'?'chef':a==='Vorarbeiter'?'vor':'ma'};
+const phLeute=()=>PERSONAL.filter(p=>/iPhone/.test(p.handy)&&!/will kein/.test(p.handy));
 function tagInfo(n,iso){const w=tagIdx(iso);
   if(w>4)return{k:'W',t:'Wochenende'};
   if(iso>='2026-12-24'&&iso<='2026-12-31')return{k:'F',t:'Betriebsruhe'};
@@ -695,6 +714,7 @@ function dokZeile(d){const pruef=d.ordner==='pruefen';
   <td style="white-space:nowrap"><button class="tool" data-dok-open="${d.id}">Öffnen</button> <button class="tool" data-dok-del="${d.id}" aria-label="Löschen">Löschen</button></td></tr>`}
 function dokListe(){const q=state.dokQ.trim().toLowerCase();const l=DOKS.filter(dokSichtbar).filter(d=>state.dokF==='alle'||(state.dokF.startsWith('b:')?d.ordner==='baustelle'&&d.bv===state.dokF.slice(2):d.ordner===state.dokF)).filter(d=>!q||(d.name+' '+d.art+' '+ordnerName(d)).toLowerCase().includes(q));
  return l.length?`<table><thead><tr><th>Datei</th><th>Abgelegt in</th><th>Art</th><th>Sicherheit</th><th></th></tr></thead><tbody>${l.map(dokZeile).join('')}</tbody></table>`:'<div class="empty" style="padding:18px">Hier liegt noch nichts.</div>'}
+if(CFG.leer){DOKS.splice(0);Object.keys(EREIGNISSE).forEach(k=>delete EREIGNISSE[k])}
 const STORE={DOKS,ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF,PLAENE};
 let INITIAL=null;
 function snapshot(){const o={};for(const k in STORE)o[k]=k==='POS'?POS:STORE[k];o.stamped=state.stamped;return JSON.parse(JSON.stringify(o))}
@@ -732,6 +752,7 @@ function renderNav(){
   $('#side').innerHTML=NAV.map(x=>{
     if(x.grp)return `<h4>${x.grp}</h4>`;
     if(!modOn(x.mod)||!right(x.k))return '';
+    if(CFG.leer&&CFG.module&&NAVMOD[x.k]&&!CFG.module.includes(NAVMOD[x.k]))return '';
     return `<button class="nav" data-view="${x.k}" ${state.view===x.k?'aria-current="page"':''} title="${x.n}">${svgI(x.i)}<span>${x.n}</span>${badgeFor(x.k)?`<span class="badge">${badgeFor(x.k)}</span>`:''}</button>`;
   }).join('').replace(/<h4>[^<]*<\/h4>(?=<h4>|$)/g,'');
 }
@@ -1045,12 +1066,12 @@ function flowHTML(){
   const logo=`<span class="conn-logo" style="background:${c.c}">${c.ini}</span>`;
   let b='';
   if(flow.step==='login')b=`${st}<div style="display:flex;gap:12px;align-items:center">${logo}<h3 id="oauthH">Bei ${esc(c.anb||c.n)} anmelden</h3></div>
-    <p class="small muted" style="margin:0">Die Hammer Betriebszentrale möchte sich mit eurem Konto verbinden.</p>
+    <p class="small muted" style="margin:0">Die ${APPN} möchte sich mit eurem Konto verbinden.</p>
     <div class="oauth-who"><span class="avatar">${r.ini}</span><div><b>${esc(c.konto)}</b><div class="small muted">angemeldet als ${r.who} (Demo-Konto)</div></div></div>
     <p class="small" style="margin:0;background:var(--surface-2);border-radius:8px;padding:10px 12px">Im echten Betrieb gibst du hier dein Passwort direkt beim Anbieter ein. Die Betriebszentrale und Richtwerk sehen es nie.</p>
     <div class="oauth-btns"><button data-flow="abbrechen">Abbrechen</button><button class="go" data-flow="weiter">Weiter</button></div>`;
   if(flow.step==='scope')b=`${st}<div style="display:flex;gap:12px;align-items:center">${logo}<h3 id="oauthH">Freigabe erteilen</h3></div>
-    <p class="small muted" style="margin:0"><b style="color:var(--fg)">Hammer Betriebszentrale</b> möchte auf euer Konto bei ${esc(c.n)} zugreifen und darf:</p>
+    <p class="small muted" style="margin:0"><b style="color:var(--fg)">${APPN}</b> möchte auf euer Konto bei ${esc(c.n)} zugreifen und darf:</p>
     <div>${c.scopes.map((s,i)=>`<label class="oauth-scope"><input type="checkbox" data-scope="${i}" ${flow.sel.includes(i)?'checked':''} ${s[2]?'disabled':''}><span>${s[0]}${s[2]?' <span class="pill neutral">nötig</span>':''}${s[1]?`<small>${s[1]}</small>`:''}</span></label>`).join('')}</div>
     <p class="small muted" style="margin:0">Ihr könnt die Freigabe jederzeit unter Verbindungen widerrufen.${c.tan?' Die Bank verlangt danach noch eine TAN.':''}</p>
     <div class="oauth-btns"><button data-flow="abbrechen">Ablehnen</button><button class="go" data-flow="zulassen">Zulassen</button></div>`;
@@ -1094,7 +1115,7 @@ const myLang=()=>{const p=PERSONAL.find(p=>p.n===ME);return p?p.spr.split(',')[0
 const meStamp=()=>STEMPEL.find(s=>s.n===ME);
 const dockText=()=>state.phoneUser?`Handy von ${state.phoneUser} (${({chef:'Chef',vor:'Vorarbeiter',ma:'Mitarbeiter'})[phRolle(state.phoneUser)]}). Was du hier machst, erscheint links sofort.`:'Handy: Wähle zuerst, wer du bist. Chef, Vorarbeiter und Mitarbeiter sehen unterschiedliche Dinge.';
 PH.login=()=>`<div class="ios-title">Wer bist du?</div><p class="ios-sub">Einmal auswählen, danach ist die App auf dich eingestellt.</p>
- <div class="ios-stack"><div class="glass">${PH_LEUTE.map(p=>`<button class="ph-person" data-ph-user="${esc(p.n)}"><span class="av">${p.n.split(' ').map(x=>x[0]).join('')}</span><span><b>${esc(p.n)}</b><small>${esc(phRolle(p.n)==='chef'?'Chef · sieht alles, gibt frei':p.r)}</small></span></button>`).join('')}</div>
+ <div class="ios-stack"><div class="glass">${phLeute().map(p=>`<button class="ph-person" data-ph-user="${esc(p.n)}"><span class="av">${p.n.split(' ').map(x=>x[0]).join('')}</span><span><b>${esc(p.n)}</b><small>${esc(phRolle(p.n)==='chef'?'Chef · sieht alles, gibt frei':p.r)}</small></span></button>`).join('')}</div>
  <p style="font-size:12.5px;color:rgba(27,18,20,.6);margin:0 6px">Im echten Betrieb meldet sich jeder mit seiner Nummer oder Face ID an. Hier reicht ein Tipp.</p></div>`;
 const logoutBtn=()=>`<button class="ios-link" data-ph-act="logout">Nicht ${esc(vorname())}? Anderen auswählen</button>`;
 PH.heute=()=>phRolle(ME)==='chef'?PH.heuteChef():PH.heuteMa();
@@ -1290,11 +1311,11 @@ function render(){
   if(phone){state.view='app';html=V.app()}
   else{if(state.view==='app'||!right(state.view))state.view='start';renderNav();renderRibbon();
     html=state.dock?`<div class="with-dock"><div style="min-width:0">${V[state.view]()}</div><div class="dock"><div class="dock-head">${dockText()}</div>${phoneHTML()}</div></div>`:V[state.view]()}
-  $('#content').innerHTML=`<div class="sim-banner">Musterfirma, alle Daten erfunden · Änderungen bleiben in diesem Browser gespeichert</div>`+html;
+  $('#content').innerHTML=`<div class="sim-banner">${CFG.leer?'Neuer Betrieb ohne Daten · Änderungen bleiben in diesem Browser gespeichert':'Musterfirma, alle Daten erfunden · Änderungen bleiben in diesem Browser gespeichert'}</div>`+html;
   if($('#scr'))$('#scr').scrollTop=keepScroll;
   $('#app').classList.remove('menu-open');
 }
-function commit(msg){save();render();if(msg)toast(msg)}
+function commit(msg){syncPlanMA();save();render();if(msg)toast(msg)}
 let loginSel=null;
 function showLogin(){loginSel=null;$('#login').hidden=false;
   $('#loginList').innerHTML=ROLES.map(r=>`<button type="button" class="login-p" aria-pressed="false" data-login="${r.k}"><span class="avatar">${r.ini}</span><span><b>${r.who}</b><small>${r.job}</small></span></button>`).join('');
@@ -1411,6 +1432,35 @@ let resetArmed=false;
 $('#resetBtn').addEventListener('click',()=>{if(!resetArmed){resetArmed=true;$('#resetBtn').textContent='Wirklich zurücksetzen?';setTimeout(()=>{resetArmed=false;$('#resetBtn').textContent='Zurücksetzen'},3500);return}
   resetArmed=false;$('#resetBtn').textContent='Zurücksetzen';restore(JSON.parse(JSON.stringify(INITIAL)));try{localStorage.removeItem(KEY)}catch(e){}state.aiRun=false;state.phText='';state.phFotos=0;state.lsSel=1;flow=null;renderFlow();render();toast('Alles auf Anfang gesetzt.')});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&state.view==='angebote'){e.preventDefault();act('KI-Prüfung starten')}});
+/* ---------- Leere Betriebe: gleiche Oberfläche, ohne Musterdaten ---------- */
+if(CFG.leer){
+ const hex=CFG.firma&&CFG.firma.farbe||'#2457f5';
+ const mix=(h,t,a)=>{const n=x=>parseInt(h.slice(x,x+2),16),m=x=>parseInt(t.slice(x,x+2),16);return '#'+[1,3,5].map(i=>Math.round(n(i)*(1-a)+m(i)*a).toString(16).padStart(2,'0')).join('')};
+ const st=document.createElement('style');st.textContent=`:root{--brand:${hex};--brand-deep:${mix(hex,'#000000',.25)};--brand-soft:${mix(hex,'#ffffff',.9)};--brand-line:${mix(hex,'#ffffff',.72)}}`;document.head.appendChild(st);
+ document.title=APPN;
+ const ini=FIRMA.name.split(/\s+/).map(x=>x[0]).join('').slice(0,2).toUpperCase();
+ const logo=document.querySelector('.brand svg');if(logo)logo.outerHTML=`<svg width="38" height="38" viewBox="0 0 38 38" role="img" aria-label="${esc(FIRMA.name)}"><rect x="1" y="1" width="36" height="36" rx="7" fill="#ffffff"/><text x="19" y="25" text-anchor="middle" font-family="Barlow Semi Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="17" fill="${hex}">${esc(ini)}</text></svg>`;
+ const bn=document.querySelector('.brand-name');if(bn)bn.textContent=FIRMA.name;
+ const bs=document.querySelector('.brand-sub');if(bs)bs.textContent=[FIRMA.gewerk,FIRMA.ort].filter(Boolean).join(' · ');
+ state.lsSel=0;
+ const leerView=(t,hint)=>()=>`<div class="page-head"><div><h1>${t}</h1><p class="lead">${hint}</p></div></div><div class="panel"><div class="empty" style="padding:26px;color:var(--muted)">Hier ist noch nichts angelegt. Sobald es Daten gibt, erscheinen sie an dieser Stelle.</div></div>`;
+ [['angebote','Angebote','Angebote erstellen, prüfen und nachhalten.'],['rechnungen','Rechnungen','Ausgangsrechnungen und offene Posten.'],['aufmasse','Aufmaße','Flächen und Mengen je Baustelle.'],['lohn','Lohnzettel','Stunden ans Steuerbüro, Lohnzettel zurück an die Mitarbeiter.'],['inventar','Inventar','Fahrzeuge, Werkzeug und Lagerbestand.'],['finanzen','Konten & Zahlungen','Konten, Zahlungsfreigaben und offene Posten.'],['bilanz','Bilanz & Abschluss','Jahresabschluss und Unterlagen fürs Steuerbüro.']].forEach(a=>{V[a[0]]=leerView(a[1],a[2])});
+ const lsOrig=V.lieferscheine;
+ V.lieferscheine=()=>LS.length?lsOrig():`<div class="page-head"><div><h1>Lieferscheine</h1><p class="lead">Lieferscheine fotografieren oder hochladen, die KI liest sie aus und markiert, was fehlt.</p></div></div><div class="panel"><div class="empty" style="padding:26px;color:var(--muted)">Noch keine Lieferscheine. <button class="tool primary" data-act="Dateien hochladen" style="margin-left:10px">Lieferschein hochladen</button></div></div>`;
+ V.baustellen=()=>`<div class="page-head"><div><h1>Baustellen</h1><p class="lead">Jede Baustelle bündelt Team, Plan, Dokumente und Tagesberichte.</p></div></div>
+  <div class="panel"><h2>Neue Baustelle</h2><form id="bvForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;align-items:end"><label class="small">Name<input id="bv-n" class="inp" placeholder="z. B. Dachsanierung Hauptstraße 4" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><label class="small">Ort<input id="bv-o" class="inp" placeholder="z. B. Landsberg" style="width:100%;padding:9px;border:1px solid var(--line);border-radius:8px"></label><button class="tool primary" type="submit">Anlegen</button></form></div>
+  <div class="panel table-wrap" style="margin-top:14px">${BAUSTELLEN.length?`<table><thead><tr><th>Nr.</th><th>Baustelle</th><th>Status</th></tr></thead><tbody>${BAUSTELLEN.map(b=>`<tr><td><b>${esc(b.id)}</b></td><td>${esc(b.n)}</td><td><span class="pill neutral">${esc(b.status)}</span></td></tr>`).join('')}</tbody></table>`:'<div class="empty" style="padding:22px;color:var(--muted)">Noch keine Baustellen angelegt.</div>'}</div>`;
+ document.addEventListener('submit',e=>{if(e.target.id==='bvForm'){const n=$('#bv-n').value.trim();if(!n){toast('Bitte einen Namen eingeben.');return}const o=$('#bv-o').value.trim();const id='BV-26'+String(BAUSTELLEN.length+11);BAUSTELLEN.push({id,n:n+(o?', '+o:''),kurz:n,art:'',ag:'',summe:0,stand:0,status:'geplant',team:[],wetter:''});commit(id+' angelegt. Du kannst sie jetzt im Wochenplan einplanen.')}});
+ V.zeiten=()=>`<div class="page-head"><div><h1>Zeiterfassung</h1><p class="lead">Wer ist heute eingestempelt, und wo. Die Mitarbeiter stempeln am Handy.</p></div></div><div class="panel"><h2>Heute eingestempelt</h2>${STEMPEL.length?STEMPEL.map(s=>`<div class="ios-row" style="padding:8px 0">${esc(s.n)} · ${esc(s.k)}${s.g!=='—'?' – '+esc(s.g):''} · ${esc(s.ort||'')}</div>`).join(''):'<div class="empty" style="padding:22px;color:var(--muted)">Noch niemand eingestempelt.</div>'}</div>`;
+ V.firma=()=>`<div class="page-head"><div><h1>Firmenprofil</h1><p class="lead">Stammdaten des Betriebs. Sie erscheinen später auf Angeboten und Rechnungen.</p></div></div><div class="panel">${[['Name',FIRMA.name],['Gewerk',FIRMA.gewerk],['Ort',FIRMA.ort]].map(r=>`<div class="toggle"><b>${r[0]}</b><span>${esc(r[1]||'noch nicht hinterlegt')}</span></div>`).join('')}<div class="note" style="margin-top:12px">Weitere Angaben (Adresse, Steuernummer, Bank) pflegt Richtwerk im Studio.</div></div>`;
+ V.start=()=>{const r=state.role;const offen=ANTRAEGE.filter(a=>!a.done).length;const dz=badgeFor('dokumente');
+  const steps=[['Mitarbeiter anlegen',PERSONAL.length>2,'personal'],['Baustelle anlegen',BAUSTELLEN.length>0,'baustellen'],['Wochenplan erstellen',Object.values(PLAENE).some(p=>Object.values(p.z).some(a=>a.some(Boolean))),'wochenplan'],['Erstes Dokument ablegen',DOKS.length>0,'dokumente']].filter(x=>right(x[2])&&(!CFG.module||!NAVMOD[x[2]]||CFG.module.includes(NAVMOD[x[2]])));
+  return `<div class="page-head"><div><h1>Willkommen, ${esc(role().who.split(' ')[0])}</h1><p class="lead">${esc(FIRMA.name)} ist neu eingerichtet. Hier erscheinen Aufgaben, Zahlen und Meldungen, sobald es Daten gibt.</p></div></div>
+  <div class="kpis"><div class="kpi"><div class="l">Mitarbeiter</div><div class="v">${PERSONAL.length}</div></div><div class="kpi"><div class="l">Baustellen</div><div class="v">${BAUSTELLEN.length}</div></div><div class="kpi"><div class="l">Dokumente</div><div class="v">${DOKS.length}</div></div><div class="kpi"><div class="l">Offene Anträge</div><div class="v">${offen}</div></div></div>
+  ${steps.length?`<div class="panel" style="margin-top:14px"><h2>Erste Schritte</h2>${steps.map(x=>`<div class="toggle"><div><b>${x[0]}</b></div>${x[1]?'<span class="pill good">erledigt</span>':`<button class="tool primary" data-view="${x[2]}">Öffnen</button>`}</div>`).join('')}</div>`:''}
+  ${dz?`<div class="panel" style="margin-top:14px"><h2>${dz} Dokument${dz===1?'':'e'} zuordnen</h2><button class="tool" data-view="dokumente">Zu den Dokumenten</button></div>`:''}`};
+ const pOrig=V.personal;V.personal=()=>pOrig().replace(/<p class="lead">[\s\S]*?<\/p>/,'<p class="lead">Alle Mitarbeiter des Betriebs. Neue Personen legst du unten an.</p>');
+}
 load();
 const h=(location.hash||'').slice(1);if(h==='app')state.role='geselle';else if(V[h])state.view=h;
 if(h!=='app')showLogin();else $('#login').hidden=true;
