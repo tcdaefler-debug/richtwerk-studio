@@ -26,41 +26,74 @@ logo='<svg viewBox="0 0 64 64" width="40" height="40" aria-hidden="true"><rect w
 html_index='''<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Richtwerk</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&display=swap">
 <style>
-:root{--ink:#fff;--muted:rgba(255,255,255,.72)}
 *{box-sizing:border-box}html,body{min-height:100%}
-body{margin:0;background:#070b16;color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:hidden;padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 56px max(18px,env(safe-area-inset-left));transition:opacity .45s,transform .6s cubic-bezier(.2,.8,.2,1),filter .6s}
-body.leave{opacity:0;transform:scale(1.12);filter:blur(10px)}
-.blob{position:fixed;border-radius:50%;filter:blur(80px);z-index:0;animation:drift 20s ease-in-out infinite alternate}
-.b1{width:560px;height:560px;background:#2457f5;left:-160px;top:-140px;opacity:.8}.b2{width:480px;height:480px;background:#ff6b3d;right:-120px;bottom:-140px;opacity:.7;animation-delay:-7s}.b3{width:420px;height:420px;background:#7a4dff;left:40%;top:35%;opacity:.5;animation-delay:-12s}
+body{margin:0;background:#070b16;color:#fff;font:16px/1.5 Inter,system-ui,sans-serif;overflow-x:hidden;padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) 64px max(18px,env(safe-area-inset-left))}
+.blob{position:fixed;border-radius:50%;filter:blur(90px);z-index:0;animation:drift 20s ease-in-out infinite alternate;pointer-events:none}
+.b1{width:560px;height:560px;background:#2457f5;left:-160px;top:-140px;opacity:.75}.b2{width:480px;height:480px;background:#ff6b3d;right:-120px;bottom:-140px;opacity:.6;animation-delay:-7s}.b3{width:420px;height:420px;background:#7a4dff;left:45%;top:40%;opacity:.4;animation-delay:-12s}
 @keyframes drift{to{transform:translate(80px,-60px) scale(1.2)}}
-main{position:relative;z-index:1;max-width:1000px;margin:0 auto;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+main{position:relative;z-index:1;max-width:1180px;margin:0 auto;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
 @keyframes rise{from{opacity:0;transform:translateY(24px) scale(.98)}}
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8vh}
-.logo{display:flex;align-items:center;gap:12px;font:800 28px "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.04em}
-.dev{font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px);padding:8px 12px;border-radius:999px;opacity:.7;transition:opacity .2s}.dev:hover{opacity:1}
-h1{font:800 clamp(40px,8vw,84px)/1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.035em;margin:0 0 16px}
-.lead{color:var(--muted);max-width:36em;font-size:18px;margin:0}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-top:48px}
-.card{display:block;text-decoration:none;color:inherit;padding:26px;border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.2),rgba(255,255,255,.06));border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(26px) saturate(1.5);box-shadow:0 24px 60px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
-.card:hover{transform:translateY(-6px) scale(1.015);box-shadow:0 34px 80px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.4)}
-.mk{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;font:800 19px "Bricolage Grotesque",sans-serif;margin-bottom:16px}
-.card b{display:block;font:700 24px/1.1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.02em}.card small{display:block;color:var(--muted);margin-top:6px;font-size:14.5px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.chips a{color:#fff;text-decoration:none;padding:8px 15px;border-radius:999px;font:600 13.5px Inter,sans-serif;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25)}.chips a:hover{background:rgba(255,255,255,.3)}
-.hint{margin-top:44px;color:var(--muted);font-size:14px;max-width:44em}
-@media(prefers-reduced-motion:reduce){.blob,main{animation:none}body{transition:none}}
+.top{display:flex;align-items:center;justify-content:space-between;height:48px;margin-bottom:28px}
+.logo{display:flex;align-items:center;gap:12px;font:800 26px/1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.04em}
+.dev{font:500 11px/1 ui-monospace,Menlo,monospace;letter-spacing:.08em;text-transform:uppercase;color:#fff;text-decoration:none;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);backdrop-filter:blur(10px);padding:9px 13px;border-radius:999px;opacity:.7;transition:opacity .2s}.dev:hover{opacity:1}
+.preview{display:block;position:relative;width:min(100%,calc((100vh - 250px)*2.2));min-width:min(100%,560px);margin:0 auto;aspect-ratio:1424/640;border-radius:32px;overflow:hidden;cursor:zoom-in;border:1px solid rgba(255,255,255,.3);box-shadow:0 40px 100px rgba(0,0,0,.55),0 0 0 8px rgba(255,255,255,.05);background:#0c1424;padding:0;transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
+.preview img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+.preview:hover{transform:translateY(-6px)}.preview:hover img{transform:scale(1.04)}
+.preview .tag{position:absolute;left:24px;bottom:22px;display:flex;align-items:center;gap:10px;padding:12px 20px;border-radius:999px;background:rgba(10,16,32,.55);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.28);font:600 15px/1 Inter,sans-serif;color:#fff}
+.preview .tag i{font-style:normal;transition:transform .3s}.preview:hover .tag i{transform:translateX(4px)}
+.pick{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:40px}
+.cta.ghost{color:#fff;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(14px);box-shadow:none}
+.cta{font:700 18px/1 Inter,sans-serif;color:#0c1424;background:#fff;border:0;border-radius:999px;padding:20px 38px;cursor:pointer;box-shadow:0 18px 50px rgba(0,0,0,.4);transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s}
+.cta:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 26px 60px rgba(0,0,0,.5)}
+.sub{text-align:center;margin:14px 0 0;color:rgba(255,255,255,.66);font-size:14.5px}
+/* Fenster */
+#win{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:18px;visibility:hidden;opacity:0;background:rgba(5,8,18,.55);backdrop-filter:blur(14px);transition:opacity .35s,visibility .35s}
+#win.on{visibility:visible;opacity:1}
+.sheet{width:min(640px,100%);border-radius:32px;padding:32px;background:linear-gradient(150deg,rgba(255,255,255,.22),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(30px) saturate(1.5);box-shadow:0 40px 100px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.4);transform:scale(.88) translateY(24px);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+#win.on .sheet{transform:none}
+.sheet h2{font:800 30px/1.1 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.03em;margin:0}
+.sheet p{margin:8px 0 0;color:rgba(255,255,255,.7)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.opt{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:96px;padding:18px 20px;border-radius:22px;text-align:left;font:inherit;color:#fff;text-decoration:none;cursor:pointer;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.26);transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s}
+.opt:hover{transform:translateY(-3px);background:rgba(255,255,255,.2)}
+.opt b{font:700 20px/1.15 "Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.015em}.opt span{font-size:13.5px;color:rgba(255,255,255,.7)}
+.back{margin-top:22px;background:none;border:0;color:rgba(255,255,255,.75);font:600 14px Inter,sans-serif;cursor:pointer;padding:6px 0}
+.step[hidden]{display:none}
+/* Zoom */
+#zoom{position:fixed;z-index:80;overflow:hidden;border-radius:32px;background:#0c1424;visibility:hidden;transition:all .75s cubic-bezier(.7,0,.2,1)}
+#zoom img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:560px){.row{grid-template-columns:1fr}.preview{border-radius:22px}.sheet{padding:24px}}
+@media(prefers-reduced-motion:reduce){.blob,main{animation:none}#zoom{transition:none}}
 </style></head><body><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i><main>
 <div class="top"><div class="logo">__LOGO__richtwerk</div><a class="dev" href="studio/">Entwicklertool</a></div>
-<h1>Wähle deinen Betrieb.</h1>
-<p class="lead">Jeder Betrieb hat sein eigenes Büro-Tool und seine eigene Handy-App. Beides sind getrennte Teile, du wählst sie hier einzeln aus.</p>
-<div class="grid">
- <div class="card"><div class="mk" style="background:#c8102e">LH</div><b>Ludwig Hammer</b><small>Dachdeckerei &amp; Zimmerei · Musterbetrieb mit Daten</small><div class="chips"><a href="hammer/">Büro-Tool</a><a href="hammer/#handy">Handy-App</a></div></div>
- <div class="card"><div class="mk" style="background:#2457f5">BT</div><b>Bautest</b><small>Leerer Testbetrieb · 2 Personen</small><div class="chips"><a href="bautest/">Büro-Tool</a><a href="bautest/#handy">Handy-App</a></div></div>
- <div class="card"><div class="mk" style="background:linear-gradient(135deg,#6f94ff,#ff6b3d)">R</div><b>Richtwerk Website</b><small>Die Seite für Handwerksbetriebe mit Erstgespräch</small><div class="chips"><a href="website/">Website öffnen</a></div></div>
-</div>
-<p class="hint">Büro und Handy gleichen sich im selben Browser ab: Öffne beide in zwei Reitern nebeneinander.</p>
-</main><script>
-document.addEventListener('click',function(e){var a=e.target.closest('a[href]');if(!a||e.metaKey||e.ctrlKey||a.target)return;e.preventDefault();document.body.classList.add('leave');setTimeout(function(){location.href=a.href},420)});
-window.addEventListener('pageshow',function(){document.body.classList.remove('leave')});
+<a class="preview" id="prev" href="website/" aria-label="Richtwerk-Website öffnen"><img src="img/website-vorschau.jpg" alt="Vorschau der Richtwerk-Website"></a>
+<div class="pick"><button class="cta ghost" id="openweb" type="button">Website öffnen</button><button class="cta" id="open" type="button">Unternehmen auswählen</button></div>
+<p class="sub">Wähle einen Betrieb und öffne seine Büro-App oder Handy-App.</p>
+</main>
+<div id="win" aria-hidden="true"><div class="sheet" role="dialog" aria-modal="true" aria-label="Unternehmen auswählen">
+ <div class="step" id="s1"><h2>Welcher Betrieb?</h2><p>Such dir einen Beispielbetrieb aus.</p>
+  <div class="row"><button class="opt" data-c="hammer" data-n="Ludwig Hammer"><b>Ludwig Hammer</b><span>Dachdeckerei &amp; Zimmerei, mit Musterdaten</span></button><button class="opt" data-c="bautest" data-n="Bautest"><b>Bautest</b><span>Leerer Testbetrieb mit 2 Personen</span></button></div>
+  <button class="back" data-close>Abbrechen</button></div>
+ <div class="step" id="s2" hidden><h2 id="cn">Betrieb</h2><p>Was möchtest du öffnen?</p>
+  <div class="row"><a class="opt" id="lb" href="#"><b>Büro-App</b><span>Für den Rechner im Büro</span></a><a class="opt" id="lh" href="#"><b>Handy-App</b><span>Für Mitarbeiter am Smartphone</span></a></div>
+  <button class="back" id="bk">← Anderen Betrieb wählen</button></div>
+</div></div>
+<div id="zoom"><img src="img/website-vorschau.jpg" alt=""></div>
+<script>
+(function(){
+var win=document.getElementById('win'),s1=document.getElementById('s1'),s2=document.getElementById('s2'),z=document.getElementById('zoom');
+function go(url,from){var r=from.getBoundingClientRect();z.style.cssText='visibility:visible;transition:none;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;border-radius:32px';
+ void z.offsetWidth;z.style.transition='';z.style.left=z.style.top='0px';z.style.width='100vw';z.style.height='100vh';z.style.borderRadius='0';setTimeout(function(){location.href=url},720)}
+document.getElementById('prev').addEventListener('click',function(e){e.preventDefault();go('website/',this)});
+document.getElementById('openweb').addEventListener('click',function(){go('website/',document.getElementById('prev'))});
+document.getElementById('open').addEventListener('click',function(){s1.hidden=false;s2.hidden=true;win.classList.add('on');win.setAttribute('aria-hidden','false')});
+function close(){win.classList.remove('on');win.setAttribute('aria-hidden','true')}
+win.addEventListener('click',function(e){if(e.target===win||e.target.closest('[data-close]'))close()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')close()});
+document.querySelectorAll('[data-c]').forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.c;document.getElementById('cn').textContent=b.dataset.n;document.getElementById('lb').href=c+'/';document.getElementById('lh').href=c+'/#handy';s1.hidden=true;s2.hidden=false})});
+document.getElementById('bk').addEventListener('click',function(){s2.hidden=true;s1.hidden=false});
+window.addEventListener('pageshow',function(){z.style.visibility='hidden';z.style.transition='none'});
+})();
 </script></body></html>'''
 (d/'index.html').write_text(html_index.replace('__LOGO__',logo),encoding='utf-8')
 print('docs/ erzeugt')
