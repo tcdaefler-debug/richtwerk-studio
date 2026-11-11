@@ -273,6 +273,55 @@ tbody tr.click:hover td{background:var(--surface-2)}
 .diary{border-top:1px solid var(--line);padding-top:10px;margin-top:10px;font-size:13px}
 .diary:first-of-type{border-top:0;margin-top:0;padding-top:0}
 @media (max-width:1250px){.with-dock{grid-template-columns:minmax(0,1fr)}.dock{position:static}}
+/* Verbindungen (Simulation) */
+.sim-flag{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);border:1px solid #f2dcb0;color:#6b4300;border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:14px}
+.sim-flag b{white-space:nowrap}
+.conn-group{font-family:var(--display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:20px 0 8px}
+.conn-grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));align-items:start}
+.conn{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:12px;min-width:0}
+.conn.on{border-color:#bfe2cd;box-shadow:inset 3px 0 0 var(--good)}
+.conn.locked{background:#fcfafa}
+.conn-top{display:flex;gap:12px;align-items:flex-start}
+.conn-logo{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;color:#fff;font-family:var(--display);font-weight:700;font-size:15px;flex:none;letter-spacing:.02em}
+.conn.locked .conn-logo{filter:grayscale(1);opacity:.55}
+.conn-top b{display:block;font-size:15px}
+.conn-top .small{line-height:1.35}
+.conn-top .pill{margin-left:auto;flex:none}
+.conn-meta{font-size:12.5px;color:var(--muted);display:grid;gap:2px}
+.conn-data{list-style:none;margin:0;padding:10px 12px;background:var(--surface-2);border-radius:8px;display:grid;gap:6px;font-size:13px}
+.conn-data li{display:flex;justify-content:space-between;gap:10px}
+.conn-data b{font-weight:600;flex:none}
+.conn-data span{color:var(--muted);text-align:right}
+.conn-scopes{display:flex;flex-wrap:wrap;gap:4px}
+.conn-act{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.conn-act .small{margin-left:auto}
+.tool.danger{color:var(--bad);border-color:var(--brand-line)}
+.tool:disabled{opacity:.45;cursor:default}
+.oauth{position:fixed;inset:0;z-index:60;background:rgba(29,22,23,.45);display:grid;place-items:center;padding:20px;overflow:auto}
+.oauth[hidden]{display:none}
+.oauth-win{width:min(460px,100%);background:#fff;border-radius:14px;box-shadow:0 30px 70px rgba(0,0,0,.3);overflow:hidden;font-size:14px}
+.oauth-bar{display:flex;align-items:center;gap:8px;background:#f1f1f3;border-bottom:1px solid #e3e3e6;padding:8px 12px;font-size:12px;color:#55555c}
+.oauth-bar i{width:10px;height:10px;border-radius:50%;background:#d8d8dc;flex:none}
+.oauth-bar .addr{flex:1;background:#fff;border:1px solid #e3e3e6;border-radius:6px;padding:4px 10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.oauth-sim{background:repeating-linear-gradient(135deg,#fff3dc,#fff3dc 10px,#ffeac2 10px,#ffeac2 20px);color:#6b4300;font-size:12px;font-weight:600;text-align:center;padding:5px 10px}
+.oauth-body{padding:22px 24px 20px;display:grid;gap:14px}
+.oauth-body h3{margin:0;font-family:var(--display);font-size:22px;line-height:1.15}
+.oauth-who{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.oauth-who .avatar{background:var(--fg);color:#fff}
+.oauth-scope{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.oauth-scope:last-child{border-bottom:0}
+.oauth-scope input{margin-top:3px;accent-color:var(--fg)}
+.oauth-scope small{display:block;color:var(--muted);font-size:12px}
+.oauth-btns{display:flex;gap:8px;justify-content:flex-end}
+.oauth-btns button{border-radius:8px;padding:9px 16px;font-weight:600;border:1px solid var(--line);background:#fff}
+.oauth-btns .go{background:var(--fg);border-color:var(--fg);color:#fff}
+.spin{width:38px;height:38px;border-radius:50%;border:4px solid #eee;border-top-color:var(--fg);animation:spin .8s linear infinite;margin:6px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ok-big{width:52px;height:52px;border-radius:50%;background:var(--good-soft);color:var(--good);display:grid;place-items:center;margin:4px auto;font-size:28px;font-weight:700}
+.tan{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--surface-2);display:grid;gap:6px;text-align:center}
+.flow-steps{display:flex;gap:6px;font-size:11.5px;color:var(--muted)}
+.flow-steps span{flex:1;border-top:3px solid #eee;padding-top:4px}
+.flow-steps span.on{border-color:var(--fg);color:var(--fg);font-weight:600}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-width:1000px){.dash{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:900px){.split,.doc-area{grid-template-columns:minmax(0,1fr)}}
@@ -318,6 +367,7 @@ tbody tr.click:hover td{background:var(--surface-2)}
   </div>
 </div>
 <div class="toast" id="toast" hidden></div>
+<div class="oauth" id="oauth" hidden role="dialog" aria-modal="true" aria-labelledby="oauthH"><div class="oauth-win" id="oauthWin"></div></div>
 <div class="login" id="login" role="dialog" aria-modal="true" aria-labelledby="loginH">
   <div class="login-card">
     <div class="login-side">
@@ -443,6 +493,47 @@ const MODULE=[
  {k:'inventar',n:'Inventar und Inventur',d:'Fahrzeuge, Gerüst, Werkzeug, Lagerbestand zum Stichtag',on:true},
  {k:'finanzen',n:'Finanzen und Freigaben',d:'Konten, Zahlungsfreigaben, offene Posten, Bauabzugsteuer',on:true}
 ];
+/* ---------- Verbindungen zu bestehenden Konten (nur Simulation) ----------
+   Der Betrieb meldet sich selbst beim Anbieter an und erteilt eine Freigabe (OAuth).
+   Hier wird nichts wirklich verbunden: keine Passwörter, keine echten Schlüssel, alle Daten erfunden.
+   Welche Verbindungen ein Betrieb nutzen darf, schaltet Richtwerk frei (window.RICHTWERK.verbindungen). */
+const FREI_RW=(window.RICHTWERK&&Array.isArray(window.RICHTWERK.verbindungen))?window.RICHTWERK.verbindungen:['datev','lexoffice','sevdesk','bank','m365','google'];
+const CONN=[
+ {k:'datev',grp:'Steuerbüro & Lohn',n:'DATEV',sub:'Kanzlei Berger & Lutz, Landsberg',c:'#3f7d1f',ini:'DV',wer:['chef','buero'],konto:'Mandant 48211 bei Berater 120334',
+  d:'Belege und Stunden gehen direkt an die Kanzlei, die Lohnabrechnungen kommen zurück in die App.',
+  scopes:[['Belegbilder an die Kanzlei übertragen','Lieferscheine, Eingangsrechnungen, Tankbelege',1],['Stunden und Fehlzeiten für den Lohn bereitstellen','monatlich nach Freigabe durch den Chef',1],['Lohnabrechnungen abholen','Sammel-PDF, wird nach Personalnummer getrennt',0],['Offene Posten lesen','damit das Büro sieht, was bezahlt ist',0]],
+  daten:[['Stunden Oktober','2.184 h für 17 Personen übertragen'],['Belege November','42 an die Kanzlei'],['Lohnabrechnungen','17 PDFs abgeholt und verteilt']],
+  hinweis:'Für die echte DATEV-Schnittstelle braucht es eine Zulassung. Zum Start reicht eine Exportdatei.'},
+ {k:'lexoffice',grp:'Rechnungen',n:'Lexoffice',sub:'Rechnungsprogramm',c:'#1d6fb8',ini:'LX',wer:['chef','buero'],excl:'rechnung',konto:'Konto Hammer Dach GmbH',
+  d:'Kunden und Rechnungen abgleichen und den Zahlungsstatus zurückholen.',
+  scopes:[['Kunden und Rechnungen lesen','',1],['Zahlungsstatus lesen','bezahlt, offen, gemahnt',1],['Rechnungen aus Angeboten anlegen','Abschlagsrechnungen aus dem Baufortschritt',0]],
+  daten:[['Kunden übernommen','214 Kontakte'],['Offene Rechnungen','6 Stück, 71.480 €'],['Seit Montag bezahlt','3 Rechnungen']]},
+ {k:'sevdesk',grp:'Rechnungen',n:'sevDesk',sub:'Rechnungsprogramm',c:'#d0532f',ini:'SD',wer:['chef','buero'],excl:'rechnung',konto:'Konto Hammer Dach GmbH',
+  d:'Kunden und Rechnungen abgleichen und den Zahlungsstatus zurückholen.',
+  scopes:[['Kunden und Rechnungen lesen','',1],['Zahlungsstatus lesen','bezahlt, offen, gemahnt',1],['Rechnungen aus Angeboten anlegen','Abschlagsrechnungen aus dem Baufortschritt',0]],
+  daten:[['Kunden übernommen','214 Kontakte'],['Offene Rechnungen','6 Stück, 71.480 €'],['Seit Montag bezahlt','3 Rechnungen']]},
+ {k:'bank',grp:'Bank',n:'Sparkasse Landsberg-Dießen',anb:'Sparkasse (über finAPI)',sub:'Geschäftskonto, abgerufen über finAPI (lizenzierter Kontoinformationsdienst)',c:'#4b5563',ini:'€',wer:['chef'],konto:'Konto …4471 18',tan:true,
+  d:'Kontostand und Umsätze werden täglich geholt. Zahlungseingänge werden den Rechnungen zugeordnet.',
+  scopes:[['Kontostand und Umsätze lesen','die letzten 90 Tage, dann täglich',1],['Zahlungen vorbereiten','überweisen kann weiterhin nur der Chef mit TAN',0]],
+  daten:[['Kontostand','84.320 €, heute 06:00'],['Umsätze geholt','412 Buchungen'],['Zahlungseingänge erkannt','3 Abschläge zugeordnet']],
+  hinweis:'Banken erlauben den Zugriff nur 180 Tage am Stück. Danach bestätigt der Chef einmal neu mit TAN.'},
+ {k:'m365',grp:'E-Mail & Dateien',n:'Microsoft 365',sub:'OneDrive, Outlook und Word',c:'#2f5fa8',ini:'365',wer:['chef','buero'],excl:'office',konto:'s.berger@hammer-dach.de',
+  d:'Gescannte Lieferscheine aus dem Ordner und aus dem Postfach landen automatisch im Lieferschein-Eingang.',
+  scopes:[['Ordner „Scans Lieferscheine“ lesen','nur dieser eine Ordner, nicht das ganze OneDrive',1],['Postfach lieferscheine@hammer-dach.de lesen','nur Anhänge',0],['Angebote in Word öffnen und speichern','',0]],
+  daten:[['Lieferscheine eingelesen','7 Dokumente, heute 07:12'],['Aus dem Postfach','2 Anhänge'],['Angebote in Word','AN-2026-118 Sonnenstraße']]},
+ {k:'google',grp:'E-Mail & Dateien',n:'Google Workspace',sub:'Drive und Gmail',c:'#3b7be0',ini:'G',wer:['chef','buero'],excl:'office',konto:'buero@hammer-dach.de',
+  d:'Gescannte Lieferscheine aus einem Drive-Ordner und aus Gmail landen im Lieferschein-Eingang.',
+  scopes:[['Ordner „Scans Lieferscheine“ lesen','nur dieser eine Ordner',1],['Gmail-Anhänge mit Label „Lieferschein“ lesen','',0]],
+  daten:[['Lieferscheine eingelesen','7 Dokumente, heute 07:12'],['Aus Gmail','2 Anhänge']]},
+ {k:'whatsapp',grp:'Nachrichten',n:'WhatsApp Business',sub:'offizielle Business-Schnittstelle, eigene Firmennummer',c:'#1f8f5a',ini:'WA',wer:['chef'],konto:'Firmennummer 08191 94 27 0',
+  d:'Fotos und Sprachnachrichten von der Baustelle landen im Bautagebuch, ohne private Handys.',
+  scopes:[['Nachrichten an die Firmennummer empfangen','',1],['Fotos und Sprachnachrichten ins Bautagebuch übernehmen','KI übersetzt und schreibt den Tagesbericht',1],['Antworten aus der App senden','',0]],
+  daten:[['Nachrichten heute','11 von 4 Mitarbeitern'],['Ins Bautagebuch','6 Fotos, 2 Sprachnachrichten']],
+  hinweis:'Läuft nur über die offizielle WhatsApp Business API, nie über die private App.'}
+];
+const VERB={m365:{on:true,seit:'02.11.2026 08:14',von:'Simone Berger',sync:'heute 07:12',scopes:[0,1]}};
+const VLOG=[{t:'02.11.2026 08:14',x:'Simone Berger hat Microsoft 365 verbunden (Ordner „Scans Lieferscheine“, Postfach).'}];
+const VANF={};
 const NAV=[
  {grp:'Überblick'},
  {k:'start',n:'Übersicht',i:'home'},
@@ -464,14 +555,15 @@ const NAV=[
  {k:'bilanz',n:'Bilanz & Abschluss',i:'chart'},
  {grp:'Einstellungen'},
  {k:'firma',n:'Firmenprofil',i:'id'},
+ {k:'verbindungen',n:'Verbindungen',i:'link'},
  {k:'rechte',n:'Rechte & Zugriffe',i:'lock'},
  {k:'baukasten',n:'Baukasten',i:'blocks'}
 ];
 /* v = sehen, e = bearbeiten, f = freigeben */
 const RECHTE={
  chef:{all:'f'},
- buero:{start:'v',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v'},
- hr:{start:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'v',firma:'v'},
+ buero:{start:'v',baustellen:'e',lieferscheine:'e',dokumente:'e',angebote:'e',rechnungen:'e',aufmasse:'e',hr:'v',zeiten:'v',personal:'v',inventar:'e',finanzen:'e',bilanz:'v',firma:'v',verbindungen:'e'},
+ hr:{start:'v',hr:'f',zeiten:'e',lohn:'e',personal:'e',dokumente:'v',firma:'v',verbindungen:'v'},
  vorarbeiter:{start:'v',baustellen:'v',lieferscheine:'e',dokumente:'v',aufmasse:'e',hr:'v',zeiten:'e'},
  geselle:{}
 };
@@ -483,6 +575,7 @@ const ICONS={
  id:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.4"/><path d="M14 10h4M14 14h4M6 16c.6-1.6 1.7-2.4 3-2.4s2.4.8 3 2.4"/>',lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/>',blocks:'<rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/>',
  calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',camera:'<path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="4"/>',book:'<path d="M4 4h7a3 3 0 013 3v13a2 2 0 00-2-2H4z"/><path d="M20 4h-4a2 2 0 00-2 2"/><path d="M20 4v14h-6"/>',
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/>',sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',
+ link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',
  receipt:'<path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/>',fuel:'<path d="M4 21V5a2 2 0 012-2h6a2 2 0 012 2v16M3 21h12M14 9h2a2 2 0 012 2v6a1.5 1.5 0 003 0V8l-3-3"/><path d="M7 7h4v4H7z"/>'
 };
 const svgI=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[k]}</svg>`;
@@ -493,7 +586,7 @@ const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+
 const IMG={};
 /* Speichern im Browser, damit Ausprobiertes erhalten bleibt */
 const KEY='lh-demo-v5';
-const STORE={ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS};
+const STORE={ABW,ANTRAEGE,KRANK,STEMPEL,PROTOKOLL,TAGEBUCH,BELEGE,LS,PERSONAL,POS:null,MODULE,FLAGS,VERB,VLOG,VANF};
 let INITIAL=null;
 function snapshot(){const o={};for(const k in STORE)o[k]=k==='POS'?POS:STORE[k];o.stamped=state.stamped;return JSON.parse(JSON.stringify(o))}
 function restore(o){for(const k in o){if(k==='stamped'){state.stamped=o[k];continue}const t=k==='POS'?POS:STORE[k];if(!t)continue;if(Array.isArray(t))t.splice(0,t.length,...o[k]);else{for(const x in t)delete t[x];Object.assign(t,o[k])}}}
@@ -555,6 +648,7 @@ V.start=()=>{
   if((r==='chef'||r==='hr')&&offen.length)todos.push(['info',`${offen.length} ${offen.length===1?'Antrag':'Anträge'} entscheiden`,offen.map(a=>a.n.split(' ')[0]).join(', ')+(offen.some(a=>a.konflikt)?' · 1 Konflikt mit Baustelle':''),'hr']);
   if(r==='chef'||r==='hr')KRANK.filter(k=>k.offen).forEach(k=>todos.push(['warn',`${k.n} krank`,'seit '+de(k.von).slice(0,6)+', bis '+de(k.bis).slice(0,6),'hr']));
   if(geld)todos.push(['warn','Abschlagsrechnung Nr. 3 Sonnenstraße','Baufortschritt 55 %, Aufmaß liegt vor','rechnungen']);
+  if(geld&&FREI_RW.includes('datev')&&!istVerb('datev'))todos.push(['info','DATEV mit der Kanzlei verbinden','Belege und Stunden gehen dann automatisch ans Steuerbüro','verbindungen']);
   if(r==='chef'&&!(FLAGS.frei.kraus&&FLAGS.frei.pfister))todos.push(['info','Zahlungen freigeben','Kraus KG (Skonto bis 14.11.), Gerüstbau Pfister','finanzen']);
   const neu=TAGEBUCH.filter(t=>t.datum==='11.11.2026');
   if(r!=='hr'&&neu.length)todos.push(['good',`${neu.length} neue${neu.length===1?'r':''} Tagesbericht${neu.length===1?'':'e'}`,neu.map(t=>t.von).join(', '),'baustellen']);
@@ -592,7 +686,7 @@ V.lieferscheine=()=>{
   if(state.lsSel>=LS.length)state.lsSel=0;
   const s=LS[state.lsSel];const can=right('lieferscheine')==='e'||right('lieferscheine')==='f';
   const f=(key,label,val)=>{const m=(s.miss||[]).includes(key);return `<div class="field ${m?'missing':''}"><label for="f-${key}">${label}${m?' · fehlt':''}</label><input id="f-${key}" value="${esc(val)}" ${can?'':'disabled'} placeholder="${m?'bitte ergänzen':''}"></div>`};
-  return `<div class="page-head"><div><h1>Lieferscheine</h1><p class="lead">Ordner „Scans Lieferscheine“ auf OneDrive ist verbunden. Dazu kommen Fotos aus der Mitarbeiter-App. Zuletzt eingelesen heute 07:12, 7 Dokumente.</p></div>
+  return `<div class="page-head"><div><h1>Lieferscheine</h1><p class="lead">${istVerb('m365')?'Ordner „Scans Lieferscheine“ auf OneDrive ist verbunden.':istVerb('google')?'Ordner „Scans Lieferscheine“ in Google Drive ist verbunden.':'Kein Ordner verbunden, Scans bitte hochladen. <button class="more" data-view="verbindungen" style="font-size:inherit">Ordner verbinden</button>'} Dazu kommen Fotos aus der Mitarbeiter-App. Zuletzt eingelesen heute 07:12, 7 Dokumente.</p></div>
   <div class="small muted"><span class="pill good">${LS.filter(l=>l.status==='ok').length} erkannt</span> <span class="pill warn">${LS.filter(l=>l.status==='fehlt').length} prüfen</span> <span class="pill bad">${LS.filter(l=>l.status==='aus').length} aussortiert</span></div></div>
   <div class="split">
    <div class="panel table-wrap"><table><thead><tr><th>Status</th><th>Nummer</th><th>Lieferant</th><th>Datum</th><th>Baustelle</th><th class="num">Sicherheit</th></tr></thead><tbody>
@@ -734,7 +828,7 @@ V.zeiten=()=>{const abw=Object.keys(ABW).filter(n=>['U','K','B'].includes(ABW[n]
  <div class="note" style="margin-top:12px">Monatsende: Stunden werden geprüft, vom Chef freigegeben und als DATEV-Datei an Kanzlei Berger &amp; Lutz geschickt.</div></div></div>`};
 V.lohn=()=>`<div class="page-head"><div><h1>Lohnzettel</h1><p class="lead">Oktober 2026: Stunden am 31.10. ans Steuerbüro, Abrechnungen am 05.11. zurück, automatisch getrennt und an jeden Mitarbeiter in die App verteilt.</p></div></div>
  <div class="grid g4" style="margin-bottom:14px"><div class="panel stat"><div class="l">Stunden Oktober</div><div class="v">2.184</div><div class="s muted">davon 96 Überstunden</div></div><div class="panel stat"><div class="l">Abrechnungen verteilt</div><div class="v">16 / 17</div><div class="s" style="color:var(--warn)">G. Lang bekommt Papier</div></div><div class="panel stat"><div class="l">SOKA-DACH / SOKA-BAU</div><div class="v">gemeldet</div><div class="s muted">durch Steuerbüro</div></div><div class="panel stat"><div class="l">Winter</div><div class="v">ab 01.12.</div><div class="s muted">Saison-Kurzarbeitergeld</div></div></div>
- <div class="panel"><h2>Ablauf</h2><ol class="small" style="margin:0;padding-left:18px;display:grid;gap:6px"><li>Stunden aus der Zeiterfassung prüfen und freigeben (Chef).</li><li>Urlaub und Krankheit kommen automatisch aus HR dazu.</li><li>Export im DATEV-Format geht ans Steuerbüro.</li><li>Steuerbüro schickt eine Sammel-PDF zurück. Die App trennt sie nach Personalnummer.</li><li>Jeder Mitarbeiter sieht nur seine eigene Abrechnung in der App, Mitarbeiter ohne Handy bekommen Papier.</li></ol></div>`;
+ <div class="panel"><h2>Ablauf</h2><ol class="small" style="margin:0;padding-left:18px;display:grid;gap:6px"><li>Stunden aus der Zeiterfassung prüfen und freigeben (Chef).</li><li>Urlaub und Krankheit kommen automatisch aus HR dazu.</li><li>${istVerb('datev')?'Die Stunden gehen über die DATEV-Verbindung direkt an die Kanzlei.':'Export im DATEV-Format geht ans Steuerbüro. <button class="more" data-view="verbindungen">DATEV verbinden</button>'}</li><li>Steuerbüro schickt eine Sammel-PDF zurück. Die App trennt sie nach Personalnummer.</li><li>Jeder Mitarbeiter sieht nur seine eigene Abrechnung in der App, Mitarbeiter ohne Handy bekommen Papier.</li></ol></div>`;
 V.personal=()=>`<div class="page-head"><div><h1>Personal</h1><p class="lead">${PERSONAL.length} Personen, davon 2 Azubis und 2 Minijobber. 5 Sprachen im Team: Unterweisungen und App-Texte gibt es auf Deutsch, Polnisch, Rumänisch, Arabisch und Türkisch.</p></div></div>
  ${right('personal')==='e'||right('personal')==='f'?`<form class="panel inline-form" id="maForm"><div class="field"><label for="ma-n">Name</label><input id="ma-n" required placeholder="Vor- und Nachname"></div><div class="field"><label for="ma-r">Funktion</label><input id="ma-r" placeholder="z.B. Dachdeckergeselle"></div><div class="field"><label for="ma-s">Sprache</label><select id="ma-s"><option>Deutsch</option><option>Polnisch</option><option>Rumänisch</option><option>Arabisch</option><option>Türkisch</option><option>Ukrainisch</option></select></div><div class="field"><label for="ma-k">Sozialkasse</label><select id="ma-k"><option>SOKA-DACH</option><option>SOKA-BAU</option><option>—</option></select></div><button class="tool primary" type="submit">Mitarbeiter anlegen</button></form>`:''}
  <div class="panel table-wrap"><table><thead><tr><th>Name</th><th>Funktion</th><th>Sprache</th><th>App-Zugang</th><th>Handy</th><th>Sozialkasse</th></tr></thead><tbody>
@@ -746,7 +840,7 @@ V.inventar=()=>`<div class="page-head"><div><h1>Inventar</h1><p class="lead">Als
  <tr><td>Tondachziegel Biber (Restposten)</td><td class="num">1.850 St.</td><td class="num">${eur(1572)}</td></tr><tr><td>Titanzinkblech 0,7 mm</td><td class="num">14 Tafeln</td><td class="num">${eur(1036)}</td></tr><tr><td>KVH und Latten</td><td class="num">3,2 m³</td><td class="num">${eur(2240)}</td></tr><tr><td>Bitumenbahnen</td><td class="num">18 Rollen</td><td class="num">${eur(1080)}</td></tr><tr><td><b>Summe</b></td><td></td><td class="num"><b>${eur(5928)}</b></td></tr></tbody></table></div></div>
  <div class="note" style="margin-top:14px">Wann ist Inventur Pflicht? Kapitalgesellschaften (GmbH, UG) immer. Einzelunternehmer sind seit 2024 befreit, wenn Umsatz unter 800.000 € und Gewinn unter 80.000 € liegen (§ 241a HGB, § 141 AO). Ludwig Hammer liegt mit 2,35 Mio. € Umsatz ohnehin darüber.</div>`;
 V.finanzen=()=>{const chef=state.role==='chef';
- return `<div class="page-head"><div><h1>Konten &amp; Zahlungen</h1><p class="lead">Kontostände werden täglich von der Bank abgerufen. Zahlungen bereitet das Büro vor, freigeben kann nur der Chef. Ab 5.000 € braucht es zusätzlich eine zweite Bestätigung per Handy.</p></div></div>
+ return `<div class="page-head"><div><h1>Konten &amp; Zahlungen</h1><p class="lead">${istVerb('bank')?'Kontostände kommen täglich über die Bankverbindung (finAPI).':'Die Bank ist noch nicht verbunden, die Zahlen hier sind von Hand eingetragen. '+(state.role==='chef'?'<button class="more" data-view="verbindungen" style="font-size:inherit">Bank verbinden</button>':'')} Zahlungen bereitet das Büro vor, freigeben kann nur der Chef. Ab 5.000 € braucht es zusätzlich eine zweite Bestätigung per Handy.</p></div></div>
  <div class="grid g4" style="margin-bottom:14px">
  <div class="panel stat"><div class="l">Geschäftskonto Sparkasse</div><div class="v">${eur(84320)}</div><div class="s muted">Kontokorrent-Linie 150.000 €</div></div>
  <div class="panel stat"><div class="l">Steuer-Rücklage</div><div class="v">${eur(61500)}</div><div class="s muted">USt, Gewerbe-, Körperschaftsteuer</div></div>
@@ -785,6 +879,97 @@ V.rechte=()=>{const cols=ROLES.map(r=>[r.k,r.n]);const lab={f:'<span class="pill
 V.baukasten=()=>`<div class="page-head"><div><h1>Baukasten</h1><p class="lead">Jeder Betrieb bekommt nur die Bausteine, die er braucht. Schalte einen Baustein aus, und er verschwindet aus dem Menü.</p></div></div>
  <div class="panel">${MODULE.map(m=>`<div class="toggle"><div><b>${m.n}</b><div class="small muted">${m.d}</div></div><button class="switch" role="switch" aria-checked="${m.on}" aria-label="${m.n}" data-mod="${m.k}"></button></div>`).join('')}</div>`;
 
+/* ---------- Verbindungen ---------- */
+const istVerb=k=>!!(VERB[k]&&VERB[k].on)&&FREI_RW.includes(k);
+const connBy=k=>CONN.find(c=>c.k===k);
+const jetzt=()=>{const d=new Date();return '11.11.2026 '+nowHM()};
+function connTile(c){
+  const v=VERB[c.k],on=istVerb(c.k),frei=FREI_RW.includes(c.k),darf=right('verbindungen')!=='v'&&(state.role==='chef'||c.wer.includes(state.role));
+  const pill=on?'<span class="pill good">verbunden</span>':!frei?'<span class="pill neutral">nicht freigeschaltet</span>':'<span class="pill neutral">nicht verbunden</span>';
+  let body='',btn='';
+  if(on){
+    body=`<div class="conn-meta"><span>${esc(c.konto)}</span><span>Verbunden seit ${v.seit} von ${esc(v.von)}</span><span>Letzter Abgleich: ${v.sync}${c.tan?' · Freigabe gültig bis 10.05.2027':''}</span></div>
+     <ul class="conn-data">${c.daten.map(d=>`<li><b>${d[0]}</b><span>${d[1]}</span></li>`).join('')}</ul>
+     <div class="conn-scopes">${(v.scopes||[]).map(i=>c.scopes[i]?`<span class="chip">${c.scopes[i][0]}</span>`:'').join('')}</div>`;
+    btn=darf?`<button class="tool" data-cact="sync" data-c="${c.k}">Jetzt abgleichen</button>${state.confirmTrenn===c.k?`<button class="tool danger" data-cact="trennen" data-c="${c.k}">Wirklich trennen?</button>`:`<button class="tool" data-cact="trennen" data-c="${c.k}">Trennen</button>`}`:'<span class="small muted">Nur ansehen</span>';
+  }else if(frei){
+    body=c.hinweis?`<p class="small muted" style="margin:0">${c.hinweis}</p>`:'';
+    btn=darf?`<button class="tool primary" data-cact="verbinden" data-c="${c.k}">Verbinden</button>`:`<button class="tool" disabled>Verbinden</button><span class="small muted">${c.wer.includes('buero')?'Chef oder Büro':'Nur der Chef'} kann verbinden</span>`;
+  }else{
+    body=`<p class="small muted" style="margin:0">Dieser Baustein ist für euren Betrieb noch nicht freigeschaltet. ${c.hinweis||''}</p>`;
+    btn=VANF[c.k]?'<span class="pill info">bei Richtwerk angefragt</span>':(state.role==='chef'?`<button class="tool" data-cact="anfragen" data-c="${c.k}">Freischalten anfragen</button>`:'');
+  }
+  return `<article class="conn${on?' on':''}${frei?'':' locked'}"><div class="conn-top"><span class="conn-logo" style="background:${c.c}">${c.ini}</span><div><b>${esc(c.n)}</b><div class="small muted">${esc(c.sub)}</div></div>${pill}</div>
+   <p class="small" style="margin:0">${c.d}</p>${body}<div class="conn-act">${btn}</div></article>`;
+}
+V.verbindungen=()=>{
+  const frei=CONN.filter(c=>FREI_RW.includes(c.k)),on=CONN.filter(c=>istVerb(c.k));
+  const grps=[...new Set(CONN.map(c=>c.grp))];
+  const last=on.map(c=>VERB[c.k].sync).sort().slice(-1)[0]||'—';
+  return `<div class="page-head"><div><h1>Verbindungen</h1><p class="lead">Hier verbindet ihr die Konten, die ihr schon habt. Ihr meldet euch selbst beim Anbieter an und gebt nur eine Freigabe. Die Betriebszentrale bekommt nie ein Passwort, sondern einen Schlüssel, den ihr jederzeit widerrufen könnt.</p></div></div>
+  <div class="sim-flag"><b>Simulation</b><span>Es wird keine echte Verbindung aufgebaut. Anmelde-Fenster, Freigaben und abgeglichene Daten sind nachgestellt, damit man ein Gefühl für den Ablauf bekommt.</span></div>
+  <div class="kpis"><div class="kpi"><div class="l">Verbunden</div><div class="v">${on.length} von ${frei.length}</div><div class="s muted">freigeschalteten Verbindungen</div></div>
+   <div class="kpi"><div class="l">Letzter Abgleich</div><div class="v">${last.replace('heute ','')}</div><div class="s muted">automatisch, mehrmals täglich</div></div>
+   <div class="kpi"><div class="l">Gespeicherte Passwörter</div><div class="v">0</div><div class="s muted">nur widerrufbare Schlüssel</div></div>
+   <div class="kpi"><div class="l">Daten liegen in</div><div class="v">Deutschland</div><div class="s muted">EU-Server, Vertrag zur Auftragsverarbeitung</div></div></div>
+  ${grps.map(g=>`<div class="conn-group">${g}</div><div class="conn-grid">${CONN.filter(c=>c.grp===g).map(connTile).join('')}</div>`).join('')}
+  <div class="dash3" style="margin-top:20px">
+   <section class="panel"><h2>So läuft eine Verbindung</h2><ol class="small" style="margin:0;padding-left:18px;display:grid;gap:6px"><li>Auf „Verbinden“ klicken. Es öffnet sich die Anmeldeseite des Anbieters.</li><li>Dort mit dem eigenen Konto anmelden. Das Passwort bleibt beim Anbieter.</li><li>Freigabe bestätigen: genau festlegen, was die Betriebszentrale lesen darf.</li><li>Die Betriebszentrale bekommt einen Schlüssel und gleicht ab jetzt automatisch ab.</li><li>„Trennen“ macht den Schlüssel sofort ungültig. Eure Daten bleiben bei euch.</li></ol></section>
+   <section class="panel"><h2>Protokoll</h2><ul class="tasks">${VLOG.slice().reverse().slice(0,8).map(l=>`<li><span class="dot info"></span><div class="tx"><b style="font-weight:500;white-space:normal">${esc(l.x)}</b><span>${l.t}</span></div></li>`).join('')}</ul></section>
+   <section class="panel"><h2>Wer darf was</h2><ul class="tasks"><li><div class="tx"><b>Chef</b><span>alle Verbindungen, als Einziger die Bank</span></div></li><li><div class="tx"><b>Büro</b><span>DATEV, Rechnungsprogramm, E-Mail und Ordner</span></div></li><li><div class="tx"><b>HR</b><span>sieht nur, was verbunden ist</span></div></li><li><div class="tx"><b>Richtwerk (Support)</b><span>schaltet Verbindungen frei, sieht aber keine Zugangsdaten</span></div></li></ul></section>
+  </div>`;
+};
+let flow=null;
+function flowHTML(){
+  const c=connBy(flow.k),r=role();
+  const steps=c.tan?['Anmelden','Freigabe','TAN','Fertig']:['Anmelden','Freigabe','Fertig'];
+  const idx={login:0,scope:1,tan:2,busy:steps.length-1,done:steps.length-1}[flow.step];
+  const bar=`<div class="oauth-bar"><i></i><i></i><i></i><span class="addr">🔒 Anmeldeseite von ${esc(c.anb||c.n)} (nachgestellt)</span></div><div class="oauth-sim">SIMULATION · keine echte Anmeldung · bitte hier keine echten Daten eingeben</div>`;
+  const st=`<div class="flow-steps">${steps.map((s,i)=>`<span class="${i<=idx?'on':''}">${s}</span>`).join('')}</div>`;
+  const logo=`<span class="conn-logo" style="background:${c.c}">${c.ini}</span>`;
+  let b='';
+  if(flow.step==='login')b=`${st}<div style="display:flex;gap:12px;align-items:center">${logo}<h3 id="oauthH">Bei ${esc(c.anb||c.n)} anmelden</h3></div>
+    <p class="small muted" style="margin:0">Die Hammer Betriebszentrale möchte sich mit eurem Konto verbinden.</p>
+    <div class="oauth-who"><span class="avatar">${r.ini}</span><div><b>${esc(c.konto)}</b><div class="small muted">angemeldet als ${r.who} (Demo-Konto)</div></div></div>
+    <p class="small" style="margin:0;background:var(--surface-2);border-radius:8px;padding:10px 12px">Im echten Betrieb gibst du hier dein Passwort direkt beim Anbieter ein. Die Betriebszentrale und Richtwerk sehen es nie.</p>
+    <div class="oauth-btns"><button data-flow="abbrechen">Abbrechen</button><button class="go" data-flow="weiter">Weiter</button></div>`;
+  if(flow.step==='scope')b=`${st}<div style="display:flex;gap:12px;align-items:center">${logo}<h3 id="oauthH">Freigabe erteilen</h3></div>
+    <p class="small muted" style="margin:0"><b style="color:var(--fg)">Hammer Betriebszentrale</b> möchte auf euer Konto bei ${esc(c.n)} zugreifen und darf:</p>
+    <div>${c.scopes.map((s,i)=>`<label class="oauth-scope"><input type="checkbox" data-scope="${i}" ${flow.sel.includes(i)?'checked':''} ${s[2]?'disabled':''}><span>${s[0]}${s[2]?' <span class="pill neutral">nötig</span>':''}${s[1]?`<small>${s[1]}</small>`:''}</span></label>`).join('')}</div>
+    <p class="small muted" style="margin:0">Ihr könnt die Freigabe jederzeit unter Verbindungen widerrufen.${c.tan?' Die Bank verlangt danach noch eine TAN.':''}</p>
+    <div class="oauth-btns"><button data-flow="abbrechen">Ablehnen</button><button class="go" data-flow="zulassen">Zulassen</button></div>`;
+  if(flow.step==='tan')b=`${st}<h3 id="oauthH">Mit TAN bestätigen</h3>
+    <div class="tan"><div class="small muted">Nachricht in der TAN-App auf dem Handy von ${r.who}</div><b>Kontozugriff für finAPI freigeben</b><div class="small">Konto …4471 18 · gültig 180 Tage</div></div>
+    <div class="oauth-btns"><button data-flow="abbrechen">Abbrechen</button><button class="go" data-flow="tan">In der TAN-App bestätigt</button></div>`;
+  if(flow.step==='busy')b=`${st}<div class="spin" aria-hidden="true"></div><h3 id="oauthH" style="text-align:center">Schlüssel wird ausgetauscht …</h3><p class="small muted" style="margin:0;text-align:center">Der Anbieter schickt einen Zugriffs-Schlüssel. Das Passwort wird nicht übertragen.</p>`;
+  if(flow.step==='done')b=`${st}<div class="ok-big">✓</div><h3 id="oauthH" style="text-align:center">${esc(c.n)} ist verbunden</h3>
+    <ul class="conn-data">${c.daten.map(d=>`<li><b>${d[0]}</b><span>${d[1]}</span></li>`).join('')}</ul>
+    <p class="small muted" style="margin:0;text-align:center">Erster Abgleich ist gelaufen (simuliert).</p>
+    <div class="oauth-btns"><button class="go" data-flow="fertig">Fertig</button></div>`;
+  return bar+`<div class="oauth-body">${b}</div>`;
+}
+function renderFlow(){const o=$('#oauth');if(!flow){o.hidden=true;return}o.hidden=false;$('#oauthWin').innerHTML=flowHTML();const f=o.querySelector('.go');if(f)f.focus()}
+function startFlow(k){const c=connBy(k);
+  const andere=c.excl&&CONN.find(x=>x.excl===c.excl&&x.k!==k&&istVerb(x.k));
+  if(andere){toast(`Es ist schon ${andere.n} verbunden. Erst trennen, dann ${c.n} verbinden.`);return}
+  flow={k,step:'login',sel:c.scopes.map((s,i)=>i)};renderFlow()}
+function flowStep(x){if(!flow)return;const c=connBy(flow.k);
+  if(x==='abbrechen'){flow=null;renderFlow();toast('Abgebrochen. Es wurde nichts verbunden.');return}
+  if(x==='weiter'){flow.step='scope';renderFlow();return}
+  if(x==='zulassen'){flow.sel=[...document.querySelectorAll('[data-scope]')].filter(i=>i.checked).map(i=>+i.dataset.scope);flow.step=c.tan?'tan':'busy';renderFlow();if(!c.tan)fertigVerbinden();return}
+  if(x==='tan'){flow.step='busy';renderFlow();fertigVerbinden();return}
+  if(x==='fertig'){flow=null;renderFlow();render()}
+}
+function fertigVerbinden(){const k=flow.k,c=connBy(k),sel=flow.sel.slice();
+  setTimeout(()=>{if(!flow||flow.k!==k)return;const t=jetzt();VERB[k]={on:true,seit:t,von:role().who,sync:'heute '+nowHM(),scopes:sel};
+    VLOG.push({t,x:`${role().who} hat ${c.n} verbunden (${sel.length} von ${c.scopes.length} Freigaben).`});save();flow.step='done';renderFlow()},1400)}
+function connAct(x,k){const c=connBy(k);
+  if(x==='verbinden'){startFlow(k);return}
+  if(x==='sync'){VERB[k].sync='heute '+nowHM();commit(`${c.n}: abgeglichen, keine Fehler (simuliert).`);return}
+  if(x==='trennen'){if(state.confirmTrenn!==k){state.confirmTrenn=k;render();setTimeout(()=>{if(state.confirmTrenn===k){state.confirmTrenn=null;if(state.view==='verbindungen')render()}},4000);return}
+    state.confirmTrenn=null;VERB[k]={on:false};VLOG.push({t:jetzt(),x:`${role().who} hat ${c.n} getrennt. Der Schlüssel ist ungültig, die Daten bleiben im Betrieb.`});commit(`${c.n} getrennt. Der Schlüssel ist sofort ungültig.`);return}
+  if(x==='anfragen'){VANF[k]=true;VLOG.push({t:jetzt(),x:`${role().who} hat bei Richtwerk ${c.n} angefragt.`});commit(`Anfrage für ${c.n} an Richtwerk geschickt.`);return}
+}
 /* ---------- Mitarbeiter-App (iPhone) ---------- */
 const PH={};
 const ME='Andrei Popescu';
@@ -912,8 +1097,12 @@ document.addEventListener('click',e=>{
   const rt=e.target.closest('[data-rt]');if(rt){state.ribbon=+rt.dataset.rt;renderRibbon();return}
   const ls=e.target.closest('[data-ls]');if(ls){state.lsSel=+ls.dataset.ls;render();return}
   const sw=e.target.closest('[data-mod]');if(sw){const m=MODULE.find(x=>x.k===sw.dataset.mod);m.on=!m.on;commit(`${m.n} ${m.on?'eingeschaltet':'ausgeschaltet'}`);return}
+  const ca=e.target.closest('[data-cact]');if(ca){connAct(ca.dataset.cact,ca.dataset.c);return}
+  const fl=e.target.closest('[data-flow]');if(fl){flowStep(fl.dataset.flow);return}
+  if(e.target.id==='oauth'){flowStep('abbrechen');return}
   const a=e.target.closest('[data-act]');if(a){act(a.dataset.act)}
 });
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flow&&flow.step!=='busy')flowStep(flow.step==='done'?'fertig':'abbrechen')});
 document.addEventListener('input',e=>{if(e.target.id==='ph-text')state.phText=e.target.value});
 document.addEventListener('change',e=>{
   const t=e.target;const pm=t.dataset.pm,pe=t.dataset.pe;
@@ -964,6 +1153,7 @@ function act(x){
     const nx=LS.findIndex(l=>l.status==='fehlt');if(nx>=0)state.lsSel=nx;commit(`${s.id} bestätigt, umbenannt und an die Buchhaltung weitergeleitet`);return}
   if(x==='Nächster offener'){const nx=LS.findIndex(l=>l.status==='fehlt');if(nx<0){toast('Keine offenen Lieferscheine.');return}state.lsSel=nx;render();return}
   if(x==='Dateien hochladen'){$('#phFile').click();return}
+  if(x==='Ordner verbinden (OneDrive)'){go('verbindungen');return}
   if(x==='Excel-Liste'||x==='Exportieren (Excel)'||x==='Export Steuerbüro'){const csv=['Nummer;Lieferant;Datum;Baustelle;Status',...LS.map(l=>[l.id,l.lief,l.datum,l.bv,l.status].join(';'))].join('\n');
     try{navigator.clipboard.writeText(csv).then(()=>toast('Liste kopiert. In Excel einfügen.'),()=>toast('Kopieren wurde vom Browser blockiert.'))}catch(e){toast('Kopieren wurde vom Browser blockiert.')}return}
   if(x==='Reklamation senden'){FLAGS.lechtal='reklamiert';commit('Reklamation mit Lieferscheinen als Anhang an Baustoffe Lechtal vorbereitet. Zahlung bleibt gesperrt.');return}
@@ -976,7 +1166,7 @@ $('#menuBtn').addEventListener('click',()=>{if(matchMedia('(max-width:720px)').m
 $('#dockBtn').addEventListener('click',()=>{state.dock=!state.dock;render();if(state.dock)toast('Handy daneben: Tipp etwas auf dem Handy an und schau, wo es links ankommt.')});
 let resetArmed=false;
 $('#resetBtn').addEventListener('click',()=>{if(!resetArmed){resetArmed=true;$('#resetBtn').textContent='Wirklich zurücksetzen?';setTimeout(()=>{resetArmed=false;$('#resetBtn').textContent='Zurücksetzen'},3500);return}
-  resetArmed=false;$('#resetBtn').textContent='Zurücksetzen';restore(JSON.parse(JSON.stringify(INITIAL)));try{localStorage.removeItem(KEY)}catch(e){}state.aiRun=false;state.phText='';state.phFotos=0;state.lsSel=1;render();toast('Alles auf Anfang gesetzt.')});
+  resetArmed=false;$('#resetBtn').textContent='Zurücksetzen';restore(JSON.parse(JSON.stringify(INITIAL)));try{localStorage.removeItem(KEY)}catch(e){}state.aiRun=false;state.phText='';state.phFotos=0;state.lsSel=1;flow=null;renderFlow();render();toast('Alles auf Anfang gesetzt.')});
 document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'&&state.view==='angebote'){e.preventDefault();act('KI-Prüfung starten')}});
 load();
 const h=(location.hash||'').slice(1);if(h==='app')state.role='geselle';else if(V[h])state.view=h;
