@@ -110,10 +110,33 @@ const BAUSTEINE = {
     p: {},
   },
 
+  bautagebuch: {
+    name: 'Bautagebuch', gruppe: 'erfassen', icon: 'stift',
+    kurz: 'Fotos und Notizen pro Tag und Baustelle, mit Wetter.',
+    wofuer: 'Bei Mängelstreit oder Nachträgen fehlt der Nachweis, wer wann was gemacht hat.',
+    ein: ['app', 'baustellen'],
+    p: { fotos: { typ: 'zahl', name: 'Fotos pro Eintrag', wert: 3, min: 1, max: 4, einheit: 'Stück' } },
+  },
+  regie: {
+    name: 'Regiezettel', gruppe: 'erfassen', icon: 'unterschrift',
+    kurz: 'Zusatzarbeiten vor Ort aufschreiben, der Kunde unterschreibt auf dem Handy.',
+    wofuer: 'Beim Dachöffnen kommt morsches Holz zum Vorschein. Ohne Unterschrift wird die Mehrarbeit nie bezahlt.',
+    ein: ['app', 'baustellen'],
+    p: {
+      satz: { typ: 'zahl', name: 'Stundensatz Regie', wert: 58, min: 30, max: 120, einheit: '€/Std.' },
+      ohneUnterschrift: { typ: 'wahl', name: 'Ohne Unterschrift speichern', wert: 'ja', optionen: ['ja', 'nein'] },
+    },
+  },
+  wochenplan: {
+    name: 'Wochenplan', gruppe: 'stamm', icon: 'plan',
+    kurz: 'Wer ist nächste Woche auf welcher Baustelle. Steht danach in der App.',
+    wofuer: 'Der Plan steht nur im Kopf vom Chef; Sonntagabend wird reihum telefoniert.',
+    ein: ['baustellen'],
+    p: { tage: { typ: 'wahl', name: 'Planen für', wert: 'Mo bis Fr', optionen: ['Mo bis Fr', 'Mo bis Sa'] } },
+  },
+
   /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
-  bautagebuch: { name: 'Bautagebuch', gruppe: 'geplant', icon: 'stift', kurz: 'Fotos und Notizen pro Tag und Baustelle.', wofuer: 'Bei Mängelstreit fehlt der Nachweis, wer wann was gemacht hat.', ein: [], p: {} },
   wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
-  wochenplan: { name: 'Wochenplan', gruppe: 'geplant', icon: 'kalender', kurz: 'Wer ist nächste Woche auf welcher Baustelle.', wofuer: 'Der Plan steht nur im Kopf vom Chef; Sonntagabend wird telefoniert.', ein: [], p: {} },
   geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
   aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
   angebote: { name: 'Angebote & Rechnungen', gruppe: 'geplant', icon: 'beleg', kurz: 'Anbindung an das Rechnungsprogramm des Betriebs.', wofuer: 'Rechnungen werden Wochen nach Fertigstellung geschrieben, Geld fehlt.', ein: [], p: {} },
@@ -150,6 +173,7 @@ function regeln(cfg) {
     imExport: (t) => verb(t, 'export') || (verb(t, 'freigabe') && verb('freigabe', 'export')),
     stempeln: () => hat('app') && verb('app', 'stempeln') && verb('stempeln', 'stunden'),
     stundenImApp: () => hat('app') && (verb('app', 'stunden') || verb('stempeln', 'stunden') && verb('app', 'stempeln')),
+    plan: () => verb('baustellen', 'wochenplan'),
     darfFreigeben: (rolle) => rolle === 'chef' || (rolle === 'buero' && p('freigabe').wer === 'Chef und Büro'),
   };
 }
@@ -159,9 +183,9 @@ function wirkungen(cfg, typ) {
   const R = regeln(cfg); const B = BAUSTEINE[typ]; const out = [];
   if (!B) return out;
   if (B.gruppe === 'geplant') return ['Noch in Entwicklung. Beim Kunden nicht sichtbar.'];
-  const imBuero = { stunden: 'Stunden', urlaub: 'Urlaub', belege: 'Belege', lieferscheine: 'Lieferscheine', tagelohn: 'Tagelöhner', export: 'Steuerberater', baustellen: 'Baustellen', material: 'Material', dokumente: 'Steuerberater' }[typ];
+  const imBuero = { bautagebuch: 'Baustellen', regie: 'Baustellen', wochenplan: 'Wochenplan', stunden: 'Stunden', urlaub: 'Urlaub', belege: 'Belege', lieferscheine: 'Lieferscheine', tagelohn: 'Tagelöhner', export: 'Steuerberater', baustellen: 'Baustellen', material: 'Material', dokumente: 'Steuerberater' }[typ];
   if (imBuero) out.push(`Im Büro als Bereich „${imBuero}“ sichtbar.`);
-  if (['stempeln', 'stunden', 'urlaub', 'belege', 'lieferscheine', 'material', 'dokumente'].includes(typ)) {
+  if (['stempeln', 'stunden', 'urlaub', 'belege', 'lieferscheine', 'material', 'dokumente', 'bautagebuch', 'regie'].includes(typ)) {
     if (typ === 'stunden') out.push(R.stundenImApp() ? 'Mitarbeiter sehen und erfassen Stunden in der App.' : 'Nicht mit der App verbunden: Stunden nur im Büro.');
     else out.push(R.imApp(typ) ? 'In der Mitarbeiter-App sichtbar.' : 'Nicht mit der App verbunden: Mitarbeiter sehen das nicht.');
   }
@@ -179,6 +203,9 @@ function wirkungen(cfg, typ) {
     const rein = B.ein.filter((t) => R.verb(t, 'freigabe')).map((t) => BAUSTEINE[t].name);
     out.push(rein.length ? 'Prüft: ' + rein.join(', ') + '.' : 'Noch nichts angeschlossen.');
   }
+  if (typ === 'regie') out.push(R.p('regie').ohneUnterschrift === 'ja' ? 'Ist der Kunde nicht da, kann der Zettel ohne Unterschrift gespeichert werden.' : 'Speichern nur mit Unterschrift des Kunden.');
+  if (typ === 'wochenplan') out.push(R.hat('app') ? 'Mitarbeiter sehen ihren Plan in der App; beim Einstempeln steht die geplante Baustelle oben.' : 'Ohne App nur im Büro sichtbar.');
+  if (typ === 'wochenplan' && !R.verb('baustellen', 'wochenplan')) out.push('Mit „Baustellen“ verbinden, sonst gibt es nichts zu verplanen.');
   if (typ === 'tagelohn' && R.p('tagelohn').satz < 13.9) out.push('Achtung: unter dem Mindestlohn von 13,90 €.');
   return out;
 }

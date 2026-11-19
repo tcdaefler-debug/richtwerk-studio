@@ -103,6 +103,7 @@ const Store = (() => {
     }
     if (db) { backend = cloudBackend(db); modus = 'cloud'; }
     else { backend = lokalesBackend(); modus = 'lokal'; }
+    abarbeiten();
     return modus;
   }
 
@@ -130,6 +131,31 @@ const Store = (() => {
     return praefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
+  /* ---------- Warteschlange für Schreibvorgänge ---------- */
+  let benutzer = null;
+  const WS_KEY = 'rw-warteschlange';
+  let warteschlange = (() => { try { return JSON.parse(localStorage.getItem(WS_KEY) || '[]'); } catch { return []; } })();
+  let laeuft = false;
+  const merke = () => { try { localStorage.setItem(WS_KEY, JSON.stringify(warteschlange)); } catch { /* voll oder privat */ } };
+  function schreibe(pfad, daten) {
+    warteschlange = warteschlange.filter((w) => w.pfad !== pfad); // nur der letzte Stand zählt
+    warteschlange.push({ pfad, daten });
+    merke(); abarbeiten();
+  }
+  async function abarbeiten() {
+    if (laeuft || !backend) return; laeuft = true;
+    try {
+      while (warteschlange.length) {
+        const w = warteschlange[0];
+        try { w.daten === null ? await backend.del(w.pfad) : await backend.set(w.pfad, w.daten); }
+        catch (e) { console.warn('Später erneut:', w.pfad, e && e.message); break; }
+        warteschlange.shift(); merke();
+      }
+    } finally { laeuft = false; benachrichtige(); }
+  }
+  window.addEventListener('online', abarbeiten);
+  setInterval(() => { if (warteschlange.length) abarbeiten(); }, 20000);
+
   return {
     init,
     get modus() { return modus; },
@@ -152,34 +178,41 @@ const Store = (() => {
       await backend.set(`b/${fid}/cfg/main`, sauber);
     },
 
-    /* Einträge */
+    /* Einträge. Schreiben ist optimistisch: die Anzeige ändert sich sofort,
+       der Server bekommt die Änderung über die Warteschlange. Fällt das Netz
+       aus (Funkloch auf der Baustelle), bleibt sie dort liegen und wird
+       nachgeschickt, sobald wieder Verbindung besteht. */
     async neu(eintrag) {
       const id = eintrag.id || uid();
-      const daten = { ...eintrag, erstellt: eintrag.erstellt || Date.now() };
-      delete daten.id;
+      const daten = { ...eintrag, erstellt: eintrag.erstellt || Date.now(), von: eintrag.von || benutzer || undefined };
+      delete daten.id; if (daten.von === undefined) delete daten.von;
       zustand.items = [...zustand.items, { ...daten, id }]; benachrichtige();
-      await backend.set(`b/${zustand.fid}/items/${id}`, daten);
+      schreibe(`b/${zustand.fid}/items/${id}`, daten);
       return id;
     },
     async aendere(id, patch) {
       const alt = zustand.items.find((i) => i.id === id);
       if (!alt) return;
       const neu = { ...alt, ...patch, geaendert: Date.now() };
+      const was = Object.keys(patch).filter((k) => k !== 'verlauf').join(', ');
+      neu.verlauf = [...(alt.verlauf || []), { wer: benutzer || '', wann: Date.now(), was }].slice(-12);
       zustand.items = zustand.items.map((i) => (i.id === id ? neu : i)); benachrichtige();
       const daten = { ...neu }; delete daten.id;
-      await backend.set(`b/${zustand.fid}/items/${id}`, daten);
+      schreibe(`b/${zustand.fid}/items/${id}`, daten);
     },
     async loesche(id) {
       zustand.items = zustand.items.filter((i) => i.id !== id); benachrichtige();
-      await backend.del(`b/${zustand.fid}/items/${id}`);
+      schreibe(`b/${zustand.fid}/items/${id}`, null);
     },
+    setzeBenutzer(pid) { benutzer = pid || null; },
+    get offen() { return warteschlange.length; },
 
     /* Dateien (Fotos, PDFs) */
     async speichereDatei(dataUrl, name) {
       if (dataUrl.length > 240000) throw new Error('Die Datei ist zu groß (max. ca. 170 KB). Fotos werden automatisch verkleinert, PDFs bitte kleiner speichern.');
       const id = uid('f');
-      await backend.set(`b/${zustand.fid}/dateien/${id}`, { daten: dataUrl, name: name || '' });
       dateiCache.set(id, dataUrl);
+      schreibe(`b/${zustand.fid}/dateien/${id}`, { daten: dataUrl, name: name || '' });
       return id;
     },
     async datei(id) {

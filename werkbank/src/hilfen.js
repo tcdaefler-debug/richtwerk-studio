@@ -151,6 +151,14 @@ const Icon = (name) => {
     glocke: 'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',
     play: 'M8 5v14l11-7z',
     stop: 'M7 7h10v10H7z',
+    unterschrift: 'M3 17c3-6 5-9 6-8s-2 7 0 8 4-6 5-5-1 4 1 4 3-2 4-2M3 21h18',
+    plan: 'M4 5h16v15H4zM4 10h16M10 10v10M15 10v10',
+    foto: 'M4 5h16v14H4zM4 16l5-5 4 4 2-2 5 5M15 9h.01',
+    suche: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
+    drucken: 'M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z',
+    karte: 'M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+    telefon: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z',
+    wolke: 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z',
   }[name] || '';
   return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg>`;
 };

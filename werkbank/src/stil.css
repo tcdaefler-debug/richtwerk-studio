@@ -252,7 +252,6 @@ dl.daten dd { margin: 0; font-weight: 500; }
    ========================================================================= */
 .ui-app { min-height: 100vh; background: #f3f4f6; color: #15191e; display: flex; justify-content: center; }
 .app-rahmen { width: 100%; max-width: 480px; min-height: 100vh; background: #f3f4f6; position: relative; display: flex; flex-direction: column; padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
-@media (min-width: 560px) { .app-rahmen { border-left: 1px solid #e1e3e7; border-right: 1px solid #e1e3e7; } }
 .a-kopf { padding: calc(14px + env(safe-area-inset-top)) 18px 12px; background: #fff; border-bottom: 1px solid #e6e8ec; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
 .a-kopf .firmenzeichen { width: 34px; height: 34px; border-radius: 8px; font-size: 13px; }
 .a-kopf .titel { flex: 1; min-width: 0; }
@@ -497,3 +496,106 @@ dl.daten dd { margin: 0; font-weight: 500; }
   .bereich .nr { display: none; }
   .start-fuss { padding: 0 16px 32px; }
 }
+
+/* Mitarbeiter-App am Computer oder Tablet quer: normale Anwendung mit Seitenleiste,
+   kein schmaler Handy-Streifen. Nur im echten App-Bereich, nicht in der Studio-Vorschau. */
+@media (min-width: 900px) {
+  body.app-modus .ui-app { display: block; }
+  body.app-modus .app-rahmen { max-width: none; padding: 0 0 0 232px; }
+  body.app-modus .a-kopf { padding: 14px 32px; }
+  body.app-modus .a-inhalt { width: 100%; max-width: 760px; margin: 0 auto; padding: 28px 32px 48px; }
+  body.app-modus .a-tabs { top: 0; bottom: 0; left: 0; transform: none; width: 232px; max-width: none; border-top: 0; border-right: 1px solid #e3e5ea; display: flex !important; flex-direction: column; gap: 2px; padding: 76px 12px 12px; }
+  body.app-modus .a-tabs button { flex-direction: row; justify-content: flex-start; gap: 12px; font-size: 14px; padding: 10px 12px; border-radius: 8px; color: #3a404a; }
+  body.app-modus .a-tabs button.an { background: var(--firma-hell); color: var(--firma); }
+  body.app-modus .a-tabs button .ic { width: 19px; height: 19px; }
+  body.app-modus .a-tabs .scan { order: -1; margin-bottom: 10px; background: var(--firma); color: #fff; font-weight: 600; }
+  body.app-modus .a-tabs .scan.an { background: var(--firma); color: #fff; }
+  body.app-modus .a-tabs .scan span.kreis { width: auto; height: auto; margin: 0; background: none; box-shadow: none; border: 0; }
+  body.app-modus .a-tabs .zahl { position: static; margin-left: auto; }
+  body.app-modus .erfassen-raster { grid-template-columns: repeat(3, 1fr); }
+  body.app-modus .erfassen-kachel.gross { grid-column: span 3; }
+  body.app-modus .meldung { bottom: 24px; }
+  body.app-modus .a-login { max-width: 420px; margin: 0 auto; }
+}
+
+/* ---------- Suche in der Kopfzeile ---------- */
+.suche { position: relative; width: min(340px, 32vw); margin-right: 12px; }
+.suche .sym { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #8a928c; display: flex; }
+.suche .sym .ic { width: 16px; height: 16px; }
+.suche input { width: 100%; border: 1px solid #d3d8d0; background: #f6f7f4; border-radius: 4px; padding: 7px 10px 7px 32px; font-size: 13px; }
+.suche input:focus { background: #fff; outline: 2px solid var(--firma); outline-offset: -1px; }
+.suche .treffer { position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 320px; background: #fff; border: 1px solid #d3d8d0; border-radius: 6px; box-shadow: 0 12px 32px rgba(0,0,0,.14); z-index: 60; max-height: 70vh; overflow: auto; }
+.suche .treffer button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid #eef0ec; background: none; padding: 9px 12px; }
+.suche .treffer button:hover, .suche .treffer button:focus-visible { background: var(--firma-hell); }
+.suche .treffer small { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: #7a827c; }
+.suche .treffer b { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.suche .treffer span { display: block; font-size: 12px; color: #6a726c; }
+.suche .nichts { padding: 12px; color: #7a827c; font-size: 13px; }
+
+/* ---------- Wochenplan ---------- */
+.t.plan td { padding-top: 6px; padding-bottom: 6px; }
+.plan-wahl { width: 100%; min-width: 118px; border: 1px solid #d9ddd6; border-radius: 4px; padding: 5px 6px; font-size: 13px; background: #fff; color: #9aa19c; }
+.plan-wahl.gesetzt { color: #1d2420; border-color: color-mix(in srgb, var(--firma) 45%, #d9ddd6); background: var(--firma-hell); }
+
+/* ---------- Baustellenakte ---------- */
+.tagebuch-eintrag { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #eef0ec; }
+.tagebuch-eintrag:last-child { border-bottom: 0; }
+.tagebuch-eintrag .wann b { display: block; font-size: 13px; }
+.tagebuch-eintrag .wann small { display: block; color: #7a827c; font-size: 12px; }
+.tagebuch-eintrag .was p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
+.fotos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.fotos .foto { width: 120px; height: 84px; border-radius: 4px; overflow: hidden; border: 1px solid #dadfd7; padding: 0; background: #eceee9; display: block; }
+.fotos .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.verlauf { margin: 12px 0 0; font-size: 12px; color: #7a827c; }
+.ui-buero.kompakt .tagebuch-eintrag { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+
+/* ---------- Nachweise und Regiezettel (Bildschirm und Druck) ---------- */
+.nachweis { font-size: 13px; color: #1d2420; }
+.nachweis .nw-kopf { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid #1d2420; }
+.nachweis .t td, .nachweis .t th { padding: 5px 8px; font-size: 12px; }
+.nachweis tr.frei td { color: #9aa19c; background: #fafaf8; }
+.nachweis .nw-summe { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0; padding: 10px 12px; background: #f3f4f1; border-radius: 4px; }
+.nachweis .nw-unterschrift { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
+.nachweis .nw-unterschrift > div { border-top: 1px solid #1d2420; padding-top: 6px; font-size: 12px; color: #5f6862; display: flex; flex-direction: column-reverse; }
+.nachweis .nw-unterschrift img { margin-top: -70px; }
+.nachweis .nw-fuss { font-size: 11px; color: #7a827c; margin: 18px 0 0; }
+.regiezettel dl.daten { font-size: 14px; gap: 10px 18px; }
+#druck { display: none; }
+@media print {
+  body.druckt > *:not(#druck) { display: none !important; }
+  body.druckt #druck { display: block; padding: 0; }
+  body.druckt { background: #fff !important; }
+  #druck .karte { border: 0; box-shadow: none; }
+  #druck select { border: 0; background: none; appearance: none; color: #000; padding: 0; }
+  #druck .t th, #druck .t td { border-bottom: 1px solid #ccc; }
+  @page { margin: 14mm; }
+}
+
+/* ---------- App: Baustelle, Fotos, Unterschrift, Verbindung ---------- */
+.baustelle-karte { padding: 16px; }
+.baustelle-karte .kopfzeile { display: flex; gap: 12px; align-items: center; }
+.baustelle-karte .kopfzeile .sym { width: 40px; height: 40px; border-radius: 10px; background: var(--firma-hell); color: var(--firma); display: grid; place-items: center; flex: none; }
+.baustelle-karte .kopfzeile b { display: block; font-size: 16px; }
+.baustelle-karte .kopfzeile small { color: #6b7280; font-size: 13px; }
+.baustelle-karte .hinweis { margin: 12px 0 0; padding: 10px 12px; background: #fff8e6; border-radius: 10px; font-size: 14px; color: #5a4512; }
+.baustelle-karte .knoepfe { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+.baustelle-karte .knoepfe .gross-knopf { padding: 12px; font-size: 15px; text-decoration: none; }
+.foto-reihe { display: flex; gap: 8px; flex-wrap: wrap; }
+.foto-reihe .foto { width: 88px; height: 88px; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid #dfe2e7; background: #f0f2f5; padding: 0; }
+.foto-reihe .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.foto-reihe .foto button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; display: grid; place-items: center; padding: 0; }
+.foto-reihe .foto button .ic { width: 14px; height: 14px; }
+.foto-reihe .foto.neu { display: grid; place-items: center; color: var(--firma); border-style: dashed; border-width: 2px; border-color: color-mix(in srgb, var(--firma) 40%, #dfe2e7); background: #fff; }
+.unterschrift-feld { position: relative; height: 180px; border: 1px solid #dfe2e7; border-radius: 10px; background: #fff; touch-action: none; }
+.unterschrift-feld canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.unterschrift-feld .linie { position: absolute; left: 16px; right: 16px; bottom: 36px; border-top: 1px dashed #c3c7cf; padding-top: 4px; font-size: 12px; color: #9aa1ad; pointer-events: none; }
+.unterschrift-feld.voll .linie { color: transparent; }
+.unterschrift-feld button { position: absolute; top: 8px; right: 8px; border: 0; background: #eef0f3; border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+.sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #1f4e79; background: #e7f0fa; border-radius: 20px; padding: 5px 10px; white-space: nowrap; }
+.sync.aus { color: #7a4a00; background: #fff1d6; }
+.sync .ic { width: 15px; height: 15px; }
+.gross-knopf.rot { color: #fff; }
+
+/* ---------- Fokus für Tastaturbedienung ---------- */
+:focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
+.ui-buero :focus-visible, .ui-app :focus-visible { outline-color: var(--firma); }

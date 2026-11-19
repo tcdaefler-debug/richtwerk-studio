@@ -4,13 +4,14 @@
    Entwickler-Tool dieselben Seiten als Vorschau zeigen kann.
    ========================================================================= */
 const Buero = (() => {
-  const zustand = { seite: 'uebersicht', woche: Datum.montag(Datum.heute()), monat: Datum.heute().slice(0, 7), filter: {}, navOffen: false, wahl: null };
-  const kompakt = () => (zustand.wahl ? zustand.wahl === 'kompakt' : window.innerWidth < 820);
+  const zustand = { seite: 'uebersicht', woche: Datum.montag(Datum.heute()), monat: Datum.heute().slice(0, 7), filter: {}, navOffen: false, akte: null, stundenAnsicht: 'woche', planWoche: Datum.montag(Datum.heute()) };
+  const kompakt = () => window.innerWidth < 820;
   let warKompakt = null;
   window.addEventListener('resize', () => { if (aktiverBereich === Buero && kompakt() !== warKompakt) zeichne(); });
 
   const NAV = [
     { id: 'uebersicht', name: 'Übersicht', icon: 'start', gruppe: 'Betrieb' },
+    { id: 'plan', name: 'Wochenplan', icon: 'plan', braucht: 'wochenplan', gruppe: 'Betrieb' },
     { id: 'stunden', name: 'Stunden', icon: 'uhr', braucht: 'stunden', gruppe: 'Betrieb', zahl: (o) => o.stunden.length },
     { id: 'urlaub', name: 'Urlaub & Krank', icon: 'kalender', braucht: 'urlaub', gruppe: 'Betrieb', zahl: (o) => o.urlaub.length },
     { id: 'belege', name: 'Belege', icon: 'beleg', braucht: 'belege', gruppe: 'Unterlagen', zahl: (o) => o.belege.length },
@@ -18,7 +19,7 @@ const Buero = (() => {
     { id: 'material', name: 'Materialbedarf', icon: 'material', braucht: 'material', gruppe: 'Unterlagen', zahl: (o) => o.material.length },
     { id: 'tagelohn', name: 'Tagelöhner', icon: 'helfer', braucht: 'tagelohn', gruppe: 'Unterlagen', zahl: (o) => o.tagelohn.length },
     { id: 'steuer', name: 'Steuerbüro', icon: 'paket', braucht: ['export', 'dokumente'], gruppe: 'Unterlagen' },
-    { id: 'baustellen', name: 'Baustellen', icon: 'haus', braucht: 'baustellen', gruppe: 'Stammdaten' },
+    { id: 'baustellen', name: 'Baustellen', icon: 'haus', braucht: 'baustellen', gruppe: 'Stammdaten', zahl: (o) => o.regie.filter((r) => r.status === 'offen').length },
     { id: 'team', name: 'Team & Zugänge', icon: 'team', gruppe: 'Stammdaten' },
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
@@ -32,6 +33,11 @@ const Buero = (() => {
   const personZelle = (c, p, unter = '') => `<div class="person"><span class="ava">${esc(c.kuerzel(p.name))}</span><div>${esc(p.name)}${unter ? `<small>${esc(unter)}</small>` : ''}</div></div>`;
   const seitenkopf = (titel, unter, rechts = '') => `<div class="seitenkopf"><div><h1>${titel}</h1>${unter ? `<p>${unter}</p>` : ''}</div><div class="rechts">${rechts}</div></div>`;
   const leer = (text) => `<div class="leer">${text}</div>`;
+  const verlauf = (c, e) => {
+    const v = (e && e.verlauf) || []; if (!v.length) return '';
+    const l = v[v.length - 1]; const d = new Date(l.wann);
+    return `<p class="verlauf">Zuletzt geändert ${l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
+  };
   const bsOptionen = (c, gewaehlt, mitLeer = true) => (mitLeer ? `<option value="">ohne Baustelle</option>` : '') + c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('');
   const personOptionen = (c, gewaehlt, liste = c.arbeiter()) => liste.map((p) => `<option value="${p.id}" ${p.id === gewaehlt ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
 
@@ -76,6 +82,16 @@ const Buero = (() => {
     if (o.stunden.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.stunden.length} Stundeneinträge freigeben</b><small>${[...new Set(o.stunden.map((s) => c.person(s.pid).name.split(' ')[0]))].join(', ')}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="stunden">Ansehen</button></div></div>`);
     if (o.belege.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.belege.length} Belege prüfen</b><small>zusammen ${Zahl.eur(o.belege.reduce((s, b) => s + Number(b.betrag || 0), 0))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="belege">Ansehen</button></div></div>`);
     if (o.lieferscheine.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.lieferscheine.length} neue Lieferscheine</b><small>${[...new Set(o.lieferscheine.map((l) => l.lieferant))].join(', ')}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="lieferscheine">Ansehen</button></div></div>`);
+    if (c.R.hat('stunden')) {
+      const fehlt = [];
+      for (let d = Datum.montag(c.heute); d < c.heute; d = Datum.plus(d, 1)) {
+        if (!Datum.istArbeitstag(d)) continue;
+        for (const p of arbeiter) if (!c.stundenAm(p.id, d).length && !c.abwesend(p.id, d)) fehlt.push(`${p.name.split(' ')[0]} (${Datum.WT[Datum.wochentag(d)]})`);
+      }
+      if (fehlt.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>Stunden fehlen</b><small>${esc(fehlt.join(', '))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="stunden">Ansehen</button></div></div>`);
+    }
+    const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
+    if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -99,7 +115,12 @@ const Buero = (() => {
       </div>`;
   };
 
+  const regieStunden = (r) => Number(r.stunden || 0) * Number(r.leute || 1);
+  const regieBetrag = (c, r) => regieStunden(r) * Number(c.R.p('regie').satz || 0);
+  const ansichtWahl = () => `<span class="segment"><button class="${zustand.stundenAnsicht === 'woche' ? 'an' : ''}" data-a="stunden-ansicht" data-id="woche">Woche</button><button class="${zustand.stundenAnsicht === 'monat' ? 'an' : ''}" data-a="stunden-ansicht" data-id="monat">Monat</button></span>`;
+
   SEITEN.stunden = (c) => {
+    if (zustand.stundenAnsicht === 'monat') return stundenMonat(c);
     const wo = zustand.woche; const tage = Array.from({ length: 7 }, (_, i) => Datum.plus(wo, i));
     const mitWE = c.typ('stunden').some((s) => s.datum >= tage[5] && s.datum <= tage[6]);
     const spalten = mitWE ? tage : tage.slice(0, 5);
@@ -123,12 +144,53 @@ const Buero = (() => {
     }).join('');
     const kopf = spalten.map((d) => `<th class="zelle-std" style="cursor:default${d === c.heute ? ';color:var(--firma)' : ''}">${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
     return seitenkopf('Stunden', `Kalenderwoche ${Datum.kw(wo)} · Soll ${soll} Std. pro Woche${c.R.freigabe('stunden') ? ' · Freigabe durch ' + (c.R.p('freigabe').wer === 'Chef' ? 'den Chef' : 'Chef oder Büro') : ''}`,
-      `<span class="wochenwahl"><button class="k klein" data-a="woche" data-id="-7">${Icon('zurueck')}</button><b>${Datum.kurz(wo)} – ${Datum.kurz(tage[6])}${tage[6].slice(0, 4)}</b><button class="k klein" data-a="woche" data-id="7">${Icon('pfeil')}</button></span>
+      `${ansichtWahl()}<span class="wochenwahl"><button class="k klein" data-a="woche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(wo)} – ${Datum.kurz(tage[6])}${tage[6].slice(0, 4)}</b><button class="k klein" data-a="woche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
        <button class="k" data-a="woche" data-id="0">Diese Woche</button>
        <button class="k" data-a="stunden-neu">${Icon('plus')} Eintrag</button>
        ${c.R.freigabe('stunden') && c.R.darfFreigeben(c.ich && c.ich.rolle) ? `<button class="k haupt" data-a="woche-frei" ${offeneWoche.length ? '' : 'disabled'}>${Icon('haken')} Woche freigeben${offeneWoche.length ? ` (${offeneWoche.length})` : ''}</button>` : ''}`)
       + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th>${kopf}<th class="r">Summe</th><th class="r">± Soll</th><th>Status</th></tr></thead><tbody>${zeilen || `<tr><td colspan="10">${leer('Keine Mitarbeiter mit Wochenstunden.')}</td></tr>`}</tbody></table></div>
         <div class="legende"><span><i style="background:var(--warn)"></i>zu prüfen</span><span><i style="background:var(--info)"></i>gerade eingestempelt</span><span>BS = Berufsschule</span><span>Klick auf ein Feld: Tag ansehen und ändern</span></div></div>`;
+  };
+
+  function stundenMonat(c) {
+    const ym = zustand.monat;
+    const zeilen = c.arbeiter().map((p) => {
+      const n = c.monatsnachweis(p.id, ym); const konto = c.konto(p.id, ym);
+      const farbe = (x) => (x < 0 ? '#8a6a2a' : '#2e7d4f');
+      return `<tr class="klickbar" data-a="nachweis" data-id="${p.id}"><td>${personZelle(c, p, p.funktion)}</td><td class="r num">${Zahl.std(n.soll)}</td><td class="r num">${Zahl.std(n.ist)}</td><td class="r num">${n.urlaub || ''}</td><td class="r num">${n.krank || ''}</td>
+        <td class="r num" style="color:${farbe(n.diff)}">${n.diff >= 0 ? '+' : ''}${Zahl.std(n.diff)}</td><td class="r num" style="color:${farbe(konto)}"><b>${konto >= 0 ? '+' : ''}${Zahl.std(konto)}</b></td><td class="r"><button class="k klein" data-a="nachweis" data-id="${p.id}">${Icon('drucken')} Nachweis</button></td></tr>`;
+    }).join('');
+    return seitenkopf('Stunden', `${esc(Datum.monatName(ym))} · Soll ohne Feiertage, Urlaub und Krankheit werden gutgeschrieben`,
+      `${ansichtWahl()}<span class="wochenwahl"><button class="k klein" data-a="monat" data-id="-1" aria-label="Voriger Monat">${Icon('zurueck')}</button><b>${esc(Datum.monatName(ym))}</b><button class="k klein" data-a="monat" data-id="1" aria-label="Nächster Monat">${Icon('pfeil')}</button></span>`)
+      + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th><th class="r">Soll</th><th class="r">Ist</th><th class="r">Urlaub</th><th class="r">Krank</th><th class="r">± Monat</th><th class="r">Überstundenkonto</th><th></th></tr></thead><tbody>${zeilen || `<tr><td colspan="8">${leer('Keine Mitarbeiter mit Wochenstunden.')}</td></tr>`}</tbody></table></div>
+        <div class="legende"><span>Urlaub und Krank in Arbeitstagen</span><span>Überstundenkonto: alle Monate dieses Jahres bis einschließlich ${esc(Datum.monatName(ym).split(' ')[0])}</span></div></div>`;
+  }
+
+  /* ---------- Wochenplan ---------- */
+  const PLAN_TAGE = (c) => (c.R.p('wochenplan').tage === 'Mo bis Sa' ? 6 : 5);
+  SEITEN.plan = (c) => {
+    const mo = zustand.planWoche; const n = PLAN_TAGE(c);
+    const tage = Array.from({ length: n }, (_, i) => Datum.plus(mo, i));
+    const w = c.planWoche(mo);
+    const kurz = (b) => b.name.replace(/^(Neubau|Dachsanierung|Carport|Gaube)\s+/, '');
+    const zeilen = c.arbeiter().map((p) => `<tr><td>${personZelle(c, p, p.funktion)}</td>${tage.map((d, t) => {
+      const abw = c.abwesend(p.id, d);
+      if (abw) return `<td><span class="chip ${abw.typ === 'krank' ? 'bad' : 'warn'}">${abw.typ === 'krank' ? 'Krank' : esc(abw.art || 'Urlaub')}</span></td>`;
+      if (Datum.feiertag(d)) return `<td><span class="chip">${esc(Datum.feiertag(d))}</span></td>`;
+      const wert = (w && w.zellen && w.zellen[p.id] && w.zellen[p.id][t]) || '';
+      return `<td><select class="plan-wahl ${wert ? 'gesetzt' : ''}" data-a="plan-zelle" data-pid="${p.id}" data-tag="${t}" aria-label="${esc(p.name)}, ${Datum.WT[t]}">
+        <option value="">–</option>${c.baustellenOffen().map((b) => `<option value="${b.id}" ${wert === b.id ? 'selected' : ''}>${esc(kurz(b))}</option>`).join('')}<option value="S" ${wert === 'S' ? 'selected' : ''}>Berufsschule</option></select></td>`;
+    }).join('')}</tr>`).join('');
+    const proBaustelle = c.baustellenOffen().map((b) => {
+      const zellen = tage.map((d, t) => { const leute = c.arbeiter().filter((p) => !c.abwesend(p.id, d) && w && w.zellen && w.zellen[p.id] && w.zellen[p.id][t] === b.id); return `<td>${leute.map((p) => esc(p.name.split(' ')[0])).join(', ') || '<span style="color:#a3aaa5">–</span>'}</td>`; });
+      return `<tr><td><b>${esc(b.name)}</b><small style="display:block;color:#7a827c">${esc(b.ort)}</small></td>${zellen.join('')}</tr>`;
+    }).join('');
+    const kopf = tage.map((d) => `<th${d === c.heute ? ' style="color:var(--firma)"' : ''}>${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
+    return seitenkopf('Wochenplan', `KW ${Datum.kw(mo)} · Die Mitarbeiter sehen ihren Plan in der App, sobald er hier eingetragen ist`,
+      `<span class="wochenwahl"><button class="k klein" data-a="planwoche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(mo)} – ${Datum.kurz(tage[n - 1])}${tage[n - 1].slice(0, 4)}</b><button class="k klein" data-a="planwoche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
+       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
+      + `<div class="karte" id="druck-plan"><div class="kopf"><h3>Wer ist wo</h3></div><div class="tabelle-huelle"><table class="t plan"><thead><tr><th>Mitarbeiter</th>${kopf}</tr></thead><tbody>${zeilen || `<tr><td colspan="7">${leer('Noch keine Mitarbeiter.')}</td></tr>`}</tbody></table></div></div>
+      <div class="karte"><div class="kopf"><h3>Nach Baustelle</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th>${kopf}</tr></thead><tbody>${proBaustelle || `<tr><td colspan="7">${leer('Keine laufenden Baustellen.')}</td></tr>`}</tbody></table></div></div>`;
   };
 
   SEITEN.urlaub = (c) => {
@@ -275,8 +337,50 @@ const Buero = (() => {
     return seitenkopf('Baustellen', 'Aufträge, auf die Stunden, Belege und Lieferscheine gebucht werden', `<button class="k haupt" data-a="baustelle-neu">${Icon('plus')} Baustelle anlegen</button>`)
       + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th><th>Ort</th><th>Arbeiten</th><th class="r">Stunden</th><th class="r">Belege</th><th class="r">Lieferscheine</th><th>Status</th></tr></thead><tbody>
       ${liste.map((b) => { const std = c.typ('stunden').filter((s) => s.bs === b.id).reduce((s, e) => s + stundenVon(e), 0) + c.typ('tagelohn').filter((s) => s.bs === b.id).reduce((s, e) => s + Number(e.stunden), 0);
-        return `<tr class="klickbar" data-a="baustelle" data-id="${b.id}"><td><b>${esc(b.name)}</b></td><td>${esc(b.ort)}</td><td>${esc(b.arbeit || '')}</td><td class="r num">${Zahl.std(std)}</td><td class="r num">${Zahl.eur(c.typ('beleg').filter((x) => x.bs === b.id).reduce((s, x) => s + Number(x.betrag || 0), 0))}</td><td class="r num">${c.typ('lieferschein').filter((x) => x.bs === b.id).length}</td><td>${b.status === 'fertig' ? '<span class="chip">Fertig</span>' : b.status === 'geplant' ? '<span class="chip info">Geplant</span>' : '<span class="chip ok">Laufend</span>'}</td></tr>`; }).join('') || `<tr><td colspan="7">${leer('Noch keine Baustellen.')}</td></tr>`}
+        const regie = c.typ('regie').filter((r) => r.bs === b.id && r.status !== 'abgerechnet').length;
+        return `<tr class="klickbar" data-a="akte" data-id="${b.id}"><td><b>${esc(b.name)}</b>${b.kunde ? `<small style="display:block;color:#7a827c">${esc(b.kunde)}</small>` : ''}${regie ? ` <span class="chip warn">${regie} Regie</span>` : ''}</td><td>${esc(b.ort)}</td><td>${esc(b.arbeit || '')}</td><td class="r num">${Zahl.std(std)}</td><td class="r num">${Zahl.eur(c.typ('beleg').filter((x) => x.bs === b.id).reduce((s, x) => s + Number(x.betrag || 0), 0))}</td><td class="r num">${c.typ('lieferschein').filter((x) => x.bs === b.id).length}</td><td>${b.status === 'fertig' ? '<span class="chip">Fertig</span>' : b.status === 'geplant' ? '<span class="chip info">Geplant</span>' : '<span class="chip ok">Laufend</span>'}</td></tr>`; }).join('') || `<tr><td colspan="7">${leer('Noch keine Baustellen.')}</td></tr>`}
       </tbody></table></div></div>`;
+  };
+
+  /* ---------- Baustellenakte ---------- */
+  const WETTER = { sonnig: 'Sonnig', 'bewölkt': 'Bewölkt', Regen: 'Regen', Wind: 'Sturm/Wind', Frost: 'Frost', Schnee: 'Schnee' };
+  SEITEN.akte = (c) => {
+    const b = c.baustelle(zustand.akte) || (zustand.akte ? null : c.baustellenOffen()[0]);
+    if (!b) return seitenkopf('Baustelle', '') + leer('Diese Baustelle gibt es nicht mehr.');
+    const stunden = c.typ('stunden').filter((s) => s.bs === b.id && s.bis);
+    const tl = c.typ('tagelohn').filter((s) => s.bs === b.id);
+    const std = stunden.reduce((s, e) => s + stundenVon(e), 0) + tl.reduce((s, e) => s + Number(e.stunden), 0);
+    const belege = c.typ('beleg').filter((x) => x.bs === b.id);
+    const ls = c.typ('lieferschein').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const regie = c.typ('regie').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const tagebuch = c.typ('tagebuch').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const proPerson = {}; stunden.forEach((s) => { proPerson[s.pid] = (proPerson[s.pid] || 0) + stundenVon(s); });
+    const maps = b.adresse ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.adresse)}` : '';
+    const regieOffen = regie.filter((r) => r.status !== 'abgerechnet');
+    return seitenkopf(esc(b.name), `${esc(b.arbeit || '')}${b.status === 'fertig' ? ' · abgeschlossen' : ''}`,
+      `<button class="k" data-a="gehe" data-id="baustellen">${Icon('zurueck')} Alle Baustellen</button><button class="k" data-a="baustelle" data-id="${b.id}">${Icon('stift')} Bearbeiten</button>${c.R.hat('bautagebuch') ? `<button class="k haupt" data-a="tagebuch-neu" data-id="${b.id}">${Icon('plus')} Tagebuch-Eintrag</button>` : ''}`)
+      + `<div class="kacheln">
+        <div class="kachel"><div class="titel">Stunden</div><div class="wert">${Zahl.std(std)}</div><div class="fuss">${tl.length ? 'inkl. Aushilfen' : 'gestempelt und eingetragen'}</div></div>
+        <div class="kachel"><div class="titel">Belege</div><div class="wert">${Zahl.eur(belege.reduce((s, x) => s + Number(x.betrag || 0), 0))}</div><div class="fuss">${belege.length} Belege</div></div>
+        <div class="kachel"><div class="titel">Lieferscheine</div><div class="wert">${ls.length}</div><div class="fuss">${ls.length ? 'zuletzt ' + Datum.kurz(ls[0].datum) : 'noch keine'}</div></div>
+        ${c.R.hat('regie') ? `<div class="kachel ${regieOffen.length ? 'achtung' : ''}"><div class="titel">Regie offen</div><div class="wert">${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))}</div><div class="fuss">${regieOffen.length} Zettel noch nicht abgerechnet</div></div>` : ''}
+      </div>
+      <div class="zwei">
+        <div class="karte"><div class="kopf"><h3>Kunde und Ort</h3></div><dl class="daten koerper">
+          <dt>Kunde</dt><dd>${esc(b.kunde || '–')}</dd>
+          <dt>Telefon</dt><dd>${b.telefon ? `<a href="tel:${esc(b.telefon.replace(/\s+/g, ''))}">${esc(b.telefon)}</a>` : '–'}</dd>
+          <dt>Adresse</dt><dd>${b.adresse ? `${esc(b.adresse)} · <a href="${maps}" target="_blank" rel="noopener">Route</a>` : esc(b.ort || '–')}</dd>
+          <dt>Hinweise</dt><dd>${esc(b.notiz || '–')}</dd></dl></div>
+        <div class="karte"><div class="kopf"><h3>Stunden nach Mitarbeiter</h3></div>${Object.keys(proPerson).length ? Object.entries(proPerson).sort((x, y) => y[1] - x[1]).map(([pid, h]) => `<div class="liste-zeile">${personZelle(c, c.person(pid))}<span class="num" style="margin-left:auto"><b>${Zahl.std(h)}</b> Std.</span></div>`).join('') : leer('Noch keine Stunden auf dieser Baustelle.')}
+          ${tl.length ? `<div class="liste-zeile"><div class="text"><b>Aushilfen</b></div><span class="num" style="margin-left:auto"><b>${Zahl.std(tl.reduce((s, e) => s + Number(e.stunden), 0))}</b> Std.</span></div>` : ''}</div>
+      </div>
+      ${c.R.hat('regie') ? `<div class="karte"><div class="kopf"><h3>Regiezettel (Zusatzarbeiten)</h3><span class="legende" style="padding:0;border:0">Stundensatz ${Zahl.eur(c.R.p('regie').satz)}</span></div>
+        ${regie.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Datum</th><th>Arbeit</th><th class="r">Stunden</th><th class="r">Betrag</th><th>Kunde</th><th>Status</th></tr></thead><tbody>${regie.map((r) => `<tr class="klickbar" data-a="regie" data-id="${r.id}"><td>${Datum.kurz(r.datum)}</td><td>${esc(r.text)}</td><td class="r num">${r.leute > 1 ? `${r.leute} × ${Zahl.std(r.stunden)}` : Zahl.std(r.stunden)}</td><td class="r num">${Zahl.eur(regieBetrag(c, r))}</td><td>${esc(r.kunde || '–')}</td><td>${r.status === 'offen' ? '<span class="chip warn">Ohne Unterschrift</span>' : chip(r.status)}</td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Zusatzarbeiten. Die Gesellen schreiben sie in der App auf, der Kunde unterschreibt auf dem Handy.')}</div>` : ''}
+      ${c.R.hat('bautagebuch') ? `<div class="karte"><div class="kopf"><h3>Bautagebuch</h3>${tagebuch.length ? `<button class="k klein" data-a="drucken" data-id="tagebuch">${Icon('drucken')} Drucken</button>` : ''}</div>
+        <div id="druck-tagebuch">${tagebuch.length ? tagebuch.map((t) => `<div class="tagebuch-eintrag"><div class="wann"><b>${esc(Datum.mittel(t.datum))}</b><small>${esc(WETTER[t.wetter] || t.wetter || '')}</small><small>${esc(c.person(t.pid).name)}</small></div>
+          <div class="was"><p>${esc(t.text)}</p>${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
+      <div class="karte"><div class="kopf"><h3>Lieferscheine und Belege</h3></div>
+        ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
 
   const ROLLEN = { chef: 'Inhaber / Chef', buero: 'Büro', geselle: 'Geselle', azubi: 'Auszubildender', helfer: 'Bauhelfer' };
@@ -329,12 +433,12 @@ const Buero = (() => {
         <span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span>
         <div class="firma">${esc(c.cfg.name)}<small>Betriebszentrale</small></div>
         <span class="luecke"></span>
-        <span class="segment nur-breit" title="Darstellung"><button class="${kompakt() ? '' : 'an'}" data-a="ansicht" data-id="breit">Computer</button><button class="${kompakt() ? 'an' : ''}" data-a="ansicht" data-id="kompakt">Handy</button></span>
+        <div class="suche nur-breit" role="search"><span class="sym">${Icon('suche')}</span><input id="b-suche" type="search" placeholder="Suchen: Baustelle, Kunde, Beleg …" aria-label="Suchen" autocomplete="off"><div class="treffer" id="b-treffer" hidden></div></div>
         <div class="wer">${esc(c.ich.name)}<small>${esc(c.ich.funktion || ROLLEN[c.ich.rolle])}</small></div>
         <span class="rund">${esc(c.kuerzel(c.ich.name))}</span>
         <button class="flach" data-a="abmelden" title="Abmelden">${Icon('abmelden')}<span class="nur-breit">Abmelden</span></button>
       </header>
-      <nav class="b-nav">${nav}<div class="unten">${kompakt() ? `<button data-a="ansicht" data-id="breit">${Icon('start')}Computer-Ansicht</button>` : `<button data-a="ansicht" data-id="kompakt">${Icon('person')}Handy-Ansicht</button>`}<a href="#" style="color:inherit">Bereich wechseln</a></div></nav>
+      <nav class="b-nav">${nav}<div class="unten"><a href="#" style="color:inherit">Bereich wechseln</a></div></nav>
       <main class="b-inhalt" id="b-inhalt">${html(zustand.seite, c)}</main>
     </div>`;
   }
@@ -350,6 +454,7 @@ const Buero = (() => {
     if (!sitzung) { aktiverBereich = null; return bueroAnmeldung(); }
     aktiverBereich = Buero;
     Store.oeffne(sitzung.fid);
+    Store.setzeBenutzer(sitzung.pid);
     zeichne();
   }
   function zeichne() {
@@ -358,7 +463,7 @@ const Buero = (() => {
     if (!c.cfg) { Wurzel().innerHTML = `<div class="laden"><div>Betrieb wird geladen<div class="balken"><i></i></div></div></div>`; return; }
     if (!c.ich || !['chef', 'buero'].includes(c.ich.rolle)) { Sitzung.setze('buero', null); return bueroAnmeldung('Ihr Zugang wurde geändert. Bitte neu anmelden.'); }
     const scroll = window.scrollY;
-    const aktivesFeld = document.activeElement && document.activeElement.closest && document.activeElement.closest('#b-inhalt form');
+    const aktivesFeld = document.activeElement && document.activeElement.closest && document.activeElement.closest('#b-inhalt form, .suche');
     if (aktivesFeld) return; // nicht beim Tippen neu zeichnen
     warKompakt = kompakt();
     Wurzel().innerHTML = rahmen(c);
@@ -366,6 +471,34 @@ const Buero = (() => {
     ablageVorbereiten(c);
     window.scrollTo(0, scroll);
   }
+
+  /* ---------- Suche ---------- */
+  function suchen(c, q) {
+    const t = q.trim().toLowerCase(); if (t.length < 2) return [];
+    const passt = (...felder) => felder.some((f) => String(f || '').toLowerCase().includes(t));
+    const out = [];
+    (c.cfg.baustellen || []).forEach((b) => { if (passt(b.name, b.ort, b.kunde, b.adresse, b.arbeit)) out.push({ a: 'akte', id: b.id, art: 'Baustelle', titel: b.name, unter: [b.kunde, b.ort].filter(Boolean).join(' · ') }); });
+    c.personen.forEach((p) => { if (passt(p.name, p.funktion)) out.push({ a: 'gehe', id: 'team', art: 'Mitarbeiter', titel: p.name, unter: p.funktion }); });
+    c.items.forEach((i) => {
+      if (i.typ === 'beleg' && passt(i.haendler, i.notiz, i.kategorie, Zahl.eur(i.betrag))) out.push({ a: 'beleg', id: i.id, art: 'Beleg', titel: `${Zahl.eur(i.betrag)} · ${i.haendler || i.kategorie}`, unter: `${Datum.kurz(i.datum)} · ${c.person(i.pid).name}` });
+      if (i.typ === 'lieferschein' && passt(i.lieferant, i.nummer, i.notiz, ...(i.positionen || []))) out.push({ a: 'lieferschein', id: i.id, art: 'Lieferschein', titel: `${i.lieferant} ${i.nummer || ''}`, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+      if (i.typ === 'regie' && passt(i.text, i.kunde, i.material)) out.push({ a: 'regie', id: i.id, art: 'Regiezettel', titel: i.text, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+      if (i.typ === 'tagebuch' && passt(i.text)) out.push({ a: 'akte', id: i.bs, art: 'Bautagebuch', titel: i.text, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+    });
+    return out.slice(0, 9);
+  }
+  document.addEventListener('input', (e) => {
+    if (aktiverBereich !== Buero || e.target.id !== 'b-suche') return;
+    const box = $('#b-treffer'); const liste = suchen(ctx(), e.target.value);
+    box.hidden = !e.target.value.trim();
+    box.innerHTML = liste.length ? liste.map((r) => `<button data-a="${r.a}" data-id="${esc(r.id)}"><small>${esc(r.art)}</small><b>${esc(r.titel)}</b><span>${esc(r.unter || '')}</span></button>`).join('') : '<div class="nichts">Nichts gefunden</div>';
+  });
+  document.addEventListener('click', (e) => {
+    if (aktiverBereich !== Buero) return;
+    const box = $('#b-treffer'); if (!box || box.hidden) return;
+    if (e.target.closest('#b-treffer [data-a]')) { const inp = $('#b-suche'); if (inp) { inp.value = ''; inp.blur(); } box.hidden = true; return; }
+    if (!e.target.closest('.suche')) box.hidden = true;
+  }, true);
 
   /* ---------- Aktionen ---------- */
   document.addEventListener('click', (e) => {
@@ -379,6 +512,7 @@ const Buero = (() => {
     const el = e.target.closest('[data-a]'); if (!el || !Wurzel().contains(el)) return;
     if (el.dataset.a === 'filter-bs') { zustand.filter.lieferscheine = el.value; zeichne(); }
     if (el.dataset.a === 'bezahlt') Store.aendere(el.dataset.id, { bezahlt: el.checked });
+    if (el.dataset.a === 'plan-zelle') planSetzen(ctx(), el.dataset.pid, el.dataset.tag, el.value);
   });
   document.addEventListener('submit', (e) => {
     if (aktiverBereich !== Buero || e.target.id !== 'f-einst') return;
@@ -392,11 +526,24 @@ const Buero = (() => {
   const AKTION = {
     gehe(el) { zustand.seite = el.dataset.id; zustand.navOffen = false; zeichne(); window.scrollTo(0, 0); },
     nav() { zustand.navOffen = !zustand.navOffen; zeichne(); },
-    ansicht(el) { zustand.wahl = el.dataset.id; zustand.navOffen = false; zeichne(); },
     abmelden() { Sitzung.setze('buero', null); aktiverBereich = null; bueroAnmeldung(); },
     woche(el) { const d = Number(el.dataset.id); zustand.woche = d ? Datum.plus(zustand.woche, d) : Datum.montag(Datum.heute()); zeichne(); },
     monat(el) { const [j, m] = zustand.monat.split('-').map(Number); const d = new Date(j, m - 1 + Number(el.dataset.id), 1); zustand.monat = Datum.iso(d).slice(0, 7); zeichne(); },
     filter(el) { zustand.filter[el.dataset.feld] = el.dataset.id; zeichne(); },
+    akte(el) { zustand.akte = el.dataset.id; zustand.seite = 'akte'; zeichne(); window.scrollTo(0, 0); },
+    'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
+    nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
+    planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'plan-vorwoche'(el, c) {
+      const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
+      if (!alt) return meldung('In der Vorwoche ist nichts geplant.', 'fehler');
+      planSpeichern(c, zustand.planWoche, JSON.parse(JSON.stringify(alt.zellen || {})));
+      meldung('Plan der Vorwoche übernommen');
+    },
+    drucken(el) { const z = $('#druck-' + el.dataset.id); if (z) drucken(z.innerHTML); },
+    regie(el, c) { regieFenster(c, el.dataset.id); },
+    'tagebuch-neu'(el, c) { tagebuchFenster(c, el.dataset.id); },
+    foto(el) { dateiUrl(el.dataset.id).then((url) => url && Fenster.oeffne({ titel: 'Foto', breit: true, inhalt: `<img src="${url}" alt="Foto" style="width:100%;display:block;border-radius:4px">` })); },
     'urlaub-ja'(el) { Store.aendere(el.dataset.id, { status: 'genehmigt', entschieden: Date.now() }); meldung('Urlaub genehmigt. Der Mitarbeiter sieht es sofort in der App.'); },
     'urlaub-nein'(el) { Store.aendere(el.dataset.id, { status: 'abgelehnt', entschieden: Date.now() }); meldung('Antrag abgelehnt.'); },
     au(el) { Store.aendere(el.dataset.id, { au: true }); },
@@ -437,6 +584,7 @@ const Buero = (() => {
     Fenster.oeffne({
       titel: `${esc(p.name)} · ${esc(Datum.lang(datum))}`, bereich: 'ui-buero-fenster',
       inhalt: (eintr.length ? `<table class="t"><thead><tr><th>Zeit</th><th>Baustelle</th><th>Tätigkeit</th><th class="r">Std.</th><th>Status</th><th></th></tr></thead><tbody>${eintr.map((e) => `<tr><td class="num">${esc(e.von)} – ${esc(e.bis || 'läuft')}${e.pause ? `<small style="display:block;color:#7a827c">Pause ${e.pause} Min.</small>` : ''}</td><td>${esc(c.bsName(e.bs))}</td><td>${esc(e.taetigkeit || '')}</td><td class="r num">${e.bis ? Zahl.std(stundenVon(e)) : ''}</td><td>${chip(e.status)}</td><td class="r" style="white-space:nowrap">${e.status === 'offen' && darf ? `<button class="k klein ok" data-f="frei" data-id="${e.id}">Freigeben</button> ` : ''}<button class="k klein" data-f="bearbeiten" data-id="${e.id}">${Icon('stift')}</button></td></tr>`).join('')}</tbody></table>` : leer('An diesem Tag ist nichts erfasst.'))
+        + eintr.map((e) => verlauf(c, e)).filter(Boolean).slice(-1).join('')
         + (c.abwesend(pid, datum) ? `<p class="chip warn" style="margin-top:12px">${c.abwesend(pid, datum).typ === 'krank' ? 'Krank gemeldet' : 'Urlaub'}</p>` : ''),
       fuss: `<button class="k" data-f="neu">${Icon('plus')} Eintrag hinzufügen</button><button class="k" data-f="zu">Schließen</button>`,
       aktionen: {
@@ -501,7 +649,7 @@ const Buero = (() => {
         : `<div class="reihe"><label class="feld"><span>Lieferant</span><input name="lieferant" value="${esc(e.lieferant)}"></label><label class="feld"><span>Lieferschein-Nr.</span><input name="nummer" value="${esc(e.nummer || '')}"></label></div>`}
         ${c.R.hat('baustellen') ? `<label class="feld"><span>Baustelle</span><select name="bs">${bsOptionen(c, e.bs)}</select></label>` : ''}
         <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(e.notiz || '')}"></label>
-        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>
+        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>${verlauf(c, e)}
       </div></div>`,
       fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>
         ${e.status === 'offen' && darf ? `<button class="k nein" data-f="status" data-id="abgelehnt">Ablehnen</button><button class="k haupt" data-f="status" data-id="freigegeben">${Icon('haken')} Freigeben</button>` : ''}
@@ -636,7 +784,11 @@ const Buero = (() => {
     const b = (c.cfg.baustellen || []).find((x) => x.id === id) || { name: '', ort: '', arbeit: '', status: 'laufend' };
     const hg = Fenster.oeffne({
       titel: id ? 'Baustelle bearbeiten' : 'Baustelle anlegen',
-      inhalt: `<label class="feld"><span>Name</span><input name="name" value="${esc(b.name)}" placeholder="z. B. Neubau EFH Müller"></label><label class="feld"><span>Ort</span><input name="ort" value="${esc(b.ort)}"></label><label class="feld"><span>Arbeiten</span><input name="arbeit" value="${esc(b.arbeit || '')}"></label>
+      inhalt: `<label class="feld"><span>Name</span><input name="name" value="${esc(b.name)}" placeholder="z. B. Neubau EFH Müller"></label>
+        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(b.kunde || '')}"></label><label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(b.telefon || '')}"></label></div>
+        <div class="reihe"><label class="feld"><span>Straße, PLZ Ort</span><input name="adresse" value="${esc(b.adresse || '')}" placeholder="für die Route im Handy"></label><label class="feld"><span>Ort (kurz)</span><input name="ort" value="${esc(b.ort)}"></label></div>
+        <label class="feld"><span>Arbeiten</span><input name="arbeit" value="${esc(b.arbeit || '')}"></label>
+        <label class="feld"><span>Hinweise für die Mitarbeiter</span><input name="notiz" value="${esc(b.notiz || '')}" placeholder="z. B. Schlüssel beim Nachbarn, Kran ab 7 Uhr"></label>
         <label class="feld"><span>Status</span><select name="status">${[['geplant', 'Geplant'], ['laufend', 'Laufend'], ['fertig', 'Fertig']].map(([k, t]) => `<option value="${k}" ${b.status === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`,
       fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
       aktionen: { ok: () => {
@@ -647,6 +799,85 @@ const Buero = (() => {
       } },
     });
   }
+  /* ---------- Wochenplan speichern ---------- */
+  function planSpeichern(c, montag, zellen) {
+    const w = c.planWoche(montag);
+    if (w) Store.aendere(w.id, { zellen }); else Store.neu({ id: 'plan_' + montag, typ: 'plan', montag, zellen });
+  }
+  function planSetzen(c, pid, tag, wert) {
+    const w = c.planWoche(zustand.planWoche); const zellen = JSON.parse(JSON.stringify((w && w.zellen) || {}));
+    zellen[pid] = zellen[pid] || {}; if (wert) zellen[pid][tag] = wert; else delete zellen[pid][tag];
+    planSpeichern(c, zustand.planWoche, zellen);
+  }
+
+  /* ---------- Monatsnachweis (druckbar) ---------- */
+  function nachweisFenster(c, pid) {
+    const p = c.person(pid); const ym = zustand.monat; const n = c.monatsnachweis(pid, ym);
+    const zeilen = n.tage.map((t) => {
+      const wt = Datum.WT[Datum.wochentag(t.datum)];
+      const bem = t.feiertag || (t.abw ? (t.abw.typ === 'krank' ? 'Krank' : esc(t.abw.art || 'Urlaub')) : t.eintr.some((e) => e.taetigkeit === 'Berufsschule') ? 'Berufsschule' : '');
+      const grau = !t.arbeitstag ? ' class="frei"' : '';
+      if (!t.eintr.length) return `<tr${grau}><td>${wt} ${Datum.kurz(t.datum)}</td><td></td><td></td><td></td><td></td><td class="r num">${t.g ? Zahl.std(t.g) : ''}</td><td>${bem}</td></tr>`;
+      return t.eintr.map((e, i) => `<tr${grau}><td>${i ? '' : `${wt} ${Datum.kurz(t.datum)}`}</td><td class="num">${esc(e.von)} – ${esc(e.bis)}</td><td class="r num">${e.pause || 0}</td><td>${esc(c.bsName(e.bs))}</td><td class="r num">${Zahl.std(stundenVon(e))}</td><td></td><td>${i ? '' : bem}</td></tr>`).join('');
+    }).join('');
+    const inhalt = `<div class="nachweis" id="druck-nachweis">
+      <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Stundennachweis ${esc(Datum.monatName(ym))}</b><br>${esc(p.name)} · ${esc(p.funktion || '')}</div></div>
+      <table class="t"><thead><tr><th>Tag</th><th>Beginn – Ende</th><th class="r">Pause</th><th>Baustelle</th><th class="r">Std.</th><th class="r">Gutschr.</th><th>Bemerkung</th></tr></thead><tbody>${zeilen}</tbody></table>
+      <div class="nw-summe"><span>Soll <b>${Zahl.std(n.soll)}</b></span><span>Gearbeitet <b>${Zahl.std(n.ist)}</b></span><span>Gutschrift Urlaub/Krank <b>${Zahl.std(n.gut)}</b></span><span>Saldo Monat <b>${n.diff >= 0 ? '+' : ''}${Zahl.std(n.diff)}</b></span><span>Überstundenkonto <b>${(() => { const k = c.konto(pid, ym); return (k >= 0 ? '+' : '') + Zahl.std(k); })()}</b></span></div>
+      <div class="nw-unterschrift"><div>Datum, Unterschrift Arbeitnehmer</div><div>Datum, Unterschrift Arbeitgeber</div></div>
+      <p class="nw-fuss">Aufzeichnung von Beginn, Ende und Dauer der täglichen Arbeitszeit nach § 17 MiLoG. Aufbewahrung mindestens zwei Jahre.</p></div>`;
+    Fenster.oeffne({ titel: `Stundennachweis ${esc(p.name)}`, breit: true, bereich: 'ui-buero-fenster', inhalt,
+      fuss: `<button class="k" data-f="zu">Schließen</button><button class="k haupt" data-f="drucken">${Icon('drucken')} Drucken</button>`,
+      aktionen: { drucken: () => drucken($('#druck-nachweis').outerHTML) } });
+  }
+
+  /* ---------- Regiezettel ---------- */
+  function regieHtml(c, r) {
+    const b = c.baustelle(r.bs) || { name: '–', adresse: '' };
+    return `<div class="nachweis regiezettel" id="druck-regie">
+      <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Regiebericht</b><br>${esc(Datum.lang(r.datum))}</div></div>
+      <dl class="daten"><dt>Baustelle</dt><dd>${esc(b.name)}${b.adresse ? `, ${esc(b.adresse)}` : ''}</dd><dt>Ausgeführte Arbeit</dt><dd>${esc(r.text)}</dd>
+      <dt>Arbeitszeit</dt><dd>${r.leute > 1 ? `${r.leute} Mitarbeiter × ${Zahl.std(r.stunden)} Std. = ` : ''}<b>${Zahl.std(regieStunden(r))} Std.</b></dd>
+      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
+      <div class="nw-unterschrift"><div>${r.unterschrift ? `<img data-datei="${esc(r.unterschrift)}" alt="Unterschrift" style="height:64px;display:block">` : '<div style="height:64px"></div>'}Auftraggeber${r.kunde ? ': ' + esc(r.kunde) : ''}</div><div><div style="height:64px"></div>${esc(c.cfg.name)}</div></div>
+      <p class="nw-fuss">Die oben genannten Arbeiten wurden zusätzlich zum Auftrag ausgeführt und werden nach Aufwand abgerechnet.</p></div>`;
+  }
+  function regieFenster(c, id) {
+    const r = c.items.find((i) => i.id === id); if (!r) return;
+    const hg = Fenster.oeffne({ titel: `Regiezettel ${esc(Datum.kurz(r.datum))}`, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: regieHtml(c, r) + `<p style="margin:14px 0 0">${r.status === 'offen' ? '<span class="chip warn">Noch nicht unterschrieben</span> Der Kunde kann in der App nachträglich unterschreiben.' : `Wert nach Aufwand: <b>${Zahl.eur(regieBetrag(c, r))}</b> (${Zahl.eur(c.R.p('regie').satz)} je Std.)`}</p>${verlauf(c, r)}`,
+      fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button><button class="k" data-f="drucken">${Icon('drucken')} Drucken</button>${r.status === 'abgerechnet' ? `<button class="k" data-f="status" data-id="${r.unterschrift ? 'unterschrieben' : 'offen'}">Wieder öffnen</button>` : `<button class="k haupt" data-f="status" data-id="abgerechnet">${Icon('haken')} Abgerechnet</button>`}`,
+      aktionen: {
+        drucken: () => drucken($('#druck-regie', hg).outerHTML),
+        status: (b) => { Store.aendere(id, { status: b.dataset.id }); Fenster.schliesse(); meldung(b.dataset.id === 'abgerechnet' ? 'Als abgerechnet markiert' : 'Wieder offen'); },
+        loeschen: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich löschen?'; return; } Store.loesche(id); Fenster.schliesse(); meldung('Gelöscht'); },
+      } });
+    bilderNachladen(hg, c.items);
+  }
+
+  /* ---------- Bautagebuch-Eintrag aus dem Büro ---------- */
+  function tagebuchFenster(c, bs) {
+    const fotos = [];
+    const hg = Fenster.oeffne({ titel: 'Tagebuch-Eintrag', bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Datum</span><input type="date" name="datum" value="${Datum.heute()}" max="${Datum.heute()}"></label>
+        <label class="feld"><span>Wetter</span><select name="wetter">${Object.entries(WETTER).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select></label></div>
+        <label class="feld"><span>Was ist passiert?</span><textarea name="text" rows="4" placeholder="z. B. Schwelle gesetzt, Abnahme mit Bauleitung"></textarea></label>
+        <div class="feld"><span>Fotos</span><div class="fotos" id="tb-fotos"></div><button class="k klein" type="button" data-f="foto">${Icon('foto')} Foto hinzufügen</button></div>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: {
+        foto: () => dateiWaehlen('image/*', async (f) => {
+          if (fotos.length >= Number(c.R.p('bautagebuch').fotos)) return meldung('Mehr Fotos gehen in einen neuen Eintrag.', 'fehler');
+          try { const url = await bildVerkleinern(f, { maxKante: 1100 }); fotos.push(await Store.speichereDatei(url, f.name)); $('#tb-fotos', hg).insertAdjacentHTML('beforeend', `<span class="foto"><img src="${url}" alt="Foto"></span>`); }
+          catch (e) { meldung(e.message, 'fehler'); }
+        }),
+        ok: () => {
+          const w = Fenster.werte(hg); if (!w.text.trim() && !fotos.length) return meldung('Bitte eine Notiz oder ein Foto hinzufügen.', 'fehler');
+          Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: w.datum, bs, wetter: w.wetter, text: w.text.trim(), fotos });
+          Fenster.schliesse(); meldung('Eintrag gespeichert');
+        },
+      } });
+  }
+
   function neuerCode(personen) {
     let code; do { code = String(Math.floor(2000 + Math.random() * 7999)); } while (personen.some((p) => p.code === code)); return code;
   }

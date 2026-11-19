@@ -260,7 +260,6 @@ dl.daten dd { margin: 0; font-weight: 500; }
    ========================================================================= */
 .ui-app { min-height: 100vh; background: #f3f4f6; color: #15191e; display: flex; justify-content: center; }
 .app-rahmen { width: 100%; max-width: 480px; min-height: 100vh; background: #f3f4f6; position: relative; display: flex; flex-direction: column; padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
-@media (min-width: 560px) { .app-rahmen { border-left: 1px solid #e1e3e7; border-right: 1px solid #e1e3e7; } }
 .a-kopf { padding: calc(14px + env(safe-area-inset-top)) 18px 12px; background: #fff; border-bottom: 1px solid #e6e8ec; display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10; }
 .a-kopf .firmenzeichen { width: 34px; height: 34px; border-radius: 8px; font-size: 13px; }
 .a-kopf .titel { flex: 1; min-width: 0; }
@@ -506,6 +505,109 @@ dl.daten dd { margin: 0; font-weight: 500; }
   .start-fuss { padding: 0 16px 32px; }
 }
 
+/* Mitarbeiter-App am Computer oder Tablet quer: normale Anwendung mit Seitenleiste,
+   kein schmaler Handy-Streifen. Nur im echten App-Bereich, nicht in der Studio-Vorschau. */
+@media (min-width: 900px) {
+  body.app-modus .ui-app { display: block; }
+  body.app-modus .app-rahmen { max-width: none; padding: 0 0 0 232px; }
+  body.app-modus .a-kopf { padding: 14px 32px; }
+  body.app-modus .a-inhalt { width: 100%; max-width: 760px; margin: 0 auto; padding: 28px 32px 48px; }
+  body.app-modus .a-tabs { top: 0; bottom: 0; left: 0; transform: none; width: 232px; max-width: none; border-top: 0; border-right: 1px solid #e3e5ea; display: flex !important; flex-direction: column; gap: 2px; padding: 76px 12px 12px; }
+  body.app-modus .a-tabs button { flex-direction: row; justify-content: flex-start; gap: 12px; font-size: 14px; padding: 10px 12px; border-radius: 8px; color: #3a404a; }
+  body.app-modus .a-tabs button.an { background: var(--firma-hell); color: var(--firma); }
+  body.app-modus .a-tabs button .ic { width: 19px; height: 19px; }
+  body.app-modus .a-tabs .scan { order: -1; margin-bottom: 10px; background: var(--firma); color: #fff; font-weight: 600; }
+  body.app-modus .a-tabs .scan.an { background: var(--firma); color: #fff; }
+  body.app-modus .a-tabs .scan span.kreis { width: auto; height: auto; margin: 0; background: none; box-shadow: none; border: 0; }
+  body.app-modus .a-tabs .zahl { position: static; margin-left: auto; }
+  body.app-modus .erfassen-raster { grid-template-columns: repeat(3, 1fr); }
+  body.app-modus .erfassen-kachel.gross { grid-column: span 3; }
+  body.app-modus .meldung { bottom: 24px; }
+  body.app-modus .a-login { max-width: 420px; margin: 0 auto; }
+}
+
+/* ---------- Suche in der Kopfzeile ---------- */
+.suche { position: relative; width: min(340px, 32vw); margin-right: 12px; }
+.suche .sym { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #8a928c; display: flex; }
+.suche .sym .ic { width: 16px; height: 16px; }
+.suche input { width: 100%; border: 1px solid #d3d8d0; background: #f6f7f4; border-radius: 4px; padding: 7px 10px 7px 32px; font-size: 13px; }
+.suche input:focus { background: #fff; outline: 2px solid var(--firma); outline-offset: -1px; }
+.suche .treffer { position: absolute; top: calc(100% + 6px); left: 0; right: 0; min-width: 320px; background: #fff; border: 1px solid #d3d8d0; border-radius: 6px; box-shadow: 0 12px 32px rgba(0,0,0,.14); z-index: 60; max-height: 70vh; overflow: auto; }
+.suche .treffer button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid #eef0ec; background: none; padding: 9px 12px; }
+.suche .treffer button:hover, .suche .treffer button:focus-visible { background: var(--firma-hell); }
+.suche .treffer small { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; color: #7a827c; }
+.suche .treffer b { display: block; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.suche .treffer span { display: block; font-size: 12px; color: #6a726c; }
+.suche .nichts { padding: 12px; color: #7a827c; font-size: 13px; }
+
+/* ---------- Wochenplan ---------- */
+.t.plan td { padding-top: 6px; padding-bottom: 6px; }
+.plan-wahl { width: 100%; min-width: 118px; border: 1px solid #d9ddd6; border-radius: 4px; padding: 5px 6px; font-size: 13px; background: #fff; color: #9aa19c; }
+.plan-wahl.gesetzt { color: #1d2420; border-color: color-mix(in srgb, var(--firma) 45%, #d9ddd6); background: var(--firma-hell); }
+
+/* ---------- Baustellenakte ---------- */
+.tagebuch-eintrag { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 14px 18px; border-bottom: 1px solid #eef0ec; }
+.tagebuch-eintrag:last-child { border-bottom: 0; }
+.tagebuch-eintrag .wann b { display: block; font-size: 13px; }
+.tagebuch-eintrag .wann small { display: block; color: #7a827c; font-size: 12px; }
+.tagebuch-eintrag .was p { margin: 0 0 10px; font-size: 14px; line-height: 1.5; }
+.fotos { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+.fotos .foto { width: 120px; height: 84px; border-radius: 4px; overflow: hidden; border: 1px solid #dadfd7; padding: 0; background: #eceee9; display: block; }
+.fotos .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.verlauf { margin: 12px 0 0; font-size: 12px; color: #7a827c; }
+.ui-buero.kompakt .tagebuch-eintrag { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+
+/* ---------- Nachweise und Regiezettel (Bildschirm und Druck) ---------- */
+.nachweis { font-size: 13px; color: #1d2420; }
+.nachweis .nw-kopf { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 2px solid #1d2420; }
+.nachweis .t td, .nachweis .t th { padding: 5px 8px; font-size: 12px; }
+.nachweis tr.frei td { color: #9aa19c; background: #fafaf8; }
+.nachweis .nw-summe { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 14px 0; padding: 10px 12px; background: #f3f4f1; border-radius: 4px; }
+.nachweis .nw-unterschrift { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px; }
+.nachweis .nw-unterschrift > div { border-top: 1px solid #1d2420; padding-top: 6px; font-size: 12px; color: #5f6862; display: flex; flex-direction: column-reverse; }
+.nachweis .nw-unterschrift img { margin-top: -70px; }
+.nachweis .nw-fuss { font-size: 11px; color: #7a827c; margin: 18px 0 0; }
+.regiezettel dl.daten { font-size: 14px; gap: 10px 18px; }
+#druck { display: none; }
+@media print {
+  body.druckt > *:not(#druck) { display: none !important; }
+  body.druckt #druck { display: block; padding: 0; }
+  body.druckt { background: #fff !important; }
+  #druck .karte { border: 0; box-shadow: none; }
+  #druck select { border: 0; background: none; appearance: none; color: #000; padding: 0; }
+  #druck .t th, #druck .t td { border-bottom: 1px solid #ccc; }
+  @page { margin: 14mm; }
+}
+
+/* ---------- App: Baustelle, Fotos, Unterschrift, Verbindung ---------- */
+.baustelle-karte { padding: 16px; }
+.baustelle-karte .kopfzeile { display: flex; gap: 12px; align-items: center; }
+.baustelle-karte .kopfzeile .sym { width: 40px; height: 40px; border-radius: 10px; background: var(--firma-hell); color: var(--firma); display: grid; place-items: center; flex: none; }
+.baustelle-karte .kopfzeile b { display: block; font-size: 16px; }
+.baustelle-karte .kopfzeile small { color: #6b7280; font-size: 13px; }
+.baustelle-karte .hinweis { margin: 12px 0 0; padding: 10px 12px; background: #fff8e6; border-radius: 10px; font-size: 14px; color: #5a4512; }
+.baustelle-karte .knoepfe { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-top: 12px; }
+.baustelle-karte .knoepfe .gross-knopf { padding: 12px; font-size: 15px; text-decoration: none; }
+.foto-reihe { display: flex; gap: 8px; flex-wrap: wrap; }
+.foto-reihe .foto { width: 88px; height: 88px; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid #dfe2e7; background: #f0f2f5; padding: 0; }
+.foto-reihe .foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.foto-reihe .foto button { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; display: grid; place-items: center; padding: 0; }
+.foto-reihe .foto button .ic { width: 14px; height: 14px; }
+.foto-reihe .foto.neu { display: grid; place-items: center; color: var(--firma); border-style: dashed; border-width: 2px; border-color: color-mix(in srgb, var(--firma) 40%, #dfe2e7); background: #fff; }
+.unterschrift-feld { position: relative; height: 180px; border: 1px solid #dfe2e7; border-radius: 10px; background: #fff; touch-action: none; }
+.unterschrift-feld canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+.unterschrift-feld .linie { position: absolute; left: 16px; right: 16px; bottom: 36px; border-top: 1px dashed #c3c7cf; padding-top: 4px; font-size: 12px; color: #9aa1ad; pointer-events: none; }
+.unterschrift-feld.voll .linie { color: transparent; }
+.unterschrift-feld button { position: absolute; top: 8px; right: 8px; border: 0; background: #eef0f3; border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+.sync { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #1f4e79; background: #e7f0fa; border-radius: 20px; padding: 5px 10px; white-space: nowrap; }
+.sync.aus { color: #7a4a00; background: #fff1d6; }
+.sync .ic { width: 15px; height: 15px; }
+.gross-knopf.rot { color: #fff; }
+
+/* ---------- Fokus für Tastaturbedienung ---------- */
+:focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
+.ui-buero :focus-visible, .ui-app :focus-visible { outline-color: var(--firma); }
+
 </style>
 <div id="wurzel"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -665,6 +767,14 @@ const Icon = (name) => {
     glocke: 'M6 16V11a6 6 0 1 1 12 0v5l2 2H4zM10 21h4',
     play: 'M8 5v14l11-7z',
     stop: 'M7 7h10v10H7z',
+    unterschrift: 'M3 17c3-6 5-9 6-8s-2 7 0 8 4-6 5-5-1 4 1 4 3-2 4-2M3 21h18',
+    plan: 'M4 5h16v15H4zM4 10h16M10 10v10M15 10v10',
+    foto: 'M4 5h16v14H4zM4 16l5-5 4 4 2-2 5 5M15 9h.01',
+    suche: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
+    drucken: 'M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z',
+    karte: 'M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+    telefon: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z',
+    wolke: 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z',
   }[name] || '';
   return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg>`;
 };
@@ -775,6 +885,7 @@ const Store = (() => {
     }
     if (db) { backend = cloudBackend(db); modus = 'cloud'; }
     else { backend = lokalesBackend(); modus = 'lokal'; }
+    abarbeiten();
     return modus;
   }
 
@@ -802,6 +913,31 @@ const Store = (() => {
     return praefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   }
 
+  /* ---------- Warteschlange für Schreibvorgänge ---------- */
+  let benutzer = null;
+  const WS_KEY = 'rw-warteschlange';
+  let warteschlange = (() => { try { return JSON.parse(localStorage.getItem(WS_KEY) || '[]'); } catch { return []; } })();
+  let laeuft = false;
+  const merke = () => { try { localStorage.setItem(WS_KEY, JSON.stringify(warteschlange)); } catch { /* voll oder privat */ } };
+  function schreibe(pfad, daten) {
+    warteschlange = warteschlange.filter((w) => w.pfad !== pfad); // nur der letzte Stand zählt
+    warteschlange.push({ pfad, daten });
+    merke(); abarbeiten();
+  }
+  async function abarbeiten() {
+    if (laeuft || !backend) return; laeuft = true;
+    try {
+      while (warteschlange.length) {
+        const w = warteschlange[0];
+        try { w.daten === null ? await backend.del(w.pfad) : await backend.set(w.pfad, w.daten); }
+        catch (e) { console.warn('Später erneut:', w.pfad, e && e.message); break; }
+        warteschlange.shift(); merke();
+      }
+    } finally { laeuft = false; benachrichtige(); }
+  }
+  window.addEventListener('online', abarbeiten);
+  setInterval(() => { if (warteschlange.length) abarbeiten(); }, 20000);
+
   return {
     init,
     get modus() { return modus; },
@@ -824,34 +960,41 @@ const Store = (() => {
       await backend.set(`b/${fid}/cfg/main`, sauber);
     },
 
-    /* Einträge */
+    /* Einträge. Schreiben ist optimistisch: die Anzeige ändert sich sofort,
+       der Server bekommt die Änderung über die Warteschlange. Fällt das Netz
+       aus (Funkloch auf der Baustelle), bleibt sie dort liegen und wird
+       nachgeschickt, sobald wieder Verbindung besteht. */
     async neu(eintrag) {
       const id = eintrag.id || uid();
-      const daten = { ...eintrag, erstellt: eintrag.erstellt || Date.now() };
-      delete daten.id;
+      const daten = { ...eintrag, erstellt: eintrag.erstellt || Date.now(), von: eintrag.von || benutzer || undefined };
+      delete daten.id; if (daten.von === undefined) delete daten.von;
       zustand.items = [...zustand.items, { ...daten, id }]; benachrichtige();
-      await backend.set(`b/${zustand.fid}/items/${id}`, daten);
+      schreibe(`b/${zustand.fid}/items/${id}`, daten);
       return id;
     },
     async aendere(id, patch) {
       const alt = zustand.items.find((i) => i.id === id);
       if (!alt) return;
       const neu = { ...alt, ...patch, geaendert: Date.now() };
+      const was = Object.keys(patch).filter((k) => k !== 'verlauf').join(', ');
+      neu.verlauf = [...(alt.verlauf || []), { wer: benutzer || '', wann: Date.now(), was }].slice(-12);
       zustand.items = zustand.items.map((i) => (i.id === id ? neu : i)); benachrichtige();
       const daten = { ...neu }; delete daten.id;
-      await backend.set(`b/${zustand.fid}/items/${id}`, daten);
+      schreibe(`b/${zustand.fid}/items/${id}`, daten);
     },
     async loesche(id) {
       zustand.items = zustand.items.filter((i) => i.id !== id); benachrichtige();
-      await backend.del(`b/${zustand.fid}/items/${id}`);
+      schreibe(`b/${zustand.fid}/items/${id}`, null);
     },
+    setzeBenutzer(pid) { benutzer = pid || null; },
+    get offen() { return warteschlange.length; },
 
     /* Dateien (Fotos, PDFs) */
     async speichereDatei(dataUrl, name) {
       if (dataUrl.length > 240000) throw new Error('Die Datei ist zu groß (max. ca. 170 KB). Fotos werden automatisch verkleinert, PDFs bitte kleiner speichern.');
       const id = uid('f');
-      await backend.set(`b/${zustand.fid}/dateien/${id}`, { daten: dataUrl, name: name || '' });
       dateiCache.set(id, dataUrl);
+      schreibe(`b/${zustand.fid}/dateien/${id}`, { daten: dataUrl, name: name || '' });
       return id;
     },
     async datei(id) {
@@ -995,10 +1138,33 @@ const BAUSTEINE = {
     p: {},
   },
 
+  bautagebuch: {
+    name: 'Bautagebuch', gruppe: 'erfassen', icon: 'stift',
+    kurz: 'Fotos und Notizen pro Tag und Baustelle, mit Wetter.',
+    wofuer: 'Bei Mängelstreit oder Nachträgen fehlt der Nachweis, wer wann was gemacht hat.',
+    ein: ['app', 'baustellen'],
+    p: { fotos: { typ: 'zahl', name: 'Fotos pro Eintrag', wert: 3, min: 1, max: 4, einheit: 'Stück' } },
+  },
+  regie: {
+    name: 'Regiezettel', gruppe: 'erfassen', icon: 'unterschrift',
+    kurz: 'Zusatzarbeiten vor Ort aufschreiben, der Kunde unterschreibt auf dem Handy.',
+    wofuer: 'Beim Dachöffnen kommt morsches Holz zum Vorschein. Ohne Unterschrift wird die Mehrarbeit nie bezahlt.',
+    ein: ['app', 'baustellen'],
+    p: {
+      satz: { typ: 'zahl', name: 'Stundensatz Regie', wert: 58, min: 30, max: 120, einheit: '€/Std.' },
+      ohneUnterschrift: { typ: 'wahl', name: 'Ohne Unterschrift speichern', wert: 'ja', optionen: ['ja', 'nein'] },
+    },
+  },
+  wochenplan: {
+    name: 'Wochenplan', gruppe: 'stamm', icon: 'plan',
+    kurz: 'Wer ist nächste Woche auf welcher Baustelle. Steht danach in der App.',
+    wofuer: 'Der Plan steht nur im Kopf vom Chef; Sonntagabend wird reihum telefoniert.',
+    ein: ['baustellen'],
+    p: { tage: { typ: 'wahl', name: 'Planen für', wert: 'Mo bis Fr', optionen: ['Mo bis Fr', 'Mo bis Sa'] } },
+  },
+
   /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
-  bautagebuch: { name: 'Bautagebuch', gruppe: 'geplant', icon: 'stift', kurz: 'Fotos und Notizen pro Tag und Baustelle.', wofuer: 'Bei Mängelstreit fehlt der Nachweis, wer wann was gemacht hat.', ein: [], p: {} },
   wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
-  wochenplan: { name: 'Wochenplan', gruppe: 'geplant', icon: 'kalender', kurz: 'Wer ist nächste Woche auf welcher Baustelle.', wofuer: 'Der Plan steht nur im Kopf vom Chef; Sonntagabend wird telefoniert.', ein: [], p: {} },
   geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
   aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
   angebote: { name: 'Angebote & Rechnungen', gruppe: 'geplant', icon: 'beleg', kurz: 'Anbindung an das Rechnungsprogramm des Betriebs.', wofuer: 'Rechnungen werden Wochen nach Fertigstellung geschrieben, Geld fehlt.', ein: [], p: {} },
@@ -1035,6 +1201,7 @@ function regeln(cfg) {
     imExport: (t) => verb(t, 'export') || (verb(t, 'freigabe') && verb('freigabe', 'export')),
     stempeln: () => hat('app') && verb('app', 'stempeln') && verb('stempeln', 'stunden'),
     stundenImApp: () => hat('app') && (verb('app', 'stunden') || verb('stempeln', 'stunden') && verb('app', 'stempeln')),
+    plan: () => verb('baustellen', 'wochenplan'),
     darfFreigeben: (rolle) => rolle === 'chef' || (rolle === 'buero' && p('freigabe').wer === 'Chef und Büro'),
   };
 }
@@ -1044,9 +1211,9 @@ function wirkungen(cfg, typ) {
   const R = regeln(cfg); const B = BAUSTEINE[typ]; const out = [];
   if (!B) return out;
   if (B.gruppe === 'geplant') return ['Noch in Entwicklung. Beim Kunden nicht sichtbar.'];
-  const imBuero = { stunden: 'Stunden', urlaub: 'Urlaub', belege: 'Belege', lieferscheine: 'Lieferscheine', tagelohn: 'Tagelöhner', export: 'Steuerberater', baustellen: 'Baustellen', material: 'Material', dokumente: 'Steuerberater' }[typ];
+  const imBuero = { bautagebuch: 'Baustellen', regie: 'Baustellen', wochenplan: 'Wochenplan', stunden: 'Stunden', urlaub: 'Urlaub', belege: 'Belege', lieferscheine: 'Lieferscheine', tagelohn: 'Tagelöhner', export: 'Steuerberater', baustellen: 'Baustellen', material: 'Material', dokumente: 'Steuerberater' }[typ];
   if (imBuero) out.push(`Im Büro als Bereich „${imBuero}“ sichtbar.`);
-  if (['stempeln', 'stunden', 'urlaub', 'belege', 'lieferscheine', 'material', 'dokumente'].includes(typ)) {
+  if (['stempeln', 'stunden', 'urlaub', 'belege', 'lieferscheine', 'material', 'dokumente', 'bautagebuch', 'regie'].includes(typ)) {
     if (typ === 'stunden') out.push(R.stundenImApp() ? 'Mitarbeiter sehen und erfassen Stunden in der App.' : 'Nicht mit der App verbunden: Stunden nur im Büro.');
     else out.push(R.imApp(typ) ? 'In der Mitarbeiter-App sichtbar.' : 'Nicht mit der App verbunden: Mitarbeiter sehen das nicht.');
   }
@@ -1064,6 +1231,9 @@ function wirkungen(cfg, typ) {
     const rein = B.ein.filter((t) => R.verb(t, 'freigabe')).map((t) => BAUSTEINE[t].name);
     out.push(rein.length ? 'Prüft: ' + rein.join(', ') + '.' : 'Noch nichts angeschlossen.');
   }
+  if (typ === 'regie') out.push(R.p('regie').ohneUnterschrift === 'ja' ? 'Ist der Kunde nicht da, kann der Zettel ohne Unterschrift gespeichert werden.' : 'Speichern nur mit Unterschrift des Kunden.');
+  if (typ === 'wochenplan') out.push(R.hat('app') ? 'Mitarbeiter sehen ihren Plan in der App; beim Einstempeln steht die geplante Baustelle oben.' : 'Ohne App nur im Büro sichtbar.');
+  if (typ === 'wochenplan' && !R.verb('baustellen', 'wochenplan')) out.push('Mit „Baustellen“ verbinden, sonst gibt es nichts zu verplanen.');
   if (typ === 'tagelohn' && R.p('tagelohn').satz < 13.9) out.push('Achtung: unter dem Mindestlohn von 13,90 €.');
   return out;
 }
@@ -1088,6 +1258,7 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
+      version: 2,
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
@@ -1105,11 +1276,11 @@ const Muster = (() => {
         { id: 'p7', name: 'Marek Nowak', rolle: 'helfer', funktion: 'Bauhelfer', code: '2005', soll: 40, urlaub: 28 },
       ],
       baustellen: [
-        { id: 'b1', name: 'Neubau EFH Hinrichs', ort: 'Hude', arbeit: 'Dachstuhl abbinden und richten', status: 'laufend' },
-        { id: 'b2', name: 'Carport Gerdes', ort: 'Ganderkesee', arbeit: 'Doppelcarport mit Abstellraum', status: 'laufend' },
-        { id: 'b3', name: 'Dachsanierung Wilkens', ort: 'Wardenburg', arbeit: 'Sparren verstärken, Aufsparrendämmung', status: 'laufend' },
-        { id: 'b4', name: 'Gaube Steenken', ort: 'Delmenhorst', arbeit: 'Schleppgaube', status: 'geplant' },
-        { id: 'b0', name: 'Halle / Abbund', ort: 'Ganderkesee', arbeit: 'Werkstatt, Abbund, Lager', status: 'laufend' },
+        { id: 'b1', name: 'Neubau EFH Hinrichs', ort: 'Hude', adresse: 'Am Moorweg 14, 27798 Hude', kunde: 'Familie Hinrichs', telefon: '04408 91 27 40', arbeit: 'Dachstuhl abbinden und richten', status: 'laufend', notiz: 'Bauleitung: Architekturbüro Wempe. Kran am Do bis 12 Uhr bestellt.' },
+        { id: 'b2', name: 'Carport Gerdes', ort: 'Ganderkesee', adresse: 'Lindenstraße 3, 27777 Ganderkesee', kunde: 'Holger Gerdes', telefon: '0171 448 20 19', arbeit: 'Doppelcarport mit Abstellraum', status: 'laufend', notiz: 'Schlüssel für Abstellraum beim Nachbarn (Nr. 5).' },
+        { id: 'b3', name: 'Dachsanierung Wilkens', ort: 'Wardenburg', adresse: 'Hauptstraße 52, 26203 Wardenburg', kunde: 'Renate Wilkens', telefon: '04407 55 81', arbeit: 'Sparren verstärken, Aufsparrendämmung', status: 'laufend', notiz: 'Kundin ist vormittags da. Hund im Garten.' },
+        { id: 'b4', name: 'Gaube Steenken', ort: 'Delmenhorst', adresse: 'Stedinger Straße 120, 27753 Delmenhorst', kunde: 'Jörg Steenken', telefon: '0152 029 33 71', arbeit: 'Schleppgaube', status: 'geplant', notiz: '' },
+        { id: 'b0', name: 'Halle / Abbund', ort: 'Ganderkesee', adresse: 'Gewerbestraße 9, 27777 Ganderkesee', kunde: '', telefon: '', arbeit: 'Werkstatt, Abbund, Lager', status: 'laufend', notiz: '' },
       ],
       tageloehner: [
         { id: 't1', name: 'Kevin Lange', notiz: 'Aushilfe, Student', satz: 16 },
@@ -1126,6 +1297,9 @@ const Muster = (() => {
           knoten('material', 330, 470),
           knoten('tagelohn', 330, 560),
           knoten('dokumente', 330, 650),
+          knoten('bautagebuch', 330, 740),
+          knoten('regie', 330, 830),
+          knoten('wochenplan', 330, 920),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -1136,6 +1310,7 @@ const Muster = (() => {
           ['baustellen', 'stunden'], ['baustellen', 'belege'], ['baustellen', 'lieferscheine'], ['baustellen', 'material'], ['baustellen', 'tagelohn'],
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
+          ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -1214,6 +1389,24 @@ const Muster = (() => {
     // Material
     add('m1', { typ: 'material', pid: 'p3', datum: Datum.plus(heute, -1), bs: 'b1', text: 'Dachlatten 30/50 nochmal 10 Bund, Nagelplatten', status: 'offen' });
     add('m2', { typ: 'material', pid: 'p5', datum: Datum.plus(heute, -4), bs: 'b2', text: 'Kopfbänder 2 Stk nachschneiden lassen', status: 'erledigt' });
+    // Bautagebuch
+    const tb = (id, tage, pid, bs, wetter, text, fotos) => { const datum = Datum.plus(heute, -tage); if (Datum.istWerktag(datum)) add(id, { typ: 'tagebuch', pid, datum, bs, wetter, text, fotos }); };
+    tb('tb1', 15, 'p3', 'b3', 'bewölkt', 'Dach abgedeckt. Zwei Sparren am Ortgang morsch (Fotos), Kundin informiert. Rest in Ordnung.', ['muster-sparren', 'muster-dach']);
+    tb('tb2', 13, 'p3', 'b3', 'Regen', 'Ab 11 Uhr Regen, Dach mit Plane gesichert. Nachmittags in der Halle.', ['muster-plane']);
+    tb('tb3', 8, 'p3', 'b1', 'sonnig', 'Schwelle und Wände ausgerichtet, Abbund angeliefert.', ['muster-dach']);
+    tb('tb4', 2, 'p3', 'b1', 'sonnig', 'Dachstuhl gerichtet, Richtfest mit Bauherren um 15 Uhr.', ['muster-dach', 'muster-richtfest']);
+    // Regiezettel (Zusatzarbeiten mit Unterschrift)
+    add('rg1', { typ: 'regie', pid: 'p3', datum: Datum.plus(heute, -15), bs: 'b3', text: 'Zwei Sparren am Ortgang ausgetauscht (morsch), inkl. Entsorgung', leute: 2, stunden: 6, material: 'KVH 80x180, 2 x 5,0 m', kunde: 'Renate Wilkens', unterschrift: 'muster-unterschrift', status: 'unterschrieben' });
+    add('rg2', { typ: 'regie', pid: 'p5', datum: Datum.plus(heute, -3), bs: 'b2', text: 'Fundamente für Abstellraum nachträglich tiefer gesetzt (Wurzeln)', leute: 2, stunden: 3.5, material: '', kunde: 'Holger Gerdes', unterschrift: 'muster-unterschrift', status: 'unterschrieben' });
+    add('rg3', { typ: 'regie', pid: 'p3', datum: Datum.plus(heute, -1), bs: 'b1', text: 'Zusätzliches Gaubenwechsel nach Planänderung Architekt', leute: 3, stunden: 4, material: 'BSH 120x240, 1 Stk', kunde: '', unterschrift: '', status: 'offen' });
+    // Wochenplan diese und nächste Woche
+    const planWoche = (mo, belegung) => {
+      const zellen = {};
+      for (const [pid, bs] of Object.entries(belegung)) zellen[pid] = Object.fromEntries([0, 1, 2, 3, 4].map((t) => [t, pid === 'p6' && t === 1 ? 'S' : bs]));
+      add('plan_' + mo, { typ: 'plan', montag: mo, zellen });
+    };
+    planWoche(montag, plan[2]);
+    planWoche(Datum.plus(montag, 7), { p3: 'b1', p4: 'b3', p5: 'b2', p6: 'b3', p7: 'b1' });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });
@@ -1289,9 +1482,49 @@ function kontext(cfg, items, pid) {
     return { anspruch, genommen, beantragt, rest: anspruch - genommen };
   };
 
+  /* Wochenplan: Eintrag für eine Person an einem Tag (Baustellen-ID, 'S' Schule, 'U' Urlaub) */
+  c.planWoche = (montag) => items.find((i) => i.typ === 'plan' && i.montag === montag) || null;
+  c.geplant = (pid, datum) => {
+    if (!R.plan()) return '';
+    const abw = c.abwesend(pid, datum); if (abw) return abw.typ === 'krank' ? 'K' : 'U';
+    const w = c.planWoche(Datum.montag(datum)); const t = Datum.wochentag(datum);
+    return (w && w.zellen && w.zellen[pid] && w.zellen[pid][t]) || '';
+  };
+  c.planText = (wert) => ({ '': 'nicht geplant', S: 'Berufsschule', U: 'Urlaub', K: 'krank' }[wert] || c.bsName(wert));
+
+  /* Monatsnachweis: Soll, Ist, Gutschrift für Urlaub und Krankheit */
+  c.monatsnachweis = (pid, ym) => {
+    const p = c.person(pid); const sollTag = (Number(p.soll) || 0) / 5;
+    const [j, m] = ym.split('-').map(Number); const n = new Date(j, m, 0).getDate();
+    const tage = []; let soll = 0; let ist = 0; let gut = 0; let urlaub = 0; let krank = 0;
+    for (let d = 1; d <= n; d++) {
+      const datum = `${ym}-${String(d).padStart(2, '0')}`;
+      const eintr = c.stundenAm(pid, datum).filter((e) => e.bis);
+      const h = eintr.reduce((s, e) => s + stundenVon(e), 0);
+      const arbeitstag = Datum.istArbeitstag(datum);
+      const zukunft = datum > c.heute || (datum === c.heute && !eintr.length); // heute zählt erst nach Feierabend
+      const abw = arbeitstag ? c.abwesend(pid, datum) : null;
+      const abwOk = abw && (abw.typ === 'krank' || abw.status === 'genehmigt') ? abw : null;
+      let g = 0;
+      if (abwOk && abwOk.art !== 'Überstundenabbau' && !zukunft) { g = sollTag; if (abwOk.typ === 'krank') krank++; else urlaub++; }
+      if (arbeitstag && !zukunft) soll += sollTag;
+      ist += h; gut += g;
+      tage.push({ datum, eintr, h, g, arbeitstag, zukunft, abw: abwOk, feiertag: Datum.feiertag(datum) });
+    }
+    return { tage, soll, ist, gut, diff: ist + gut - soll, urlaub, krank };
+  };
+  /* Überstundenkonto: Summe der Monate dieses Jahres ab dem ersten erfassten Monat */
+  c.konto = (pid, bisYm) => {
+    const eig = items.filter((i) => i.typ === 'stunden' && i.pid === pid && i.datum.slice(0, 4) === bisYm.slice(0, 4));
+    if (!eig.length) return 0;
+    let ym = eig.reduce((a, e) => (e.datum < a ? e.datum : a), '9999').slice(0, 7); let summe = 0;
+    while (ym <= bisYm) { summe += c.monatsnachweis(pid, ym).diff; const [j, m] = ym.split('-').map(Number); ym = Datum.iso(new Date(j, m, 1)).slice(0, 7); }
+    return summe;
+  };
+
   /* Was wartet auf eine Entscheidung? */
   c.offen = () => {
-    const out = { stunden: [], urlaub: [], belege: [], lieferscheine: [], material: [], tagelohn: [] };
+    const out = { stunden: [], urlaub: [], belege: [], lieferscheine: [], material: [], tagelohn: [], regie: [] };
     for (const i of items) {
       if (i.typ === 'stunden' && i.status === 'offen' && R.freigabe('stunden')) out.stunden.push(i);
       if (i.typ === 'urlaub' && i.status === 'beantragt') out.urlaub.push(i);
@@ -1299,6 +1532,7 @@ function kontext(cfg, items, pid) {
       if (i.typ === 'lieferschein' && i.status === 'neu') out.lieferscheine.push(i);
       if (i.typ === 'material' && i.status === 'offen') out.material.push(i);
       if (i.typ === 'tagelohn' && i.status === 'offen' && R.freigabe('tagelohn')) out.tagelohn.push(i);
+      if (i.typ === 'regie' && i.status !== 'abgerechnet' && R.hat('regie')) out.regie.push(i);
     }
     return out;
   };
@@ -1319,7 +1553,7 @@ function startStatus(R, typ, e = {}) {
 const STATUS_TEXT = {
   offen: ['Zu prüfen', 'warn'], laeuft: ['Läuft', 'info'], freigegeben: ['Freigegeben', 'ok'], abgelehnt: ['Abgelehnt', 'bad'],
   beantragt: ['Beantragt', 'warn'], genehmigt: ['Genehmigt', 'ok'], gemeldet: ['Gemeldet', 'info'],
-  neu: ['Neu', 'info'], geprueft: ['Geprüft', 'ok'], erledigt: ['Erledigt', 'ok'], bestellt: ['Bestellt', 'info'],
+  neu: ['Neu', 'info'], unterschrieben: ['Unterschrieben', 'ok'], abgerechnet: ['Abgerechnet', ''], geprueft: ['Geprüft', 'ok'], erledigt: ['Erledigt', 'ok'], bestellt: ['Bestellt', 'info'],
 };
 const chip = (status, klasse = 'chip') => { const [t, k] = STATUS_TEXT[status] || [status, '']; return `<span class="${klasse} ${k}">${esc(t)}</span>`; };
 
@@ -1331,6 +1565,26 @@ async function bildFuer(e) {
     return musterBild(e.typ === 'lieferschein' ? 'lieferschein' : 'beleg', e);
   }
   return Store.datei(e.datei);
+}
+/* Fotos und Unterschriften über ihre Datei-ID ("muster-…" sind Beispielbilder) */
+function dateiUrl(id) {
+  if (!id) return Promise.resolve(null);
+  if (id === 'muster-unterschrift') return Promise.resolve(unterschriftMuster());
+  if (id.startsWith('muster-')) return Promise.resolve(baustellenFoto(id.slice(7)));
+  return Store.datei(id);
+}
+function unterschriftMuster() {
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100"><path d="M20 70c20-40 30-50 35-40s-15 40 0 38 20-45 30-40-5 30 5 32 15-20 25-22 5 18 18 16 20-14 40-12 40 4 80-2" fill="none" stroke="#1d2a4a" stroke-width="3" stroke-linecap="round"/></svg>');
+}
+function baustellenFoto(art) {
+  const himmel = art === 'plane' ? '#9aa3ab' : '#bcd3e6';
+  const motiv = {
+    sparren: '<rect x="40" y="120" width="260" height="22" fill="#8a6a45"/><rect x="40" y="120" width="90" height="22" fill="#4a3a28"/><path d="M60 125l10 12M80 124l6 14M100 126l8 10" stroke="#2a2016" stroke-width="3"/><rect x="40" y="170" width="260" height="22" fill="#a98557"/>',
+    dach: '<path d="M30 200L170 70l140 130z" fill="none" stroke="#b08a58" stroke-width="10"/><path d="M80 154v46M120 117v83M170 70v130M220 117v83M260 154v46" stroke="#b08a58" stroke-width="7"/><rect x="20" y="200" width="300" height="40" fill="#9b9b93"/>',
+    plane: '<path d="M30 200L170 80l140 120z" fill="#3a6fb0"/><path d="M60 175h220M95 145h150" stroke="#2c578c" stroke-width="3"/><rect x="20" y="200" width="300" height="40" fill="#8f8f87"/>',
+    richtfest: '<path d="M30 200L170 70l140 130z" fill="none" stroke="#b08a58" stroke-width="10"/><path d="M170 70V30" stroke="#5b4a33" stroke-width="5"/><circle cx="170" cy="30" r="16" fill="#3f7a3a"/><path d="M160 46l-12 14M180 46l12 14" stroke="#c23a2b" stroke-width="4"/><rect x="20" y="200" width="300" height="40" fill="#9b9b93"/>',
+  }[art] || '';
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 240"><rect width="340" height="240" fill="${himmel}"/>${motiv}</svg>`);
 }
 function lohnzettelBild(e) {
   const p = (Store.cfg && Store.cfg.personen || []).find((x) => x.id === e.fuer) || { name: '' };
@@ -1345,6 +1599,10 @@ function bilderNachladen(wurzel, items) {
     const url = await bildFuer(e).catch(() => null);
     if (url && img.isConnected) img.src = url;
   });
+  $$('img[data-datei]', wurzel).forEach(async (img) => {
+    const url = await dateiUrl(img.dataset.datei).catch(() => null);
+    if (url && img.isConnected) img.src = url;
+  });
 }
 
 /* ---- buero.js ---- */
@@ -1354,13 +1612,14 @@ function bilderNachladen(wurzel, items) {
    Entwickler-Tool dieselben Seiten als Vorschau zeigen kann.
    ========================================================================= */
 const Buero = (() => {
-  const zustand = { seite: 'uebersicht', woche: Datum.montag(Datum.heute()), monat: Datum.heute().slice(0, 7), filter: {}, navOffen: false, wahl: null };
-  const kompakt = () => (zustand.wahl ? zustand.wahl === 'kompakt' : window.innerWidth < 820);
+  const zustand = { seite: 'uebersicht', woche: Datum.montag(Datum.heute()), monat: Datum.heute().slice(0, 7), filter: {}, navOffen: false, akte: null, stundenAnsicht: 'woche', planWoche: Datum.montag(Datum.heute()) };
+  const kompakt = () => window.innerWidth < 820;
   let warKompakt = null;
   window.addEventListener('resize', () => { if (aktiverBereich === Buero && kompakt() !== warKompakt) zeichne(); });
 
   const NAV = [
     { id: 'uebersicht', name: 'Übersicht', icon: 'start', gruppe: 'Betrieb' },
+    { id: 'plan', name: 'Wochenplan', icon: 'plan', braucht: 'wochenplan', gruppe: 'Betrieb' },
     { id: 'stunden', name: 'Stunden', icon: 'uhr', braucht: 'stunden', gruppe: 'Betrieb', zahl: (o) => o.stunden.length },
     { id: 'urlaub', name: 'Urlaub & Krank', icon: 'kalender', braucht: 'urlaub', gruppe: 'Betrieb', zahl: (o) => o.urlaub.length },
     { id: 'belege', name: 'Belege', icon: 'beleg', braucht: 'belege', gruppe: 'Unterlagen', zahl: (o) => o.belege.length },
@@ -1368,7 +1627,7 @@ const Buero = (() => {
     { id: 'material', name: 'Materialbedarf', icon: 'material', braucht: 'material', gruppe: 'Unterlagen', zahl: (o) => o.material.length },
     { id: 'tagelohn', name: 'Tagelöhner', icon: 'helfer', braucht: 'tagelohn', gruppe: 'Unterlagen', zahl: (o) => o.tagelohn.length },
     { id: 'steuer', name: 'Steuerbüro', icon: 'paket', braucht: ['export', 'dokumente'], gruppe: 'Unterlagen' },
-    { id: 'baustellen', name: 'Baustellen', icon: 'haus', braucht: 'baustellen', gruppe: 'Stammdaten' },
+    { id: 'baustellen', name: 'Baustellen', icon: 'haus', braucht: 'baustellen', gruppe: 'Stammdaten', zahl: (o) => o.regie.filter((r) => r.status === 'offen').length },
     { id: 'team', name: 'Team & Zugänge', icon: 'team', gruppe: 'Stammdaten' },
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
@@ -1382,6 +1641,11 @@ const Buero = (() => {
   const personZelle = (c, p, unter = '') => `<div class="person"><span class="ava">${esc(c.kuerzel(p.name))}</span><div>${esc(p.name)}${unter ? `<small>${esc(unter)}</small>` : ''}</div></div>`;
   const seitenkopf = (titel, unter, rechts = '') => `<div class="seitenkopf"><div><h1>${titel}</h1>${unter ? `<p>${unter}</p>` : ''}</div><div class="rechts">${rechts}</div></div>`;
   const leer = (text) => `<div class="leer">${text}</div>`;
+  const verlauf = (c, e) => {
+    const v = (e && e.verlauf) || []; if (!v.length) return '';
+    const l = v[v.length - 1]; const d = new Date(l.wann);
+    return `<p class="verlauf">Zuletzt geändert ${l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
+  };
   const bsOptionen = (c, gewaehlt, mitLeer = true) => (mitLeer ? `<option value="">ohne Baustelle</option>` : '') + c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('');
   const personOptionen = (c, gewaehlt, liste = c.arbeiter()) => liste.map((p) => `<option value="${p.id}" ${p.id === gewaehlt ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
 
@@ -1426,6 +1690,16 @@ const Buero = (() => {
     if (o.stunden.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.stunden.length} Stundeneinträge freigeben</b><small>${[...new Set(o.stunden.map((s) => c.person(s.pid).name.split(' ')[0]))].join(', ')}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="stunden">Ansehen</button></div></div>`);
     if (o.belege.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.belege.length} Belege prüfen</b><small>zusammen ${Zahl.eur(o.belege.reduce((s, b) => s + Number(b.betrag || 0), 0))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="belege">Ansehen</button></div></div>`);
     if (o.lieferscheine.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.lieferscheine.length} neue Lieferscheine</b><small>${[...new Set(o.lieferscheine.map((l) => l.lieferant))].join(', ')}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="lieferscheine">Ansehen</button></div></div>`);
+    if (c.R.hat('stunden')) {
+      const fehlt = [];
+      for (let d = Datum.montag(c.heute); d < c.heute; d = Datum.plus(d, 1)) {
+        if (!Datum.istArbeitstag(d)) continue;
+        for (const p of arbeiter) if (!c.stundenAm(p.id, d).length && !c.abwesend(p.id, d)) fehlt.push(`${p.name.split(' ')[0]} (${Datum.WT[Datum.wochentag(d)]})`);
+      }
+      if (fehlt.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>Stunden fehlen</b><small>${esc(fehlt.join(', '))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="stunden">Ansehen</button></div></div>`);
+    }
+    const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
+    if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -1449,7 +1723,12 @@ const Buero = (() => {
       </div>`;
   };
 
+  const regieStunden = (r) => Number(r.stunden || 0) * Number(r.leute || 1);
+  const regieBetrag = (c, r) => regieStunden(r) * Number(c.R.p('regie').satz || 0);
+  const ansichtWahl = () => `<span class="segment"><button class="${zustand.stundenAnsicht === 'woche' ? 'an' : ''}" data-a="stunden-ansicht" data-id="woche">Woche</button><button class="${zustand.stundenAnsicht === 'monat' ? 'an' : ''}" data-a="stunden-ansicht" data-id="monat">Monat</button></span>`;
+
   SEITEN.stunden = (c) => {
+    if (zustand.stundenAnsicht === 'monat') return stundenMonat(c);
     const wo = zustand.woche; const tage = Array.from({ length: 7 }, (_, i) => Datum.plus(wo, i));
     const mitWE = c.typ('stunden').some((s) => s.datum >= tage[5] && s.datum <= tage[6]);
     const spalten = mitWE ? tage : tage.slice(0, 5);
@@ -1473,12 +1752,53 @@ const Buero = (() => {
     }).join('');
     const kopf = spalten.map((d) => `<th class="zelle-std" style="cursor:default${d === c.heute ? ';color:var(--firma)' : ''}">${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
     return seitenkopf('Stunden', `Kalenderwoche ${Datum.kw(wo)} · Soll ${soll} Std. pro Woche${c.R.freigabe('stunden') ? ' · Freigabe durch ' + (c.R.p('freigabe').wer === 'Chef' ? 'den Chef' : 'Chef oder Büro') : ''}`,
-      `<span class="wochenwahl"><button class="k klein" data-a="woche" data-id="-7">${Icon('zurueck')}</button><b>${Datum.kurz(wo)} – ${Datum.kurz(tage[6])}${tage[6].slice(0, 4)}</b><button class="k klein" data-a="woche" data-id="7">${Icon('pfeil')}</button></span>
+      `${ansichtWahl()}<span class="wochenwahl"><button class="k klein" data-a="woche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(wo)} – ${Datum.kurz(tage[6])}${tage[6].slice(0, 4)}</b><button class="k klein" data-a="woche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
        <button class="k" data-a="woche" data-id="0">Diese Woche</button>
        <button class="k" data-a="stunden-neu">${Icon('plus')} Eintrag</button>
        ${c.R.freigabe('stunden') && c.R.darfFreigeben(c.ich && c.ich.rolle) ? `<button class="k haupt" data-a="woche-frei" ${offeneWoche.length ? '' : 'disabled'}>${Icon('haken')} Woche freigeben${offeneWoche.length ? ` (${offeneWoche.length})` : ''}</button>` : ''}`)
       + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th>${kopf}<th class="r">Summe</th><th class="r">± Soll</th><th>Status</th></tr></thead><tbody>${zeilen || `<tr><td colspan="10">${leer('Keine Mitarbeiter mit Wochenstunden.')}</td></tr>`}</tbody></table></div>
         <div class="legende"><span><i style="background:var(--warn)"></i>zu prüfen</span><span><i style="background:var(--info)"></i>gerade eingestempelt</span><span>BS = Berufsschule</span><span>Klick auf ein Feld: Tag ansehen und ändern</span></div></div>`;
+  };
+
+  function stundenMonat(c) {
+    const ym = zustand.monat;
+    const zeilen = c.arbeiter().map((p) => {
+      const n = c.monatsnachweis(p.id, ym); const konto = c.konto(p.id, ym);
+      const farbe = (x) => (x < 0 ? '#8a6a2a' : '#2e7d4f');
+      return `<tr class="klickbar" data-a="nachweis" data-id="${p.id}"><td>${personZelle(c, p, p.funktion)}</td><td class="r num">${Zahl.std(n.soll)}</td><td class="r num">${Zahl.std(n.ist)}</td><td class="r num">${n.urlaub || ''}</td><td class="r num">${n.krank || ''}</td>
+        <td class="r num" style="color:${farbe(n.diff)}">${n.diff >= 0 ? '+' : ''}${Zahl.std(n.diff)}</td><td class="r num" style="color:${farbe(konto)}"><b>${konto >= 0 ? '+' : ''}${Zahl.std(konto)}</b></td><td class="r"><button class="k klein" data-a="nachweis" data-id="${p.id}">${Icon('drucken')} Nachweis</button></td></tr>`;
+    }).join('');
+    return seitenkopf('Stunden', `${esc(Datum.monatName(ym))} · Soll ohne Feiertage, Urlaub und Krankheit werden gutgeschrieben`,
+      `${ansichtWahl()}<span class="wochenwahl"><button class="k klein" data-a="monat" data-id="-1" aria-label="Voriger Monat">${Icon('zurueck')}</button><b>${esc(Datum.monatName(ym))}</b><button class="k klein" data-a="monat" data-id="1" aria-label="Nächster Monat">${Icon('pfeil')}</button></span>`)
+      + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th><th class="r">Soll</th><th class="r">Ist</th><th class="r">Urlaub</th><th class="r">Krank</th><th class="r">± Monat</th><th class="r">Überstundenkonto</th><th></th></tr></thead><tbody>${zeilen || `<tr><td colspan="8">${leer('Keine Mitarbeiter mit Wochenstunden.')}</td></tr>`}</tbody></table></div>
+        <div class="legende"><span>Urlaub und Krank in Arbeitstagen</span><span>Überstundenkonto: alle Monate dieses Jahres bis einschließlich ${esc(Datum.monatName(ym).split(' ')[0])}</span></div></div>`;
+  }
+
+  /* ---------- Wochenplan ---------- */
+  const PLAN_TAGE = (c) => (c.R.p('wochenplan').tage === 'Mo bis Sa' ? 6 : 5);
+  SEITEN.plan = (c) => {
+    const mo = zustand.planWoche; const n = PLAN_TAGE(c);
+    const tage = Array.from({ length: n }, (_, i) => Datum.plus(mo, i));
+    const w = c.planWoche(mo);
+    const kurz = (b) => b.name.replace(/^(Neubau|Dachsanierung|Carport|Gaube)\s+/, '');
+    const zeilen = c.arbeiter().map((p) => `<tr><td>${personZelle(c, p, p.funktion)}</td>${tage.map((d, t) => {
+      const abw = c.abwesend(p.id, d);
+      if (abw) return `<td><span class="chip ${abw.typ === 'krank' ? 'bad' : 'warn'}">${abw.typ === 'krank' ? 'Krank' : esc(abw.art || 'Urlaub')}</span></td>`;
+      if (Datum.feiertag(d)) return `<td><span class="chip">${esc(Datum.feiertag(d))}</span></td>`;
+      const wert = (w && w.zellen && w.zellen[p.id] && w.zellen[p.id][t]) || '';
+      return `<td><select class="plan-wahl ${wert ? 'gesetzt' : ''}" data-a="plan-zelle" data-pid="${p.id}" data-tag="${t}" aria-label="${esc(p.name)}, ${Datum.WT[t]}">
+        <option value="">–</option>${c.baustellenOffen().map((b) => `<option value="${b.id}" ${wert === b.id ? 'selected' : ''}>${esc(kurz(b))}</option>`).join('')}<option value="S" ${wert === 'S' ? 'selected' : ''}>Berufsschule</option></select></td>`;
+    }).join('')}</tr>`).join('');
+    const proBaustelle = c.baustellenOffen().map((b) => {
+      const zellen = tage.map((d, t) => { const leute = c.arbeiter().filter((p) => !c.abwesend(p.id, d) && w && w.zellen && w.zellen[p.id] && w.zellen[p.id][t] === b.id); return `<td>${leute.map((p) => esc(p.name.split(' ')[0])).join(', ') || '<span style="color:#a3aaa5">–</span>'}</td>`; });
+      return `<tr><td><b>${esc(b.name)}</b><small style="display:block;color:#7a827c">${esc(b.ort)}</small></td>${zellen.join('')}</tr>`;
+    }).join('');
+    const kopf = tage.map((d) => `<th${d === c.heute ? ' style="color:var(--firma)"' : ''}>${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
+    return seitenkopf('Wochenplan', `KW ${Datum.kw(mo)} · Die Mitarbeiter sehen ihren Plan in der App, sobald er hier eingetragen ist`,
+      `<span class="wochenwahl"><button class="k klein" data-a="planwoche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(mo)} – ${Datum.kurz(tage[n - 1])}${tage[n - 1].slice(0, 4)}</b><button class="k klein" data-a="planwoche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
+       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
+      + `<div class="karte" id="druck-plan"><div class="kopf"><h3>Wer ist wo</h3></div><div class="tabelle-huelle"><table class="t plan"><thead><tr><th>Mitarbeiter</th>${kopf}</tr></thead><tbody>${zeilen || `<tr><td colspan="7">${leer('Noch keine Mitarbeiter.')}</td></tr>`}</tbody></table></div></div>
+      <div class="karte"><div class="kopf"><h3>Nach Baustelle</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th>${kopf}</tr></thead><tbody>${proBaustelle || `<tr><td colspan="7">${leer('Keine laufenden Baustellen.')}</td></tr>`}</tbody></table></div></div>`;
   };
 
   SEITEN.urlaub = (c) => {
@@ -1625,8 +1945,50 @@ const Buero = (() => {
     return seitenkopf('Baustellen', 'Aufträge, auf die Stunden, Belege und Lieferscheine gebucht werden', `<button class="k haupt" data-a="baustelle-neu">${Icon('plus')} Baustelle anlegen</button>`)
       + `<div class="karte"><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th><th>Ort</th><th>Arbeiten</th><th class="r">Stunden</th><th class="r">Belege</th><th class="r">Lieferscheine</th><th>Status</th></tr></thead><tbody>
       ${liste.map((b) => { const std = c.typ('stunden').filter((s) => s.bs === b.id).reduce((s, e) => s + stundenVon(e), 0) + c.typ('tagelohn').filter((s) => s.bs === b.id).reduce((s, e) => s + Number(e.stunden), 0);
-        return `<tr class="klickbar" data-a="baustelle" data-id="${b.id}"><td><b>${esc(b.name)}</b></td><td>${esc(b.ort)}</td><td>${esc(b.arbeit || '')}</td><td class="r num">${Zahl.std(std)}</td><td class="r num">${Zahl.eur(c.typ('beleg').filter((x) => x.bs === b.id).reduce((s, x) => s + Number(x.betrag || 0), 0))}</td><td class="r num">${c.typ('lieferschein').filter((x) => x.bs === b.id).length}</td><td>${b.status === 'fertig' ? '<span class="chip">Fertig</span>' : b.status === 'geplant' ? '<span class="chip info">Geplant</span>' : '<span class="chip ok">Laufend</span>'}</td></tr>`; }).join('') || `<tr><td colspan="7">${leer('Noch keine Baustellen.')}</td></tr>`}
+        const regie = c.typ('regie').filter((r) => r.bs === b.id && r.status !== 'abgerechnet').length;
+        return `<tr class="klickbar" data-a="akte" data-id="${b.id}"><td><b>${esc(b.name)}</b>${b.kunde ? `<small style="display:block;color:#7a827c">${esc(b.kunde)}</small>` : ''}${regie ? ` <span class="chip warn">${regie} Regie</span>` : ''}</td><td>${esc(b.ort)}</td><td>${esc(b.arbeit || '')}</td><td class="r num">${Zahl.std(std)}</td><td class="r num">${Zahl.eur(c.typ('beleg').filter((x) => x.bs === b.id).reduce((s, x) => s + Number(x.betrag || 0), 0))}</td><td class="r num">${c.typ('lieferschein').filter((x) => x.bs === b.id).length}</td><td>${b.status === 'fertig' ? '<span class="chip">Fertig</span>' : b.status === 'geplant' ? '<span class="chip info">Geplant</span>' : '<span class="chip ok">Laufend</span>'}</td></tr>`; }).join('') || `<tr><td colspan="7">${leer('Noch keine Baustellen.')}</td></tr>`}
       </tbody></table></div></div>`;
+  };
+
+  /* ---------- Baustellenakte ---------- */
+  const WETTER = { sonnig: 'Sonnig', 'bewölkt': 'Bewölkt', Regen: 'Regen', Wind: 'Sturm/Wind', Frost: 'Frost', Schnee: 'Schnee' };
+  SEITEN.akte = (c) => {
+    const b = c.baustelle(zustand.akte) || (zustand.akte ? null : c.baustellenOffen()[0]);
+    if (!b) return seitenkopf('Baustelle', '') + leer('Diese Baustelle gibt es nicht mehr.');
+    const stunden = c.typ('stunden').filter((s) => s.bs === b.id && s.bis);
+    const tl = c.typ('tagelohn').filter((s) => s.bs === b.id);
+    const std = stunden.reduce((s, e) => s + stundenVon(e), 0) + tl.reduce((s, e) => s + Number(e.stunden), 0);
+    const belege = c.typ('beleg').filter((x) => x.bs === b.id);
+    const ls = c.typ('lieferschein').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const regie = c.typ('regie').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const tagebuch = c.typ('tagebuch').filter((x) => x.bs === b.id).sort((x, y) => y.datum.localeCompare(x.datum));
+    const proPerson = {}; stunden.forEach((s) => { proPerson[s.pid] = (proPerson[s.pid] || 0) + stundenVon(s); });
+    const maps = b.adresse ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.adresse)}` : '';
+    const regieOffen = regie.filter((r) => r.status !== 'abgerechnet');
+    return seitenkopf(esc(b.name), `${esc(b.arbeit || '')}${b.status === 'fertig' ? ' · abgeschlossen' : ''}`,
+      `<button class="k" data-a="gehe" data-id="baustellen">${Icon('zurueck')} Alle Baustellen</button><button class="k" data-a="baustelle" data-id="${b.id}">${Icon('stift')} Bearbeiten</button>${c.R.hat('bautagebuch') ? `<button class="k haupt" data-a="tagebuch-neu" data-id="${b.id}">${Icon('plus')} Tagebuch-Eintrag</button>` : ''}`)
+      + `<div class="kacheln">
+        <div class="kachel"><div class="titel">Stunden</div><div class="wert">${Zahl.std(std)}</div><div class="fuss">${tl.length ? 'inkl. Aushilfen' : 'gestempelt und eingetragen'}</div></div>
+        <div class="kachel"><div class="titel">Belege</div><div class="wert">${Zahl.eur(belege.reduce((s, x) => s + Number(x.betrag || 0), 0))}</div><div class="fuss">${belege.length} Belege</div></div>
+        <div class="kachel"><div class="titel">Lieferscheine</div><div class="wert">${ls.length}</div><div class="fuss">${ls.length ? 'zuletzt ' + Datum.kurz(ls[0].datum) : 'noch keine'}</div></div>
+        ${c.R.hat('regie') ? `<div class="kachel ${regieOffen.length ? 'achtung' : ''}"><div class="titel">Regie offen</div><div class="wert">${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))}</div><div class="fuss">${regieOffen.length} Zettel noch nicht abgerechnet</div></div>` : ''}
+      </div>
+      <div class="zwei">
+        <div class="karte"><div class="kopf"><h3>Kunde und Ort</h3></div><dl class="daten koerper">
+          <dt>Kunde</dt><dd>${esc(b.kunde || '–')}</dd>
+          <dt>Telefon</dt><dd>${b.telefon ? `<a href="tel:${esc(b.telefon.replace(/\s+/g, ''))}">${esc(b.telefon)}</a>` : '–'}</dd>
+          <dt>Adresse</dt><dd>${b.adresse ? `${esc(b.adresse)} · <a href="${maps}" target="_blank" rel="noopener">Route</a>` : esc(b.ort || '–')}</dd>
+          <dt>Hinweise</dt><dd>${esc(b.notiz || '–')}</dd></dl></div>
+        <div class="karte"><div class="kopf"><h3>Stunden nach Mitarbeiter</h3></div>${Object.keys(proPerson).length ? Object.entries(proPerson).sort((x, y) => y[1] - x[1]).map(([pid, h]) => `<div class="liste-zeile">${personZelle(c, c.person(pid))}<span class="num" style="margin-left:auto"><b>${Zahl.std(h)}</b> Std.</span></div>`).join('') : leer('Noch keine Stunden auf dieser Baustelle.')}
+          ${tl.length ? `<div class="liste-zeile"><div class="text"><b>Aushilfen</b></div><span class="num" style="margin-left:auto"><b>${Zahl.std(tl.reduce((s, e) => s + Number(e.stunden), 0))}</b> Std.</span></div>` : ''}</div>
+      </div>
+      ${c.R.hat('regie') ? `<div class="karte"><div class="kopf"><h3>Regiezettel (Zusatzarbeiten)</h3><span class="legende" style="padding:0;border:0">Stundensatz ${Zahl.eur(c.R.p('regie').satz)}</span></div>
+        ${regie.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Datum</th><th>Arbeit</th><th class="r">Stunden</th><th class="r">Betrag</th><th>Kunde</th><th>Status</th></tr></thead><tbody>${regie.map((r) => `<tr class="klickbar" data-a="regie" data-id="${r.id}"><td>${Datum.kurz(r.datum)}</td><td>${esc(r.text)}</td><td class="r num">${r.leute > 1 ? `${r.leute} × ${Zahl.std(r.stunden)}` : Zahl.std(r.stunden)}</td><td class="r num">${Zahl.eur(regieBetrag(c, r))}</td><td>${esc(r.kunde || '–')}</td><td>${r.status === 'offen' ? '<span class="chip warn">Ohne Unterschrift</span>' : chip(r.status)}</td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Zusatzarbeiten. Die Gesellen schreiben sie in der App auf, der Kunde unterschreibt auf dem Handy.')}</div>` : ''}
+      ${c.R.hat('bautagebuch') ? `<div class="karte"><div class="kopf"><h3>Bautagebuch</h3>${tagebuch.length ? `<button class="k klein" data-a="drucken" data-id="tagebuch">${Icon('drucken')} Drucken</button>` : ''}</div>
+        <div id="druck-tagebuch">${tagebuch.length ? tagebuch.map((t) => `<div class="tagebuch-eintrag"><div class="wann"><b>${esc(Datum.mittel(t.datum))}</b><small>${esc(WETTER[t.wetter] || t.wetter || '')}</small><small>${esc(c.person(t.pid).name)}</small></div>
+          <div class="was"><p>${esc(t.text)}</p>${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
+      <div class="karte"><div class="kopf"><h3>Lieferscheine und Belege</h3></div>
+        ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
 
   const ROLLEN = { chef: 'Inhaber / Chef', buero: 'Büro', geselle: 'Geselle', azubi: 'Auszubildender', helfer: 'Bauhelfer' };
@@ -1679,12 +2041,12 @@ const Buero = (() => {
         <span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span>
         <div class="firma">${esc(c.cfg.name)}<small>Betriebszentrale</small></div>
         <span class="luecke"></span>
-        <span class="segment nur-breit" title="Darstellung"><button class="${kompakt() ? '' : 'an'}" data-a="ansicht" data-id="breit">Computer</button><button class="${kompakt() ? 'an' : ''}" data-a="ansicht" data-id="kompakt">Handy</button></span>
+        <div class="suche nur-breit" role="search"><span class="sym">${Icon('suche')}</span><input id="b-suche" type="search" placeholder="Suchen: Baustelle, Kunde, Beleg …" aria-label="Suchen" autocomplete="off"><div class="treffer" id="b-treffer" hidden></div></div>
         <div class="wer">${esc(c.ich.name)}<small>${esc(c.ich.funktion || ROLLEN[c.ich.rolle])}</small></div>
         <span class="rund">${esc(c.kuerzel(c.ich.name))}</span>
         <button class="flach" data-a="abmelden" title="Abmelden">${Icon('abmelden')}<span class="nur-breit">Abmelden</span></button>
       </header>
-      <nav class="b-nav">${nav}<div class="unten">${kompakt() ? `<button data-a="ansicht" data-id="breit">${Icon('start')}Computer-Ansicht</button>` : `<button data-a="ansicht" data-id="kompakt">${Icon('person')}Handy-Ansicht</button>`}<a href="#" style="color:inherit">Bereich wechseln</a></div></nav>
+      <nav class="b-nav">${nav}<div class="unten"><a href="#" style="color:inherit">Bereich wechseln</a></div></nav>
       <main class="b-inhalt" id="b-inhalt">${html(zustand.seite, c)}</main>
     </div>`;
   }
@@ -1700,6 +2062,7 @@ const Buero = (() => {
     if (!sitzung) { aktiverBereich = null; return bueroAnmeldung(); }
     aktiverBereich = Buero;
     Store.oeffne(sitzung.fid);
+    Store.setzeBenutzer(sitzung.pid);
     zeichne();
   }
   function zeichne() {
@@ -1708,7 +2071,7 @@ const Buero = (() => {
     if (!c.cfg) { Wurzel().innerHTML = `<div class="laden"><div>Betrieb wird geladen<div class="balken"><i></i></div></div></div>`; return; }
     if (!c.ich || !['chef', 'buero'].includes(c.ich.rolle)) { Sitzung.setze('buero', null); return bueroAnmeldung('Ihr Zugang wurde geändert. Bitte neu anmelden.'); }
     const scroll = window.scrollY;
-    const aktivesFeld = document.activeElement && document.activeElement.closest && document.activeElement.closest('#b-inhalt form');
+    const aktivesFeld = document.activeElement && document.activeElement.closest && document.activeElement.closest('#b-inhalt form, .suche');
     if (aktivesFeld) return; // nicht beim Tippen neu zeichnen
     warKompakt = kompakt();
     Wurzel().innerHTML = rahmen(c);
@@ -1716,6 +2079,34 @@ const Buero = (() => {
     ablageVorbereiten(c);
     window.scrollTo(0, scroll);
   }
+
+  /* ---------- Suche ---------- */
+  function suchen(c, q) {
+    const t = q.trim().toLowerCase(); if (t.length < 2) return [];
+    const passt = (...felder) => felder.some((f) => String(f || '').toLowerCase().includes(t));
+    const out = [];
+    (c.cfg.baustellen || []).forEach((b) => { if (passt(b.name, b.ort, b.kunde, b.adresse, b.arbeit)) out.push({ a: 'akte', id: b.id, art: 'Baustelle', titel: b.name, unter: [b.kunde, b.ort].filter(Boolean).join(' · ') }); });
+    c.personen.forEach((p) => { if (passt(p.name, p.funktion)) out.push({ a: 'gehe', id: 'team', art: 'Mitarbeiter', titel: p.name, unter: p.funktion }); });
+    c.items.forEach((i) => {
+      if (i.typ === 'beleg' && passt(i.haendler, i.notiz, i.kategorie, Zahl.eur(i.betrag))) out.push({ a: 'beleg', id: i.id, art: 'Beleg', titel: `${Zahl.eur(i.betrag)} · ${i.haendler || i.kategorie}`, unter: `${Datum.kurz(i.datum)} · ${c.person(i.pid).name}` });
+      if (i.typ === 'lieferschein' && passt(i.lieferant, i.nummer, i.notiz, ...(i.positionen || []))) out.push({ a: 'lieferschein', id: i.id, art: 'Lieferschein', titel: `${i.lieferant} ${i.nummer || ''}`, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+      if (i.typ === 'regie' && passt(i.text, i.kunde, i.material)) out.push({ a: 'regie', id: i.id, art: 'Regiezettel', titel: i.text, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+      if (i.typ === 'tagebuch' && passt(i.text)) out.push({ a: 'akte', id: i.bs, art: 'Bautagebuch', titel: i.text, unter: `${Datum.kurz(i.datum)} · ${c.bsName(i.bs)}` });
+    });
+    return out.slice(0, 9);
+  }
+  document.addEventListener('input', (e) => {
+    if (aktiverBereich !== Buero || e.target.id !== 'b-suche') return;
+    const box = $('#b-treffer'); const liste = suchen(ctx(), e.target.value);
+    box.hidden = !e.target.value.trim();
+    box.innerHTML = liste.length ? liste.map((r) => `<button data-a="${r.a}" data-id="${esc(r.id)}"><small>${esc(r.art)}</small><b>${esc(r.titel)}</b><span>${esc(r.unter || '')}</span></button>`).join('') : '<div class="nichts">Nichts gefunden</div>';
+  });
+  document.addEventListener('click', (e) => {
+    if (aktiverBereich !== Buero) return;
+    const box = $('#b-treffer'); if (!box || box.hidden) return;
+    if (e.target.closest('#b-treffer [data-a]')) { const inp = $('#b-suche'); if (inp) { inp.value = ''; inp.blur(); } box.hidden = true; return; }
+    if (!e.target.closest('.suche')) box.hidden = true;
+  }, true);
 
   /* ---------- Aktionen ---------- */
   document.addEventListener('click', (e) => {
@@ -1729,6 +2120,7 @@ const Buero = (() => {
     const el = e.target.closest('[data-a]'); if (!el || !Wurzel().contains(el)) return;
     if (el.dataset.a === 'filter-bs') { zustand.filter.lieferscheine = el.value; zeichne(); }
     if (el.dataset.a === 'bezahlt') Store.aendere(el.dataset.id, { bezahlt: el.checked });
+    if (el.dataset.a === 'plan-zelle') planSetzen(ctx(), el.dataset.pid, el.dataset.tag, el.value);
   });
   document.addEventListener('submit', (e) => {
     if (aktiverBereich !== Buero || e.target.id !== 'f-einst') return;
@@ -1742,11 +2134,24 @@ const Buero = (() => {
   const AKTION = {
     gehe(el) { zustand.seite = el.dataset.id; zustand.navOffen = false; zeichne(); window.scrollTo(0, 0); },
     nav() { zustand.navOffen = !zustand.navOffen; zeichne(); },
-    ansicht(el) { zustand.wahl = el.dataset.id; zustand.navOffen = false; zeichne(); },
     abmelden() { Sitzung.setze('buero', null); aktiverBereich = null; bueroAnmeldung(); },
     woche(el) { const d = Number(el.dataset.id); zustand.woche = d ? Datum.plus(zustand.woche, d) : Datum.montag(Datum.heute()); zeichne(); },
     monat(el) { const [j, m] = zustand.monat.split('-').map(Number); const d = new Date(j, m - 1 + Number(el.dataset.id), 1); zustand.monat = Datum.iso(d).slice(0, 7); zeichne(); },
     filter(el) { zustand.filter[el.dataset.feld] = el.dataset.id; zeichne(); },
+    akte(el) { zustand.akte = el.dataset.id; zustand.seite = 'akte'; zeichne(); window.scrollTo(0, 0); },
+    'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
+    nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
+    planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'plan-vorwoche'(el, c) {
+      const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
+      if (!alt) return meldung('In der Vorwoche ist nichts geplant.', 'fehler');
+      planSpeichern(c, zustand.planWoche, JSON.parse(JSON.stringify(alt.zellen || {})));
+      meldung('Plan der Vorwoche übernommen');
+    },
+    drucken(el) { const z = $('#druck-' + el.dataset.id); if (z) drucken(z.innerHTML); },
+    regie(el, c) { regieFenster(c, el.dataset.id); },
+    'tagebuch-neu'(el, c) { tagebuchFenster(c, el.dataset.id); },
+    foto(el) { dateiUrl(el.dataset.id).then((url) => url && Fenster.oeffne({ titel: 'Foto', breit: true, inhalt: `<img src="${url}" alt="Foto" style="width:100%;display:block;border-radius:4px">` })); },
     'urlaub-ja'(el) { Store.aendere(el.dataset.id, { status: 'genehmigt', entschieden: Date.now() }); meldung('Urlaub genehmigt. Der Mitarbeiter sieht es sofort in der App.'); },
     'urlaub-nein'(el) { Store.aendere(el.dataset.id, { status: 'abgelehnt', entschieden: Date.now() }); meldung('Antrag abgelehnt.'); },
     au(el) { Store.aendere(el.dataset.id, { au: true }); },
@@ -1787,6 +2192,7 @@ const Buero = (() => {
     Fenster.oeffne({
       titel: `${esc(p.name)} · ${esc(Datum.lang(datum))}`, bereich: 'ui-buero-fenster',
       inhalt: (eintr.length ? `<table class="t"><thead><tr><th>Zeit</th><th>Baustelle</th><th>Tätigkeit</th><th class="r">Std.</th><th>Status</th><th></th></tr></thead><tbody>${eintr.map((e) => `<tr><td class="num">${esc(e.von)} – ${esc(e.bis || 'läuft')}${e.pause ? `<small style="display:block;color:#7a827c">Pause ${e.pause} Min.</small>` : ''}</td><td>${esc(c.bsName(e.bs))}</td><td>${esc(e.taetigkeit || '')}</td><td class="r num">${e.bis ? Zahl.std(stundenVon(e)) : ''}</td><td>${chip(e.status)}</td><td class="r" style="white-space:nowrap">${e.status === 'offen' && darf ? `<button class="k klein ok" data-f="frei" data-id="${e.id}">Freigeben</button> ` : ''}<button class="k klein" data-f="bearbeiten" data-id="${e.id}">${Icon('stift')}</button></td></tr>`).join('')}</tbody></table>` : leer('An diesem Tag ist nichts erfasst.'))
+        + eintr.map((e) => verlauf(c, e)).filter(Boolean).slice(-1).join('')
         + (c.abwesend(pid, datum) ? `<p class="chip warn" style="margin-top:12px">${c.abwesend(pid, datum).typ === 'krank' ? 'Krank gemeldet' : 'Urlaub'}</p>` : ''),
       fuss: `<button class="k" data-f="neu">${Icon('plus')} Eintrag hinzufügen</button><button class="k" data-f="zu">Schließen</button>`,
       aktionen: {
@@ -1851,7 +2257,7 @@ const Buero = (() => {
         : `<div class="reihe"><label class="feld"><span>Lieferant</span><input name="lieferant" value="${esc(e.lieferant)}"></label><label class="feld"><span>Lieferschein-Nr.</span><input name="nummer" value="${esc(e.nummer || '')}"></label></div>`}
         ${c.R.hat('baustellen') ? `<label class="feld"><span>Baustelle</span><select name="bs">${bsOptionen(c, e.bs)}</select></label>` : ''}
         <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(e.notiz || '')}"></label>
-        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>
+        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>${verlauf(c, e)}
       </div></div>`,
       fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>
         ${e.status === 'offen' && darf ? `<button class="k nein" data-f="status" data-id="abgelehnt">Ablehnen</button><button class="k haupt" data-f="status" data-id="freigegeben">${Icon('haken')} Freigeben</button>` : ''}
@@ -1986,7 +2392,11 @@ const Buero = (() => {
     const b = (c.cfg.baustellen || []).find((x) => x.id === id) || { name: '', ort: '', arbeit: '', status: 'laufend' };
     const hg = Fenster.oeffne({
       titel: id ? 'Baustelle bearbeiten' : 'Baustelle anlegen',
-      inhalt: `<label class="feld"><span>Name</span><input name="name" value="${esc(b.name)}" placeholder="z. B. Neubau EFH Müller"></label><label class="feld"><span>Ort</span><input name="ort" value="${esc(b.ort)}"></label><label class="feld"><span>Arbeiten</span><input name="arbeit" value="${esc(b.arbeit || '')}"></label>
+      inhalt: `<label class="feld"><span>Name</span><input name="name" value="${esc(b.name)}" placeholder="z. B. Neubau EFH Müller"></label>
+        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(b.kunde || '')}"></label><label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(b.telefon || '')}"></label></div>
+        <div class="reihe"><label class="feld"><span>Straße, PLZ Ort</span><input name="adresse" value="${esc(b.adresse || '')}" placeholder="für die Route im Handy"></label><label class="feld"><span>Ort (kurz)</span><input name="ort" value="${esc(b.ort)}"></label></div>
+        <label class="feld"><span>Arbeiten</span><input name="arbeit" value="${esc(b.arbeit || '')}"></label>
+        <label class="feld"><span>Hinweise für die Mitarbeiter</span><input name="notiz" value="${esc(b.notiz || '')}" placeholder="z. B. Schlüssel beim Nachbarn, Kran ab 7 Uhr"></label>
         <label class="feld"><span>Status</span><select name="status">${[['geplant', 'Geplant'], ['laufend', 'Laufend'], ['fertig', 'Fertig']].map(([k, t]) => `<option value="${k}" ${b.status === k ? 'selected' : ''}>${t}</option>`).join('')}</select></label>`,
       fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
       aktionen: { ok: () => {
@@ -1997,6 +2407,85 @@ const Buero = (() => {
       } },
     });
   }
+  /* ---------- Wochenplan speichern ---------- */
+  function planSpeichern(c, montag, zellen) {
+    const w = c.planWoche(montag);
+    if (w) Store.aendere(w.id, { zellen }); else Store.neu({ id: 'plan_' + montag, typ: 'plan', montag, zellen });
+  }
+  function planSetzen(c, pid, tag, wert) {
+    const w = c.planWoche(zustand.planWoche); const zellen = JSON.parse(JSON.stringify((w && w.zellen) || {}));
+    zellen[pid] = zellen[pid] || {}; if (wert) zellen[pid][tag] = wert; else delete zellen[pid][tag];
+    planSpeichern(c, zustand.planWoche, zellen);
+  }
+
+  /* ---------- Monatsnachweis (druckbar) ---------- */
+  function nachweisFenster(c, pid) {
+    const p = c.person(pid); const ym = zustand.monat; const n = c.monatsnachweis(pid, ym);
+    const zeilen = n.tage.map((t) => {
+      const wt = Datum.WT[Datum.wochentag(t.datum)];
+      const bem = t.feiertag || (t.abw ? (t.abw.typ === 'krank' ? 'Krank' : esc(t.abw.art || 'Urlaub')) : t.eintr.some((e) => e.taetigkeit === 'Berufsschule') ? 'Berufsschule' : '');
+      const grau = !t.arbeitstag ? ' class="frei"' : '';
+      if (!t.eintr.length) return `<tr${grau}><td>${wt} ${Datum.kurz(t.datum)}</td><td></td><td></td><td></td><td></td><td class="r num">${t.g ? Zahl.std(t.g) : ''}</td><td>${bem}</td></tr>`;
+      return t.eintr.map((e, i) => `<tr${grau}><td>${i ? '' : `${wt} ${Datum.kurz(t.datum)}`}</td><td class="num">${esc(e.von)} – ${esc(e.bis)}</td><td class="r num">${e.pause || 0}</td><td>${esc(c.bsName(e.bs))}</td><td class="r num">${Zahl.std(stundenVon(e))}</td><td></td><td>${i ? '' : bem}</td></tr>`).join('');
+    }).join('');
+    const inhalt = `<div class="nachweis" id="druck-nachweis">
+      <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Stundennachweis ${esc(Datum.monatName(ym))}</b><br>${esc(p.name)} · ${esc(p.funktion || '')}</div></div>
+      <table class="t"><thead><tr><th>Tag</th><th>Beginn – Ende</th><th class="r">Pause</th><th>Baustelle</th><th class="r">Std.</th><th class="r">Gutschr.</th><th>Bemerkung</th></tr></thead><tbody>${zeilen}</tbody></table>
+      <div class="nw-summe"><span>Soll <b>${Zahl.std(n.soll)}</b></span><span>Gearbeitet <b>${Zahl.std(n.ist)}</b></span><span>Gutschrift Urlaub/Krank <b>${Zahl.std(n.gut)}</b></span><span>Saldo Monat <b>${n.diff >= 0 ? '+' : ''}${Zahl.std(n.diff)}</b></span><span>Überstundenkonto <b>${(() => { const k = c.konto(pid, ym); return (k >= 0 ? '+' : '') + Zahl.std(k); })()}</b></span></div>
+      <div class="nw-unterschrift"><div>Datum, Unterschrift Arbeitnehmer</div><div>Datum, Unterschrift Arbeitgeber</div></div>
+      <p class="nw-fuss">Aufzeichnung von Beginn, Ende und Dauer der täglichen Arbeitszeit nach § 17 MiLoG. Aufbewahrung mindestens zwei Jahre.</p></div>`;
+    Fenster.oeffne({ titel: `Stundennachweis ${esc(p.name)}`, breit: true, bereich: 'ui-buero-fenster', inhalt,
+      fuss: `<button class="k" data-f="zu">Schließen</button><button class="k haupt" data-f="drucken">${Icon('drucken')} Drucken</button>`,
+      aktionen: { drucken: () => drucken($('#druck-nachweis').outerHTML) } });
+  }
+
+  /* ---------- Regiezettel ---------- */
+  function regieHtml(c, r) {
+    const b = c.baustelle(r.bs) || { name: '–', adresse: '' };
+    return `<div class="nachweis regiezettel" id="druck-regie">
+      <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Regiebericht</b><br>${esc(Datum.lang(r.datum))}</div></div>
+      <dl class="daten"><dt>Baustelle</dt><dd>${esc(b.name)}${b.adresse ? `, ${esc(b.adresse)}` : ''}</dd><dt>Ausgeführte Arbeit</dt><dd>${esc(r.text)}</dd>
+      <dt>Arbeitszeit</dt><dd>${r.leute > 1 ? `${r.leute} Mitarbeiter × ${Zahl.std(r.stunden)} Std. = ` : ''}<b>${Zahl.std(regieStunden(r))} Std.</b></dd>
+      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
+      <div class="nw-unterschrift"><div>${r.unterschrift ? `<img data-datei="${esc(r.unterschrift)}" alt="Unterschrift" style="height:64px;display:block">` : '<div style="height:64px"></div>'}Auftraggeber${r.kunde ? ': ' + esc(r.kunde) : ''}</div><div><div style="height:64px"></div>${esc(c.cfg.name)}</div></div>
+      <p class="nw-fuss">Die oben genannten Arbeiten wurden zusätzlich zum Auftrag ausgeführt und werden nach Aufwand abgerechnet.</p></div>`;
+  }
+  function regieFenster(c, id) {
+    const r = c.items.find((i) => i.id === id); if (!r) return;
+    const hg = Fenster.oeffne({ titel: `Regiezettel ${esc(Datum.kurz(r.datum))}`, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: regieHtml(c, r) + `<p style="margin:14px 0 0">${r.status === 'offen' ? '<span class="chip warn">Noch nicht unterschrieben</span> Der Kunde kann in der App nachträglich unterschreiben.' : `Wert nach Aufwand: <b>${Zahl.eur(regieBetrag(c, r))}</b> (${Zahl.eur(c.R.p('regie').satz)} je Std.)`}</p>${verlauf(c, r)}`,
+      fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button><button class="k" data-f="drucken">${Icon('drucken')} Drucken</button>${r.status === 'abgerechnet' ? `<button class="k" data-f="status" data-id="${r.unterschrift ? 'unterschrieben' : 'offen'}">Wieder öffnen</button>` : `<button class="k haupt" data-f="status" data-id="abgerechnet">${Icon('haken')} Abgerechnet</button>`}`,
+      aktionen: {
+        drucken: () => drucken($('#druck-regie', hg).outerHTML),
+        status: (b) => { Store.aendere(id, { status: b.dataset.id }); Fenster.schliesse(); meldung(b.dataset.id === 'abgerechnet' ? 'Als abgerechnet markiert' : 'Wieder offen'); },
+        loeschen: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich löschen?'; return; } Store.loesche(id); Fenster.schliesse(); meldung('Gelöscht'); },
+      } });
+    bilderNachladen(hg, c.items);
+  }
+
+  /* ---------- Bautagebuch-Eintrag aus dem Büro ---------- */
+  function tagebuchFenster(c, bs) {
+    const fotos = [];
+    const hg = Fenster.oeffne({ titel: 'Tagebuch-Eintrag', bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Datum</span><input type="date" name="datum" value="${Datum.heute()}" max="${Datum.heute()}"></label>
+        <label class="feld"><span>Wetter</span><select name="wetter">${Object.entries(WETTER).map(([k, t]) => `<option value="${k}">${t}</option>`).join('')}</select></label></div>
+        <label class="feld"><span>Was ist passiert?</span><textarea name="text" rows="4" placeholder="z. B. Schwelle gesetzt, Abnahme mit Bauleitung"></textarea></label>
+        <div class="feld"><span>Fotos</span><div class="fotos" id="tb-fotos"></div><button class="k klein" type="button" data-f="foto">${Icon('foto')} Foto hinzufügen</button></div>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: {
+        foto: () => dateiWaehlen('image/*', async (f) => {
+          if (fotos.length >= Number(c.R.p('bautagebuch').fotos)) return meldung('Mehr Fotos gehen in einen neuen Eintrag.', 'fehler');
+          try { const url = await bildVerkleinern(f, { maxKante: 1100 }); fotos.push(await Store.speichereDatei(url, f.name)); $('#tb-fotos', hg).insertAdjacentHTML('beforeend', `<span class="foto"><img src="${url}" alt="Foto"></span>`); }
+          catch (e) { meldung(e.message, 'fehler'); }
+        }),
+        ok: () => {
+          const w = Fenster.werte(hg); if (!w.text.trim() && !fotos.length) return meldung('Bitte eine Notiz oder ein Foto hinzufügen.', 'fehler');
+          Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: w.datum, bs, wetter: w.wetter, text: w.text.trim(), fotos });
+          Fenster.schliesse(); meldung('Eintrag gespeichert');
+        },
+      } });
+  }
+
   function neuerCode(personen) {
     let code; do { code = String(Math.floor(2000 + Math.random() * 7999)); } while (personen.some((p) => p.code === code)); return code;
   }
@@ -2130,7 +2619,17 @@ const Handy = (() => {
   const zeile = ({ sym, symKlasse = '', titel, unter = '', rechts = '', a = '', id = '', pfeil = !!a }) =>
     `<${a ? 'button' : 'div'} class="a-zeile" ${a ? `data-a="${a}" data-id="${esc(id)}"` : ''}>${sym ? `<span class="sym ${symKlasse}">${Icon(sym)}</span>` : ''}<span class="text"><b>${titel}</b>${unter ? `<small>${unter}</small>` : ''}</span>${rechts ? `<span class="rechts">${rechts}</span>` : ''}${pfeil ? `<span class="pfeil">${Icon('pfeil')}</span>` : ''}</${a ? 'button' : 'div'}>`;
   const unterKopf = (titel) => `<div class="unterseite-kopf"><button data-a="zurueck" aria-label="Zurück">${Icon('zurueck')}</button><h2>${titel}</h2></div>`;
-  const bsAuswahl = (c, gewaehlt = '') => `<label class="a-feld"><span>Baustelle</span><select name="bs">${c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}<option value="" ${gewaehlt === '' && c.baustellenOffen().length ? '' : 'selected'}>ohne Baustelle</option></select></label>`;
+  const bsAuswahl = (c, gewaehlt = '') => `<label class="a-feld"><span>Baustelle</span><select name="bs">${c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}<option value="" ${!gewaehlt || !c.baustelle(gewaehlt) ? 'selected' : ''}>ohne Baustelle</option></select></label>`;
+
+  const WETTER = ['sonnig', 'bewölkt', 'Regen', 'Wind', 'Frost', 'Schnee'];
+  function baustelleKarte(c, bsId, titel) {
+    const b = c.baustelle(bsId); if (!b) return '';
+    const route = b.adresse ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(b.adresse)}` : '';
+    return `<div class="a-titel">${titel}</div><div class="a-karte baustelle-karte"><div class="kopfzeile"><span class="sym firma">${Icon('haus')}</span><div><b>${esc(b.name)}</b><small>${esc(b.adresse || b.ort || '')}</small></div></div>
+      ${b.notiz ? `<p class="hinweis">${esc(b.notiz)}</p>` : ''}
+      <div class="knoepfe">${route ? `<a class="gross-knopf hell" href="${route}" target="_blank" rel="noopener">${Icon('karte')} Route</a>` : ''}${b.telefon ? `<a class="gross-knopf hell" aria-label="Kunde anrufen" href="tel:${esc(b.telefon.replace(/\s+/g, ''))}">${Icon('telefon')} Anrufen</a>` : ''}</div></div>`;
+  }
+  const naechsterArbeitstag = (d) => { let x = Datum.plus(d, 1); while (!Datum.istArbeitstag(x)) x = Datum.plus(x, 1); return x; };
 
   function reiterListe(c) {
     const R = c.R; const chef = c.ich.rolle === 'chef' || c.ich.rolle === 'buero';
@@ -2179,6 +2678,16 @@ const Handy = (() => {
       html += `<div class="a-karte stempel"><div class="status"><i></i>Stundenzettel</div><div class="ort" style="margin-top:8px">Trage deine Arbeitszeit für heute ein.</div><button class="gross-knopf firma" data-a="unter" data-id="stunden">${Icon('plus')} Stunden eintragen</button></div>`;
     }
 
+    // Baustelle heute und Plan für den nächsten Arbeitstag
+    const lauf = c.laeuft(ich.id);
+    const heutePlan = c.geplant(ich.id, c.heute);
+    const bsHeute = (lauf && lauf.bs) || (c.baustelle(heutePlan) ? heutePlan : '');
+    if (bsHeute && R.hat('baustellen')) html += baustelleKarte(c, bsHeute, lauf ? 'Deine Baustelle' : 'Heute laut Plan');
+    if (R.plan()) {
+      const morgen = naechsterArbeitstag(c.heute); const wert = c.geplant(ich.id, morgen);
+      html += `<div class="a-karte" style="margin-top:12px">${zeile({ sym: 'plan', titel: `${Datum.WT[Datum.wochentag(morgen)]}, ${Datum.kurz(morgen)}: ${esc(c.planText(wert))}`, unter: wert && c.baustelle(wert) ? esc(c.baustelle(wert).ort) : wert ? '' : 'Noch nicht eingeteilt', a: 'reiter', id: 'zeiten' })}</div>`;
+    }
+
     // Woche
     if (R.stundenImApp()) {
       const wo = Datum.montag(c.heute); const soll = Number(ich.soll) || Number(R.p('stunden').soll);
@@ -2216,6 +2725,7 @@ const Handy = (() => {
         if (!es.length) return zeile({ titel: Datum.mittel(d), unter: abw ? (abw.typ === 'krank' ? 'Krank' : 'Urlaub') : d > c.heute ? '' : 'nichts erfasst', rechts: '' });
         return es.map((e) => zeile({ titel: `${Datum.mittel(d)} · ${esc(e.von)} – ${esc(e.bis || 'läuft')}`, unter: [c.R.mitBaustelle('stunden') && c.bsName(e.bs), e.taetigkeit].filter(Boolean).map(esc).join(' · '), rechts: `${e.bis ? Zahl.std(stundenVon(e)) : ''}<small>${status(e.status)}</small>`, a: e.status === 'offen' || e.status === 'abgelehnt' ? 'eintrag' : '', id: e.id })).join('');
       }).join('')}<div class="summe-zeile"><span>Woche gesamt</span><b class="num">${Zahl.std(summe)} Std.</b></div></div>
+      ${c.R.plan() ? `<div class="a-titel">Plan KW ${Datum.kw(wo)}</div><div class="a-karte">${tage.slice(0, c.R.p('wochenplan').tage === 'Mo bis Sa' ? 6 : 5).map((d) => { const w = c.geplant(c.ich.id, d); return zeile({ titel: `${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}`, unter: esc(c.planText(w)), rechts: d === c.heute ? '<span class="a-status info">Heute</span>' : '' }); }).join('')}</div>` : ''}
       ${c.R.stundenImApp() ? `<button class="gross-knopf hell" style="margin-top:16px" data-a="unter" data-id="stunden">${Icon('plus')} Stunden nachtragen</button><p style="color:#6b7280;font-size:13px;text-align:center">Nachtragen bis ${nachtrag} Tage zurück möglich.</p>` : ''}`;
   };
 
@@ -2226,6 +2736,8 @@ const Handy = (() => {
     if (R.stundenImApp()) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="stunden"><span class="sym">${Icon('uhr')}</span><span><b>Stunden</b><small>nachtragen</small></span></button>`);
     if (R.imApp('urlaub')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="urlaubsantrag"><span class="sym">${Icon('kalender')}</span><span><b>Urlaub</b><small>beantragen</small></span></button>`);
     if (R.imApp('urlaub') && R.p('urlaub').krank === 'ja') k.push(`<button class="erfassen-kachel" data-a="unter" data-id="krank"><span class="sym">${Icon('krank')}</span><span><b>Krank melden</b><small>geht direkt ans Büro</small></span></button>`);
+    if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>Regiezettel</b><small>Zusatzarbeit, Kunde unterschreibt</small></span></button>`);
+    if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>Bautagebuch</b><small>Fotos und Notiz zum Tag</small></span></button>`);
     if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>Material</b><small>fehlt auf der Baustelle</small></span></button>`);
     return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
@@ -2246,8 +2758,9 @@ const Handy = (() => {
     return `<div class="unterseite-kopf"><h2>Mehr</h2></div>
       <div class="a-karte">${zeile({ sym: 'person', symKlasse: 'firma', titel: esc(c.ich.name), unter: `${esc(c.ich.funktion || '')} · ${esc(c.cfg.name)}` })}</div>
       ${c.R.imApp('dokumente') ? `<div class="a-titel">Meine Dokumente</div><div class="a-karte">${doks.map((d) => zeile({ sym: 'dokument', titel: esc(d.titel), unter: d.gelesen ? 'gelesen' : '<b style="color:#c23a2b">neu</b>', a: 'dokument', id: d.id })).join('') || '<div class="leer">Noch keine Dokumente.</div>'}</div>` : ''}
+      ${c.R.imApp('regie') ? (() => { const offen = c.typ('regie').filter((r) => r.pid === c.ich.id && r.status === 'offen'); return offen.length ? `<div class="a-titel">Noch nicht unterschrieben</div><div class="a-karte">${offen.map((r) => zeile({ sym: 'unterschrift', titel: esc(r.text), unter: `${Datum.kurz(r.datum)} · ${esc(c.bsName(r.bs))}`, a: 'regie-nach', id: r.id })).join('')}</div>` : ''; })() : ''}
       <div class="a-titel">Konto</div><div class="a-karte">${zeile({ sym: 'abmelden', titel: 'Abmelden', unter: 'Ein anderer Mitarbeiter meldet sich an', a: 'abmelden' })}${zeile({ sym: 'x', titel: 'Betrieb trennen', unter: 'Handy von diesem Betrieb lösen', a: 'trennen' })}</div>
-      <p style="text-align:center;color:#9aa1ad;font-size:12px;margin-top:24px">${LOGO.replace('<svg', '<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:6px"')}Richtwerk · Mitarbeiter-App 0.9</p>`;
+      <p style="text-align:center;color:#9aa1ad;font-size:12px;margin-top:24px">${LOGO.replace('<svg', '<svg style="width:18px;height:18px;vertical-align:-4px;margin-right:6px"')}Richtwerk · Mitarbeiter-App 1.0</p>`;
   };
 
   BILD.freigaben = (c) => {
@@ -2269,8 +2782,8 @@ const Handy = (() => {
   /* ---------- Unterseiten (Formulare) ---------- */
   const UNTER = {};
 
-  UNTER.einstempeln = (c) => `${unterKopf('Arbeitsbeginn')}<p style="color:#6b7280;margin:-6px 4px 14px">Wo arbeitest du heute?</p>
-    <div class="a-karte">${c.baustellenOffen().map((b) => zeile({ sym: 'haus', titel: esc(b.name), unter: esc(b.ort), a: 'einstempeln', id: b.id })).join('')}${zeile({ sym: 'start', titel: 'Ohne Baustelle', unter: 'Halle, Fahrt, Sonstiges', a: 'einstempeln', id: '' })}</div>`;
+  UNTER.einstempeln = (c) => { const plan = c.geplant(c.ich.id, c.heute); return `${unterKopf('Arbeitsbeginn')}<p style="color:#6b7280;margin:-6px 4px 14px">Wo arbeitest du heute?</p>
+    <div class="a-karte">${[...c.baustellenOffen()].sort((a, b) => (b.id === plan) - (a.id === plan)).map((b) => zeile({ sym: 'haus', symKlasse: b.id === plan ? 'firma' : '', titel: esc(b.name), unter: esc(b.ort) + (b.id === plan ? ' · laut Plan' : ''), a: 'einstempeln', id: b.id })).join('')}${zeile({ sym: 'start', titel: 'Ohne Baustelle', unter: 'Halle, Fahrt, Sonstiges', a: 'einstempeln', id: '' })}</div>`; };
   UNTER.wechsel = (c) => `${unterKopf('Baustelle wechseln')}<p style="color:#6b7280;margin:-6px 4px 14px">Die bisherige Zeit wird abgeschlossen, ab jetzt zählt die neue Baustelle.</p>
     <div class="a-karte">${c.baustellenOffen().map((b) => zeile({ sym: 'haus', titel: esc(b.name), unter: esc(b.ort), a: 'wechseln', id: b.id })).join('')}</div>`;
 
@@ -2347,6 +2860,37 @@ const Handy = (() => {
     return `${unterKopf(esc(d ? d.titel : 'Dokument'))}<div class="a-karte" id="dok-anzeige" style="min-height:300px"><div class="leer">Wird geladen …</div></div>`;
   };
 
+  UNTER.tagebuch = (c) => {
+    const d = zustand.daten; const fotos = d.fotos || []; const max = Number(c.R.p('bautagebuch').fotos);
+    const vorschlag = d.bs !== undefined ? d.bs : ((c.laeuft(c.ich.id) || {}).bs || (c.baustelle(c.geplant(c.ich.id, c.heute)) ? c.geplant(c.ich.id, c.heute) : (c.baustellenOffen()[0] || {}).id));
+    return `${unterKopf('Bautagebuch')}<div class="a-karte" style="padding:16px">
+      ${bsAuswahl(c, vorschlag)}
+      <div class="a-feld"><span>Wetter</span><div class="a-chips" data-wahl="wetter">${WETTER.map((w) => `<button type="button" class="${(d.wetter || 'sonnig') === w ? 'an' : ''}" data-a="wahl" data-id="${w}">${w}</button>`).join('')}</div></div>
+      <label class="a-feld"><span>Was wurde gemacht? Besonderheiten?</span><textarea name="text" placeholder="z. B. Sparren gesetzt, Holz am Ortgang morsch">${esc(d.text || '')}</textarea></label>
+      <div class="a-feld"><span>Fotos (${fotos.length} von ${max})</span><div class="foto-reihe">${fotos.map((f, i) => `<span class="foto"><img src="${f}" alt="Foto ${i + 1}"><button data-a="foto-weg" data-id="${i}" aria-label="Foto entfernen">${Icon('x')}</button></span>`).join('')}
+        ${fotos.length < max ? `<button class="foto neu" data-a="tb-foto" aria-label="Foto aufnehmen">${Icon('kamera')}</button>` : ''}</div></div>
+      <button class="gross-knopf firma" data-a="speichere-tagebuch">${Icon('haken')} Speichern</button></div>`;
+  };
+
+  UNTER.regie = (c) => {
+    const d = zustand.daten; const nach = d.id && c.items.find((i) => i.id === d.id);
+    const satz = Number(c.R.p('regie').satz);
+    const kopf = nach
+      ? `<div class="a-karte">${zeile({ sym: 'unterschrift', titel: esc(nach.text), unter: `${Datum.kurz(nach.datum)} · ${esc(c.bsName(nach.bs))} · ${nach.leute > 1 ? nach.leute + ' × ' : ''}${Zahl.std(nach.stunden)} Std.` })}</div>`
+      : `<div class="a-karte" style="padding:16px">
+        ${bsAuswahl(c, d.bs !== undefined ? d.bs : ((c.laeuft(c.ich.id) || {}).bs || (c.baustellenOffen()[0] || {}).id))}
+        <label class="a-feld"><span>Was wurde zusätzlich gemacht?</span><textarea name="text" placeholder="z. B. 2 Sparren ausgetauscht, morsch">${esc(d.text || '')}</textarea></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label class="a-feld"><span>Leute</span><input type="number" name="leute" inputmode="numeric" min="1" max="9" value="${esc(d.leute || 1)}"></label><label class="a-feld"><span>Stunden je Person</span><input name="stunden" inputmode="decimal" placeholder="z. B. 2,5" value="${esc(d.stunden || '')}"></label></div>
+        <label class="a-feld"><span>Material (optional)</span><input name="material" placeholder="z. B. KVH 80x180, 2 x 5 m" value="${esc(d.material || '')}"></label></div>`;
+    return `${unterKopf(nach ? 'Unterschrift einholen' : 'Regiezettel')}${kopf}
+      <div class="a-titel">Bestätigung durch den Kunden</div>
+      <div class="a-karte" style="padding:16px"><label class="a-feld"><span>Name des Kunden</span><input name="kunde" value="${esc(d.kunde || (nach ? '' : (c.baustelle(d.bs || (c.laeuft(c.ich.id) || {}).bs) || {}).kunde || ''))}"></label>
+        <div class="a-feld"><span>Unterschrift</span><div class="unterschrift-feld"><canvas id="unterschrift" aria-label="Hier mit dem Finger unterschreiben"></canvas><span class="linie">Hier mit dem Finger unterschreiben</span><button type="button" data-a="unterschrift-weg">Löschen</button></div></div>
+        <p style="color:#6b7280;font-size:13px;margin:0 0 14px">Mit der Unterschrift bestätigt der Kunde die Zusatzarbeit. Abgerechnet wird nach Aufwand${satz ? ` (${Zahl.eur(satz)} je Stunde)` : ''}.</p>
+        <button class="gross-knopf firma" data-a="speichere-regie" data-id="mit">${Icon('haken')} Unterschrieben speichern</button>
+        ${!nach && c.R.p('regie').ohneUnterschrift === 'ja' ? `<button class="gross-knopf hell" style="margin-top:10px" data-a="speichere-regie" data-id="ohne">Kunde nicht da, später unterschreiben</button>` : ''}</div>`;
+  };
+
   UNTER.eintrag = (c) => {
     const e = c.items.find((i) => i.id === zustand.daten.id);
     if (!e) return unterKopf('Eintrag');
@@ -2355,6 +2899,15 @@ const Handy = (() => {
       <button class="gross-knopf hell" data-a="loesche-eintrag" data-id="${e.id}">${Icon('muell')} Eintrag löschen</button>`;
   };
 
+  /* Verbindung: offline erfasste Einträge werden nachgeschickt */
+  function syncStatus() {
+    const n = Store.offen; const online = navigator.onLine !== false;
+    if (online && !n) return '';
+    return `<span class="sync ${online ? '' : 'aus'}" role="status">${Icon('wolke')}${online ? `${n} wird gesendet` : n ? `Offline · ${n} warten` : 'Offline'}</span>`;
+  }
+  window.addEventListener('online', () => zeichne(false));
+  window.addEventListener('offline', () => zeichne(false));
+
   /* ---------- Gesamtbild ---------- */
   function html(c, { reiter = zustand.reiter, unter = zustand.unter } = {}) {
     const tabs = reiterListe(c); const o = c.offen();
@@ -2362,7 +2915,7 @@ const Handy = (() => {
     const ungelesen = c.items.filter((i) => i.typ === 'dokument' && (i.fuer === c.ich.id || i.fuer === 'alle') && !i.gelesen).length;
     const inhalt = unter && UNTER[unter] ? UNTER[unter](c) : (BILD[reiter] || BILD.start)(c);
     return `<div class="ui-app" style="--firma:${esc(c.cfg.farbe)}"><div class="app-rahmen">
-      <header class="a-kopf"><span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span><div class="titel"><b>${esc(c.cfg.name)}</b><small>${esc(c.ich.name)}</small></div></header>
+      <header class="a-kopf"><span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span><div class="titel"><b>${esc(c.cfg.name)}</b><small>${esc(c.ich.name)}</small></div>${syncStatus()}</header>
       <main class="a-inhalt">${inhalt}</main>
       <nav class="a-tabs" style="grid-template-columns:repeat(${tabs.length},1fr)">${tabs.map((t) => `<button class="${t.scan ? 'scan' : ''} ${reiter === t.id && !unter ? 'an' : ''}" data-a="reiter" data-id="${t.id}">${t.scan ? `<span class="kreis">${Icon(t.icon)}</span>` : Icon(t.icon)}${t.name}${t.id === 'freigaben' && nFrei ? `<span class="zahl">${nFrei}</span>` : ''}${t.id === 'mehr' && ungelesen ? `<span class="zahl">${ungelesen}</span>` : ''}</button>`).join('')}</nav>
     </div></div>`;
@@ -2424,6 +2977,7 @@ const Handy = (() => {
     sitzung = Sitzung.lies('app');
     if (!sitzung) { aktiverBereich = null; return gekoppelt() ? anmeldungCode() : anmeldungBetrieb(); }
     Store.oeffne(sitzung.fid);
+    Store.setzeBenutzer(sitzung.pid);
     zeichne(true);
     clearInterval(uhrTimer);
     uhrTimer = setInterval(() => {
@@ -2443,6 +2997,7 @@ const Handy = (() => {
     Wurzel().innerHTML = html(c);
     if (zustand.unter === 'dokument') dokumentLaden(c);
     if (zustand.unter === 'urlaubsantrag') urlaubstageZeigen();
+    if (zustand.unter === 'regie') unterschriftVorbereiten();
     window.scrollTo(0, erzwingen ? 0 : scroll);
   }
 
@@ -2467,6 +3022,30 @@ const Handy = (() => {
     const f = () => { const v = $('[name=von]').value; const b = $('[name=bis]').value; const n = v && b && b >= v ? Datum.werktageZwischen(v, b) : 0; $('#urlaub-tage').textContent = n === 1 ? '1 Arbeitstag' : `${n} Arbeitstage`; };
     $$('.a-inhalt input[type=date]').forEach((i) => i.addEventListener('change', () => { if (i.name === 'von' && $('[name=bis]').value < i.value) $('[name=bis]').value = i.value; f(); }));
     f();
+  }
+
+  /* Unterschrift mit Finger oder Maus */
+  let unterschriftLeer = true;
+  function unterschriftVorbereiten() {
+    const cv = $('#unterschrift'); if (!cv) return;
+    const r = cv.getBoundingClientRect(); const f = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = r.width * f; cv.height = r.height * f;
+    const g = cv.getContext('2d'); g.scale(f, f); g.lineWidth = 2.4; g.lineCap = 'round'; g.lineJoin = 'round'; g.strokeStyle = '#1d2a4a';
+    unterschriftLeer = true; let zieht = false;
+    const pos = (e) => { const b = cv.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+    cv.addEventListener('pointerdown', (e) => { zieht = true; cv.setPointerCapture(e.pointerId); const [x, y] = pos(e); g.beginPath(); g.moveTo(x, y); e.preventDefault(); });
+    cv.addEventListener('pointermove', (e) => { if (!zieht) return; const [x, y] = pos(e); g.lineTo(x, y); g.stroke(); unterschriftLeer = false; cv.parentElement.classList.add('voll'); });
+    const ende = () => { zieht = false; }; cv.addEventListener('pointerup', ende); cv.addEventListener('pointercancel', ende);
+  }
+
+  function tagebuchFoto() {
+    const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*'; inp.setAttribute('capture', 'environment');
+    inp.onchange = async () => {
+      const f = inp.files[0]; if (!f) return;
+      try { Object.assign(zustand.daten, werte()); const bild = await bildVerkleinern(f, { maxKante: 1100 }); zustand.daten.fotos = [...(zustand.daten.fotos || []), bild]; zeichne(true); }
+      catch (err) { meldung(err.message, 'fehler'); }
+    };
+    inp.click();
   }
 
   function fotoAufnehmen(kamera) {
@@ -2503,7 +3082,44 @@ const Handy = (() => {
     trennen() { Sitzung.setze('app', null); koppeln(null); aktiverBereich = null; anmeldungBetrieb(); },
     dokument(el) { geheZu('dokument', { id: el.dataset.id }); },
     eintrag(el) { geheZu('eintrag', { id: el.dataset.id }); },
-    'loesche-eintrag'(el) { Store.loesche(el.dataset.id); zustand.unter = null; zeichne(true); meldung('Gelöscht'); },
+    'loesche-eintrag'(el) {
+      if (!el.dataset.sicher) { el.dataset.sicher = '1'; el.classList.add('rot'); el.textContent = 'Wirklich löschen? Nochmal tippen'; return; }
+      Store.loesche(el.dataset.id); zustand.unter = null; zeichne(true); meldung('Gelöscht');
+    },
+    'tb-foto'() { tagebuchFoto(); },
+    'foto-weg'(el) { Object.assign(zustand.daten, werte()); zustand.daten.fotos.splice(Number(el.dataset.id), 1); zeichne(true); },
+    async 'speichere-tagebuch'(el, c) {
+      const w = werte(); const fotos = zustand.daten.fotos || [];
+      if (!(w.text || '').trim() && !fotos.length) return meldung('Bitte ein Foto oder eine Notiz.', 'fehler');
+      el.disabled = true; el.textContent = 'Wird gespeichert …';
+      try {
+        const ids = []; for (const f of fotos) ids.push(await Store.speichereDatei(f, 'foto.jpg'));
+        Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: c.heute, bs: w.bs || '', wetter: w.wetter || '', text: (w.text || '').trim(), fotos: ids });
+        gesendet('Im Bautagebuch', ids.length ? `${ids.length} ${ids.length === 1 ? 'Foto' : 'Fotos'} gespeichert. Das Büro sieht sie bei der Baustelle.` : 'Das Büro sieht den Eintrag bei der Baustelle.', 'tagebuch');
+      } catch (err) { el.disabled = false; el.textContent = 'Speichern'; meldung(err.message, 'fehler'); }
+    },
+    'unterschrift-weg'() { const cv = $('#unterschrift'); if (cv) { cv.getContext('2d').clearRect(0, 0, cv.width, cv.height); cv.parentElement.classList.remove('voll'); unterschriftLeer = true; } },
+    'regie-nach'(el) { geheZu('regie', { id: el.dataset.id }); },
+    async 'speichere-regie'(el, c) {
+      const w = werte(); const mit = el.dataset.id === 'mit'; const nach = zustand.daten.id;
+      if (mit && unterschriftLeer) return meldung('Bitte den Kunden unterschreiben lassen.', 'fehler');
+      if (mit && !(w.kunde || '').trim()) return meldung('Bitte den Namen des Kunden eintragen.', 'fehler');
+      let neu = null;
+      if (!nach) {
+        const stunden = Number(String(w.stunden || '').replace(',', '.'));
+        if (!(w.text || '').trim()) return meldung('Was wurde zusätzlich gemacht?', 'fehler');
+        if (!stunden || stunden <= 0) return meldung('Bitte die Stunden eintragen.', 'fehler');
+        neu = { typ: 'regie', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), leute: Math.max(1, Number(w.leute) || 1), stunden, material: (w.material || '').trim() };
+      }
+      el.disabled = true;
+      try {
+        let unterschrift = '';
+        if (mit) unterschrift = await Store.speichereDatei($('#unterschrift').toDataURL('image/png'), 'unterschrift.png');
+        const felder = { kunde: (w.kunde || '').trim(), unterschrift, status: mit ? 'unterschrieben' : 'offen', ...(mit ? { unterschriebenAm: Date.now() } : {}) };
+        if (nach) Store.aendere(nach, felder); else Store.neu({ ...neu, ...felder });
+        gesendet(mit ? 'Unterschrieben' : 'Gespeichert', mit ? 'Der Regiezettel liegt im Büro zur Abrechnung.' : 'Unter „Mehr“ kann der Kunde später unterschreiben.');
+      } catch (err) { el.disabled = false; meldung(err.message, 'fehler'); }
+    },
     foto() { fotoAufnehmen(true); },
     galerie() { fotoAufnehmen(false); },
     scanmodus(el) { Object.assign(zustand.daten, werte()); const s = el.dataset.id === '1'; Object.assign(zustand.daten, { scan: s, bild: s ? zustand.daten.scanBild : zustand.daten.original, anzeige: s ? zustand.daten.scanBild : zustand.daten.original }); zeichne(true); },
@@ -2746,7 +3362,7 @@ const Studio = (() => {
     app: { app: 'start' }, stempeln: { app: 'start' }, stunden: { buero: 'stunden', app: 'zeiten' }, urlaub: { buero: 'urlaub', app: 'urlaub' },
     belege: { buero: 'belege', app: 'u:beleg' }, lieferscheine: { buero: 'lieferscheine', app: 'u:lieferschein' }, material: { buero: 'material', app: 'u:material' },
     tagelohn: { buero: 'tagelohn' }, freigabe: { buero: 'uebersicht', app: 'freigaben' }, export: { buero: 'steuer' }, dokumente: { buero: 'steuer', app: 'mehr' },
-    baustellen: { buero: 'baustellen' },
+    baustellen: { buero: 'baustellen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' },
   };
   const OHNE_AUSWAHL = { buero: 'uebersicht', app: 'start' };
   function vorschauZiel(typ) { return typ ? (VORSCHAU[typ] || null) : OHNE_AUSWAHL; }
@@ -3077,6 +3693,16 @@ const Fenster = {
 };
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') Fenster.schliesse(); });
 
+/* Drucken: nur den übergebenen Inhalt (Nachweis, Regiezettel, Plan) aufs Papier */
+function drucken(inhalt) {
+  let z = $('#druck'); if (!z) { z = document.createElement('div'); z.id = 'druck'; document.body.appendChild(z); }
+  z.innerHTML = inhalt; bilderNachladen(z, Store.items);
+  document.body.classList.add('druckt');
+  const fertig = () => { document.body.classList.remove('druckt'); z.innerHTML = ''; window.removeEventListener('afterprint', fertig); };
+  window.addEventListener('afterprint', fertig);
+  setTimeout(() => { try { window.print(); } catch { fertig(); } }, 250);
+}
+
 /* ---------- Bereiche ---------- */
 const Wurzel = () => $('#wurzel');
 let aktiverBereich = null;
@@ -3111,7 +3737,7 @@ function startseite() {
     <header class="start-kopf"><div class="marke">${LOGO}Richtwerk <small>Intern</small></div><span class="stand">Arbeitsstand ${Datum.kurz(Datum.heute())}${Datum.heute().slice(0, 4)}</span></header>
     <main class="start-inhalt">
       <h1>Bereich wählen</h1>
-      <p class="unter">Die drei Teile laufen unabhängig voneinander. Für die Vorführung den Büro-Bereich am Laptop öffnen und die Mitarbeiter-App in einem zweiten Tab oder am Handy. Alles, was dort erfasst wird, erscheint sofort im Büro.</p>
+      <p class="unter">Die drei Teile laufen unabhängig voneinander. Die Betriebszentrale läuft am Computer im Büro, die Mitarbeiter-App auf jedem Handy oder Tablet. Was in der App erfasst wird, steht sofort in der Betriebszentrale.</p>
       <div class="bereiche">
         ${eintrag('01', 'buero', 'Für Inhaber und Büro', 'Betriebszentrale', 'Stunden prüfen, Urlaub freigeben, Belege und Lieferscheine, Tagelöhner, Paket für das Steuerbüro.')}
         ${eintrag('02', 'app', 'Für die Mitarbeiter am Handy', 'Mitarbeiter-App', 'Stempeln, Belege und Lieferscheine abfotografieren, Urlaub beantragen, Lohnzettel ansehen.')}
@@ -3121,7 +3747,7 @@ function startseite() {
     <footer class="start-fuss">
       <div><b>Daten</b><span class="datenmodus">${Store.modus === 'cloud' ? 'Geteilt über alle Geräte' : 'Nur in diesem Browser (Offline-Modus)'}</span></div>
       <div><b>Anmeldung</b>Betriebskennung und persönlicher Zugangscode</div>
-      <div><b>Version</b><span class="mono">0.9 Vorführung</span></div>
+      <div><b>Version</b><span class="mono">1.0</span></div>
     </footer>
   </div>`;
 }
@@ -3176,8 +3802,15 @@ async function boot() {
     const meta = await Store.betriebe();
     if (!meta) {
       const t = $('.laden > div');
-      if (t) t.firstChild.textContent = 'Vorführbetrieb wird eingerichtet … ';
-      await Muster.einrichten((n) => { if (t) t.firstChild.textContent = `Vorführbetrieb wird eingerichtet … ${n}`; });
+      if (t) t.firstChild.textContent = 'Betriebe werden eingerichtet … ';
+      await Muster.einrichten((n) => { if (t) t.firstChild.textContent = `Betriebe werden eingerichtet … ${n}`; });
+    } else {
+      // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
+      const cfg = await Store.ladeCfg('ahlers');
+      if (cfg && (cfg.version || 1) < 2) {
+        const t = $('.laden > div');
+        await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
+      }
     }
   } catch (e) { console.error(e); }
   zeige();

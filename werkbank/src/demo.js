@@ -12,6 +12,7 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
+      version: 2,
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
@@ -29,11 +30,11 @@ const Muster = (() => {
         { id: 'p7', name: 'Marek Nowak', rolle: 'helfer', funktion: 'Bauhelfer', code: '2005', soll: 40, urlaub: 28 },
       ],
       baustellen: [
-        { id: 'b1', name: 'Neubau EFH Hinrichs', ort: 'Hude', arbeit: 'Dachstuhl abbinden und richten', status: 'laufend' },
-        { id: 'b2', name: 'Carport Gerdes', ort: 'Ganderkesee', arbeit: 'Doppelcarport mit Abstellraum', status: 'laufend' },
-        { id: 'b3', name: 'Dachsanierung Wilkens', ort: 'Wardenburg', arbeit: 'Sparren verstärken, Aufsparrendämmung', status: 'laufend' },
-        { id: 'b4', name: 'Gaube Steenken', ort: 'Delmenhorst', arbeit: 'Schleppgaube', status: 'geplant' },
-        { id: 'b0', name: 'Halle / Abbund', ort: 'Ganderkesee', arbeit: 'Werkstatt, Abbund, Lager', status: 'laufend' },
+        { id: 'b1', name: 'Neubau EFH Hinrichs', ort: 'Hude', adresse: 'Am Moorweg 14, 27798 Hude', kunde: 'Familie Hinrichs', telefon: '04408 91 27 40', arbeit: 'Dachstuhl abbinden und richten', status: 'laufend', notiz: 'Bauleitung: Architekturbüro Wempe. Kran am Do bis 12 Uhr bestellt.' },
+        { id: 'b2', name: 'Carport Gerdes', ort: 'Ganderkesee', adresse: 'Lindenstraße 3, 27777 Ganderkesee', kunde: 'Holger Gerdes', telefon: '0171 448 20 19', arbeit: 'Doppelcarport mit Abstellraum', status: 'laufend', notiz: 'Schlüssel für Abstellraum beim Nachbarn (Nr. 5).' },
+        { id: 'b3', name: 'Dachsanierung Wilkens', ort: 'Wardenburg', adresse: 'Hauptstraße 52, 26203 Wardenburg', kunde: 'Renate Wilkens', telefon: '04407 55 81', arbeit: 'Sparren verstärken, Aufsparrendämmung', status: 'laufend', notiz: 'Kundin ist vormittags da. Hund im Garten.' },
+        { id: 'b4', name: 'Gaube Steenken', ort: 'Delmenhorst', adresse: 'Stedinger Straße 120, 27753 Delmenhorst', kunde: 'Jörg Steenken', telefon: '0152 029 33 71', arbeit: 'Schleppgaube', status: 'geplant', notiz: '' },
+        { id: 'b0', name: 'Halle / Abbund', ort: 'Ganderkesee', adresse: 'Gewerbestraße 9, 27777 Ganderkesee', kunde: '', telefon: '', arbeit: 'Werkstatt, Abbund, Lager', status: 'laufend', notiz: '' },
       ],
       tageloehner: [
         { id: 't1', name: 'Kevin Lange', notiz: 'Aushilfe, Student', satz: 16 },
@@ -50,6 +51,9 @@ const Muster = (() => {
           knoten('material', 330, 470),
           knoten('tagelohn', 330, 560),
           knoten('dokumente', 330, 650),
+          knoten('bautagebuch', 330, 740),
+          knoten('regie', 330, 830),
+          knoten('wochenplan', 330, 920),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -60,6 +64,7 @@ const Muster = (() => {
           ['baustellen', 'stunden'], ['baustellen', 'belege'], ['baustellen', 'lieferscheine'], ['baustellen', 'material'], ['baustellen', 'tagelohn'],
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
+          ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -138,6 +143,24 @@ const Muster = (() => {
     // Material
     add('m1', { typ: 'material', pid: 'p3', datum: Datum.plus(heute, -1), bs: 'b1', text: 'Dachlatten 30/50 nochmal 10 Bund, Nagelplatten', status: 'offen' });
     add('m2', { typ: 'material', pid: 'p5', datum: Datum.plus(heute, -4), bs: 'b2', text: 'Kopfbänder 2 Stk nachschneiden lassen', status: 'erledigt' });
+    // Bautagebuch
+    const tb = (id, tage, pid, bs, wetter, text, fotos) => { const datum = Datum.plus(heute, -tage); if (Datum.istWerktag(datum)) add(id, { typ: 'tagebuch', pid, datum, bs, wetter, text, fotos }); };
+    tb('tb1', 15, 'p3', 'b3', 'bewölkt', 'Dach abgedeckt. Zwei Sparren am Ortgang morsch (Fotos), Kundin informiert. Rest in Ordnung.', ['muster-sparren', 'muster-dach']);
+    tb('tb2', 13, 'p3', 'b3', 'Regen', 'Ab 11 Uhr Regen, Dach mit Plane gesichert. Nachmittags in der Halle.', ['muster-plane']);
+    tb('tb3', 8, 'p3', 'b1', 'sonnig', 'Schwelle und Wände ausgerichtet, Abbund angeliefert.', ['muster-dach']);
+    tb('tb4', 2, 'p3', 'b1', 'sonnig', 'Dachstuhl gerichtet, Richtfest mit Bauherren um 15 Uhr.', ['muster-dach', 'muster-richtfest']);
+    // Regiezettel (Zusatzarbeiten mit Unterschrift)
+    add('rg1', { typ: 'regie', pid: 'p3', datum: Datum.plus(heute, -15), bs: 'b3', text: 'Zwei Sparren am Ortgang ausgetauscht (morsch), inkl. Entsorgung', leute: 2, stunden: 6, material: 'KVH 80x180, 2 x 5,0 m', kunde: 'Renate Wilkens', unterschrift: 'muster-unterschrift', status: 'unterschrieben' });
+    add('rg2', { typ: 'regie', pid: 'p5', datum: Datum.plus(heute, -3), bs: 'b2', text: 'Fundamente für Abstellraum nachträglich tiefer gesetzt (Wurzeln)', leute: 2, stunden: 3.5, material: '', kunde: 'Holger Gerdes', unterschrift: 'muster-unterschrift', status: 'unterschrieben' });
+    add('rg3', { typ: 'regie', pid: 'p3', datum: Datum.plus(heute, -1), bs: 'b1', text: 'Zusätzliches Gaubenwechsel nach Planänderung Architekt', leute: 3, stunden: 4, material: 'BSH 120x240, 1 Stk', kunde: '', unterschrift: '', status: 'offen' });
+    // Wochenplan diese und nächste Woche
+    const planWoche = (mo, belegung) => {
+      const zellen = {};
+      for (const [pid, bs] of Object.entries(belegung)) zellen[pid] = Object.fromEntries([0, 1, 2, 3, 4].map((t) => [t, pid === 'p6' && t === 1 ? 'S' : bs]));
+      add('plan_' + mo, { typ: 'plan', montag: mo, zellen });
+    };
+    planWoche(montag, plan[2]);
+    planWoche(Datum.plus(montag, 7), { p3: 'b1', p4: 'b3', p5: 'b2', p6: 'b3', p7: 'b1' });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });

@@ -41,6 +41,16 @@ const Fenster = {
 };
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') Fenster.schliesse(); });
 
+/* Drucken: nur den übergebenen Inhalt (Nachweis, Regiezettel, Plan) aufs Papier */
+function drucken(inhalt) {
+  let z = $('#druck'); if (!z) { z = document.createElement('div'); z.id = 'druck'; document.body.appendChild(z); }
+  z.innerHTML = inhalt; bilderNachladen(z, Store.items);
+  document.body.classList.add('druckt');
+  const fertig = () => { document.body.classList.remove('druckt'); z.innerHTML = ''; window.removeEventListener('afterprint', fertig); };
+  window.addEventListener('afterprint', fertig);
+  setTimeout(() => { try { window.print(); } catch { fertig(); } }, 250);
+}
+
 /* ---------- Bereiche ---------- */
 const Wurzel = () => $('#wurzel');
 let aktiverBereich = null;
@@ -75,7 +85,7 @@ function startseite() {
     <header class="start-kopf"><div class="marke">${LOGO}Richtwerk <small>Intern</small></div><span class="stand">Arbeitsstand ${Datum.kurz(Datum.heute())}${Datum.heute().slice(0, 4)}</span></header>
     <main class="start-inhalt">
       <h1>Bereich wählen</h1>
-      <p class="unter">Die drei Teile laufen unabhängig voneinander. Für die Vorführung den Büro-Bereich am Laptop öffnen und die Mitarbeiter-App in einem zweiten Tab oder am Handy. Alles, was dort erfasst wird, erscheint sofort im Büro.</p>
+      <p class="unter">Die drei Teile laufen unabhängig voneinander. Die Betriebszentrale läuft am Computer im Büro, die Mitarbeiter-App auf jedem Handy oder Tablet. Was in der App erfasst wird, steht sofort in der Betriebszentrale.</p>
       <div class="bereiche">
         ${eintrag('01', 'buero', 'Für Inhaber und Büro', 'Betriebszentrale', 'Stunden prüfen, Urlaub freigeben, Belege und Lieferscheine, Tagelöhner, Paket für das Steuerbüro.')}
         ${eintrag('02', 'app', 'Für die Mitarbeiter am Handy', 'Mitarbeiter-App', 'Stempeln, Belege und Lieferscheine abfotografieren, Urlaub beantragen, Lohnzettel ansehen.')}
@@ -85,7 +95,7 @@ function startseite() {
     <footer class="start-fuss">
       <div><b>Daten</b><span class="datenmodus">${Store.modus === 'cloud' ? 'Geteilt über alle Geräte' : 'Nur in diesem Browser (Offline-Modus)'}</span></div>
       <div><b>Anmeldung</b>Betriebskennung und persönlicher Zugangscode</div>
-      <div><b>Version</b><span class="mono">0.9 Vorführung</span></div>
+      <div><b>Version</b><span class="mono">1.0</span></div>
     </footer>
   </div>`;
 }
@@ -140,8 +150,15 @@ async function boot() {
     const meta = await Store.betriebe();
     if (!meta) {
       const t = $('.laden > div');
-      if (t) t.firstChild.textContent = 'Vorführbetrieb wird eingerichtet … ';
-      await Muster.einrichten((n) => { if (t) t.firstChild.textContent = `Vorführbetrieb wird eingerichtet … ${n}`; });
+      if (t) t.firstChild.textContent = 'Betriebe werden eingerichtet … ';
+      await Muster.einrichten((n) => { if (t) t.firstChild.textContent = `Betriebe werden eingerichtet … ${n}`; });
+    } else {
+      // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
+      const cfg = await Store.ladeCfg('ahlers');
+      if (cfg && (cfg.version || 1) < 2) {
+        const t = $('.laden > div');
+        await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
+      }
     }
   } catch (e) { console.error(e); }
   zeige();

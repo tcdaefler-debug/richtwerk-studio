@@ -159,7 +159,7 @@ const Studio = (() => {
     app: { app: 'start' }, stempeln: { app: 'start' }, stunden: { buero: 'stunden', app: 'zeiten' }, urlaub: { buero: 'urlaub', app: 'urlaub' },
     belege: { buero: 'belege', app: 'u:beleg' }, lieferscheine: { buero: 'lieferscheine', app: 'u:lieferschein' }, material: { buero: 'material', app: 'u:material' },
     tagelohn: { buero: 'tagelohn' }, freigabe: { buero: 'uebersicht', app: 'freigaben' }, export: { buero: 'steuer' }, dokumente: { buero: 'steuer', app: 'mehr' },
-    baustellen: { buero: 'baustellen' },
+    baustellen: { buero: 'baustellen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' },
   };
   const OHNE_AUSWAHL = { buero: 'uebersicht', app: 'start' };
   function vorschauZiel(typ) { return typ ? (VORSCHAU[typ] || null) : OHNE_AUSWAHL; }
