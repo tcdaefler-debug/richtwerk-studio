@@ -840,6 +840,263 @@ body.kunde-modus { background: #eef0f2; }
 .r-links { display: flex; gap: 6px; flex-wrap: wrap; }
 .r-links a { text-decoration: none; }
 
+/* ---------- Kunden ---------- */
+.kunden-suche { flex: 1; max-width: 360px; border: 1px solid #c8cdc5; border-radius: 3px; padding: 6px 10px; font-size: 13px; background: #fff; }
+.kunde-kontakt { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.kunde-kontakt a.k { text-decoration: none; }
+.kunde-zahlen { margin-left: auto; display: flex; gap: 18px; font-size: 13px; color: #5f6862; }
+.kunde-zahlen b { color: #1d2420; font-variant-numeric: tabular-nums; margin-left: 4px; }
+.kunde-notiz { flex-basis: 100%; margin: 4px 0 0; font-size: 13px; color: #6d4b10; background: #fff4df; padding: 6px 10px; border-left: 3px solid #d9a441; }
+.kunde-fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; padding: 12px; }
+.kunde-fotos figure { margin: 0; }
+.kunde-fotos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border: 1px solid #d6dad3; background: #eceee9; }
+.kunde-fotos figcaption { font-size: 11px; color: #6a726c; margin-top: 2px; }
+
+/* ---------- Angebot versenden ---------- */
+.versand { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+.versand h4 { margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: #4a534d; }
+.versand h4 + p.klein, .versand .klein { font-size: 12px; color: #6a726c; margin: 0 0 8px; }
+.versand-links h4:not(:first-child) { margin-top: 18px; }
+.v-termin { display: block; width: 100%; margin-bottom: 6px; border: 1px solid #c8cdc5; border-radius: 3px; padding: 6px 8px; }
+.v-haken { display: flex; gap: 8px; align-items: center; padding: 7px 0; border-bottom: 1px solid #eef0ec; font-size: 13px; cursor: pointer; }
+.v-haken input { width: 17px; height: 17px; accent-color: var(--firma); }
+.v-ausblick { font-size: 12px; color: #6a726c; border-left: 3px solid #c9d3e6; padding: 4px 8px; margin: 14px 0 0; background: #f4f7fc; }
+.v-status { font-size: 12px; color: #6a726c; margin-right: 6px; }
+#v-text { font-family: var(--schrift); font-size: 13.5px; line-height: 1.5; }
+@media (max-width: 760px) { .versand { grid-template-columns: 1fr; } }
+
+/* ---------- Mahnung ---------- */
+.mahn-vorschau { border: 1px solid #d6dad3; background: #e9ebe6; padding: 16px; max-height: 60vh; overflow: auto; }
+.mahn-vorschau .dokument { background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.12); }
+
+/* ---------- Kalender ---------- */
+.kalender-layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; align-items: start; }
+.kal-monat { overflow: hidden; }
+.kal-kopf, .kal-raster { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.kal-kopf span { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #5f6862; padding: 7px 8px; background: #f3f4f1; border-bottom: 1px solid #d9ddd6; }
+.kal-tag { min-height: 104px; border: 0; border-right: 1px solid #e3e6e0; border-bottom: 1px solid #e3e6e0; background: #fff; padding: 4px 5px 6px; text-align: left; display: flex; flex-direction: column; gap: 2px; min-width: 0; font-size: 11.5px; }
+.kal-tag:nth-child(7n) { border-right: 0; }
+.kal-tag.frei { background: #f7f8f5; }
+.kal-tag.anders { background: #fbfbfa; color: #a3a9a4; }
+.kal-tag.anders .kal-e { opacity: .55; }
+.kal-tag:hover { background: #f2f5f1; }
+.kal-tag.gewaehlt { box-shadow: inset 0 0 0 2px var(--firma); }
+.kal-nr { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 12.5px; margin-bottom: 2px; }
+.kal-tag.heute .kal-nr > :first-child, .kal-tag.heute .kal-nr { color: var(--firma); }
+.kal-tag.heute { box-shadow: inset 0 3px 0 var(--firma); }
+.kal-tag.heute.gewaehlt { box-shadow: inset 0 3px 0 var(--firma), inset 0 0 0 2px var(--firma); }
+.kal-e { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 1px 5px; border-left: 3px solid #9aa29c; background: #f1f3ef; color: #2c342f; line-height: 1.45; }
+.kal-e.einsatz { border-color: var(--firma); background: var(--firma-hell); }
+.kal-e.urlaub { border-color: #8c7a4a; background: #f5f0e2; }
+.kal-e.krank { border-color: var(--bad); background: var(--bad-hell); }
+.kal-e.termin { border-color: var(--info); background: var(--info-hell); }
+.kal-e.vorschlag { border-color: #7d8fb3; background: #fff; border-style: dashed; border-width: 1px 1px 1px 3px; }
+.kal-e.geld { border-color: var(--warn); background: var(--warn-hell); }
+.kal-e.erinnerung { border-color: #6b5b16; background: #f6f2dc; }
+.kal-e.feiertag { border-color: #b23b2a; background: none; color: #b23b2a; font-weight: 600; }
+.kal-e.partner { border-color: #6a3d9a; background: #f0eaf7; }
+.kal-mehr { font-size: 11px; color: #6a726c; padding-left: 4px; }
+.kal-detail .kopf h3 { text-transform: none; }
+.kal-wetter { padding: 10px 16px; border-bottom: 1px solid #eef0ec; font-size: 13px; }
+.kal-wetter.leise { color: #7a827c; }
+.kal-zeile { border-left: 3px solid transparent; }
+.kal-zeile.einsatz { border-left-color: var(--firma); } .kal-zeile.termin { border-left-color: var(--info); } .kal-zeile.geld { border-left-color: var(--warn); }
+.kal-zeile.krank { border-left-color: var(--bad); } .kal-zeile.urlaub { border-left-color: #8c7a4a; } .kal-zeile.partner { border-left-color: #6a3d9a; } .kal-zeile.vorschlag { border-left-color: #7d8fb3; }
+.wetter { display: inline-flex; align-items: center; gap: 3px; font-weight: 500; font-size: 11px; color: #4a534d; font-variant-numeric: tabular-nums; }
+.wetter svg { width: 15px; height: 15px; flex: none; }
+.wetter.warn { color: #a23b2e; }
+.kal-wetter .wetter { font-size: 13px; gap: 6px; }
+.kal-wetter .wetter svg { width: 22px; height: 22px; }
+@media (max-width: 1100px) { .kalender-layout { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .kal-tag { min-height: 64px; } .kal-e { font-size: 0; height: 5px; padding: 0; } .kal-mehr { display: none; } }
+
+/* ---------- Nachrichten ---------- */
+.chat-layout { display: grid; grid-template-columns: 260px 1fr; height: calc(100vh - 210px); min-height: 420px; overflow: hidden; }
+.chat-liste { border-right: 1px solid #e1e5de; overflow-y: auto; background: #fafbf9; }
+.chat-person { display: flex; gap: 10px; align-items: center; width: 100%; padding: 10px 12px; border: 0; border-bottom: 1px solid #eef0ec; background: none; text-align: left; }
+.chat-person:hover { background: #f1f3ef; }
+.chat-person.an { background: #fff; box-shadow: inset 3px 0 0 var(--firma); }
+.chat-person .rund { width: 32px; height: 32px; border-radius: 50%; background: var(--firma-hell); color: var(--firma); display: grid; place-items: center; font-size: 11px; font-weight: 700; flex: none; }
+.chat-person .text { flex: 1; min-width: 0; }
+.chat-person .text b { display: block; font-size: 13px; }
+.chat-person .text small { display: block; color: #7a827c; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-person .zahl { background: var(--firma); color: #fff; font-size: 11px; font-weight: 700; border-radius: 9px; padding: 1px 7px; }
+.chat-fenster { display: flex; flex-direction: column; min-height: 0; }
+.chat-verlauf { flex: 1; overflow-y: auto; padding: 14px 16px; background: #f1f2ee; display: flex; flex-direction: column; gap: 6px; }
+.chat-tag { align-self: center; font-size: 11px; color: #6a726c; background: #e3e6e0; padding: 2px 10px; margin: 6px 0; }
+.chat-blase { max-width: 72%; align-self: flex-start; background: #fff; border: 1px solid #dfe3dc; padding: 7px 10px 5px; font-size: 13.5px; }
+.chat-blase.eigen { align-self: flex-end; background: var(--firma-hell); border-color: color-mix(in srgb, var(--firma) 25%, white); }
+.chat-blase p { margin: 0; white-space: pre-wrap; }
+.chat-blase small { display: block; font-size: 11px; color: var(--firma); font-weight: 600; }
+.chat-blase img { display: block; max-width: 240px; width: 100%; margin: 2px 0 4px; border: 1px solid #d6dad3; }
+.chat-blase .zeit { display: block; text-align: right; font-size: 10.5px; color: #7a827c; margin-top: 2px; }
+.chat-leer { color: #6a726c; font-size: 13px; text-align: center; margin: auto; max-width: 360px; }
+.chat-eingabe { display: flex; gap: 6px; padding: 10px; border-top: 1px solid #e1e5de; background: #fff; align-items: center; flex-wrap: wrap; }
+.chat-eingabe input { flex: 1; min-width: 0; border: 1px solid #c8cdc5; border-radius: 3px; padding: 8px 10px; }
+.chat-anhang { flex-basis: 100%; font-size: 12px; color: var(--firma); display: flex; gap: 4px; align-items: center; }
+.chat-anhang .ic { width: 14px; height: 14px; }
+.chat-app .koerper { padding: 0; display: flex; flex-direction: column; height: min(70vh, 640px); }
+.chat-app .chat-verlauf { min-height: 0; }
+.chat-app .chat-eingabe input { font-size: 16px; }
+@media (max-width: 760px) { .chat-layout { grid-template-columns: 1fr; height: auto; } .chat-liste { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid #e1e5de; } .chat-person { flex: none; width: auto; } .chat-person .text small { display: none; } .chat-verlauf { min-height: 360px; } }
+.ablage-titel { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: #4a534d; margin: 16px 0 6px; }
+.ablage-titel:first-child { margin-top: 0; }
+.ablage-leer { font-size: 13px; color: #7a827c; margin: 4px 0 8px; }
+
+/* ---------- Lager ---------- */
+.kacheln:has(> :nth-child(3):last-child) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.lager-best .lb-zeile { display: flex; gap: 10px; align-items: center; padding: 11px 14px; border-bottom: 1px solid #eceef1; }
+.lager-best .lb-zeile:last-child { border-bottom: 0; }
+.lb-zeile .text { flex: 1; min-width: 0; }
+.lb-zeile .text b { display: block; font-size: 15px; }
+.lb-zeile .text small { color: #6b7280; font-size: 12.5px; }
+.lb-knoepfe { display: flex; gap: 6px; flex: none; }
+.lb-knoepfe button { border: 1px solid #c9ced6; background: #fff; padding: 9px 12px; font-size: 14px; font-weight: 600; border-radius: 3px; }
+.lb-knoepfe .lb-ok { background: var(--firma); border-color: var(--firma); color: #fff; }
+.lb-menge { width: 64px; border: 1px solid #c9ced6; border-radius: 3px; padding: 8px; font-size: 16px; text-align: right; }
+.kisten { display: grid; grid-template-columns: repeat(3, 1fr); }
+.kiste-knopf { border: 0; border-right: 1px solid #eceef1; background: #fff; padding: 12px 8px; text-align: left; }
+.kiste-knopf:last-child { border-right: 0; }
+.kiste-knopf b { display: block; font-size: 13px; line-height: 1.25; }
+.kiste-knopf small { display: block; font-size: 11.5px; color: #6b7280; margin-top: 3px; }
+.kiste-knopf.leer { background: #fdf3e2; }
+.kiste-knopf.leer small { color: #9a6206; font-weight: 600; }
+
+/* ---------- Partner ---------- */
+.netz-fotos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.netz-foto { border: 2px solid transparent; padding: 0; background: #eceee9; width: 108px; aspect-ratio: 4 / 3; overflow: hidden; opacity: .45; display: block; }
+.netz-foto.an { border-color: var(--firma); opacity: 1; }
+.netz-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+span.netz-foto { border: 1px solid #d6dad3; }
+.netz-fenster { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 20px; }
+.netz-daten { margin: 0 0 12px; }
+.netz-verlauf { max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #f1f2ee; padding: 10px; border: 1px solid #e1e5de; }
+.netz-msg { background: #fff; border: 1px solid #dfe3dc; padding: 8px 10px; max-width: 92%; font-size: 13px; }
+.netz-msg.eigen { align-self: flex-end; background: var(--firma-hell); }
+.netz-msg small { display: block; color: #6a726c; font-size: 11px; }
+.netz-msg p { margin: 4px 0 0; white-space: pre-wrap; }
+.netz-antwort { margin-top: 14px; }
+.netz-antwort h4 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: #4a534d; }
+.netz-art { margin-bottom: 10px; }
+.chip.nein { background: #eceee9; color: #6a726c; text-decoration: line-through; }
+@media (max-width: 760px) { .netz-fenster { grid-template-columns: 1fr; } }
+
+/* ---------- Ihre Bausteine (Einstellungen) und Feinregler ---------- */
+.baustein-liste { padding: 6px 0; }
+.baustein-zeile { display: flex; align-items: center; gap: 12px; padding: 9px 16px; border-bottom: 1px solid #eef0ec; }
+.baustein-zeile:last-child { border-bottom: 0; }
+.baustein-zeile .text { flex: 1; min-width: 0; }
+.baustein-zeile .text b { display: block; font-size: 13.5px; }
+.baustein-zeile .text small { display: block; color: #7a827c; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.baustein-zeile.aus .text, .baustein-zeile.aus .b-sym { opacity: .45; }
+.b-sym { width: 30px; height: 30px; display: grid; place-items: center; background: color-mix(in srgb, var(--g) 14%, white); color: color-mix(in srgb, var(--g) 70%, black); border-left: 3px solid var(--g); flex: none; }
+.b-sym .ic { width: 16px; height: 16px; }
+.kipp-knopf { width: 42px; height: 24px; border-radius: 12px; border: 0; background: #c3c8c2; position: relative; flex: none; padding: 0; transition: background .15s; }
+.kipp-knopf i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: left .15s; }
+.kipp-knopf.an { background: var(--firma, #2f5e4e); }
+.kipp-knopf.an i { left: 21px; }
+.fr-liste { border: 1px solid #e1e5de; margin-bottom: 14px; }
+.fr-zeile { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border-bottom: 1px solid #eef0ec; min-height: 48px; }
+.fr-zeile:last-child { border-bottom: 0; }
+.fr-name { flex: 1; min-width: 0; font-size: 13.5px; }
+.fr-name small { display: block; font-size: 12px; color: #7a827c; margin-top: 2px; }
+.fr-zahl input[type=range] { width: 38%; max-width: 260px; accent-color: var(--firma, #2f5e4e); }
+.fr-wert { display: inline-flex; align-items: center; gap: 6px; flex: none; }
+.fr-wert input { width: 76px; border: 1px solid #c8cdc5; border-radius: 3px; padding: 5px 6px; text-align: right; font-variant-numeric: tabular-nums; }
+.fr-wert small { width: 64px; font-size: 12px; color: #5f6862; }
+.fr-wahl { display: inline-flex; border: 1px solid #c8cdc5; flex-wrap: wrap; }
+.fr-wahl label { cursor: pointer; }
+.fr-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+.fr-wahl span { display: block; padding: 5px 12px; font-size: 13px; border-right: 1px solid #c8cdc5; background: #fff; }
+.fr-wahl label:last-child span { border-right: 0; }
+.fr-wahl input:checked + span { background: #27302a; color: #fff; }
+.fr-wahl input:focus-visible + span { outline: 2px solid var(--rw-blau); outline-offset: -2px; }
+.fr-zeile select { border: 1px solid #c8cdc5; border-radius: 3px; padding: 5px 8px; max-width: 50%; }
+.kipp { position: relative; width: 42px; height: 24px; flex: none; }
+.kipp input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; z-index: 1; }
+.kipp i { position: absolute; inset: 0; border-radius: 12px; background: #c3c8c2; transition: background .15s; }
+.kipp i::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: left .15s; }
+.kipp input:checked + i { background: var(--firma, #2f5e4e); }
+.kipp input:checked + i::after { left: 21px; }
+.kipp input:focus-visible + i { outline: 2px solid var(--rw-blau); outline-offset: 2px; }
+.ui-studio .fr-liste, .bf .fr-liste { border-color: #dfe3ea; }
+.ui-studio .kipp input:checked + i, .bf .kipp input:checked + i { background: #3b6fe0; }
+.bf .fr-zahl input[type=range] { accent-color: #3b6fe0; }
+@media (max-width: 600px) { .fr-zahl { flex-wrap: wrap; } .fr-zahl .fr-name { flex-basis: 100%; } .fr-zahl input[type=range] { flex: 1; width: auto; max-width: none; } }
+.knoten.ausgeschaltet { opacity: .5; filter: grayscale(.7); }
+.knoten.ausgeschaltet .k-info { font-style: italic; }
+
+/* =========================================================================
+   Nüchterne Arbeitsoptik (Wunsch von Til): klare Kanten, kräftige
+   Arbeitsfarben, dichte Listen, keine weichen Flächen.
+   ========================================================================= */
+/* Büro: Kopfzeile in Firmenfarbe wie klassische Betriebssoftware */
+.b-kopf { background: var(--firma); border-bottom: 0; color: #fff; }
+.b-kopf .firma small, .b-kopf .wer small { color: rgba(255,255,255,.72); }
+.b-kopf .firmenzeichen { background: #fff; color: var(--firma); }
+.b-kopf .rund { background: rgba(255,255,255,.16); color: #fff; }
+.b-kopf .flach { color: #fff; }
+.b-kopf .flach:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); }
+.b-kopf .suche input, .b-kopf input[type=search] { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.22); color: #fff; }
+.b-kopf .suche input::placeholder, .b-kopf input[type=search]::placeholder { color: rgba(255,255,255,.7); }
+.b-kopf .suche .ic { color: rgba(255,255,255,.8); }
+.b-kopf .menueknopf { color: #fff; }
+.karte, .kachel, .beleg-karte { border-radius: 3px; }
+.karte > .kopf { background: #f7f8f6; }
+.karte > .kopf h3 { font-size: 12.5px; text-transform: uppercase; letter-spacing: .05em; color: #2c342f; }
+.chip { border-radius: 2px; }
+.kachel .wert { font-size: 24px; }
+.kachel.achtung { box-shadow: inset 4px 0 0 var(--warn); }
+.t th { text-transform: uppercase; font-size: 11px; letter-spacing: .04em; background: #f3f4f1; }
+.fenster { border-radius: 4px !important; }
+
+/* Mitarbeiter-App: Arbeitsgerät statt Wohlfühl-App */
+.ui-app { background: #e9ebee; }
+.a-kopf { background: var(--firma); border-bottom: 0; color: #fff; padding-top: calc(10px + env(safe-area-inset-top)); padding-bottom: 10px; }
+.a-kopf .firmenzeichen { background: #fff; color: var(--firma); border-radius: 3px; width: 30px; height: 30px; }
+.a-kopf .titel small { color: rgba(255,255,255,.75); }
+.a-kopf .titel b { font-size: 15px; }
+.a-kopf .rund-knopf { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.25); color: #fff; border-radius: 4px; }
+.a-kopf .sync, .a-kopf [class*=sync] { color: rgba(255,255,255,.85); }
+.a-inhalt { padding: 12px 12px 96px; }
+.a-titel { font-size: 11.5px; color: #3a404a; letter-spacing: .07em; margin: 18px 2px 6px; font-weight: 700; }
+.a-karte { border-radius: 3px; border-color: #d4d8de; }
+.a-karte + .a-karte { margin-top: 8px; }
+.a-zeile { padding: 11px 12px; border-bottom-color: #eceef1; }
+.a-zeile .sym { width: 32px; height: 32px; border-radius: 3px; background: none; color: var(--firma); border: 1px solid #d9dde3; }
+.a-zeile .sym.firma { background: var(--firma); color: #fff; border-color: var(--firma); }
+.a-zeile .text b { font-size: 14.5px; }
+.a-zahl { background: #c23a2b; color: #fff; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 2px; }
+.a-gruss { margin: 2px 2px 8px; padding: 0; }
+.a-gruss h1 { font-size: 19px; }
+.sprach-rund { width: 42px; height: 42px; border-radius: 4px; }
+.erin-haken { border-radius: 3px; }
+.stempel { padding: 14px; border-top: 4px solid #9aa1ab; }
+.stempel:has(.status.laeuft) { border-top-color: #1f8a52; }
+.stempel .zeit { font-size: 40px; }
+.gross-knopf { border-radius: 4px; padding: 14px; font-size: 16px; }
+.gross-knopf.hell { background: #fff; border: 1px solid #c9ced6; }
+.a-feld input, .a-feld select, .a-feld textarea { border-radius: 3px; border-color: #c9ced6; }
+.a-chips button { border-radius: 3px; }
+.a-chips button.an { background: var(--firma); border-color: var(--firma); }
+.erfassen-raster { gap: 8px; }
+.erfassen-kachel { border-radius: 3px; border-color: #d4d8de; min-height: 0; padding: 14px 12px; gap: 10px; border-top: 3px solid var(--firma); }
+.erfassen-kachel .sym { width: 34px; height: 34px; border-radius: 3px; }
+.erfassen-kachel.gross { border-top: 0; }
+.erfassen-kachel.gross .sym { border-radius: 3px; }
+.a-tabs { border-top: 1px solid #c9ced6; padding-top: 4px; }
+.a-tabs button.an { color: var(--firma); box-shadow: inset 0 3px 0 var(--firma); }
+.a-tabs .scan span.kreis { width: 46px; height: 38px; border-radius: 4px; margin-top: 0; box-shadow: none; border: 0; }
+.a-tabs .scan.an { box-shadow: none; }
+.a-tabs .zahl { border-radius: 2px; }
+.woche-balken i { border-radius: 0; }
+.hinweis-box { border-radius: 3px; border-left: 4px solid #d9a441; }
+.hinweis-box.gruen { border-left-color: #2e7d4f; }
+.a-status { border-radius: 2px; }
+.scan-flaeche, .scan-werkzeuge button { border-radius: 3px; }
+.baustelle-karte .hinweis { border-radius: 0 !important; border-left: 3px solid #d9a441; }
+.app-fenster .fenster { border-radius: 4px !important; }
+
 </style>
 <div id="wurzel"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -1127,7 +1384,18 @@ const Store = (() => {
   }
 
   /* ---------- geöffneter Betrieb ---------- */
-  const zustand = { fid: null, cfg: null, items: [], abos: [], hoerer: new Set() };
+  const zustand = { fid: null, cfg: null, items: [], abos: [], hoerer: new Set(), netz: [], netzAbo: null };
+  /* Vernetzung: Anfragen zwischen Betrieben liegen außerhalb der Betriebe unter netz/<id>.
+     Jeder Betrieb sieht nur, was er geschickt hat oder was an ihn geht. */
+  function netzBeobachten() {
+    if (zustand.netzAbo || !backend) return;
+    zustand.netzAbo = backend.watchList('netz', (liste) => {
+      const map = new Map(liste.map((d) => [d.id, { ...d.daten, id: d.id }]));
+      warteschlange.filter((w) => w.pfad.startsWith('netz/')).forEach((w) => { const id = w.pfad.slice(5); if (w.daten === null) map.delete(id); else map.set(id, { ...w.daten, id }); });
+      zustand.netz = [...map.values()];
+      benachrichtige();
+    });
+  }
   const dateiCache = new Map();
 
   function oeffne(fid) {
@@ -1232,6 +1500,28 @@ const Store = (() => {
     get offen() { return warteschlange.length; },
 
     /* Dateien (Fotos, PDFs) */
+    /* Vernetzung */
+    get netz() { netzBeobachten(); return zustand.netz.filter((n) => n.von === zustand.fid || n.an === zustand.fid); },
+    netzSchreibe(id, daten) {
+      const alt = zustand.netz.find((n) => n.id === id);
+      const neu = { ...(alt || {}), ...daten, geaendert: Date.now() }; delete neu.id;
+      zustand.netz = [...zustand.netz.filter((n) => n.id !== id), { ...neu, id }]; benachrichtige();
+      schreibe(`netz/${id}`, neu);
+    },
+    async dateiVon(fid, id) {
+      const k = fid + '|' + id; if (dateiCache.has(k)) return dateiCache.get(k);
+      if (fid === zustand.fid) return this.datei(id);
+      const d = await backend.get(`b/${fid}/dateien/${id}`); if (d) dateiCache.set(k, d.daten);
+      return d ? d.daten : null;
+    },
+    async ladeCfgVon(fid) { return backend.get(`b/${fid}/cfg/main`); },
+    async speichereCfgVon(fid, cfg) { return backend.set(`b/${fid}/cfg/main`, JSON.parse(JSON.stringify(cfg))); },
+    async ersetzeNetz(liste) {
+      const alt = await backend.list('netz');
+      await Promise.all(alt.map((d) => backend.del(`netz/${d.id}`)));
+      await Promise.all(liste.map((n) => { const d = { ...n }; delete d.id; return backend.set(`netz/${n.id}`, d); }));
+    },
+
     async speichereDatei(dataUrl, name) {
       if (dataUrl.length > 240000) throw new Error('Die Datei ist zu groß (max. ca. 170 KB). Fotos werden automatisch verkleinert, PDFs bitte kleiner speichern.');
       const id = uid('f');
@@ -1442,6 +1732,8 @@ const BAUSTEINE = {
       praefix: { typ: 'text', name: 'Nummer beginnt mit', wert: 'R' },
       ziel: { typ: 'zahl', name: 'Zahlungsziel', wert: 14, min: 0, max: 60, einheit: 'Tage' },
       mahnung: { typ: 'zahl', name: 'Erinnerung nach', wert: 7, min: 1, max: 30, einheit: 'Tage über Ziel' },
+      mahnAbstand: { typ: 'zahl', name: 'Nächste Mahnstufe nach', wert: 14, min: 7, max: 30, einheit: 'Tage' },
+      mahngebuehr: { typ: 'zahl', name: 'Mahngebühr ab 2. Mahnung', wert: 5, min: 0, max: 15, einheit: '€' },
       erechnung: { typ: 'wahl', name: 'E-Rechnung', wert: 'XRechnung (XML)', optionen: ['XRechnung (XML)', 'aus'] },
       lohnanteil: { typ: 'schalter', name: 'Arbeitskosten nach § 35a ausweisen', wert: 'ja' },
       schluss: { typ: 'langtext', name: 'Text nach den Positionen', wert: 'Vielen Dank für Ihren Auftrag. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer.' },
@@ -1465,6 +1757,62 @@ const BAUSTEINE = {
     p: {
       spalten: { typ: 'text', name: 'Spalten (sechs, mit Komma)', wert: 'Anfrage, Angebot, Auftrag, Auf der Baustelle, Rechnung, Bezahlt' },
       bezahltTage: { typ: 'zahl', name: 'Bezahlte Karten zeigen', wert: 30, min: 7, max: 365, einheit: 'Tage' },
+    },
+  },
+
+  kunden: {
+    name: 'Kunden', gruppe: 'stamm', icon: 'person',
+    kurz: 'Kontaktbuch: jeder Kunde mit Angeboten, Baustellen, Rechnungen und Fotos.',
+    wofuer: 'Die Telefonnummer steht im Handy vom Chef, die Anschrift im alten Angebot, die Fotos auf dem Handy vom Gesellen.',
+    ein: ['angebote', 'rechnungen', 'baustellen'],
+    p: {
+      anlegen: { typ: 'schalter', name: 'Neue Namen aus Angeboten übernehmen', wert: 'ja' },
+      umsatz: { typ: 'schalter', name: 'Umsatz und offene Beträge zeigen', wert: 'ja' },
+    },
+  },
+  kalender: {
+    name: 'Kalender', gruppe: 'stamm', icon: 'kalender',
+    kurz: 'Monat und Tag wie im Outlook: Einsätze, Termine, Urlaub, Fälligkeiten, Wetter.',
+    wofuer: 'Termine stehen im Taschenkalender, der Wochenplan an der Wand, das Wetter schaut jeder selbst nach.',
+    ein: ['wochenplan', 'urlaub', 'angebote', 'rechnungen', 'partner'],
+    p: {
+      wetter: { typ: 'schalter', name: 'Wetter vor Ort anzeigen', wert: 'ja' },
+      regen: { typ: 'zahl', name: 'Warnung ab Regen', wert: 5, min: 1, max: 20, einheit: 'mm/Tag' },
+      wind: { typ: 'zahl', name: 'Warnung ab Wind', wert: 50, min: 20, max: 90, einheit: 'km/h' },
+      faellige: { typ: 'schalter', name: 'Fällige Rechnungen eintragen', wert: 'ja' },
+    },
+  },
+  nachrichten: {
+    name: 'Nachrichten', gruppe: 'erfassen', icon: 'angebot',
+    kurz: 'Chat zwischen Büro und jedem Mitarbeiter, mit Bildern. Statt WhatsApp.',
+    wofuer: 'Fotos und Rückfragen gehen über private WhatsApp-Gruppen und sind nach dem Handywechsel weg.',
+    ein: ['app'],
+    p: {
+      bilder: { typ: 'schalter', name: 'Bilder erlaubt', wert: 'ja' },
+      gelesen: { typ: 'schalter', name: 'Gelesen anzeigen', wert: 'ja' },
+    },
+  },
+  lager: {
+    name: 'Lager', gruppe: 'erfassen', icon: 'material',
+    kurz: 'Bestand führt sich aus Lieferscheinen und Baustellen, gezählt wird nur stichprobenweise.',
+    wofuer: 'Keiner weiß, wie viele Konterlatten noch da sind. Die Inventur kostet jedes Jahr einen Samstag.',
+    ein: ['lieferscheine', 'material', 'rechner', 'app'],
+    p: {
+      bestaetigen: { typ: 'schalter', name: 'Mitarbeiter bestätigen Entnahmen', wert: 'ja' },
+      stichprobe: { typ: 'zahl', name: 'Artikel pro Stichprobe', wert: 4, min: 1, max: 12, einheit: 'Stück' },
+      zweiKisten: { typ: 'schalter', name: 'Zwei-Kisten für Kleinteile', wert: 'ja' },
+    },
+  },
+  partner: {
+    name: 'Partnerbuch', gruppe: 'auftrag', icon: 'team',
+    kurz: 'Befreundete Gewerke anfragen: Adresse, Fotos, Zeitraum gehen mit einem Klick raus.',
+    wofuer: 'Für den Elektriker oder Maler wird jedes Mal telefoniert, Fotos per WhatsApp geschickt und der Termin dann doch vergessen.',
+    ein: ['baustellen', 'app'],
+    p: {
+      fotos: { typ: 'schalter', name: 'Fotos aus dem Bautagebuch mitschicken', wert: 'ja' },
+      frist: { typ: 'zahl', name: 'Antwort erbeten in', wert: 3, min: 1, max: 14, einheit: 'Tage' },
+      imKalender: { typ: 'schalter', name: 'Zusagen im Kalender eintragen', wert: 'ja' },
+      gewerke: { typ: 'text', name: 'Gewerke', wert: 'Elektro, Maler, Klempner, Heizung/Sanitär, Gerüstbau, Statik' },
     },
   },
 
@@ -1494,7 +1842,7 @@ const ABLAEUFE = {
     { name: 'Entwurf', text: 'Aus dem Angebot übernommen oder neu, Regiezettel der Baustelle dazu' },
     { name: 'Stellen', text: 'Fortlaufende Nummer, Datum, Fälligkeit. Danach nicht mehr änderbar' },
     { name: 'Arbeitskosten ausweisen', text: 'Für Privatkunden (§ 35a EStG)', schalter: 'lohnanteil' },
-    { name: 'Überfällig', text: 'Hinweis in der Übersicht, Zahlungserinnerung druckbar' },
+    { name: 'Überfällig', text: 'Hinweis in der Übersicht, dann Zahlungserinnerung, 1., 2. und letzte Mahnung im eingestellten Abstand' },
     { name: 'Bezahlt', text: 'Zahlungseingang abhaken' },
   ],
   tafel: [
@@ -1512,7 +1860,7 @@ const ABLAEUFE = {
   ],
 };
 /* In diese Bausteine kann Richtwerk eigene Felder einbauen */
-const MIT_FELDERN = ['belege', 'lieferscheine', 'material', 'bautagebuch', 'regie', 'angebote', 'rechnungen'];
+const MIT_FELDERN = ['kunden', 'belege', 'lieferscheine', 'material', 'bautagebuch', 'regie', 'angebote', 'rechnungen'];
 
 const GRUPPEN = {
   quelle: { name: 'Start', farbe: '#6f94ff' },
@@ -1527,7 +1875,7 @@ const GRUPPEN = {
 /* Regeln, die sich aus dem Aufbau eines Betriebs ergeben */
 function regeln(cfg) {
   const bk = (cfg && cfg.baukasten) || { knoten: [], kanten: [] };
-  const typen = new Set(bk.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant').map((k) => k.typ));
+  const typen = new Set(bk.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant' && !k.aus).map((k) => k.typ));
   const hat = (t) => typen.has(t);
   const verb = (a, b) => hat(a) && hat(b) && bk.kanten.some((k) => k.von === a && k.zu === b);
   const p = (t) => {
@@ -1607,6 +1955,21 @@ function wirkungen(cfg, typ) {
     out.push(R.p('rechnungen').erechnung === 'aus' ? 'Keine E-Rechnung.' : 'Zu jeder Rechnung gibt es die E-Rechnung als XRechnung-Datei.');
     out.push(R.verb('rechnungen', 'export') ? `Ausgangsrechnungen kommen ins Monatspaket für ${R.p('export').empfaenger}.` : 'Geht nicht ans Steuerbüro.');
   }
+  if (typ === 'kunden') {
+    out.push('Im Büro als Bereich „Kunden“ mit einer Akte pro Kunde.');
+    out.push(R.an('kunden', 'anlegen') ? 'Wer im Angebot neu ist, wird einmal als Kunde angelegt. Nichts wird doppelt eingetragen.' : 'Kunden werden nur von Hand angelegt.');
+  }
+  if (typ === 'kalender') out.push('Im Büro als Bereich „Kalender“.' + (R.an('kalender', 'wetter') ? ` Mit Wetter, Warnung ab ${R.p('kalender').regen} mm Regen oder ${R.p('kalender').wind} km/h Wind.` : ' Ohne Wetter.'));
+  if (typ === 'nachrichten') out.push(R.imApp('nachrichten') ? 'Mitarbeiter schreiben dem Büro aus der App' + (R.an('nachrichten', 'bilder') ? ', auch mit Fotos.' : ', nur Text.') : 'Mit der App verbinden, sonst gibt es niemanden zum Schreiben.');
+  if (typ === 'lager') {
+    out.push('Im Büro als Bereich „Lager“.');
+    out.push(R.verb('lieferscheine', 'lager') ? 'Lieferscheine werden als Wareneingang angeboten.' : 'Mit „Lieferscheine“ verbinden, damit Zugänge von selbst kommen.');
+    if (R.imApp('lager') && R.an('lager', 'bestaetigen')) out.push('Auf der Baustelle bestätigen die Mitarbeiter Entnahmen mit „Passt“ oder „Anders“.');
+  }
+  if (typ === 'partner') {
+    out.push('Im Büro als Bereich „Partner“. Aus jeder Baustelle kann ein Partner angefragt werden.');
+    out.push(R.an('partner', 'imKalender') ? 'Sagt der Partner zu, steht er im Kalender der Baustelle.' : 'Zusagen werden nicht in den Kalender eingetragen.');
+  }
   const k = ((cfg && cfg.baukasten && cfg.baukasten.knoten) || []).find((x) => x.typ === typ) || {};
   if (k.name) out.push(`Heißt beim Kunden „${k.name}“.`);
   if ((k.felder || []).length) out.push(`${k.felder.length} eigene ${k.felder.length === 1 ? 'Feld' : 'Felder'}: ${k.felder.map((f) => f.name).join(', ')}.`);
@@ -1618,6 +1981,49 @@ function wirkungen(cfg, typ) {
 function leererBaukasten() {
   return { knoten: [{ id: 'k_app', typ: 'app', x: 60, y: 220, p: {} }], kanten: [] };
 }
+
+/* Feinregler: dieselben Bedienelemente im Entwickler-Tool und in den
+   Einstellungen des Betriebs. Zahl = Regler + Zahlenfeld, Schalter = Kippschalter,
+   Auswahl = Knopfleiste (bis drei Möglichkeiten) oder Liste. */
+const Feinregler = (() => {
+  function feld(name, d, w) {
+    if (d.typ === 'langtext') return `<label class="feld fr-lang"><span>${esc(d.name)}</span><textarea data-bp="${name}" rows="${name === 'agb' || name === 'katalog' || name === 'widerrufText' ? 8 : 3}" class="${name === 'katalog' || name === 'lieferanten' ? 'mono' : ''}">${esc(w)}</textarea></label>`;
+    if (d.typ === 'schalter') return `<label class="fr-zeile fr-schalter"><span class="fr-name">${esc(d.name)}</span><span class="kipp"><input type="checkbox" data-bp="${name}" data-art="schalter" ${w === 'ja' ? 'checked' : ''}><i></i></span></label>`;
+    if (d.typ === 'wahl') {
+      const opt = d.optionen || [];
+      if (opt.length <= 3 && opt.every((o) => o.length <= 16)) return `<div class="fr-zeile"><span class="fr-name">${esc(d.name)}</span><span class="fr-wahl" role="radiogroup">${opt.map((o) => `<label><input type="radio" name="fr-${name}" data-bp="${name}" data-art="wahl" value="${esc(o)}" ${o === w ? 'checked' : ''}><span>${esc(o)}</span></label>`).join('')}</span></div>`;
+      return `<label class="fr-zeile"><span class="fr-name">${esc(d.name)}</span><select data-bp="${name}">${opt.map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    }
+    if (d.typ === 'text') return `<label class="feld"><span>${esc(d.name)}</span><input data-bp="${name}" value="${esc(w)}"></label>`;
+    const schritt = d.min % 1 || d.max <= 5 ? 0.1 : d.max > 300 ? 10 : 1;
+    return `<div class="fr-zeile fr-zahl"><span class="fr-name">${esc(d.name)}</span><input type="range" data-regler="${name}" min="${d.min}" max="${d.max}" step="${schritt}" value="${esc(w)}" aria-label="${esc(d.name)}"><span class="fr-wert"><input type="number" data-bp="${name}" data-art="zahl" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${schritt}" aria-label="${esc(d.name)} in ${esc(d.einheit)}"><small>${esc(d.einheit)}</small></span></div>`;
+  }
+  function html(typ, werte, { ohneLang = false } = {}) {
+    const B = BAUSTEINE[typ]; const e = Object.entries(B.p || {});
+    if (!e.length) return '<p class="hinweis-zeile">Dieser Baustein hat keine Feineinstellungen.</p>';
+    const kurz = e.filter(([, d]) => d.typ !== 'langtext' && d.typ !== 'text'); const text = e.filter(([, d]) => d.typ === 'text'); const lang = ohneLang ? [] : e.filter(([, d]) => d.typ === 'langtext');
+    return `${kurz.length ? `<div class="fr-liste">${kurz.map(([n, d]) => feld(n, d, werte[n])).join('')}</div>` : ''}${text.map(([n, d]) => feld(n, d, werte[n])).join('')}${lang.map(([n, d]) => feld(n, d, werte[n])).join('')}`;
+  }
+  function lesen(wurzel, typ) {
+    const B = BAUSTEINE[typ]; const p = {};
+    $$('[data-bp]', wurzel).forEach((el) => {
+      const n = el.dataset.bp; const d = B.p[n]; if (!d) return;
+      if (el.dataset.art === 'schalter') p[n] = el.checked ? 'ja' : 'nein';
+      else if (el.dataset.art === 'wahl') { if (el.checked) p[n] = el.value; }
+      else if (d.typ === 'zahl') p[n] = Math.min(d.max, Math.max(d.min, Number(String(el.value).replace(',', '.')) || d.wert));
+      else p[n] = el.value;
+    });
+    return p;
+  }
+  // Regler und Zahlenfeld laufen gemeinsam
+  document.addEventListener('input', (e) => {
+    const r = e.target.closest && e.target.closest('[data-regler]');
+    if (r) { const z = r.parentElement.querySelector(`[data-bp="${r.dataset.regler}"]`); if (z) z.value = r.value; return; }
+    const z = e.target.closest && e.target.closest('[data-art=zahl]');
+    if (z) { const reg = z.closest('.fr-zahl').querySelector('[data-regler]'); if (reg) reg.value = z.value; }
+  });
+  return { html, lesen };
+})();
 
 /* ---- demo.js ---- */
 /* =========================================================================
@@ -1634,7 +2040,25 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 5,
+      version: 6,
+      lat: 53.035, lon: 8.548,
+      partner: [
+        { id: 'pa1', name: 'Elektro Hogrefe', gewerk: 'Elektro', ansprech: 'Jens Hogrefe', telefon: '04408 80 12 30', email: 'info@elektro-hogrefe.example', fid: 'hogrefe' },
+        { id: 'pa2', name: 'Malerbetrieb Kück', gewerk: 'Maler', ansprech: 'Birte Kück', telefon: '04222 31 07', email: 'info@maler-kueck.example', fid: '' },
+        { id: 'pa3', name: 'Gerüstbau Wessels', gewerk: 'Gerüstbau', ansprech: 'Tobias Wessels', telefon: '04221 68 40 22', email: 'dispo@geruest-wessels.example', fid: '' },
+        { id: 'pa4', name: 'Klempnerei Haase', gewerk: 'Klempner', ansprech: 'Uwe Haase', telefon: '04408 23 19', email: 'haase@klempnerei-haase.example', fid: '' },
+      ],
+      lager: [
+        { id: 'la1', name: 'Dachlatten 30/50', suche: 'dachlatten 30/50', einheit: 'Bd', min: 10, ort: 'Halle, Regal A', lieferant: 'Holzhandel Ritter', ek: 28, nachbestellMenge: 20 },
+        { id: 'la2', name: 'Konterlatten 40/60', suche: 'konterlatten 40/60', einheit: 'Bd', min: 8, ort: 'Halle, Regal A', lieferant: 'Holzhandel Ritter', ek: 34, nachbestellMenge: 15 },
+        { id: 'la3', name: 'Unterdeckbahn 1,5 x 50 m', suche: 'unterdeckbahn', einheit: 'Rollen', min: 2, ort: 'Halle, Regal C', lieferant: 'Dachdecker-Einkauf', ek: 119, nachbestellMenge: 4 },
+        { id: 'la4', name: 'KVH 80x200 C24', suche: 'kvh 80x200', einheit: 'Stk', min: 10, ort: 'Holzlager außen', lieferant: 'Holzhandel Ritter', ek: 21, nachbestellMenge: 30 },
+        { id: 'la5', name: 'Vollgewindeschrauben 8x300', suche: 'vollgewindeschrauben 8x300', einheit: 'Pak', min: 2, ort: 'Halle, Schrank 2', lieferant: 'Würth', ek: 89, nachbestellMenge: 4 },
+        { id: 'la6', name: 'Holzbauwinkel 105', suche: 'holzbauwinkel 105', einheit: 'Stk', min: 20, ort: 'Halle, Schrank 2', lieferant: 'Würth', ek: 1.9, nachbestellMenge: 50 },
+        { id: 'la7', name: 'Sparrennägel 4,0 x 100', einheit: 'Kiste', ort: 'Bulli-Regal', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+        { id: 'la8', name: 'Schrauben 5 x 80 Teilgewinde', einheit: 'Kiste', ort: 'Bulli-Regal', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+        { id: 'la9', name: 'Bits T25 / T30', einheit: 'Kiste', ort: 'Werkstatt', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+      ],
       kalkulation: { faktor: 2.1, aufschlag: 20, lohn: { p3: 23.5, p4: 21.5, p5: 21, p6: 6.5, p7: 17 } },
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
@@ -1693,6 +2117,11 @@ const Muster = (() => {
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
+          knoten('nachrichten', 610, 700),
+          knoten('kalender', 610, 840),
+          knoten('lager', 610, 1150),
+          knoten('kunden', 890, 900),
+          knoten('partner', 1170, 940),
         ],
         kanten: [
           ['app', 'stempeln'], ['stempeln', 'stunden'], ['app', 'stunden'], ['app', 'urlaub'], ['app', 'belege'],
@@ -1702,6 +2131,9 @@ const Muster = (() => {
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
           ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'], ['app', 'rechner'],
+          ['app', 'nachrichten'], ['wochenplan', 'kalender'], ['urlaub', 'kalender'], ['angebote', 'kalender'], ['rechnungen', 'kalender'], ['partner', 'kalender'],
+          ['angebote', 'kunden'], ['rechnungen', 'kunden'], ['baustellen', 'kunden'], ['lieferscheine', 'lager'], ['material', 'lager'], ['rechner', 'lager'], ['app', 'lager'],
+          ['baustellen', 'partner'], ['app', 'partner'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -1771,6 +2203,16 @@ const Muster = (() => {
     const l = (id, tage, pid, lieferant, nummer, bs, status, positionen) => add(id, { typ: 'lieferschein', pid, datum: Datum.plus(heute, -tage), lieferant, nummer, bs, status, positionen, datei: 'muster', notiz: '' });
     l('ls1', 10, 'p3', 'Holzhandel Ritter', 'LS-204471', 'b1', 'geprueft', ['KVH 80x200 C24, 38 Stk', 'BSH 120x240 GL24h, 4 Stk', 'Dachlatten 30/50, 20 Bd']);
     l('ls2', 8, 'p5', 'Baustoffe Nord', '8812-33', 'b2', 'geprueft', ['Pfostenträger U 100, 6 Stk', 'Trapezblech 0,63 mm, 14 Tafeln']);
+    items.find((x) => x.id === 'ls1').eingebucht = true; items.find((x) => x.id === 'ls2').eingebucht = true;
+    // Lager: Anfangsbestand, Wareneingang, Entnahmen für Baustellen
+    const lb = (id, tage, artikel, menge, art, extra = {}) => add(id, { typ: 'lagerbuchung', artikel, menge, art, datum: Datum.plus(heute, -tage), pid: 'p2', ...extra });
+    lb('lb01', 40, 'la1', 14, 'zaehlung', { gezaehlt: 14, quelle: 'Anfangsbestand' }); lb('lb02', 40, 'la2', 6, 'zaehlung', { gezaehlt: 6, quelle: 'Anfangsbestand' });
+    lb('lb03', 40, 'la3', 3, 'zaehlung', { gezaehlt: 3, quelle: 'Anfangsbestand' }); lb('lb04', 40, 'la4', 18, 'zaehlung', { gezaehlt: 18, quelle: 'Anfangsbestand' });
+    lb('lb05', 40, 'la5', 3, 'zaehlung', { gezaehlt: 3, quelle: 'Anfangsbestand' }); lb('lb06', 20, 'la6', 60, 'zaehlung', { gezaehlt: 60, quelle: 'Stichprobe' });
+    lb('lb07', 10, 'la4', 38, 'zugang', { quelle: 'Holzhandel Ritter LS-204471' }); lb('lb08', 10, 'la1', 20, 'zugang', { quelle: 'Holzhandel Ritter LS-204471' });
+    lb('lb09', 9, 'la4', -40, 'abgang', { bs: 'b1', quelle: 'Angebot', bestaetigt: Date.now(), bestaetigtVon: 'p3' }); lb('lb10', 9, 'la1', -18, 'abgang', { bs: 'b1', quelle: 'Rechner', bestaetigt: Date.now(), bestaetigtVon: 'p3' });
+    lb('lb11', 6, 'la5', -1, 'abgang', { bs: 'b3', quelle: 'Entnahme', bestaetigt: Date.now(), bestaetigtVon: 'p4' }); lb('lb12', 6, 'la6', -24, 'abgang', { bs: 'b3', quelle: 'Entnahme', bestaetigt: Date.now(), bestaetigtVon: 'p4' });
+    lb('lb13', 0, 'la2', -4, 'abgang', { bs: 'b1', quelle: 'Rechner' }); lb('lb14', 0, 'la1', -6, 'abgang', { bs: 'b1', quelle: 'Rechner' });
     l('ls3', 2, 'p3', 'Holzhandel Ritter', 'LS-204915', 'b1', 'neu', ['Konterlatten 40/60, 12 Bd', 'Unterdeckbahn 1,5 x 50 m, 3 Rollen']);
     l('ls4', 0, 'p4', 'Würth', '4471-0098', 'b3', 'neu', ['Vollgewindeschrauben 8x300, 2 Pak', 'Holzbauwinkel 105, 40 Stk']);
     // Tagelöhner
@@ -1825,10 +2267,75 @@ const Muster = (() => {
     // Auftragstafel: zwei frische Anfragen
     add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
     add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });
+    // Nachrichten zwischen Büro und Mitarbeitern
+    const um = (tage, h, m) => { const d = Datum.von(Datum.plus(heute, -tage)); d.setHours(h, m, 0, 0); return d.getTime(); };
+    add('na1', { typ: 'nachricht', mit: 'p3', von: 'p3', text: 'Moin Anke, auf meiner Lohnabrechnung fehlen die 6 Überstunden aus der KW ' + Math.max(1, Datum.kw(heute) - 3) + '. Kannst du mal schauen?', wann: um(1, 16, 42), gelesen: um(1, 17, 5) });
+    add('na2', { typ: 'nachricht', mit: 'p3', von: 'p2', text: 'Schaue ich mir morgen früh an und melde mich.', wann: um(1, 17, 6), gelesen: um(1, 18, 30) });
+    add('na3', { typ: 'nachricht', mit: 'p3', von: 'p3', text: 'Ortgang bei Hinrichs, Brett ist gerissen. Tauschen wir das gleich mit?', bild: 'muster-sparren', wann: um(0, 9, 12) });
+    add('na4', { typ: 'nachricht', mit: 'p5', von: 'p1', text: 'Denkst du an den Schlüssel für den Abstellraum bei Gerdes? Liegt im Bulli.', wann: um(0, 7, 3) });
+    add('na5', { typ: 'nachricht', mit: 'p6', von: 'p6', text: 'Hab Donnerstag Berufsschule, bin Freitag wieder dabei.', wann: um(2, 12, 15), gelesen: um(2, 12, 40) });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });
+    // Kontaktbuch: jeder Name aus Angeboten, Rechnungen, Anfragen und Baustellen genau einmal
+    const kunden = new Map();
+    const merke = (name, d) => { if (!name) return; const k = name.toLowerCase(); const alt = kunden.get(k) || { name, art: 'privat', adresse: '', telefon: '', email: '' }; kunden.set(k, { ...alt, art: d.kundenart || alt.art, adresse: alt.adresse || String(d.adresse || '').replace(', ', '\n'), telefon: alt.telefon || d.telefon || '', email: alt.email || d.email || '' }); };
+    items.filter((i) => ['angebot', 'rechnung', 'vorgang'].includes(i.typ)).forEach((i) => merke(i.kunde, i));
+    ahlersCfg().baustellen.forEach((b) => merke(b.kunde, b));
+    const notizen = { 'renate wilkens': 'Nur vormittags erreichbar', 'holger gerdes': 'Empfiehlt uns weiter (Thölken)' };
+    [...kunden.values()].forEach((k, i) => add(`ku${i + 1}`, { typ: 'kunde', ...k, art: /gmbh|autohaus|verwaltung/i.test(k.name) ? 'gewerblich' : k.art, notiz: notizen[k.name.toLowerCase()] || '' }));
     return items;
+  }
+
+  /* Partnerbetrieb für die Vernetzung: ein Elektriker aus Hude */
+  function hogrefeCfg() {
+    const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
+    return {
+      id: 'hogrefe', version: 6, kennung: 'hogrefe', name: 'Elektro Hogrefe', zusatz: 'Elektroinstallation · Photovoltaik · E-Check', ort: 'Hude', inhaber: 'Jens Hogrefe',
+      strasse: 'Bahnhofstraße 21', plz: '27798', telefon: '04408 80 12 30', email: 'info@elektro-hogrefe.example', farbe: '#1f4e79', kuerzel: 'EH', paket: 'Start', lat: 53.11, lon: 8.46,
+      personen: [
+        { id: 'p1', name: 'Jens Hogrefe', rolle: 'chef', funktion: 'Elektromeister, Inhaber', code: '1001', soll: 0, urlaub: 30 },
+        { id: 'p2', name: 'Sven Otten', rolle: 'geselle', funktion: 'Elektroniker', code: '2001', soll: 40, urlaub: 30 },
+      ],
+      baustellen: [{ id: 'b1', name: 'MFH Lindenhof', ort: 'Hude', adresse: 'Lindenhof 4, 27798 Hude', kunde: 'Wohnbau Hude GmbH', telefon: '', arbeit: 'Elektroinstallation 6 Wohnungen', status: 'laufend', notiz: '' }],
+      tageloehner: [],
+      partner: [{ id: 'pa1', name: 'Zimmerei Ahlers', gewerk: 'Zimmerei', ansprech: 'Jan Ahlers', telefon: '04222 70 41 90', email: 'info@zimmerei-ahlers.example', fid: 'ahlers' }],
+      baukasten: {
+        knoten: [knoten('app', 40, 200), knoten('baustellen', 40, 400), knoten('partner', 330, 400), knoten('kalender', 610, 300)],
+        kanten: [['baustellen', 'partner'], ['partner', 'kalender'], ['app', 'partner']].map(([von, zu]) => ({ von, zu })),
+      },
+      notizen: '', angelegt: Date.now(),
+    };
+  }
+  function netzItems(heute = Datum.heute()) {
+    const mo = Datum.plus(Datum.montag(heute), 7); const ahl = ahlersCfg();
+    const bs = (id) => ahl.baustellen.find((b) => b.id === id);
+    const t = (tage) => Date.now() - tage * 864e5;
+    const basis = (b, an, anName, gewerk, partnerId) => ({ von: 'ahlers', vonName: ahl.name, vonTelefon: ahl.telefon, an, anName, gewerk, partnerId, bs: b.id, bsName: b.name, adresse: b.adresse, kunde: b.kunde });
+    const n1 = `Moin Jens,
+
+der Dachstuhl bei Hinrichs steht. Bevor wir die Aufsparrendämmung drauf machen, müssten die Durchführungen für die PV-Leitungen und die Außenleuchten am Giebel gesetzt sein.
+
+Fotos und Adresse hängen dran. Passt euch der Zeitraum?
+
+Viele Grüße
+Jan Ahlers`;
+    const n2 = `Moin Jens,
+
+bei Steenken in Delmenhorst bauen wir eine Schleppgaube. In die Gaube kommen zwei Steckdosen und Licht, die alte Leitung im Drempel muss vermutlich raus.
+
+Kannst du dir das vorher ansehen? Wir fangen in drei Wochen an.
+
+Viele Grüße
+Jan Ahlers`;
+    return [
+      { id: 'n1', ...basis(bs('b1'), 'hogrefe', 'Elektro Hogrefe', 'Elektro', 'pa1'), zeitVon: mo, zeitBis: Datum.plus(mo, 1), text: n1, fotos: ['muster-dach', 'muster-richtfest'], status: 'zugesagt', termin: { von: mo, bis: Datum.plus(mo, 1) }, erstellt: t(3),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: n1, wann: t(3), name: 'Jan Ahlers' }, { wer: 'an', art: 'zusage', text: 'Passt. Wir kommen Montag um 7 mit zwei Mann. Strom ist auf der Baustelle?', wann: t(2.8), name: 'Jens Hogrefe', zeitVon: mo, zeitBis: Datum.plus(mo, 1) }] },
+      { id: 'n2', ...basis(bs('b4'), 'hogrefe', 'Elektro Hogrefe', 'Elektro', 'pa1'), zeitVon: Datum.plus(mo, 14), zeitBis: Datum.plus(mo, 15), text: n2, fotos: ['muster-dach'], status: 'offen', erstellt: t(1),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: n2, wann: t(1), name: 'Jan Ahlers' }] },
+      { id: 'n3', ...basis(bs('b3'), '', 'Malerbetrieb Kück', 'Maler', 'pa2'), zeitVon: Datum.plus(mo, 7), zeitBis: Datum.plus(mo, 9), text: 'Ortgang- und Traufbretter bei Wilkens streichen, zwei Anstriche.', fotos: [], status: 'extern', erstellt: t(5),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: 'Ortgang- und Traufbretter bei Wilkens streichen, zwei Anstriche.', wann: t(5), name: 'Anke Ahlers' }] },
+    ];
   }
 
   function leerCfg() {
@@ -1842,21 +2349,32 @@ const Muster = (() => {
   const LISTE = [
     { id: 'ahlers', kennung: 'ahlers', name: 'Zimmerei Ahlers', art: 'muster' },
     { id: 'leer', kennung: 'neu', name: 'Neuer Betrieb', art: 'leer' },
+    { id: 'hogrefe', kennung: 'hogrefe', name: 'Elektro Hogrefe', art: 'partner' },
   ];
 
   async function einrichten(fortschritt) {
     await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
     await Store.ersetzeBetrieb('leer', leerCfg(), [], fortschritt);
+    await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt);
+    await Store.ersetzeNetz(netzItems());
     await Store.setzeBetriebe(LISTE);
+  }
+  /* Neue Musterdaten einspielen, ohne selbst angelegte Betriebe anzufassen */
+  async function aktualisieren(fortschritt) {
+    await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
+    await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt);
+    await Store.ersetzeNetz(netzItems());
+    const meta = await Store.betriebe(); const liste = (meta && meta.liste) || [];
+    await Store.setzeBetriebe([...liste.filter((b) => !LISTE.some((x) => x.id === b.id)), ...LISTE].sort((a, b) => LISTE.findIndex((x) => x.id === a.id) - LISTE.findIndex((x) => x.id === b.id)));
   }
 
   async function zuruecksetzen(fid, fortschritt) {
-    if (fid === 'ahlers') return Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
+    if (fid === 'ahlers' || fid === 'hogrefe') { const n = await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt); await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt); await Store.ersetzeNetz(netzItems()); return n; }
     if (fid === 'leer') return Store.ersetzeBetrieb('leer', leerCfg(), [], fortschritt);
     return 0;
   }
 
-  return { einrichten, zuruecksetzen, ahlersCfg, leerCfg, LISTE };
+  return { einrichten, aktualisieren, zuruecksetzen, ahlersCfg, leerCfg, LISTE };
 })();
 
 /* ---- gemeinsam.js ---- */
@@ -2021,6 +2539,12 @@ function bilderNachladen(wurzel, items) {
     const url = await dateiUrl(img.dataset.datei).catch(() => null);
     if (url && img.isConnected) img.src = url;
   });
+  // Fotos aus einem anderen Betrieb (Anfrage über das Partnerbuch)
+  $$('img[data-netz]', wurzel).forEach(async (img) => {
+    const [fid, id] = img.dataset.netz.split('|');
+    const url = id.startsWith('muster-') ? await dateiUrl(id).catch(() => null) : await Store.dateiVon(fid, id).catch(() => null);
+    if (url && img.isConnected) img.src = url;
+  });
 }
 
 /* Eigene Felder, die Richtwerk pro Betrieb in einen Baustein einbaut
@@ -2068,10 +2592,11 @@ const Buero = (() => {
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
   /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
-  const EXTRA = { aufgaben: [], einstellungen: [] };
-  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen }) {
-    if (einstellungen) EXTRA.einstellungen.push(einstellungen);
-    nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
+  const EXTRA = { aufgaben: [], einstellungen: [], akte: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen, akte }) {
+    if (akte) EXTRA.akte.push(akte);
+    if (einstellungen) { if (einstellungen.vorne) EXTRA.einstellungen.unshift(einstellungen); else EXTRA.einstellungen.push(einstellungen); }
+    nav.forEach((n) => { let i = -1; NAV.forEach((x, j) => { if (x.gruppe === n.gruppe) i = j; }); if (i < 0) i = NAV.findIndex((x) => x.id === 'baustellen') - 1; NAV.splice(i + 1, 0, n); });
     Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
     if (aufgaben) EXTRA.aufgaben.push(aufgaben);
   }
@@ -2444,6 +2969,8 @@ const Buero = (() => {
         ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
 
+  const akteBasis = SEITEN.akte;
+  SEITEN.akte = (c) => { const b = c.baustelle(zustand.akte) || (zustand.akte ? null : c.baustellenOffen()[0]); return akteBasis(c) + (b ? EXTRA.akte.map((fn) => fn(c, b)).join('') : ''); };
   const ROLLEN = { chef: 'Inhaber / Chef', buero: 'Büro', geselle: 'Geselle', azubi: 'Auszubildender', helfer: 'Bauhelfer' };
   SEITEN.team = (c) => {
     const istChef = c.ich && c.ich.rolle === 'chef';
@@ -2478,8 +3005,8 @@ const Buero = (() => {
         <p style="color:#6a726c;font-size:13px;margin:0 0 14px">Anschrift, Steuernummer und Bankverbindung stehen auf Angeboten und Rechnungen.</p>
         <div class="feld"><span>Firmenfarbe</span><div class="farbwahl">${FARBEN.map((f) => `<button type="button" style="background:${f}" class="${c.cfg.farbe === f ? 'an' : ''}" data-a="farbe" data-id="${f}" aria-label="Farbe ${f}"></button>`).join('')}</div></div>
         <button class="k haupt" type="submit">Speichern</button></form></div>
-        <div class="karte"><div class="kopf"><h3>Ihr Funktionsumfang</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
-          ${aktiv.map((t) => `<div class="liste-zeile">${Icon(BAUSTEINE[t].icon)}<div class="text"><b>${esc(BAUSTEINE[t].name)}</b><small>${esc(BAUSTEINE[t].kurz)}</small></div><span class="chip ok">Aktiv</span></div>`).join('')}
+        <div class="karte"><div class="kopf"><h3>Weitere Bausteine</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
+          ${Object.entries(BAUSTEINE).filter(([t, b]) => b.gruppe !== 'geplant' && !c.cfg.baukasten.knoten.some((k) => k.typ === t)).map(([, b]) => `<div class="liste-zeile" style="opacity:.75">${Icon(b.icon)}<div class="text"><b>${esc(b.name)}</b><small>${esc(b.kurz)}</small></div><span class="chip">Auf Anfrage</span></div>`).join('')}
           ${geplant.map(([, b]) => `<div class="liste-zeile" style="opacity:.6">${Icon(b.icon)}<div class="text"><b>${esc(b.name)}</b><small>${esc(b.kurz)}</small></div><span class="chip">Auf Anfrage</span></div>`).join('')}
           <div class="legende">Weitere Funktionen richtet Richtwerk für Sie ein.</div></div></div>
         <div class="karte"><div class="kopf"><h3>Ihre Daten</h3></div><div class="koerper" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:240px;color:#5f6862">Alle Daten gehören Ihrem Betrieb. Sie können sie jederzeit vollständig herunterladen.</span><button class="k" data-a="datenexport">${Icon('download')} Alle Daten herunterladen</button></div></div>`;
@@ -3054,7 +3581,8 @@ const Buero = (() => {
     return `${name}.${endung}`;
   }
 
-  return { start, neuZeichnen: zeichne, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
+  function zeigeSeite(id) { zustand.seite = id; zustand.navOffen = false; zeichne(); window.scrollTo(0, 0); }
+  return { start, neuZeichnen: zeichne, zeigeSeite, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
 })();
 
 /* Datei an den Nutzer geben (Artifact-Download, sonst normaler Link) */
@@ -3257,12 +3785,13 @@ const Auftraege = (() => {
     if (!istR) {
       if (d.id && ['entwurf', 'gesendet'].includes(d.status)) knoepfe.push(`<button class="k nein" data-f="status" data-id="abgelehnt">Abgelehnt</button><button class="k ok" data-f="status" data-id="angenommen">${Icon('haken')} Angenommen</button>`);
       if (d.status === 'entwurf' || !d.id) knoepfe.push(`<button class="k" data-f="status" data-id="gesendet">Als gesendet markieren</button>`);
+      if (['entwurf', 'gesendet'].includes(d.status || 'entwurf')) knoepfe.push(`<button class="k haupt" data-f="versenden">${Icon('angebot')} Versenden …</button>`);
       if (['entwurf', 'gesendet'].includes(d.status || 'entwurf') && c.R.an('angebote', 'onlineAnnahme')) knoepfe.push(`<button class="k" data-f="link">${Icon('wolke')} Link für den Kunden</button>`);
       if (d.status === 'angenommen' && c.R.an('angebote', 'bestaetigung')) knoepfe.push(`<button class="k" data-f="drucken" data-id="bestaetigung">${Icon('drucken')} Auftragsbestätigung</button>`);
       if (d.status === 'angenommen' && c.R.verb('angebote', 'rechnungen')) knoepfe.push(`<button class="k haupt" data-f="zur-rechnung">${Icon('rechnung')} Rechnung erstellen</button>`);
     } else {
       if (d.status === 'entwurf') knoepfe.push(`<button class="k haupt" data-f="stellen">${Icon('haken')} Rechnung stellen</button>`);
-      if (d.status === 'gestellt') knoepfe.push(`<button class="k" data-f="storno">Stornieren</button>`, ueberfaellig(c, d) ? `<button class="k" data-f="drucken" data-id="erinnerung">${Icon('drucken')} Zahlungserinnerung</button>` : '', `<button class="k ok" data-f="bezahlt">${Icon('haken')} Bezahlt</button>`);
+      if (d.status === 'gestellt') knoepfe.push(`<button class="k" data-f="storno">Stornieren</button>`, ueberfaellig(c, d) ? (Betrieb.mahnstand(c, d) ? `<button class="k" data-f="mahnen">${Icon('glocke')} ${(d.mahnungen || []).length ? 'Mahnstufe' : 'Zahlungserinnerung'}</button>` : `<button class="k" data-f="drucken" data-id="erinnerung">${Icon('drucken')} Zahlungserinnerung</button>`) : '', `<button class="k ok" data-f="bezahlt">${Icon('haken')} Bezahlt</button>`);
       if (d.status !== 'entwurf' && c.R.p('rechnungen').erechnung !== 'aus') knoepfe.push(`<button class="k" data-f="xml">${Icon('download')} E-Rechnung</button>`);
     }
     const hg = Fenster.oeffne({
@@ -3270,7 +3799,7 @@ const Auftraege = (() => {
       inhalt: `${!istR && offeneFragen(d).length ? offeneFragen(d).map((q) => `<div class="kundenfrage"><div><b>Frage von ${esc(d.kunde)}</b> <small>${Datum.kurz(Datum.iso(new Date(q.wann)))}</small><p>${esc(q.text)}</p></div><button class="k klein" data-f="frage-erledigt" data-id="${q.wann}">Erledigt</button></div>`).join('') : ''}
         ${!istR && d.angenommenOnline ? `<div class="hinweis-zeile online-ok">${onlineBlock(d)}</div>` : ''}
         ${gesperrt ? `<p class="hinweis-zeile">${d.status === 'bezahlt' ? `Bezahlt am ${Datum.kurz(d.bezahltAm)}.` : d.status === 'storniert' ? 'Storniert.' : `Gestellt am ${Datum.kurz(d.datum)}, fällig am ${Datum.kurz(d.faellig)}.`} Gestellte Rechnungen lassen sich nicht mehr ändern (GoBD). Bei Fehlern stornieren und neu stellen.</p>` : ''}
-        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(d.kunde || '')}" ${dis} placeholder="Name oder Firma"></label>
+        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(d.kunde || '')}" ${dis} placeholder="Name oder Firma" list="kunden-vorschlag" autocomplete="off"><datalist id="kunden-vorschlag">${c.typ('kunde').map((k) => `<option value="${esc(k.name)}">`).join('')}</datalist></label>
           <label class="feld"><span>Kundenart</span><select name="kundenart" ${dis}><option value="privat" ${d.kundenart !== 'gewerblich' ? 'selected' : ''}>Privat</option><option value="gewerblich" ${d.kundenart === 'gewerblich' ? 'selected' : ''}>Gewerblich</option></select></label></div>
         <div class="reihe"><label class="feld"><span>Anschrift (Straße, PLZ Ort)</span><textarea name="adresse" rows="2" ${dis}>${esc(d.adresse || '')}</textarea></label>
           <label class="feld"><span>E-Mail (optional)</span><input name="email" type="email" value="${esc(d.email || '')}" ${dis}></label></div>
@@ -3303,6 +3832,8 @@ const Auftraege = (() => {
           meldung('Position übernommen');
         },
         speichern: () => { const id = sichern(); if (id) { Fenster.schliesse(); meldung('Gespeichert'); } },
+        versenden: () => { const id = sichern(); if (!id) return; Fenster.schliesse(); Betrieb.versenden(ctxNeu(), Store.items.find((i) => i.id === id)); },
+        mahnen: () => { Fenster.schliesse(); Betrieb.mahnFenster(ctxNeu(), Store.items.find((i) => i.id === d.id)); },
         drucken: (b) => { const id = sichern(); if (!id) return; const neu = Store.items.find((i) => i.id === id); drucken(dokumentHtml(ctxNeu(), neu, b.dataset.id)); },
         status: (b) => {
           const id = sichern(); if (!id) return; const st = b.dataset.id; const a = Store.items.find((i) => i.id === id);
@@ -3364,6 +3895,7 @@ const Auftraege = (() => {
       if (!w.kunde.trim()) { meldung('Bitte einen Kunden eintragen.', 'fehler'); return null; }
       const daten = { kunde: w.kunde.trim(), kundenart: w.kundenart, adresse: w.adresse.trim(), email: w.email.trim(), betreff: w.betreff.trim(), positionen: positionen.filter((p) => p.text.trim() || zahl(p.preis)), extra: Zusatz.lesen(hg) };
       if (istR) daten.leistung = w.leistung; else if (w.bs !== undefined) daten.bs = w.bs;
+      if (c.R.hat('kunden') && c.R.an('kunden', 'anlegen')) { const kid = Betrieb.kundeSichern(c, { ...daten, telefon: d.telefon }); if (kid) daten.kundeId = kid; }
       if (d.id) { Store.aendere(d.id, daten); return d.id; }
       const neu = istR ? { typ: 'rechnung', status: 'entwurf', ...daten } : { typ: 'angebot', status: 'entwurf', nr: naechsteNummer(c, 'angebot'), datum: c.heute, gueltigBis: Datum.plus(c.heute, Number(c.R.p('angebote').gueltig)), mwst: Number(c.R.p('angebote').mwst), ...daten };
       if (d.telefon) neu.telefon = d.telefon;
@@ -3372,6 +3904,13 @@ const Auftraege = (() => {
       d = { ...neu, id };
       return id;
     }
+    const kundeFeld = $('[name=kunde]', hg);
+    if (kundeFeld && !gesperrt) kundeFeld.addEventListener('change', () => {
+      const k = c.typ('kunde').find((x) => x.name.toLowerCase() === kundeFeld.value.trim().toLowerCase()); if (!k) return;
+      const setze = (n, v) => { const el = $(`[name=${n}]`, hg); if (el && v && !el.value.trim()) el.value = v; };
+      setze('adresse', k.adresse); setze('email', k.email); const art = $('[name=kundenart]', hg); if (art && k.art) art.value = k.art;
+      if (k.telefon && !d.telefon) d.telefon = k.telefon;
+    });
     $('#pos-liste', hg).addEventListener('input', (e) => {
       const tr = e.target.closest('tr[data-pos]'); if (!tr) return;
       if (e.target.classList.contains('p-text')) { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }
@@ -4225,6 +4764,722 @@ const Rechner = (() => {
   return { oeffne, lattung, uwert };
 })();
 
+/* ---- betrieb.js ---- */
+/* =========================================================================
+   Kunden, Kalender, Mahnwesen, Nachrichten und Lager (Büro + App)
+   Alles hängt an denselben Einträgen wie der Rest: Kunde ↔ Angebot ↔
+   Baustelle ↔ Rechnung ↔ Fotos. Nichts wird doppelt angelegt.
+   ========================================================================= */
+const Betrieb = (() => {
+  const { seitenkopf, leer } = Buero.teile;
+  const zustand = { kunde: null, suche: '', monat: Datum.heute().slice(0, 7), tag: Datum.heute(), chat: null };
+  const schluessel = (n) => String(n || '').toLowerCase().replace(/\s+/g, ' ').trim();
+  const ctxBuero = () => kontext(Store.cfg, Store.items, (Sitzung.lies('buero') || {}).pid);
+  const ctxApp = () => kontext(Store.cfg, Store.items, (Sitzung.lies('app') || {}).pid);
+  const ctxJetzt = () => (document.body.classList.contains('app-modus') ? ctxApp() : ctxBuero());
+  const zahl = (v) => Number(String(v ?? '').replace(/\./g, '').replace(',', '.')) || 0;
+
+  /* =====================================================================
+     Kunden: ein Kontaktbuch, alles hängt am Namen oder an der Kunden-ID
+     ===================================================================== */
+  function kunden(c) { return c.typ('kunde').sort((a, b) => a.name.localeCompare(b.name)); }
+  function gehoert(k, d) { return (d.kundeId && d.kundeId === k.id) || (!d.kundeId && schluessel(d.kunde) === schluessel(k.name)); }
+  function akteVon(c, k) {
+    const angebote = c.typ('angebot').filter((d) => gehoert(k, d));
+    const rechnungen = c.typ('rechnung').filter((d) => gehoert(k, d));
+    const baustellen = (c.cfg.baustellen || []).filter((b) => gehoert(k, b) || angebote.some((a) => a.bs === b.id));
+    const bsIds = new Set(baustellen.map((b) => b.id));
+    const fotos = c.typ('tagebuch').filter((t) => bsIds.has(t.bs)).flatMap((t) => (t.fotos || []).map((f) => ({ f, datum: t.datum, text: t.text })));
+    const anfragen = c.typ('vorgang').filter((v) => gehoert(k, v));
+    const offen = rechnungen.filter((r) => r.status === 'gestellt').reduce((s, r) => s + Auftraege.summen(r, Auftraege.mwstVon(c, r)).brutto, 0);
+    const umsatz = rechnungen.filter((r) => ['gestellt', 'bezahlt'].includes(r.status)).reduce((s, r) => s + Auftraege.summen(r, Auftraege.mwstVon(c, r)).netto, 0);
+    return { angebote, rechnungen, baustellen, fotos, anfragen, offen, umsatz };
+  }
+  /* Neuer Name in Angebot oder Anfrage → Kunde wird einmal angelegt */
+  function kundeSichern(c, daten) {
+    const name = String(daten.kunde || '').trim(); if (!name) return '';
+    const da = c.typ('kunde').find((k) => schluessel(k.name) === schluessel(name));
+    if (da) return da.id;
+    const id = Store.uid('k');
+    Store.neu({ id, typ: 'kunde', name, art: daten.kundenart || 'privat', adresse: daten.adresse || '', telefon: daten.telefon || '', email: daten.email || '', notiz: '' });
+    return id;
+  }
+
+  function kundenSeite(c) {
+    const q = schluessel(zustand.suche);
+    const liste = kunden(c).filter((k) => !q || schluessel([k.name, k.adresse, k.telefon, k.email].join(' ')).includes(q));
+    if (zustand.kunde) { const k = c.items.find((i) => i.id === zustand.kunde); if (k) return kundeAkte(c, k); }
+    return seitenkopf('Kunden', 'Alle Kunden mit ihren Angeboten, Baustellen, Rechnungen und Fotos', `<button class="k haupt" data-a="kunde-neu">${Icon('plus')} Neuer Kunde</button>`)
+      + `<div class="karte"><div class="kopf"><input class="kunden-suche" id="kunden-suche" type="search" placeholder="Name, Ort, Telefon …" value="${esc(zustand.suche)}" aria-label="Kunden suchen"><span class="chip">${liste.length} Kunden</span></div>
+      ${liste.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Kunde</th><th>Anschrift</th><th>Telefon</th><th class="r">Angebote</th><th class="r">Baustellen</th><th class="r">Umsatz netto</th><th class="r">Offen</th></tr></thead><tbody>
+        ${liste.map((k) => { const a = akteVon(c, k); return `<tr class="klickbar" data-a="kunde" data-id="${k.id}"><td><b>${esc(k.name)}</b>${k.art === 'gewerblich' ? ' <span class="chip">Firma</span>' : ''}</td><td>${esc(String(k.adresse || '').replace(/\n/g, ', '))}</td><td class="num">${esc(k.telefon || '')}</td><td class="r num">${a.angebote.length}</td><td class="r num">${a.baustellen.length}</td><td class="r num">${a.umsatz ? Zahl.eur(a.umsatz) : '–'}</td><td class="r num">${a.offen ? `<span class="chip warn">${Zahl.eur(a.offen)}</span>` : '–'}</td></tr>`; }).join('')}
+      </tbody></table></div>` : leer('Keine Kunden gefunden.')}</div>`;
+  }
+  function kundeAkte(c, k) {
+    const a = akteVon(c, k); const adr = String(k.adresse || '').replace(/\n/g, ', ');
+    const zeile = (titel, unter, rechts, aktion, id) => `<div class="liste-zeile klickbar" data-a="${aktion}" data-id="${id}"><div class="text"><b>${titel}</b><small>${unter}</small></div>${rechts}</div>`;
+    return seitenkopf(esc(k.name), `${k.art === 'gewerblich' ? 'Firmenkunde' : 'Privatkunde'}${adr ? ' · ' + esc(adr) : ''}`, `<button class="k" data-a="kunde-zurueck">${Icon('zurueck')} Alle Kunden</button><button class="k" data-a="kunde-bearbeiten" data-id="${k.id}">${Icon('stift')} Bearbeiten</button><button class="k haupt" data-a="kunde-angebot" data-id="${k.id}">${Icon('plus')} Angebot</button>`)
+      + `<div class="kunde-kopf karte"><div class="koerper kunde-kontakt">
+          ${k.telefon ? `<a class="k" href="tel:${esc(k.telefon.replace(/\s+/g, ''))}">${Icon('telefon')} ${esc(k.telefon)}</a>` : ''}
+          ${k.email ? `<a class="k" href="mailto:${esc(k.email)}">${Icon('angebot')} ${esc(k.email)}</a>` : ''}
+          ${adr ? `<a class="k" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adr)}" target="_blank" rel="noopener">${Icon('karte')} Route</a>` : ''}
+          ${c.R.an('kunden', 'umsatz') ? `<span class="kunde-zahlen"><span>Umsatz <b>${Zahl.eur(a.umsatz)}</b></span><span>Offen <b>${Zahl.eur(a.offen)}</b></span></span>` : ''}
+          ${k.notiz ? `<p class="kunde-notiz">${esc(k.notiz)}</p>` : ''}</div></div>
+        <div class="zwei"><div>
+          <div class="karte"><div class="kopf"><h3>Angebote</h3><span class="chip">${a.angebote.length}</span></div>${a.angebote.map((d) => zeile(`${esc(d.nr || 'Entwurf')} · ${esc(d.betreff || '')}`, Datum.kurz(d.datum || c.heute), `${Auftraege.chipDoc(c, d)} <span class="num">${Zahl.eur(Auftraege.summen(d, Auftraege.mwstVon(c, d)).netto)}</span>`, 'angebot', d.id)).join('') || leer('Noch keine Angebote.')}</div>
+          <div class="karte"><div class="kopf"><h3>Rechnungen</h3><span class="chip">${a.rechnungen.length}</span></div>${a.rechnungen.map((d) => zeile(`${esc(d.nr || 'Entwurf')} · ${esc(d.betreff || '')}`, d.datum ? Datum.kurz(d.datum) : 'Entwurf', `${Auftraege.chipDoc(c, d)} <span class="num">${Zahl.eur(Auftraege.summen(d, Auftraege.mwstVon(c, d)).brutto)}</span>`, 'rechnung', d.id)).join('') || leer('Noch keine Rechnungen.')}</div>
+        </div><div>
+          <div class="karte"><div class="kopf"><h3>Baustellen</h3></div>${a.baustellen.map((b) => zeile(esc(b.name), esc(b.adresse || b.ort || ''), chip(b.status === 'fertig' ? 'erledigt' : b.status === 'geplant' ? 'neu' : 'laeuft'), 'akte', b.id)).join('') || leer('Noch keine Baustelle.')}</div>
+          ${a.anfragen.length ? `<div class="karte"><div class="kopf"><h3>Anfragen</h3></div>${a.anfragen.map((v) => zeile(esc(v.titel || 'Anfrage'), `${Datum.kurz(v.datum)}${v.notiz ? ' · ' + esc(v.notiz) : ''}`, '', 'gehe', 'tafel')).join('')}</div>` : ''}
+          <div class="karte"><div class="kopf"><h3>Fotos</h3><span class="chip">${a.fotos.length}</span></div>${a.fotos.length ? `<div class="kunde-fotos">${a.fotos.slice(0, 12).map((f) => `<figure><img data-datei="${esc(f.f)}" alt=""><figcaption>${Datum.kurz(f.datum)}</figcaption></figure>`).join('')}</div>` : leer('Fotos aus dem Bautagebuch erscheinen hier.')}</div>
+        </div></div>`;
+  }
+  function kundeFenster(c, k = {}) {
+    Fenster.oeffne({
+      titel: k.id ? esc(k.name) : 'Neuer Kunde', bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Name oder Firma</span><input name="name" value="${esc(k.name || '')}"></label><label class="feld"><span>Art</span><select name="art"><option value="privat">Privat</option><option value="gewerblich" ${k.art === 'gewerblich' ? 'selected' : ''}>Firma</option></select></label></div>
+        <label class="feld"><span>Anschrift (Straße, PLZ Ort)</span><textarea name="adresse" rows="2">${esc(k.adresse || '')}</textarea></label>
+        <div class="reihe"><label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(k.telefon || '')}"></label><label class="feld"><span>E-Mail</span><input name="email" type="email" value="${esc(k.email || '')}"></label></div>
+        <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(k.notiz || '')}" placeholder="z. B. nur vormittags erreichbar"></label>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: { ok: (b, hg) => {
+        const w = Fenster.werte(hg); if (!w.name.trim()) return meldung('Bitte einen Namen eintragen.', 'fehler');
+        const daten = { name: w.name.trim(), art: w.art, adresse: w.adresse.trim(), telefon: w.telefon.trim(), email: w.email.trim(), notiz: w.notiz.trim() };
+        if (k.id) Store.aendere(k.id, daten); else { const id = Store.uid('k'); Store.neu({ id, typ: 'kunde', ...daten }); zustand.kunde = id; }
+        Fenster.schliesse(); meldung('Gespeichert'); Buero.neuZeichnen();
+      } },
+    });
+  }
+
+  /* =====================================================================
+     Angebot versenden: Text vorschlagen, Termine wählen, prüfen, abhaken
+     ===================================================================== */
+  function freieTage(c, n = 3) {
+    const out = []; let d = Datum.plus(c.heute, 7);
+    while (out.length < n) { d = Datum.plus(d, 1); if (!Datum.istArbeitstag(d)) continue; const w = c.planWoche(Datum.montag(d)); const t = Datum.wochentag(d); const belegt = w && w.zellen ? Object.values(w.zellen).filter((z) => z[t]).length : 0; if (belegt < c.arbeiter().length - 1) out.push(d); if (out.length && Datum.plus(out[out.length - 1], 0) === d) d = Datum.plus(d, 1); }
+    return out;
+  }
+  const datumLang = (d) => `${Datum.WT_LANG ? Datum.WT_LANG[Datum.wochentag(d)] : Datum.WT[Datum.wochentag(d)]}, ${Datum.kurz(d)}${d.slice(0, 4)}`;
+  function versenden(c, a) {
+    const f = c.cfg; const s = Auftraege.summen(a, Auftraege.mwstVon(c, a));
+    const anrede = a.kundenart === 'gewerblich' ? 'Sehr geehrte Damen und Herren' : (() => { const n = String(a.kunde || '').trim(); return /^familie\s/i.test(n) ? `Liebe ${n}` : `Guten Tag ${n}`; })();
+    const vorschlag = freieTage(c);
+    const textMit = (termine, link) => `${anrede},\n\nvielen Dank für Ihre Anfrage${a.betreff ? ` zu „${a.betreff}“` : ''} und das freundliche Gespräch. Wie besprochen schicke ich Ihnen unser Angebot ${a.nr}. Der Gesamtpreis liegt bei ${Zahl.eur(s.brutto)} inklusive Mehrwertsteuer.\n\n${link ? `Sie können sich das Angebot hier in Ruhe ansehen, ausdrucken und, wenn alles passt, auch direkt annehmen:\n${link}\n\n` : 'Das Angebot finden Sie im Anhang.\n\n'}${termine.length ? `Für die Ausführung hätten wir folgende Termine frei:\n${termine.map((t) => '– ' + datumLang(t)).join('\n')}\nSagen Sie mir einfach, welcher Ihnen am besten passt.\n\n` : ''}Wenn Sie Fragen haben oder etwas anders haben möchten, rufen Sie mich gern an${f.telefon ? ` unter ${f.telefon}` : ''}.\n\nViele Grüße aus ${f.ort || 'der Werkstatt'}\n${f.inhaber || f.name}\n${f.name}`;
+    let link = '';
+    const hg = Fenster.oeffne({
+      titel: `Angebot ${esc(a.nr)} versenden`, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `<div class="versand">
+        <div class="versand-links">
+          <h4>1. Termine anbieten</h4>
+          <p class="klein">Vorschläge sind Tage, an denen laut Wochenplan noch Leute frei sind. Ändern oder leeren, wenn kein Termin genannt werden soll.</p>
+          ${[0, 1, 2].map((i) => `<input type="date" class="v-termin" value="${vorschlag[i] || ''}" aria-label="Termin ${i + 1}">`).join('')}
+          <h4>2. Prüfen und abhaken</h4>
+          <label class="v-haken"><input type="checkbox" data-pruef>Positionen und Preise stimmen</label>
+          <label class="v-haken"><input type="checkbox" data-pruef>Name, Anschrift und E-Mail stimmen</label>
+          <label class="v-haken"><input type="checkbox" data-pruef>Termine sind mit der Planung abgestimmt</label>
+          <label class="v-haken"><input type="checkbox" data-pruef>Text gelesen</label>
+          <p class="v-ausblick">Ausblick: Eine KI-Prüfung, die Mengen, Preise und Text vor dem Versand gegenliest, ist in Planung.</p>
+        </div>
+        <div class="versand-rechts">
+          <label class="feld"><span>An</span><input id="v-an" type="email" value="${esc(a.email || '')}" placeholder="E-Mail des Kunden"></label>
+          <label class="feld"><span>Betreff</span><input id="v-betreff" value="${esc(`Ihr Angebot ${a.nr}${a.betreff ? ': ' + a.betreff : ''}`)}"></label>
+          <label class="feld"><span>Text (Vorschlag, frei änderbar)</span><textarea id="v-text" rows="16"></textarea></label>
+        </div></div>`,
+      fuss: `<button class="k" data-f="drucken" style="margin-right:auto">${Icon('drucken')} Angebot als PDF</button><span class="v-status" id="v-status">Noch 4 Haken</span><button class="k haupt" data-f="senden" disabled>${Icon('angebot')} Senden</button>`,
+      aktionen: {
+        drucken: () => drucken(Auftraege.dokumentHtml(c, a, 'angebot')),
+        senden: () => {
+          const an = $('#v-an', hg).value.trim(); if (!/.+@.+\..+/.test(an)) return meldung('Bitte eine gültige E-Mail-Adresse eintragen.', 'fehler');
+          const termine = termineLesen();
+          Store.aendere(a.id, { status: a.status === 'entwurf' ? 'gesendet' : a.status, email: an, termine, versand: [...(a.versand || []), { wann: Date.now(), an, termine }] });
+          location.href = `mailto:${encodeURIComponent(an)}?subject=${encodeURIComponent($('#v-betreff', hg).value)}&body=${encodeURIComponent($('#v-text', hg).value)}`;
+          Fenster.schliesse(); meldung('Als gesendet vermerkt. Ihr E-Mail-Programm öffnet sich mit dem fertigen Text.');
+        },
+      },
+    });
+    function termineLesen() { return $$('.v-termin', hg).map((i) => i.value).filter(Boolean).sort(); }
+    function textNeu() { $('#v-text', hg).value = textMit(termineLesen(), link); }
+    function pruefen() { const n = $$('[data-pruef]', hg).filter((x) => !x.checked).length; $('[data-f=senden]', hg).disabled = n > 0; $('#v-status', hg).textContent = n ? `Noch ${n} ${n === 1 ? 'Haken' : 'Haken'}` : 'Bereit'; }
+    hg.addEventListener('change', (e) => { if (e.target.classList.contains('v-termin')) textNeu(); pruefen(); });
+    // Link für die Online-Annahme gleich mit erzeugen
+    if (c.R.an('angebote', 'onlineAnnahme')) {
+      const key = a.schluessel || Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10);
+      if (!a.schluessel) Store.aendere(a.id, { schluessel: key });
+      link = `${location.href.split('#')[0]}#angebot/${Store.fid}/${a.id}/${key}`;
+    }
+    textNeu();
+  }
+
+  /* =====================================================================
+     Mahnwesen: Stufen nach Tagen über Fälligkeit, nur intern
+     ===================================================================== */
+  const STUFEN = ['Zahlungserinnerung', '1. Mahnung', '2. Mahnung', 'Letzte Mahnung'];
+  function mahnstand(c, r) {
+    if (r.status !== 'gestellt' || !r.faellig || r.faellig >= c.heute) return null;
+    const tage = Math.round((Datum.von(c.heute) - Datum.von(r.faellig)) / 864e5);
+    const P = c.R.p('rechnungen'); const erste = Number(P.mahnung) || 7; const abstand = Number(P.mahnAbstand) || 14;
+    const gesendet = (r.mahnungen || []).length;
+    const faelligStufe = tage < erste ? -1 : Math.min(STUFEN.length - 1, Math.floor((tage - erste) / abstand));
+    const letzte = (r.mahnungen || [])[gesendet - 1];
+    const naechste = gesendet < STUFEN.length && faelligStufe >= gesendet && (!letzte || Datum.plus(letzte.datum, abstand) <= c.heute) ? gesendet : null;
+    return { tage, gesendet, naechste, letzte };
+  }
+  function mahnungHtml(c, r, stufe) {
+    const s = Auftraege.summen(r, Auftraege.mwstVon(c, r)); const f = c.cfg; const P = c.R.p('rechnungen');
+    const gebuehr = stufe >= 2 ? Number(P.mahngebuehr) || 0 : 0;
+    const privat = r.kundenart !== 'gewerblich';
+    const text = stufe === 0 ? `sicher ist es Ihrer Aufmerksamkeit entgangen: Unsere Rechnung ${r.nr} vom ${Datum.kurz(r.datum)}${r.datum.slice(0, 4)} über ${Zahl.eur(s.brutto)} war am ${Datum.kurz(r.faellig)}${r.faellig.slice(0, 4)} fällig. Bitte überweisen Sie den Betrag innerhalb der nächsten 7 Tage. Sollte sich Ihre Zahlung mit diesem Schreiben überschnitten haben, betrachten Sie es bitte als gegenstandslos.`
+      : `trotz unserer ${stufe === 1 ? 'Zahlungserinnerung' : 'bisherigen Schreiben'} ist unsere Rechnung ${r.nr} vom ${Datum.kurz(r.datum)}${r.datum.slice(0, 4)} über ${Zahl.eur(s.brutto)} noch offen. Sie befinden sich seit dem ${Datum.kurz(Datum.plus(r.faellig, 1))}${r.faellig.slice(0, 4)} in Verzug. Bitte überweisen Sie ${gebuehr ? `den Betrag zuzüglich ${Zahl.eur(gebuehr)} Mahngebühr, also ${Zahl.eur(s.brutto + gebuehr)},` : 'den Betrag'} bis zum ${Datum.kurz(Datum.plus(c.heute, 10))}${Datum.plus(c.heute, 10).slice(0, 4)}.${stufe === 3 ? ' Geht bis dahin keine Zahlung ein, übergeben wir die Forderung ohne weitere Ankündigung zur gerichtlichen Durchsetzung (Mahnbescheid).' : ''} Wir behalten uns vor, Verzugszinsen in gesetzlicher Höhe (${privat ? '5' : '9'} Prozentpunkte über dem Basiszinssatz, § 288 BGB)${privat ? '' : ' und die Pauschale von 40 €'} zu berechnen.`;
+    return `<div class="dokument"><div class="d-kopf"><div class="d-firma"><b>${esc(f.name)}</b><span>${esc(f.zusatz || '')}</span></div><div class="d-adresse">${[f.strasse, [f.plz, f.ort].filter(Boolean).join(' '), f.telefon && 'Tel. ' + f.telefon, f.email].filter(Boolean).map(esc).join('<br>')}</div></div>
+      <div class="d-mitte"><div class="d-empf">${esc(r.kunde)}<br>${esc(r.adresse || '').replace(/\n/g, '<br>')}</div><dl class="d-meta"><dt>Rechnung</dt><dd>${esc(r.nr)}</dd><dt>Datum</dt><dd>${Datum.kurz(c.heute)}${c.heute.slice(0, 4)}</dd></dl></div>
+      <h2>${STUFEN[stufe]}</h2><p>Sehr geehrte Damen und Herren,</p><p>${text}</p>
+      <table class="d-summe"><tr><td>Rechnungsbetrag</td><td class="r num">${Zahl.eur(s.brutto)}</td></tr>${gebuehr ? `<tr><td>Mahngebühr</td><td class="r num">${Zahl.eur(gebuehr)}</td></tr>` : ''}<tr class="gesamt"><td>Zu zahlen</td><td class="r num">${Zahl.eur(s.brutto + gebuehr)}</td></tr></table>
+      <p>Mit freundlichen Grüßen<br>${esc(f.inhaber || f.name)}</p>
+      <div class="d-fuss"><span>${esc(f.name)}</span><span>${f.bank ? esc(f.bank) + ' · ' : ''}${f.iban ? 'IBAN ' + esc(f.iban) : ''}</span></div></div>`;
+  }
+  function mahnFenster(c, r) {
+    const m = mahnstand(c, r); if (!m) return;
+    const stufe = m.naechste ?? Math.min(m.gesendet, STUFEN.length - 1);
+    Fenster.oeffne({
+      titel: `${STUFEN[stufe]} zu ${esc(r.nr)}`, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `<p class="hinweis-zeile">${m.tage} Tage über dem Zahlungsziel. ${m.gesendet ? `Bisher: ${(r.mahnungen || []).map((x) => `${STUFEN[x.stufe]} am ${Datum.kurz(x.datum)}`).join(', ')}.` : 'Noch keine Erinnerung verschickt.'}</p>
+        <div class="mahn-vorschau">${mahnungHtml(c, r, stufe)}</div>`,
+      fuss: `<button class="k" data-f="zu" style="margin-right:auto">Abbrechen</button>${m.naechste === null ? '<span class="v-status">Nächste Stufe noch nicht fällig</span>' : ''}<button class="k haupt" data-f="ok">${Icon('drucken')} Drucken und als verschickt vermerken</button>`,
+      aktionen: { ok: () => { drucken(mahnungHtml(c, r, stufe)); Store.aendere(r.id, { mahnungen: [...(r.mahnungen || []), { stufe, datum: c.heute }] }); Fenster.schliesse(); meldung(`${STUFEN[stufe]} vermerkt`); } },
+    });
+  }
+
+  /* =====================================================================
+     Kalender: Monat wie Outlook, Tag mit Einsatz, Terminen und Wetter
+     ===================================================================== */
+  const wetter = { daten: null, laden: false, fehler: false };
+  /* Wettersymbole als schlichte Linien, wie im Rest der Oberfläche */
+  const W = {
+    sonne: '<circle cx="12" cy="12" r="4.2" fill="#e0a21b" stroke="none"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="#e0a21b"/>',
+    wolke: '<path d="M7 18.5h10a4 4 0 00.4-8 5.5 5.5 0 00-10.6 1.4A3.3 3.3 0 007 18.5z" fill="#cfd5dc" stroke="#7d8894"/>',
+    halb: '<circle cx="8.5" cy="8.5" r="3.4" fill="#e0a21b" stroke="none"/><path d="M8 19h9.5a3.6 3.6 0 00.3-7.2 5 5 0 00-9.6 1.3A3 3 0 008 19z" fill="#e3e7ec" stroke="#7d8894"/>',
+    regen: '<path d="M7 14.5h10a3.8 3.8 0 00.4-7.6 5.3 5.3 0 00-10.2 1.3A3.2 3.2 0 007 14.5z" fill="#cfd5dc" stroke="#7d8894"/><path d="M8.5 17l-1 3M12.5 17l-1 3M16.5 17l-1 3" stroke="#2f6fb5"/>',
+    schnee: '<path d="M7 14.5h10a3.8 3.8 0 00.4-7.6 5.3 5.3 0 00-10.2 1.3A3.2 3.2 0 007 14.5z" fill="#e3e7ec" stroke="#7d8894"/><path d="M8.5 18.5h.01M12 20h.01M15.5 18.5h.01" stroke="#5b8fc9" stroke-width="2.6"/>',
+    gewitter: '<path d="M7 14h10a3.8 3.8 0 00.4-7.6 5.3 5.3 0 00-10.2 1.3A3.2 3.2 0 007 14z" fill="#b9c1ca" stroke="#5f6b78"/><path d="M12.5 15l-2 3.5h3l-2 3.5" stroke="#d48a00"/>',
+    nebel: '<path d="M4 9h16M6 13h12M4 17h16" stroke="#8a95a1"/>',
+  };
+  const wsym = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${W[k]}</svg>`;
+  const WETTER_TEXT = (code) => (code === 0 ? ['Sonnig', wsym('sonne')] : code <= 2 ? ['Leicht bewölkt', wsym('halb')] : code === 3 ? ['Bewölkt', wsym('wolke')] : code <= 48 ? ['Nebel', wsym('nebel')] : code <= 67 ? ['Regen', wsym('regen')] : code <= 77 ? ['Schnee', wsym('schnee')] : code <= 82 ? ['Schauer', wsym('regen')] : code <= 86 ? ['Schneeschauer', wsym('schnee')] : ['Gewitter', wsym('gewitter')]);
+  async function wetterLaden(c) {
+    if (wetter.daten || wetter.laden || wetter.fehler) return;
+    wetter.laden = true;
+    try {
+      let { lat, lon } = c.cfg;
+      if (!lat && c.cfg.ort) { const g = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(c.cfg.ort)}&count=1&language=de&countryCode=DE`).then((r) => r.json()); if (g.results && g.results[0]) ({ latitude: lat, longitude: lon } = g.results[0]); }
+      if (!lat) throw new Error('Ort unbekannt');
+      const w = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_sum,windspeed_10m_max&timezone=Europe%2FBerlin&forecast_days=14`).then((r) => r.json());
+      const d = {}; (w.daily.time || []).forEach((t, i) => { d[t] = { code: w.daily.weathercode[i], max: w.daily.temperature_2m_max[i], min: w.daily.temperature_2m_min[i], regen: w.daily.precipitation_sum[i], wind: w.daily.windspeed_10m_max[i] }; });
+      wetter.daten = d;
+    } catch { wetter.fehler = true; }
+    wetter.laden = false; Buero.neuZeichnen();
+  }
+  function eintraege(c, d) {
+    const out = [];
+    const w = c.planWoche(Datum.montag(d)); const t = Datum.wochentag(d);
+    if (w && w.zellen && t < 6) (c.cfg.baustellen || []).forEach((b) => { const leute = c.arbeiter().filter((p) => w.zellen[p.id] && w.zellen[p.id][t] === b.id && !c.abwesend(p.id, d)); if (leute.length) out.push({ art: 'einsatz', text: `${b.name.replace(/^(Neubau|Dachsanierung|Carport|Gaube)\s+/, '')}: ${leute.map((p) => p.name.split(' ')[0]).join(', ')}`, a: 'akte', id: b.id }); });
+    c.personen.forEach((p) => { const abw = c.abwesend(p.id, d); if (abw && Datum.istArbeitstag(d)) out.push({ art: abw.typ === 'krank' ? 'krank' : 'urlaub', text: `${p.name.split(' ')[0]}: ${abw.typ === 'krank' ? 'krank' : abw.art || 'Urlaub'}` }); });
+    c.typ('vorgang').filter((v) => v.termin === d && !v.archiv).forEach((v) => out.push({ art: 'termin', text: `Besichtigung ${v.kunde}`, a: 'gehe', id: 'tafel' }));
+    c.typ('angebot').filter((a) => a.angenommenOnline && a.angenommenOnline.termin === d).forEach((a) => out.push({ art: 'termin', text: `Beginn ${a.kunde} (Wunschtermin)`, a: 'angebot', id: a.id }));
+    c.typ('angebot').filter((a) => a.status === 'gesendet' && (a.termine || []).includes(d)).forEach((a) => out.push({ art: 'vorschlag', text: `Termin angeboten: ${a.kunde}`, a: 'angebot', id: a.id }));
+    if (c.R.an('kalender', 'faellige')) c.typ('rechnung').filter((r) => r.status === 'gestellt' && r.faellig === d).forEach((r) => out.push({ art: 'geld', text: `Fällig: ${r.nr} ${r.kunde}`, a: 'rechnung', id: r.id }));
+    c.typ('erinnerung').filter((e) => !e.erledigt && e.faellig === d && c.ich && e.pid === c.ich.id).forEach((e) => out.push({ art: 'erinnerung', text: e.text, erinnerung: e.id }));
+    out.push(...Netz.kalender(c, d));
+    const fei = Datum.feiertag(d); if (fei) out.unshift({ art: 'feiertag', text: fei });
+    return out;
+  }
+  function wetterChip(d, gross) {
+    const w = wetter.daten && wetter.daten[d]; if (!w) return '';
+    const P = regeln(Store.cfg).p('kalender'); const [t, s] = WETTER_TEXT(w.code); const warn = w.regen >= Number(P.regen || 5) || w.wind >= Number(P.wind || 50);
+    return `<span class="wetter ${warn ? 'warn' : ''}" title="${t}, ${Math.round(w.min)} bis ${Math.round(w.max)} °C, ${String(w.regen).replace('.', ',')} mm Regen, Wind bis ${Math.round(w.wind)} km/h">${s}${Math.round(w.max)}°${gross ? ` ${t} · ${Math.round(w.min)}–${Math.round(w.max)} °C · ${String(w.regen).replace('.', ',')} mm · Wind ${Math.round(w.wind)} km/h` : ''}</span>`;
+  }
+  function kalenderSeite(c) {
+    const mitWetter = c.R.an('kalender', 'wetter'); if (mitWetter) wetterLaden(c);
+    const [j, m] = zustand.monat.split('-').map(Number);
+    const erster = `${zustand.monat}-01`; let start = Datum.montag(erster);
+    const tage = []; for (let i = 0; i < 42; i++) tage.push(Datum.plus(start, i));
+    const zeigen = tage[35].slice(0, 7) > zustand.monat ? tage.slice(0, 35) : tage;
+    const tag = zustand.tag; const liste = eintraege(c, tag);
+    return seitenkopf('Kalender', 'Einsätze aus dem Wochenplan, Termine, Urlaub, Fälligkeiten und das Wetter vor Ort',
+      `<span class="wochenwahl"><button class="k klein" data-a="kal-monat" data-id="-1" aria-label="Voriger Monat">${Icon('zurueck')}</button><b>${esc(Datum.monatName(zustand.monat))}</b><button class="k klein" data-a="kal-monat" data-id="1" aria-label="Nächster Monat">${Icon('pfeil')}</button></span><button class="k" data-a="kal-heute">Heute</button>`)
+      + `<div class="kalender-layout"><div class="karte kal-monat"><div class="kal-kopf">${Datum.WT.slice(0, 7).map((w) => `<span>${w}</span>`).join('')}</div>
+        <div class="kal-raster">${zeigen.map((d) => { const e = eintraege(c, d); const anders = d.slice(0, 7) !== zustand.monat;
+          return `<button class="kal-tag ${anders ? 'anders' : ''} ${d === c.heute ? 'heute' : ''} ${d === tag ? 'gewaehlt' : ''} ${Datum.istArbeitstag(d) ? '' : 'frei'}" data-a="kal-tag" data-id="${d}"><span class="kal-nr">${Number(d.slice(8))}${mitWetter ? wetterChip(d) : ''}</span>${e.slice(0, 4).map((x) => `<span class="kal-e ${x.art}">${esc(x.text)}</span>`).join('')}${e.length > 4 ? `<span class="kal-mehr">+${e.length - 4} weitere</span>` : ''}</button>`; }).join('')}</div></div>
+        <div class="karte kal-detail"><div class="kopf"><h3>${esc(Datum.lang(tag))}</h3></div>
+          ${!mitWetter ? '' : wetter.daten && wetter.daten[tag] ? `<div class="kal-wetter">${wetterChip(tag, true)}</div>` : `<div class="kal-wetter leise">${wetter.fehler ? 'Wetter gerade nicht abrufbar.' : wetter.laden ? 'Wetter wird geladen …' : 'Wetter gibt es für die nächsten 14 Tage.'}</div>`}
+          ${liste.map((x) => `<div class="liste-zeile kal-zeile ${x.art}">${x.erinnerung ? `<div class="text"><b>${esc(x.text)}</b><small>Erinnerung</small></div><button class="k klein ok" data-erinnerung="${x.erinnerung}">Erledigt</button>` : `<div class="text"><b>${esc(x.text)}</b><small>${{ einsatz: 'Einsatz laut Wochenplan', urlaub: 'Abwesend', krank: 'Abwesend', termin: 'Termin', vorschlag: 'Dem Kunden angeboten', geld: 'Zahlung erwartet', feiertag: 'Feiertag', partner: 'Partnerbetrieb' }[x.art] || ''}</small></div>${x.a ? `<button class="k klein" data-a="${x.a}" data-id="${x.id}">Öffnen</button>` : ''}`}</div>`).join('') || leer('Nichts eingetragen.')}
+          <div class="legende" style="padding:10px 14px">${mitWetter ? 'Wetter: Open-Meteo. ' : ''}Einsätze kommen aus dem Wochenplan, Partner aus dem Partnerbuch.</div></div></div>`;
+  }
+
+  /* =====================================================================
+     Nachrichten zwischen Büro und Mitarbeitern (statt WhatsApp)
+     ===================================================================== */
+  const ungelesen = (c, pid, fuerBuero) => c.typ('nachricht').filter((n) => n.mit === pid && !n.gelesen && (fuerBuero ? n.von === pid : n.von !== pid)).length;
+  function verlaufHtml(c, pid, ichPid) {
+    const liste = c.typ('nachricht').filter((n) => n.mit === pid).sort((a, b) => a.wann - b.wann);
+    let tagVorher = '';
+    return liste.map((n) => { const tag = Datum.iso(new Date(n.wann)); const z = new Date(n.wann); const eigen = n.von === ichPid || (ichPid === 'buero' && n.von !== pid);
+      const trenner = tag !== tagVorher ? `<div class="chat-tag">${tag === c.heute ? 'Heute' : Datum.kurz(tag)}</div>` : ''; tagVorher = tag;
+      return `${trenner}<div class="chat-blase ${eigen ? 'eigen' : ''}">${!eigen && n.von !== pid ? `<small>${esc(c.person(n.von).name)}</small>` : ''}${n.bild ? `<img data-datei="${esc(n.bild)}" alt="Bild">` : ''}${n.text ? `<p>${esc(n.text)}</p>` : ''}<span class="zeit">${String(z.getHours()).padStart(2, '0')}:${String(z.getMinutes()).padStart(2, '0')}${eigen && n.gelesen && c.R.an('nachrichten', 'gelesen') ? ' · gelesen' : ''}</span></div>`; }).join('') || '<p class="chat-leer">Noch keine Nachrichten. Fragen zur Lohnabrechnung, Fotos von der Baustelle oder kurze Absprachen gehen hier rein und bleiben gespeichert.</p>';
+  }
+  function chatSeite(c) {
+    const leute = c.arbeiter();
+    const pid = zustand.chat && leute.some((p) => p.id === zustand.chat) ? zustand.chat : (leute[0] || {}).id;
+    zustand.chat = pid;
+    setTimeout(() => { const v = $('#chat-verlauf'); if (v) v.scrollTop = v.scrollHeight; markiere(c, pid, true); }, 0);
+    return seitenkopf('Nachrichten', 'Rückfragen und Fotos zwischen Büro und Mitarbeitern. Alles bleibt beim Betrieb gespeichert.')
+      + `<div class="chat-layout karte"><div class="chat-liste">${leute.map((p) => { const n = ungelesen(c, p.id, true); const letzte = c.typ('nachricht').filter((x) => x.mit === p.id).sort((a, b) => b.wann - a.wann)[0];
+          return `<button class="chat-person ${p.id === pid ? 'an' : ''}" data-a="chat-person" data-id="${p.id}"><span class="rund">${esc(c.kuerzel(p.name))}</span><span class="text"><b>${esc(p.name)}</b><small>${letzte ? esc(letzte.text || 'Bild') : esc(p.funktion || '')}</small></span>${n ? `<span class="zahl">${n}</span>` : ''}</button>`; }).join('')}</div>
+        <div class="chat-fenster"><div class="chat-verlauf" id="chat-verlauf">${verlaufHtml(c, pid, 'buero')}</div>${eingabe()}</div></div>`;
+  }
+  const eingabe = () => `<form class="chat-eingabe" data-chat-form>${regeln(Store.cfg).an('nachrichten', 'bilder') ? `<button type="button" class="k" data-chat-bild aria-label="Bild anhängen">${Icon('kamera')}</button>` : ''}<input name="text" placeholder="Nachricht schreiben …" autocomplete="off" aria-label="Nachricht"><button class="k haupt" type="submit">Senden</button></form>`;
+  function markiere(c, pid, buero) { c.typ('nachricht').filter((n) => n.mit === pid && !n.gelesen && (buero ? n.von === pid : n.von !== pid)).forEach((n) => Store.aendere(n.id, { gelesen: Date.now() })); }
+  async function senden(form) {
+    const app = document.body.classList.contains('app-modus'); const c = ctxJetzt();
+    const mit = app ? c.ich.id : zustand.chat; const text = form.text.value.trim(); const bild = form.dataset.bild || '';
+    if (!text && !bild) return;
+    Store.neu({ typ: 'nachricht', mit, von: c.ich.id, text, bild, wann: Date.now() });
+    form.text.value = ''; delete form.dataset.bild; const vb = $('.chat-anhang', form); if (vb) vb.remove();
+  }
+  document.addEventListener('submit', (e) => { const f = e.target.closest && e.target.closest('[data-chat-form]'); if (!f) return; e.preventDefault(); senden(f); });
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('[data-chat-bild]'); if (!b) return;
+    const form = b.closest('form'); const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+    inp.onchange = async () => { const f = inp.files[0]; if (!f) return; try { const url = await bildVerkleinern(f, { maxKante: 1000 }); form.dataset.bild = await Store.speichereDatei(url, f.name); form.insertAdjacentHTML('afterbegin', `<span class="chat-anhang">${Icon('foto')} Bild angehängt</span>`); } catch (err) { meldung(err.message, 'fehler'); } };
+    inp.click();
+  });
+  /* App: Nachrichten als eigenes Fenster */
+  function appChat() {
+    const c = ctxApp(); const pid = c.ich.id;
+    const hg = Fenster.oeffne({ titel: 'Nachrichten an das Büro', bereich: 'ui-buero-fenster app-fenster chat-app', inhalt: `<div class="chat-verlauf" id="chat-verlauf">${verlaufHtml(c, pid, pid)}</div>${eingabe()}` });
+    const neu = () => { const v = $('#chat-verlauf', hg); if (!v || !hg.isConnected) { ab(); return; } const c2 = ctxApp(); v.innerHTML = verlaufHtml(c2, pid, pid); bilderNachladen(v, Store.items); v.scrollTop = v.scrollHeight; markiere(c2, pid, false); };
+    const ab = Store.abonniere(neu); neu();
+  }
+  /* App: Ablage des Mitarbeiters */
+  function appAblage() {
+    const c = ctxApp(); const p = c.ich;
+    const monate = []; let ym = c.heute.slice(0, 7); for (let i = 0; i < 6; i++) { monate.push(ym); const [jj, mm] = ym.split('-').map(Number); ym = Datum.iso(new Date(jj, mm - 2, 1)).slice(0, 7); }
+    const doks = c.typ('dokument').filter((d) => d.fuer === p.id || d.fuer === 'alle').sort((a, b) => b.erstellt - a.erstellt);
+    const bilder = c.typ('nachricht').filter((n) => n.mit === p.id && n.bild);
+    Fenster.oeffne({
+      titel: 'Meine Ablage', bereich: 'ui-buero-fenster app-fenster',
+      inhalt: `<h4 class="ablage-titel">Stundenzettel</h4>${monate.map((m) => { const n = c.monatsnachweis(p.id, m); return `<div class="liste-zeile"><div class="text"><b>${esc(Datum.monatName(m))}</b><small>${Zahl.std(n.ist)} Std. gearbeitet${n.soll ? ` · Soll ${Zahl.std(n.soll)}` : ''}</small></div><button class="k klein" data-ablage-monat="${m}">${Icon('drucken')} PDF</button></div>`; }).join('')}
+        <h4 class="ablage-titel">Lohnabrechnungen und Dokumente</h4>${doks.map((d) => `<div class="liste-zeile"><div class="text"><b>${esc(d.titel)}</b><small>${Datum.kurz(d.datum || Datum.iso(d.erstellt))}</small></div></div>`).join('') || '<p class="ablage-leer">Noch keine Dokumente vom Büro.</p>'}
+        <h4 class="ablage-titel">Bilder aus Nachrichten</h4>${bilder.length ? `<div class="kunde-fotos">${bilder.map((b) => `<figure><img data-datei="${esc(b.bild)}" alt=""><figcaption>${Datum.kurz(Datum.iso(new Date(b.wann)))}</figcaption></figure>`).join('')}</div>` : '<p class="ablage-leer">Noch keine.</p>'}
+        <p class="ablage-leer">Alles hier gehört zu deinem Zugang und bleibt auch gespeichert, wenn du das Handy wechselst.</p>`,
+    });
+    bilderNachladen($('#fenster'), Store.items);
+  }
+  function stundenzettel(c, pid, ym) {
+    const n = c.monatsnachweis(pid, ym); const p = c.person(pid);
+    return `<div class="dokument"><div class="d-kopf"><div class="d-firma"><b>${esc(c.cfg.name)}</b><span>Stundenzettel</span></div><div class="d-adresse">${esc(p.name)}<br>${esc(Datum.monatName(ym))}</div></div>
+      <table class="d-pos"><thead><tr><th>Tag</th><th>Zeiten</th><th>Baustelle</th><th class="r">Stunden</th></tr></thead><tbody>${n.tage.filter((t) => t.eintr.length || t.abw).map((t) => `<tr><td>${Datum.WT[Datum.wochentag(t.datum)]} ${Datum.kurz(t.datum)}</td><td>${t.eintr.map((e) => `${e.von}–${e.bis}`).join(', ') || (t.abw ? (t.abw.typ === 'krank' ? 'Krank' : esc(t.abw.art || 'Urlaub')) : '')}</td><td>${t.eintr.map((e) => esc(c.bsName(e.bs))).join(', ')}</td><td class="r num">${Zahl.std(t.eintr.reduce((s, e) => s + stundenVon(e), 0))}</td></tr>`).join('')}</tbody></table>
+      <table class="d-summe"><tr><td>Gearbeitet</td><td class="r num">${Zahl.std(n.ist)}</td></tr>${n.soll ? `<tr><td>Soll</td><td class="r num">${Zahl.std(n.soll)}</td></tr>` : ''}</table></div>`;
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest && e.target.closest('[data-app-chat],[data-app-ablage],[data-ablage-monat]'); if (!t) return;
+    e.preventDefault();
+    if (t.dataset.appChat !== undefined) return appChat();
+    if (t.dataset.appAblage !== undefined) return appAblage();
+    const c = ctxApp(); drucken(stundenzettel(c, c.ich.id, t.dataset.ablageMonat));
+  });
+
+  /* =====================================================================
+     Lager, das sich selbst führt
+     Zugang: Lieferschein oder E-Rechnung des Händlers übernehmen
+     Abgang: Material für eine Baustelle (Rechner, Angebot, Entnahme),
+             Mitarbeiter bestätigen auf der Baustelle mit einem Tipp
+     Zwei-Kisten: Kleinteile werden nicht gezählt. Kiste leer = nachbestellen
+     Stichprobe: ein paar Artikel zählen statt Jahresinventur
+     ===================================================================== */
+  const artikel = (c) => c.cfg.lager || [];
+  function bestand(c, id) { return c.typ('lagerbuchung').filter((b) => b.artikel === id).reduce((s, b) => s + Number(b.menge || 0), 0); }
+  function finde(c, text) {
+    const t = schluessel(text).replace(/[^a-z0-9äöüß/ ]/g, ' ');
+    let best = null; let punkte = 0;
+    artikel(c).forEach((a) => { const worte = schluessel(a.suche || a.name).split(/[\s,]+/).filter((w) => w.length > 1); const n = worte.filter((w) => t.includes(w)).length; if (n > punkte && n >= Math.min(2, worte.length)) { punkte = n; best = a; } });
+    return best;
+  }
+  function mengeAus(text) { const m = String(text).match(/(\d+(?:[.,]\d+)?)\s*(stk|stück|bd|bund|rollen?|pak|m|lfm|m²|m³|tafeln?|pal)\b/i); return m ? zahl(m[1]) : 0; }
+  function buchen(c, a, menge, art, extra = {}) { Store.neu({ typ: 'lagerbuchung', artikel: a.id, menge, art, datum: c.heute, pid: c.ich ? c.ich.id : '', ...extra }); }
+  function nachbestellen(c, a, grund) {
+    if (c.typ('material').some((m) => m.status === 'offen' && m.lagerArtikel === a.id)) return meldung('Steht schon auf der Bestellliste.');
+    Store.neu({ typ: 'material', pid: c.ich ? c.ich.id : '', datum: c.heute, bs: '', text: `${a.nachbestellMenge || ''} ${a.einheit} ${a.name}`.trim(), positionen: [{ menge: a.nachbestellMenge || 1, einheit: a.einheit, text: a.name }], lieferant: a.lieferant || '', lagerArtikel: a.id, quelle: grund, status: 'offen' });
+    meldung(`${a.name} steht auf der Bestellliste${a.lieferant ? ' für ' + a.lieferant : ''}.`);
+  }
+  function lagerSeite(c) {
+    const liste = artikel(c).map((a) => ({ a, b: bestand(c, a.id) }));
+    const knapp = liste.filter((x) => !x.a.zweiKisten && x.a.min && x.b <= x.a.min);
+    const offenBest = c.typ('lagerbuchung').filter((b) => b.art === 'abgang' && !b.bestaetigt);
+    const gezaehlt = (a) => c.typ('lagerbuchung').filter((b) => b.artikel === a.id && b.art === 'zaehlung').sort((x, y) => y.datum.localeCompare(x.datum))[0];
+    const wert = liste.reduce((s, x) => s + Math.max(0, x.b) * (Number(x.a.ek) || 0), 0);
+    return seitenkopf('Lager', 'Bestand führt sich aus Lieferscheinen und Baustellen. Gezählt wird nur stichprobenweise.', `<button class="k" data-a="lager-eingang">${Icon('liefer')} Wareneingang</button><button class="k" data-a="lager-zaehlen">Stichprobe zählen</button><button class="k haupt" data-a="lager-entnahme">${Icon('material')} Für Baustelle</button>`)
+      + `<div class="kacheln">
+        <div class="kachel ${knapp.length ? 'achtung' : ''}"><div class="titel">Unter Mindestbestand</div><div class="wert">${knapp.length}</div><div class="fuss">${knapp.map((x) => esc(x.a.name)).join(', ') || 'alles da'}</div></div>
+        <div class="kachel"><div class="titel">Warten auf Bestätigung</div><div class="wert">${offenBest.length}</div><div class="fuss">Entnahmen, die auf der Baustelle noch bestätigt werden</div></div>
+        <div class="kachel"><div class="titel">Lagerwert</div><div class="wert">${Zahl.eur(wert)}</div><div class="fuss">zum Einkaufspreis</div></div></div>
+      <div class="karte"><div class="kopf"><h3>Bestand</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Artikel</th><th>Lagerort</th><th class="r">Bestand</th><th class="r">Mindestens</th><th>Zuletzt gezählt</th><th>Händler</th><th></th></tr></thead><tbody>
+        ${liste.map(({ a, b }) => { const z = gezaehlt(a); return `<tr><td><b>${esc(a.name)}</b>${a.zweiKisten ? ' <span class="chip info">Zwei Kisten</span>' : ''}</td><td>${esc(a.ort || '')}</td><td class="r num">${a.zweiKisten ? (a.kisteLeer ? '<span class="chip warn">1 Kiste</span>' : '2 Kisten') : `${String(Math.round(b * 10) / 10).replace('.', ',')} ${esc(a.einheit)}`}</td><td class="r num">${a.zweiKisten ? '–' : `${a.min || 0} ${esc(a.einheit)}`}</td><td>${z ? Datum.kurz(z.datum) : '<span style="color:#9aa19c">noch nie</span>'}</td><td>${esc(a.lieferant || '')}</td>
+          <td class="r">${a.zweiKisten ? `<button class="k klein" data-a="lager-kiste" data-id="${a.id}">Kiste leer</button>` : (a.min && b <= a.min ? `<button class="k klein" data-a="lager-nach" data-id="${a.id}">Nachbestellen</button>` : '')}</td></tr>`; }).join('') || `<tr><td colspan="7">${leer('Noch keine Artikel.')}</td></tr>`}
+      </tbody></table></div></div>
+      <div class="karte"><div class="kopf"><h3>Letzte Bewegungen</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Datum</th><th>Artikel</th><th class="r">Menge</th><th>Woher / wohin</th><th>Status</th></tr></thead><tbody>
+        ${c.typ('lagerbuchung').sort((x, y) => (y.erstellt || 0) - (x.erstellt || 0)).slice(0, 12).map((b) => { const a = artikel(c).find((x) => x.id === b.artikel) || { name: '?', einheit: '' };
+          return `<tr><td>${Datum.kurz(b.datum)}</td><td>${esc(a.name)}</td><td class="r num" style="color:${b.menge < 0 ? '#a23b2e' : '#2f6b45'}">${b.menge > 0 ? '+' : ''}${String(Math.round(b.menge * 10) / 10).replace('.', ',')} ${esc(a.einheit)}</td><td>${esc({ zugang: 'Wareneingang', abgang: 'Baustelle', korrektur: 'Korrektur Baustelle', zaehlung: 'Zählung', kiste: 'Kiste angebrochen' }[b.art] || b.art)}${b.bs ? ' · ' + esc(c.bsName(b.bs)) : ''}${b.quelle ? ` <small style="color:#7a827c">(${esc(b.quelle)})</small>` : ''}</td><td>${b.art === 'abgang' ? (b.bestaetigt ? '<span class="chip ok">bestätigt</span>' : '<span class="chip">offen</span>') : ''}</td></tr>`; }).join('')}
+      </tbody></table></div></div>`;
+  }
+  function eingangFenster(c) {
+    const ls = c.typ('lieferschein').filter((l) => !l.eingebucht).sort((a, b) => b.datum.localeCompare(a.datum));
+    let zeilen = [];
+    const hg = Fenster.oeffne({
+      titel: 'Wareneingang buchen', breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `<p style="margin:0 0 12px">Positionen aus einem Lieferschein oder der E-Rechnung des Händlers übernehmen. Richtwerk ordnet sie den Lagerartikeln zu, du prüfst nur.</p>
+        <div class="reihe"><label class="feld"><span>Lieferschein</span><select id="eg-ls"><option value="">Lieferschein wählen …</option>${ls.map((l) => `<option value="${l.id}">${Datum.kurz(l.datum)} · ${esc(l.lieferant)} ${esc(l.nummer || '')}</option>`).join('')}</select></label>
+          <div class="feld"><span>oder E-Rechnung (XRechnung / ZUGFeRD-XML)</span><button class="k" type="button" data-f="xml">${Icon('upload')} Datei wählen</button></div></div>
+        <div id="eg-liste"></div><p class="r-hinweis">Ausblick: Datanorm-Dateien und die Schnittstellen der Großhändler (z. B. über IDS-Connect) liefern dieselben Positionen automatisch.</p>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="buchen">Einbuchen</button>`,
+      aktionen: {
+        xml: () => { const inp = document.createElement('input'); inp.type = 'file'; inp.accept = '.xml,text/xml,application/xml'; inp.onchange = async () => { const f = inp.files[0]; if (!f) return; const t = await f.text(); const doc = new DOMParser().parseFromString(t, 'application/xml'); const lines = [...doc.getElementsByTagNameNS('*', 'InvoiceLine')]; zeilen = lines.map((l) => { const name = (l.getElementsByTagNameNS('*', 'Name')[0] || {}).textContent || ''; const menge = zahl(String((l.getElementsByTagNameNS('*', 'InvoicedQuantity')[0] || {}).textContent || '0').replace('.', ',')); return { text: name, menge, a: finde(c, name) }; }); zeigen(); }; inp.click(); },
+        buchen: () => {
+          $$('#eg-liste tr[data-i]', hg).forEach((tr) => { const z = zeilen[Number(tr.dataset.i)]; const id = $('select', tr).value; const m = zahl($('input', tr).value); const a = artikel(c).find((x) => x.id === id); if (a && m) buchen(c, a, m, 'zugang', { quelle: z.quelle || 'Lieferschein' }); });
+          const lsId = $('#eg-ls', hg).value; if (lsId) Store.aendere(lsId, { eingebucht: true });
+          Fenster.schliesse(); meldung('Wareneingang gebucht');
+        },
+      },
+    });
+    function zeigen() {
+      $('#eg-liste', hg).innerHTML = zeilen.length ? `<table class="t"><thead><tr><th>Position</th><th>Lagerartikel</th><th class="r">Menge</th></tr></thead><tbody>${zeilen.map((z, i) => `<tr data-i="${i}"><td>${esc(z.text)}</td><td><select><option value="">nicht ins Lager</option>${artikel(c).filter((a) => !a.zweiKisten).map((a) => `<option value="${a.id}" ${z.a && z.a.id === a.id ? 'selected' : ''}>${esc(a.name)} (${esc(a.einheit)})</option>`).join('')}</select></td><td class="r"><input class="num" style="width:90px;text-align:right" value="${String(z.a && z.a.faktor ? z.menge * z.a.faktor : z.menge).replace('.', ',')}"></td></tr>`).join('')}</tbody></table>` : '';
+    }
+    $('#eg-ls', hg).addEventListener('change', (e) => { const l = c.items.find((i) => i.id === e.target.value); zeilen = l ? (l.positionen || []).map((p) => { const a = finde(c, p); return { text: p, menge: mengeAus(p), a, quelle: `${l.lieferant} ${l.nummer || ''}`.trim() }; }) : []; zeigen(); });
+  }
+  function entnahmeFenster(c, vorgabe = []) {
+    const hg = Fenster.oeffne({
+      titel: 'Material für eine Baustelle', bereich: 'ui-buero-fenster',
+      inhalt: `<label class="feld"><span>Baustelle</span><select id="en-bs">${c.baustellenOffen().map((b) => `<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select></label>
+        <table class="t"><thead><tr><th>Artikel</th><th class="r">Menge</th></tr></thead><tbody>${artikel(c).filter((a) => !a.zweiKisten).map((a) => { const v = vorgabe.find((x) => x.id === a.id); return `<tr data-id="${a.id}"><td>${esc(a.name)} <small style="color:#7a827c">Bestand ${String(Math.round(bestand(c, a.id))).replace('.', ',')} ${esc(a.einheit)}</small></td><td class="r"><input class="num" style="width:90px;text-align:right" value="${v ? String(v.menge).replace('.', ',') : ''}" placeholder="0"> ${esc(a.einheit)}</td></tr>`; }).join('')}</tbody></table>
+        <p class="r-hinweis">Die Mitarbeiter auf der Baustelle sehen die Menge in der App und tippen nur „Passt“ oder tragen ein, was es wirklich war.</p>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Buchen</button>`,
+      aktionen: { ok: () => { const bs = $('#en-bs', hg).value; let n = 0; $$('tr[data-id]', hg).forEach((tr) => { const m = zahl($('input', tr).value); const a = artikel(c).find((x) => x.id === tr.dataset.id); if (a && m) { buchen(c, a, -m, 'abgang', { bs, quelle: vorgabe.length ? 'Rechner' : 'Entnahme' }); n++; } }); Fenster.schliesse(); meldung(n ? `${n} Artikel für ${c.bsName(bs)} gebucht` : 'Nichts gebucht'); } },
+    });
+  }
+  function zaehlFenster(c) {
+    const zuletzt = (a) => (c.typ('lagerbuchung').filter((b) => b.artikel === a.id && b.art === 'zaehlung').sort((x, y) => y.datum.localeCompare(x.datum))[0] || { datum: '0000' }).datum;
+    const auswahl = artikel(c).filter((a) => !a.zweiKisten).sort((a, b) => zuletzt(a).localeCompare(zuletzt(b))).slice(0, Number(c.R.p('lager').stichprobe) || 4);
+    const hg = Fenster.oeffne({
+      titel: 'Stichprobe zählen', bereich: 'ui-buero-fenster',
+      inhalt: `<p style="margin:0 0 12px">Heute nur diese ${auswahl.length} Artikel zählen, die am längsten nicht gezählt wurden. So ist über das Jahr alles einmal geprüft, ohne Inventurtag.</p>
+        <table class="t"><thead><tr><th>Artikel</th><th>Lagerort</th><th class="r">Laut Buch</th><th class="r">Gezählt</th></tr></thead><tbody>${auswahl.map((a) => `<tr data-id="${a.id}"><td>${esc(a.name)}</td><td>${esc(a.ort || '')}</td><td class="r num">${String(Math.round(bestand(c, a.id) * 10) / 10).replace('.', ',')} ${esc(a.einheit)}</td><td class="r"><input class="num" style="width:90px;text-align:right" placeholder="?"></td></tr>`).join('')}</tbody></table>`,
+      fuss: `<button class="k" data-f="zu">Später</button><button class="k haupt" data-f="ok">Zählung speichern</button>`,
+      aktionen: { ok: () => { $$('tr[data-id]', hg).forEach((tr) => { const v = $('input', tr).value.trim(); if (v === '') return; const a = artikel(c).find((x) => x.id === tr.dataset.id); buchen(c, a, zahl(v) - bestand(c, a.id), 'zaehlung', { gezaehlt: zahl(v) }); }); Fenster.schliesse(); meldung('Zählung gespeichert, Bestand angepasst'); } },
+    });
+  }
+  /* App: offene Entnahmen auf der Baustelle bestätigen */
+  function appLagerKarte(c, bs) {
+    const offen = c.typ('lagerbuchung').filter((b) => b.art === 'abgang' && !b.bestaetigt && b.bs === bs);
+    if (!offen.length) return '';
+    return `<div class="a-titel">Material aus dem Lager</div><div class="a-karte lager-best">${offen.map((b) => { const a = artikel(c).find((x) => x.id === b.artikel) || { name: '?', einheit: '' };
+      return `<div class="lb-zeile" data-lb="${b.id}"><div class="text"><b>${String(-b.menge).replace('.', ',')} ${esc(a.einheit)} ${esc(a.name)}</b><small>Stimmt das ungefähr?</small></div><div class="lb-knoepfe"><button class="lb-ok" data-lb-ok="${b.id}">Passt</button><button class="lb-anders" data-lb-anders="${b.id}">Anders</button></div></div>`; }).join('')}</div>`;
+  }
+  function appKisten(c) {
+    const k = artikel(c).filter((a) => a.zweiKisten);
+    return k.length ? `<div class="a-titel">Kiste leer? Ein Tipp genügt</div><div class="a-karte kisten">${k.map((a) => `<button class="kiste-knopf ${a.kisteLeer ? 'leer' : ''}" data-kiste="${a.id}"><b>${esc(a.name)}</b><small>${a.kisteLeer ? 'schon gemeldet' : esc(a.ort || 'Lager')}</small></button>`).join('')}</div>` : '';
+  }
+  function kisteLeer(c, id) {
+    const a = artikel(c).find((x) => x.id === id); if (!a) return;
+    if (a.kisteLeer) return meldung('Ist schon gemeldet. Die volle Kiste ist bestellt.');
+    Store.speichereCfg({ ...Store.cfg, lager: artikel(c).map((x) => (x.id === id ? { ...x, kisteLeer: c.heute } : x)) });
+    nachbestellen(c, a, 'Zwei-Kisten');
+  }
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest && e.target.closest('[data-lb-ok],[data-lb-anders],[data-kiste],[data-lb-speichern]'); if (!t) return;
+    e.preventDefault(); e.stopPropagation(); const c = ctxJetzt();
+    if (t.dataset.kiste) return kisteLeer(c, t.dataset.kiste);
+    if (t.dataset.lbOk) { Store.aendere(t.dataset.lbOk, { bestaetigt: Date.now(), bestaetigtVon: c.ich.id }); return meldung('Danke'); }
+    if (t.dataset.lbAnders) { const z = t.closest('.lb-zeile'); const b = c.items.find((i) => i.id === t.dataset.lbAnders); z.querySelector('.lb-knoepfe').innerHTML = `<input class="lb-menge" inputmode="decimal" value="${String(-b.menge).replace('.', ',')}" aria-label="Tatsächliche Menge"><button class="lb-ok" data-lb-speichern="${b.id}">OK</button>`; z.querySelector('.lb-menge').select(); return; }
+    if (t.dataset.lbSpeichern) { const b = c.items.find((i) => i.id === t.dataset.lbSpeichern); const echt = zahl(t.closest('.lb-zeile').querySelector('.lb-menge').value); const diff = -echt - b.menge; if (diff) Store.neu({ typ: 'lagerbuchung', artikel: b.artikel, menge: diff, art: 'korrektur', bs: b.bs, datum: c.heute, pid: c.ich.id }); Store.aendere(b.id, { bestaetigt: Date.now(), bestaetigtVon: c.ich.id }); meldung('Korrigiert'); }
+  }, true);
+
+  /* ---------- Aufgaben in der Übersicht ---------- */
+  function aufgaben(c) {
+    const out = [];
+    if (c.R.hat('rechnungen')) c.typ('rechnung').forEach((r) => { const m = mahnstand(c, r); if (m && m.naechste !== null) out.push({ titel: `${STUFEN[m.naechste]} fällig: ${r.nr}`, unter: `${r.kunde} · ${m.tage} Tage über Ziel`, a: 'mahnen', id: r.id }); });
+    if (c.R.hat('lager')) artikel(c).filter((a) => !a.zweiKisten && a.min && bestand(c, a.id) <= a.min && !c.typ('material').some((m) => m.status === 'offen' && m.lagerArtikel === a.id)).forEach((a) => out.push({ titel: `Nachbestellen: ${a.name}`, unter: `Noch ${Math.round(bestand(c, a.id))} ${a.einheit}, Mindestbestand ${a.min}`, a: 'lager-nach', id: a.id }));
+    if (c.R.hat('nachrichten')) { const n = c.arbeiter().reduce((s, p) => s + ungelesen(c, p.id, true), 0); if (n) out.push({ titel: `${n} neue ${n === 1 ? 'Nachricht' : 'Nachrichten'}`, unter: 'von Mitarbeitern', a: 'gehe', id: 'nachrichten' }); }
+    return out;
+  }
+
+  Buero.erweitern({
+    nav: [
+      { id: 'kunden', name: 'Kunden', icon: 'person', braucht: 'kunden', gruppe: 'Aufträge' },
+      { id: 'kalender', name: 'Kalender', icon: 'kalender', braucht: 'kalender', gruppe: 'Betrieb' },
+      { id: 'nachrichten', name: 'Nachrichten', icon: 'angebot', braucht: 'nachrichten', gruppe: 'Betrieb', zahl: (o, c) => c.arbeiter().reduce((s, p) => s + ungelesen(c, p.id, true), 0) },
+      { id: 'lager', name: 'Lager', icon: 'material', braucht: 'lager', gruppe: 'Unterlagen', zahl: (o, c) => artikel(c).filter((a) => !a.zweiKisten && a.min && bestand(c, a.id) <= a.min).length },
+    ],
+    seiten: { kunden: kundenSeite, kalender: kalenderSeite, nachrichten: chatSeite, lager: lagerSeite },
+    aktionen: {
+      kunde(el) { zustand.kunde = el.dataset.id; Buero.zeigeSeite('kunden'); },
+      'kunde-zurueck'() { zustand.kunde = null; Buero.neuZeichnen(); },
+      'kunde-neu'(el, c) { kundeFenster(c); },
+      'kunde-bearbeiten'(el, c) { kundeFenster(c, c.items.find((i) => i.id === el.dataset.id)); },
+      'kunde-angebot'(el, c) { const k = c.items.find((i) => i.id === el.dataset.id); Auftraege.editor(c, { typ: 'angebot', status: 'entwurf', kunde: k.name, kundeId: k.id, kundenart: k.art, adresse: k.adresse, email: k.email, telefon: k.telefon, positionen: [{ text: '', menge: 1, einheit: 'm²', preis: '' }] }); },
+      'angebot-senden'(el, c) { const a = c.items.find((i) => i.id === el.dataset.id); if (a) versenden(c, a); },
+      mahnen(el, c) { const r = c.items.find((i) => i.id === el.dataset.id); if (r) mahnFenster(c, r); },
+      'kal-monat'(el) { const [j, m] = zustand.monat.split('-').map(Number); zustand.monat = Datum.iso(new Date(j, m - 1 + Number(el.dataset.id), 1)).slice(0, 7); Buero.neuZeichnen(); },
+      'kal-heute'() { zustand.monat = Datum.heute().slice(0, 7); zustand.tag = Datum.heute(); Buero.neuZeichnen(); },
+      'kal-tag'(el) { zustand.tag = el.dataset.id; Buero.neuZeichnen(); },
+      'chat-person'(el) { zustand.chat = el.dataset.id; Buero.neuZeichnen(); },
+      'lager-eingang'(el, c) { eingangFenster(c); },
+      'lager-entnahme'(el, c) { entnahmeFenster(c); },
+      'lager-zaehlen'(el, c) { zaehlFenster(c); },
+      'lager-nach'(el, c) { const a = artikel(c).find((x) => x.id === el.dataset.id); if (a) nachbestellen(c, a, 'Mindestbestand'); },
+      'lager-kiste'(el, c) { kisteLeer(c, el.dataset.id); },
+    },
+    aufgaben,
+  });
+  document.addEventListener('input', (e) => { if (e.target.id !== 'kunden-suche') return; zustand.suche = e.target.value; const pos = e.target.selectionStart; Buero.neuZeichnen(); setTimeout(() => { const i = $('#kunden-suche'); if (i) { i.focus(); i.setSelectionRange(pos, pos); } }, 0); });
+
+  return { kundeSichern, versenden, mahnstand, mahnFenster, STUFEN, appLagerKarte, appKisten, entnahmeFenster, artikel, bestand, ungelesen, wetter };
+})();
+
+/* ---- netz.js ---- */
+/* =========================================================================
+   Partnerbuch und Vernetzung zwischen Betrieben
+   Ein Betrieb fragt aus einer Baustelle einen befreundeten Betrieb an
+   (Elektro, Maler, Gerüst …). Adresse, Fotos, Zeitraum und Text gehen mit.
+   Ist der Partner auch bei Richtwerk, landet die Anfrage direkt in seinem
+   Büro, sonst geht sie als E-Mail raus. Zusagen stehen in beiden Kalendern.
+   Außerdem: „Ihre Bausteine“ in den Einstellungen (an/aus + Feinregler).
+   ========================================================================= */
+const Netz = (() => {
+  const { seitenkopf, leer } = Buero.teile;
+  const zustand = { offen: null };
+  const partner = (c) => c.cfg.partner || [];
+  const jahr = (d) => (d ? `${Datum.kurz(d)}${d.slice(0, 4)}` : '');
+  const zeitraum = (v, b) => (!v ? 'nach Absprache' : b && b !== v ? `${Datum.WT[Datum.wochentag(v)]} ${Datum.kurz(v)} bis ${Datum.WT[Datum.wochentag(b)]} ${jahr(b)}` : `${Datum.WT[Datum.wochentag(v)]} ${jahr(v)}`);
+  const STATUS = { offen: ['Wartet auf Antwort', 'info'], zugesagt: ['Zugesagt', 'ok'], termin: ['Anderer Termin', 'warn'], rueckfrage: ['Rückfrage', 'warn'], abgesagt: ['Abgesagt', 'nein'], extern: ['Per E-Mail', ''] };
+  const chipN = (st, n) => { const [t, k] = n && n.an === Store.fid && st === 'offen' ? ['Antwort fehlt', 'warn'] : STATUS[st] || [st, '']; return `<span class="chip ${k}">${esc(t)}</span>`; };
+  const ausgehend = () => Store.netz.filter((n) => n.von === Store.fid).sort((a, b) => (b.erstellt || 0) - (a.erstellt || 0));
+  const eingehend = () => Store.netz.filter((n) => n.an === Store.fid).sort((a, b) => (b.erstellt || 0) - (a.erstellt || 0));
+  const brauchtAntwort = (n) => (n.an === Store.fid ? n.status === 'offen' : ['termin', 'rueckfrage'].includes(n.status));
+
+  /* ---------- Seite „Partner“ ---------- */
+  function seite(c) {
+    const rein = eingehend(); const raus = ausgehend();
+    return seitenkopf('Partner', 'Befreundete Betriebe anfragen. Adresse, Fotos und Zeitraum gehen mit, die Antwort kommt hierher und in den Kalender.',
+      `<button class="k" data-a="partner-neu">${Icon('plus')} Partner eintragen</button><button class="k haupt" data-a="partner-anfrage">${Icon('angebot')} Partner anfragen</button>`)
+      + (rein.length ? `<div class="karte"><div class="kopf"><h3>Anfragen an uns</h3><span class="chip ${rein.some(brauchtAntwort) ? 'warn' : ''}">${rein.filter(brauchtAntwort).length} offen</span></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Von</th><th>Baustelle</th><th>Zeitraum</th><th>Eingegangen</th><th>Status</th></tr></thead><tbody>
+        ${rein.map((n) => `<tr class="klickbar" data-a="netz" data-id="${n.id}"><td><b>${esc(n.vonName)}</b></td><td>${esc(n.bsName)}<small style="display:block;color:#6b7280">${esc(String(n.adresse || '').replace(/\n/g, ', '))}</small></td><td>${esc(zeitraum(n.termin ? n.termin.von : n.zeitVon, n.termin ? n.termin.bis : n.zeitBis))}</td><td>${jahr(Datum.iso(n.erstellt))}</td><td>${chipN(n.status, n)}</td></tr>`).join('')}</tbody></table></div></div>` : '')
+      + `<div class="karte"><div class="kopf"><h3>Partnerbuch</h3><span class="chip">${partner(c).length}</span></div>${partner(c).length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Betrieb</th><th>Gewerk</th><th>Ansprechpartner</th><th>Telefon</th><th>Verbindung</th><th></th></tr></thead><tbody>
+        ${partner(c).map((p) => `<tr><td><b>${esc(p.name)}</b></td><td>${esc(p.gewerk)}</td><td>${esc(p.ansprech || '')}</td><td class="num">${p.telefon ? `<a href="tel:${esc(p.telefon.replace(/\s+/g, ''))}">${esc(p.telefon)}</a>` : ''}</td><td>${p.fid ? '<span class="chip ok">direkt über Richtwerk</span>' : '<span class="chip">per E-Mail</span>'}</td>
+          <td class="r"><button class="k klein" data-a="partner-anfrage" data-partner="${p.id}">Anfragen</button> <button class="k klein" data-a="partner-bearbeiten" data-id="${p.id}" aria-label="Bearbeiten">${Icon('stift')}</button></td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Partner. Elektriker, Maler, Gerüstbauer eintragen, mit denen Sie oft zusammenarbeiten.')}</div>`
+      + `<div class="karte"><div class="kopf"><h3>Unsere Anfragen</h3></div>${raus.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>An</th><th>Baustelle</th><th>Zeitraum</th><th>Gesendet</th><th>Status</th></tr></thead><tbody>
+        ${raus.map((n) => `<tr class="klickbar" data-a="netz" data-id="${n.id}"><td><b>${esc(n.anName)}</b><small style="display:block;color:#6b7280">${esc(n.gewerk || '')}</small></td><td>${esc(n.bsName)}</td><td>${esc(zeitraum(n.termin ? n.termin.von : n.zeitVon, n.termin ? n.termin.bis : n.zeitBis))}</td><td>${jahr(Datum.iso(n.erstellt))}</td><td>${chipN(n.status)}</td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Anfragen gesendet.')}</div>`;
+  }
+
+  function partnerFenster(c, p = {}) {
+    const gewerke = c.R.liste('partner', 'gewerke');
+    Fenster.oeffne({
+      titel: p.id ? esc(p.name) : 'Partner eintragen', bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Betrieb</span><input name="name" value="${esc(p.name || '')}" placeholder="z. B. Elektro Brinkmann"></label><label class="feld"><span>Gewerk</span><input name="gewerk" list="gewerk-liste" value="${esc(p.gewerk || '')}"><datalist id="gewerk-liste">${gewerke.map((g) => `<option value="${esc(g)}">`).join('')}</datalist></label></div>
+        <div class="reihe"><label class="feld"><span>Ansprechpartner</span><input name="ansprech" value="${esc(p.ansprech || '')}"></label><label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(p.telefon || '')}"></label></div>
+        <label class="feld"><span>E-Mail</span><input name="email" type="email" value="${esc(p.email || '')}"></label>
+        <label class="feld"><span>Richtwerk-Kennung (falls der Partner auch Richtwerk nutzt)</span><input name="fid" class="mono" value="${esc(p.fid || '')}" placeholder="leer = Anfrage geht per E-Mail"></label>`,
+      fuss: `${p.id ? `<button class="k nein" data-f="weg" style="margin-right:auto">${Icon('muell')} Entfernen</button>` : ''}<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: {
+        weg: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich entfernen?'; return; } Store.speichereCfg({ ...Store.cfg, partner: partner(c).filter((x) => x.id !== p.id) }); Fenster.schliesse(); },
+        ok: (b, hg) => {
+          const w = Fenster.werte(hg); if (!w.name.trim()) return meldung('Bitte den Namen des Betriebs eintragen.', 'fehler');
+          const neu = { id: p.id || Store.uid('pa'), name: w.name.trim(), gewerk: w.gewerk.trim(), ansprech: w.ansprech.trim(), telefon: w.telefon.trim(), email: w.email.trim(), fid: w.fid.trim().toLowerCase() };
+          Store.speichereCfg({ ...Store.cfg, partner: p.id ? partner(c).map((x) => (x.id === p.id ? neu : x)) : [...partner(c), neu] });
+          Fenster.schliesse(); meldung('Gespeichert');
+        },
+      },
+    });
+  }
+
+  /* ---------- Anfrage stellen ---------- */
+  function anfrageFenster(c, { partnerId = '', bs = '' } = {}) {
+    if (!partner(c).length) { meldung('Bitte zuerst einen Partner eintragen.'); return partnerFenster(c); }
+    const offen = c.baustellenOffen(); const bsWahl = bs || (offen[0] || {}).id || '';
+    const fotosVon = (id) => c.typ('tagebuch').filter((t) => t.bs === id).sort((a, b) => b.datum.localeCompare(a.datum)).flatMap((t) => t.fotos || []).slice(0, 8);
+    const textFuer = (p, b) => `Moin ${p && p.ansprech ? p.ansprech.split(' ')[0] : ''},\n\nwir sind gerade auf der Baustelle ${b ? b.name : ''}${b && b.kunde ? ` (${b.kunde})` : ''} und brauchen euch für:\n\n\nFotos und Adresse hängen dran. Passt euch der Zeitraum? Sonst schlagt gern einen anderen vor.\n\nViele Grüße\n${c.ich ? c.ich.name : c.cfg.name}\n${c.cfg.name}${c.cfg.telefon ? ', Tel. ' + c.cfg.telefon : ''}`;
+    const start = Datum.plus(Datum.montag(Datum.plus(c.heute, 7)), 0);
+    const hg = Fenster.oeffne({
+      titel: 'Partner anfragen', breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Partner</span><select name="partner">${partner(c).map((p) => `<option value="${p.id}" ${p.id === partnerId ? 'selected' : ''}>${esc(p.name)} · ${esc(p.gewerk)}</option>`).join('')}</select></label>
+          <label class="feld"><span>Baustelle</span><select name="bs">${offen.map((b) => `<option value="${b.id}" ${b.id === bsWahl ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label></div>
+        <div class="reihe"><label class="feld"><span>Gewünscht ab</span><input type="date" name="von" value="${start}"></label><label class="feld"><span>bis</span><input type="date" name="bis" value="${Datum.plus(start, 2)}"></label></div>
+        <label class="feld"><span>Was soll gemacht werden?</span><textarea name="text" rows="9"></textarea></label>
+        ${c.R.an('partner', 'fotos') ? '<div class="feld"><span>Fotos aus dem Bautagebuch (antippen zum Weglassen)</span><div class="netz-fotos" id="na-fotos"></div></div>' : ''}
+        <p class="r-hinweis" id="na-weg"></p>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">${Icon('angebot')} Anfrage senden</button>`,
+      aktionen: {
+        ok: () => {
+          const w = Fenster.werte(hg); const p = partner(c).find((x) => x.id === w.partner); const b = c.baustelle(w.bs);
+          if (!p || !b) return meldung('Bitte Partner und Baustelle wählen.', 'fehler');
+          if (!w.text.trim()) return meldung('Bitte kurz beschreiben, was gemacht werden soll.', 'fehler');
+          const fotos = $$('#na-fotos .netz-foto.an', hg).map((f) => f.dataset.id);
+          const id = Store.uid('n');
+          const daten = { von: Store.fid, vonName: c.cfg.name, vonTelefon: c.cfg.telefon || '', an: p.fid || '', anName: p.name, partnerId: p.id, gewerk: p.gewerk, bs: b.id, bsName: b.name, adresse: b.adresse || b.ort || '', kunde: b.kunde || '', zeitVon: w.von, zeitBis: w.bis || w.von, text: w.text.trim(), fotos, status: p.fid ? 'offen' : 'extern', verlauf: [{ wer: 'von', art: 'anfrage', text: w.text.trim(), wann: Date.now(), name: c.ich ? c.ich.name : '' }], erstellt: Date.now(), frist: Datum.plus(c.heute, Number(c.R.p('partner').frist) || 3) };
+          Store.netzSchreibe(id, daten);
+          Fenster.schliesse();
+          if (p.fid) meldung(`Anfrage an ${p.name} gesendet. Die Antwort erscheint unter „Partner“${c.R.an('partner', 'imKalender') ? ' und im Kalender' : ''}.`);
+          else { location.href = `mailto:${encodeURIComponent(p.email || '')}?subject=${encodeURIComponent(`Anfrage ${b.name}, ${zeitraum(w.von, w.bis)}`)}&body=${encodeURIComponent(`${w.text.trim()}\n\nBaustelle: ${b.name}\n${String(b.adresse || '').replace(/\n/g, ', ')}\nZeitraum: ${zeitraum(w.von, w.bis)}`)}`; meldung(`${p.name} nutzt Richtwerk nicht. Ihr E-Mail-Programm öffnet sich mit dem Text, Fotos bitte anhängen.`); }
+        },
+      },
+    });
+    const neu = () => {
+      const p = partner(c).find((x) => x.id === $('[name=partner]', hg).value); const b = c.baustelle($('[name=bs]', hg).value);
+      $('[name=text]', hg).value = textFuer(p, b);
+      $('#na-weg', hg).textContent = p && p.fid ? `${p.name} nutzt Richtwerk: Die Anfrage landet direkt im Büro des Partners, die Antwort kommt hierher zurück.` : `${p ? p.name : 'Der Partner'} nutzt Richtwerk nicht: Die Anfrage geht als E-Mail raus.`;
+      const box = $('#na-fotos', hg);
+      if (box) { const f = fotosVon(b ? b.id : ''); box.innerHTML = f.map((id, i) => `<button type="button" class="netz-foto ${i < 4 ? 'an' : ''}" data-id="${esc(id)}"><img data-datei="${esc(id)}" alt="Foto"></button>`).join('') || '<small>Noch keine Fotos zu dieser Baustelle.</small>'; bilderNachladen(box, Store.items); }
+    };
+    hg.addEventListener('change', (e) => { if (['partner', 'bs'].includes(e.target.name)) neu(); });
+    hg.addEventListener('click', (e) => { const f = e.target.closest('.netz-foto'); if (f) f.classList.toggle('an'); });
+    neu();
+    const t = $('[name=text]', hg); const pos = t.value.indexOf('für:\n\n') + 6; t.focus(); t.setSelectionRange(pos, pos);
+  }
+
+  /* ---------- Anfrage ansehen und beantworten (beide Seiten) ---------- */
+  function netzFenster(c, n) {
+    const ichBinPartner = n.an === Store.fid;
+    const verlauf = (n.verlauf || []).map((v) => `<div class="netz-msg ${(v.wer === 'an') === ichBinPartner ? 'eigen' : ''}"><small>${esc(v.wer === 'von' ? n.vonName : n.anName)}${v.name ? ' · ' + esc(v.name) : ''} · ${jahr(Datum.iso(v.wann))} ${Datum.uhr(v.wann)}</small>
+      <b>${esc({ anfrage: 'Anfrage', zusage: 'Zusage', termin: 'Anderer Termin', rueckfrage: 'Rückfrage', antwort: 'Antwort', absage: 'Absage', angenommen: 'Termin bestätigt' }[v.art] || '')}${v.zeitVon ? ': ' + esc(zeitraum(v.zeitVon, v.zeitBis)) : ''}</b>${v.text ? `<p>${esc(v.text)}</p>` : ''}</div>`).join('');
+    const adr = String(n.adresse || '').replace(/\n/g, ', ');
+    const kopf = `<dl class="daten netz-daten"><dt>${ichBinPartner ? 'Von' : 'An'}</dt><dd><b>${esc(ichBinPartner ? n.vonName : n.anName)}</b>${ichBinPartner && n.vonTelefon ? ` · <a href="tel:${esc(n.vonTelefon.replace(/\s+/g, ''))}">${esc(n.vonTelefon)}</a>` : ''}</dd>
+      <dt>Baustelle</dt><dd>${esc(n.bsName)}${n.kunde ? ` · Kunde ${esc(n.kunde)}` : ''}</dd>
+      <dt>Adresse</dt><dd>${esc(adr)}${adr ? ` · <a href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(adr)}" target="_blank" rel="noopener">Route</a>` : ''}</dd>
+      <dt>Zeitraum</dt><dd>${n.termin ? `<b>${esc(zeitraum(n.termin.von, n.termin.bis))}</b> (fest)` : `${esc(zeitraum(n.zeitVon, n.zeitBis))} (Wunsch)`}</dd>
+      <dt>Status</dt><dd>${chipN(n.status)}</dd></dl>
+      ${(n.fotos || []).length ? `<div class="netz-fotos">${n.fotos.map((f) => `<span class="netz-foto an"><img data-netz="${esc(n.von)}|${esc(f)}" alt="Foto der Baustelle"></span>`).join('')}</div>` : ''}`;
+    let formular = '';
+    if (ichBinPartner && ['offen', 'rueckfrage', 'termin'].includes(n.status)) {
+      formular = `<div class="netz-antwort"><h4>Antworten</h4><div class="fr-wahl netz-art">${[['zusage', 'Zusage'], ['termin', 'Anderer Termin'], ['rueckfrage', 'Rückfrage'], ['absage', 'Absage']].map(([v, t], i) => `<label><input type="radio" name="art" value="${v}" ${i === 0 ? 'checked' : ''}><span>${t}</span></label>`).join('')}</div>
+        <div class="reihe" id="na-zeit"><label class="feld"><span>von</span><input type="date" name="von" value="${esc(n.zeitVon || '')}"></label><label class="feld"><span>bis</span><input type="date" name="bis" value="${esc(n.zeitBis || '')}"></label></div>
+        <label class="feld"><span>Nachricht (optional)</span><textarea name="text" rows="3" placeholder="z. B. Wir kommen mit zwei Mann, Strom muss auf der Baustelle sein."></textarea></label>
+        ${c.R.hat('baustellen') ? '<label class="v-haken"><input type="checkbox" name="alsBs" checked>Bei Zusage als Baustelle bei uns anlegen</label>' : ''}</div>`;
+    } else if (!ichBinPartner && n.status === 'termin') {
+      formular = `<div class="netz-antwort"><h4>${esc(n.anName)} schlägt einen anderen Termin vor</h4><p>${esc(zeitraum(n.vorschlag && n.vorschlag.von, n.vorschlag && n.vorschlag.bis))}</p><label class="feld"><span>Nachricht (optional)</span><textarea name="text" rows="2"></textarea></label></div>`;
+    } else if (!ichBinPartner && n.status === 'rueckfrage') {
+      formular = '<div class="netz-antwort"><h4>Rückfrage beantworten</h4><label class="feld"><span>Antwort</span><textarea name="text" rows="3"></textarea></label></div>';
+    } else if (!ichBinPartner && n.status === 'extern') {
+      formular = `<div class="netz-antwort"><h4>Antwort per Telefon oder E-Mail bekommen?</h4><p class="klein">${esc(n.anName)} nutzt Richtwerk nicht. Tragen Sie die Zusage hier ein, dann steht sie im Kalender.</p><div class="reihe"><label class="feld"><span>von</span><input type="date" name="von" value="${esc(n.zeitVon || '')}"></label><label class="feld"><span>bis</span><input type="date" name="bis" value="${esc(n.zeitBis || '')}"></label></div></div>`;
+    }
+    const knoepfe = ichBinPartner ? (formular ? `<button class="k haupt" data-f="antwort">Antwort senden</button>` : '')
+      : n.status === 'termin' ? `<button class="k" data-f="nein">Passt nicht</button><button class="k haupt" data-f="annehmen">${Icon('haken')} Termin annehmen</button>`
+        : n.status === 'rueckfrage' ? `<button class="k haupt" data-f="antworten">Antwort senden</button>`
+          : n.status === 'extern' ? `<button class="k haupt" data-f="extern">${Icon('haken')} Zusage eintragen</button>` : '';
+    const ich = c.ich ? c.ich.name : '';
+    const hg = Fenster.oeffne({
+      titel: ichBinPartner ? `Anfrage von ${esc(n.vonName)}` : `Anfrage an ${esc(n.anName)}`, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `<div class="netz-fenster"><div>${kopf}</div><div><div class="netz-verlauf">${verlauf}</div>${formular}</div></div>`,
+      fuss: `<button class="k" data-f="zu" style="margin-right:auto">Schließen</button>${knoepfe}`,
+      aktionen: {
+        antwort: () => {
+          const w = Fenster.werte(hg); const art = $('[name=art]:checked', hg).value;
+          if ((art === 'rueckfrage' || art === 'absage') && !w.text.trim() && art === 'rueckfrage') return meldung('Bitte die Rückfrage eintragen.', 'fehler');
+          if ((art === 'zusage' || art === 'termin') && !w.von) return meldung('Bitte das Datum eintragen.', 'fehler');
+          const v = { wer: 'an', art, text: w.text.trim(), wann: Date.now(), name: ich, ...(art === 'zusage' || art === 'termin' ? { zeitVon: w.von, zeitBis: w.bis || w.von } : {}) };
+          const patch = { verlauf: [...(n.verlauf || []), v], status: { zusage: 'zugesagt', termin: 'termin', rueckfrage: 'rueckfrage', absage: 'abgesagt' }[art] };
+          if (art === 'zusage') patch.termin = { von: w.von, bis: w.bis || w.von };
+          if (art === 'termin') patch.vorschlag = { von: w.von, bis: w.bis || w.von };
+          if (art === 'zusage' && w.alsBs && !n.partnerBs) {
+            const id = Store.uid('b'); patch.partnerBs = id;
+            Store.speichereCfg({ ...Store.cfg, baustellen: [...(Store.cfg.baustellen || []), { id, name: `${n.bsName} (für ${n.vonName})`, ort: adr.split(',').pop().trim(), adresse: n.adresse, kunde: n.vonName, telefon: n.vonTelefon || '', arbeit: n.text.split('\n').find((z) => z.trim() && !/^(moin|hallo|guten)/i.test(z.trim())) || '', status: 'geplant', notiz: `Über das Partnerbuch von ${n.vonName}` }] });
+          }
+          Store.netzSchreibe(n.id, patch); Fenster.schliesse(); meldung(`Antwort an ${n.vonName} gesendet`);
+        },
+        annehmen: () => { const w = Fenster.werte(hg); Store.netzSchreibe(n.id, { status: 'zugesagt', termin: n.vorschlag, verlauf: [...(n.verlauf || []), { wer: 'von', art: 'angenommen', text: (w.text || '').trim(), wann: Date.now(), name: ich, zeitVon: n.vorschlag.von, zeitBis: n.vorschlag.bis }] }); Fenster.schliesse(); meldung('Termin bestätigt. Er steht jetzt im Kalender.'); },
+        nein: () => { const w = Fenster.werte(hg); Store.netzSchreibe(n.id, { status: 'offen', verlauf: [...(n.verlauf || []), { wer: 'von', art: 'antwort', text: (w.text || '').trim() || 'Der Termin passt leider nicht. Geht es auch im ursprünglichen Zeitraum?', wann: Date.now(), name: ich }] }); Fenster.schliesse(); meldung('Antwort gesendet'); },
+        antworten: () => { const w = Fenster.werte(hg); if (!w.text.trim()) return meldung('Bitte eine Antwort eintragen.', 'fehler'); Store.netzSchreibe(n.id, { status: 'offen', verlauf: [...(n.verlauf || []), { wer: 'von', art: 'antwort', text: w.text.trim(), wann: Date.now(), name: ich }] }); Fenster.schliesse(); meldung('Antwort gesendet'); },
+        extern: () => { const w = Fenster.werte(hg); if (!w.von) return meldung('Bitte das Datum eintragen.', 'fehler'); Store.netzSchreibe(n.id, { status: 'zugesagt', termin: { von: w.von, bis: w.bis || w.von }, verlauf: [...(n.verlauf || []), { wer: 'an', art: 'zusage', text: 'telefonisch zugesagt (eingetragen)', wann: Date.now(), name: ich, zeitVon: w.von, zeitBis: w.bis || w.von }] }); Fenster.schliesse(); meldung('Zusage eingetragen'); },
+      },
+    });
+    const zeitAn = () => { const r = $('[name=art]:checked', hg); const z = $('#na-zeit', hg); if (r && z) z.hidden = !['zusage', 'termin'].includes(r.value); };
+    hg.addEventListener('change', zeitAn); zeitAn();
+    bilderNachladen(hg, Store.items);
+    const v = $('.netz-verlauf', hg); if (v) v.scrollTop = v.scrollHeight;
+  }
+
+  /* ---------- Kalender, Baustellenakte, App ---------- */
+  function tageVon(t) { const out = []; let d = t.von; while (d <= (t.bis || t.von) && out.length < 30) { if (Datum.istArbeitstag(d)) out.push(d); d = Datum.plus(d, 1); } return out; }
+  function kalender(c, d) {
+    if (!c.R.hat('partner') || !c.R.an('partner', 'imKalender')) return [];
+    return Store.netz.filter((n) => n.status === 'zugesagt' && n.termin && n.termin.von <= d && (n.termin.bis || n.termin.von) >= d && Datum.istArbeitstag(d))
+      .map((n) => (n.an === Store.fid ? { art: 'partner', text: `Einsatz für ${n.vonName}: ${n.bsName}`, a: 'netz', id: n.id } : { art: 'partner', text: `${n.anName} (${n.gewerk}): ${n.bsName}`, a: 'netz', id: n.id }));
+  }
+  function akteKarte(c, b) {
+    if (!c.R.hat('partner')) return '';
+    const liste = ausgehend().filter((n) => n.bs === b.id);
+    return `<div class="karte"><div class="kopf"><h3>Partner auf dieser Baustelle</h3><button class="k klein" data-a="partner-anfrage" data-bs="${b.id}">${Icon('plus')} Partner anfragen</button></div>
+      ${liste.map((n) => `<div class="liste-zeile klickbar" data-a="netz" data-id="${n.id}"><div class="text"><b>${esc(n.anName)} · ${esc(n.gewerk || '')}</b><small>${esc(zeitraum(n.termin ? n.termin.von : n.zeitVon, n.termin ? n.termin.bis : n.zeitBis))}</small></div>${chipN(n.status)}</div>`).join('') || leer('Elektriker, Maler oder Gerüstbauer mit einem Klick anfragen. Adresse und Fotos gehen mit.')}</div>`;
+  }
+  function appKarte(c, bs) {
+    if (!bs) return '';
+    const bis = Datum.plus(c.heute, 14);
+    const liste = Store.netz.filter((n) => n.von === Store.fid && n.bs === bs && n.status === 'zugesagt' && n.termin && (n.termin.bis || n.termin.von) >= c.heute && n.termin.von <= bis);
+    return liste.length ? `<div class="a-titel">Andere Gewerke auf der Baustelle</div><div class="a-karte">${liste.map((n) => `<div class="a-zeile"><span class="sym">${Icon('team')}</span><span class="text"><b>${esc(n.anName)}</b><small>${esc(n.gewerk || '')} · ${esc(zeitraum(n.termin.von, n.termin.bis))}</small></span></div>`).join('')}</div>` : '';
+  }
+
+  /* ---------- Einstellungen: Ihre Bausteine ---------- */
+  const KERN = ['app'];
+  function bausteinKarte(c) {
+    const kn = c.cfg.baukasten.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant' && !KERN.includes(k.typ));
+    const reihenfolge = Object.keys(GRUPPEN);
+    kn.sort((a, b) => reihenfolge.indexOf(BAUSTEINE[a.typ].gruppe) - reihenfolge.indexOf(BAUSTEINE[b.typ].gruppe));
+    return `<div class="karte bausteine-karte"><div class="kopf"><h3>Ihre Bausteine</h3><span class="chip">${kn.filter((k) => !k.aus).length} von ${kn.length} an</span></div>
+      <p class="legende" style="padding:10px 16px 0;margin:0">Jeder Baustein lässt sich aus- und wieder einschalten. Ausgeschaltet bleiben alle Daten erhalten. Mit „Einstellen“ ändern Sie Fristen, Zuschläge, Texte und was Ihre Mitarbeiter sehen.</p>
+      <div class="baustein-liste">${kn.map((k) => { const B = BAUSTEINE[k.typ]; const an = !k.aus;
+        return `<div class="baustein-zeile ${an ? '' : 'aus'}"><span class="b-sym" style="--g:${GRUPPEN[B.gruppe].farbe}">${Icon(B.icon)}</span><div class="text"><b>${esc(c.R.name(k.typ))}</b><small>${esc(B.kurz)}</small></div>
+          <button class="k klein" data-a="baustein-einstellen" data-id="${k.typ}" ${an ? '' : 'disabled'}>Einstellen</button>
+          <button class="kipp-knopf ${an ? 'an' : ''}" role="switch" aria-checked="${an}" aria-label="${esc(B.name)} ${an ? 'ausschalten' : 'einschalten'}" data-a="baustein-schalten" data-id="${k.typ}"><i></i></button></div>`; }).join('')}</div></div>`;
+  }
+  bausteinKarte.vorne = true;
+  function bausteinAendern(fn) { const cfg = JSON.parse(JSON.stringify(Store.cfg)); fn(cfg.baukasten); return Store.speichereCfg(cfg); }
+  function einstellFenster(c, typ) {
+    const B = BAUSTEINE[typ]; const R = c.R;
+    const mitApp = B.ein.includes('app') && R.hat('app');
+    const hg = Fenster.oeffne({
+      titel: `${Icon(B.icon)} ${esc(R.name(typ))} einstellen`, breit: Object.values(B.p).some((d) => d.typ === 'langtext'), bereich: 'ui-buero-fenster',
+      inhalt: `${mitApp ? `<div class="fr-liste"><label class="fr-zeile fr-schalter"><span class="fr-name">In der Mitarbeiter-App sichtbar</span><span class="kipp"><input type="checkbox" id="fr-app" ${R.imApp(typ) ? 'checked' : ''}><i></i></span></label></div>` : ''}${Feinregler.html(typ, R.p(typ))}
+        ${(ABLAEUFE[typ] || []).length ? `<p class="legende" style="margin-top:14px">Ablauf: ${ABLAEUFE[typ].map((s) => esc(s.name)).join(' → ')}</p>` : ''}`,
+      fuss: `<button class="k" data-f="standard" style="margin-right:auto">Standardwerte</button><button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: {
+        standard: () => { const std = {}; Object.entries(B.p).forEach(([n, d]) => { std[n] = d.wert; }); $('.koerper', hg).querySelectorAll('[data-bp]').forEach((el) => { const v = std[el.dataset.bp]; if (el.dataset.art === 'schalter') el.checked = v === 'ja'; else if (el.dataset.art === 'wahl') el.checked = el.value === v; else el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); }); },
+        ok: () => {
+          const p = Feinregler.lesen(hg, typ); const app = $('#fr-app', hg);
+          bausteinAendern((bk) => {
+            const x = bk.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p };
+            if (app) { const da = bk.kanten.some((e) => e.von === 'app' && e.zu === typ); if (app.checked && !da) bk.kanten.push({ von: 'app', zu: typ }); if (!app.checked && da) bk.kanten = bk.kanten.filter((e) => !(e.von === 'app' && e.zu === typ)); }
+          });
+          Fenster.schliesse(); meldung(`${R.name(typ)} gespeichert. Büro und App zeigen es sofort.`);
+        },
+      },
+    });
+  }
+
+  Buero.erweitern({
+    nav: [{ id: 'partner', name: 'Partner', icon: 'team', braucht: 'partner', gruppe: 'Aufträge', zahl: () => Store.netz.filter(brauchtAntwort).length }],
+    seiten: { partner: seite },
+    aktionen: {
+      'partner-neu'(el, c) { partnerFenster(c); },
+      'partner-bearbeiten'(el, c) { partnerFenster(c, partner(c).find((p) => p.id === el.dataset.id)); },
+      'partner-anfrage'(el, c) { anfrageFenster(c, { partnerId: el.dataset.partner, bs: el.dataset.bs }); },
+      netz(el, c) { const n = Store.netz.find((x) => x.id === el.dataset.id); if (n) netzFenster(c, n); },
+      'baustein-schalten'(el, c) { const typ = el.dataset.id; const an = el.classList.contains('an'); bausteinAendern((bk) => { const x = bk.knoten.find((y) => y.typ === typ); if (an) x.aus = true; else delete x.aus; }); meldung(`${c.R.name(typ)} ${an ? 'ausgeschaltet. Die Daten bleiben erhalten.' : 'eingeschaltet'}`); },
+      'baustein-einstellen'(el, c) { einstellFenster(c, el.dataset.id); },
+    },
+    aufgaben: (c) => (c.R.hat('partner') ? Store.netz.filter(brauchtAntwort).map((n) => (n.an === Store.fid ? { titel: `Anfrage von ${n.vonName}`, unter: `${n.bsName} · ${zeitraum(n.zeitVon, n.zeitBis)}`, a: 'netz', id: n.id } : { titel: `${n.anName}: ${STATUS[n.status][0]}`, unter: n.bsName, a: 'netz', id: n.id })) : []),
+    einstellungen: bausteinKarte,
+    akte: akteKarte,
+  });
+  return { kalender, appKarte, zeitraum };
+})();
+
 /* ---- handy.js ---- */
 /* =========================================================================
    Mitarbeiter-App (Handy)
@@ -4264,7 +5519,7 @@ const Handy = (() => {
     else if (R.stundenImApp()) r.push({ id: 'zeiten', name: 'Zeiten', icon: 'uhr' });
     r.push({ id: 'erfassen', name: 'Erfassen', icon: 'kamera', scan: true });
     if (R.imApp('urlaub')) r.push({ id: 'urlaub', name: 'Urlaub', icon: 'kalender' });
-    r.push({ id: 'mehr', name: 'Mehr', icon: 'mehr' });
+    r.push({ id: 'mehr', name: 'Mehr', icon: 'mehr', zahl: R.imApp('nachrichten') ? Betrieb.ungelesen(c, c.ich.id, false) : 0 });
     return r;
   }
 
@@ -4311,6 +5566,8 @@ const Handy = (() => {
     const heutePlan = c.geplant(ich.id, c.heute);
     const bsHeute = (lauf && lauf.bs) || (c.baustelle(heutePlan) ? heutePlan : '');
     if (bsHeute && R.hat('baustellen')) html += baustelleKarte(c, bsHeute, lauf ? 'Deine Baustelle' : 'Heute laut Plan');
+    if (bsHeute && R.imApp('lager') && R.an('lager', 'bestaetigen')) html += Betrieb.appLagerKarte(c, bsHeute);
+    if (R.imApp('partner')) html += Netz.appKarte(c, bsHeute);
     if (R.plan()) {
       const morgen = naechsterArbeitstag(c.heute); const wert = c.geplant(ich.id, morgen);
       html += `<div class="a-karte" style="margin-top:12px">${zeile({ sym: 'plan', titel: `${Datum.WT[Datum.wochentag(morgen)]}, ${Datum.kurz(morgen)}: ${esc(c.planText(wert))}`, unter: wert && c.baustelle(wert) ? esc(c.baustelle(wert).ort) : wert ? '' : 'Noch nicht eingeteilt', a: 'reiter', id: 'zeiten' })}</div>`;
@@ -4369,7 +5626,8 @@ const Handy = (() => {
     if (R.imApp('material') && R.an('material', 'sprache')) k.unshift(`<button class="erfassen-kachel gross sprach-kachel" data-sprache><span class="sym">${Icon('mikro')}</span><span><b>Einsprechen</b><small>Bestellung oder Erinnerung, einfach sagen</small></span></button>`);
     if (R.imApp('rechner')) k.push(`<button class="erfassen-kachel" data-rechner="lattung"><span class="sym">${Icon('rechner')}</span><span><b>Lattung</b><small>Latten und Befestiger für das Dach</small></span></button>`, `<button class="erfassen-kachel" data-rechner="uwert"><span class="sym">${Icon('rechner')}</span><span><b>U-Wert</b><small>Dämmwert für den Bauherrn</small></span></button>`);
     if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
-    return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
+    const lager = R.imApp('lager') && R.an('lager', 'zweiKisten') ? Betrieb.appKisten(c) : '';
+    return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${lager}${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
 
   BILD.urlaub = (c) => {
@@ -4387,6 +5645,7 @@ const Handy = (() => {
     const doks = c.items.filter((i) => i.typ === 'dokument' && (i.fuer === c.ich.id || i.fuer === 'alle')).sort((a, b) => b.erstellt - a.erstellt);
     return `<div class="unterseite-kopf"><h2>Mehr</h2></div>
       <div class="a-karte">${zeile({ sym: 'person', symKlasse: 'firma', titel: esc(c.ich.name), unter: `${esc(c.ich.funktion || '')} · ${esc(c.cfg.name)}` })}</div>
+      ${c.R.imApp('nachrichten') || c.R.imApp('dokumente') ? `<div class="a-karte">${c.R.imApp('nachrichten') ? (() => { const n = Betrieb.ungelesen(c, c.ich.id, false); return `<button class="a-zeile" data-app-chat><span class="sym">${Icon('angebot')}</span><span class="text"><b>Nachrichten an das Büro</b><small>Fragen, Fotos, Absprachen</small></span>${n ? `<span class="rechts"><span class="a-zahl">${n}</span></span>` : ''}<span class="pfeil">${Icon('pfeil')}</span></button>`; })() : ''}<button class="a-zeile" data-app-ablage><span class="sym">${Icon('dokument')}</span><span class="text"><b>Meine Ablage</b><small>Stundenzettel, Lohnabrechnungen, Dokumente</small></span><span class="pfeil">${Icon('pfeil')}</span></button></div>` : ''}
       ${c.R.imApp('dokumente') ? `<div class="a-titel">Meine Dokumente</div><div class="a-karte">${doks.map((d) => zeile({ sym: 'dokument', titel: esc(d.titel), unter: d.gelesen ? 'gelesen' : '<b style="color:#c23a2b">neu</b>', a: 'dokument', id: d.id })).join('') || '<div class="leer">Noch keine Dokumente.</div>'}</div>` : ''}
       ${c.R.imApp('regie') ? (() => { const offen = c.typ('regie').filter((r) => r.pid === c.ich.id && r.status === 'offen'); return offen.length ? `<div class="a-titel">Noch nicht unterschrieben</div><div class="a-karte">${offen.map((r) => zeile({ sym: 'unterschrift', titel: esc(r.text), unter: `${Datum.kurz(r.datum)} · ${esc(c.bsName(r.bs))}`, a: 'regie-nach', id: r.id })).join('')}</div>` : ''; })() : ''}
       <div class="a-titel">Konto</div><div class="a-karte">${zeile({ sym: 'abmelden', titel: 'Abmelden', unter: 'Ein anderer Mitarbeiter meldet sich an', a: 'abmelden' })}${zeile({ sym: 'x', titel: 'Betrieb trennen', unter: 'Handy von diesem Betrieb lösen', a: 'trennen' })}</div>
@@ -4550,7 +5809,7 @@ const Handy = (() => {
     return `<div class="ui-app" style="--firma:${esc(c.cfg.farbe)}"><div class="app-rahmen">
       <header class="a-kopf"><span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span><div class="titel"><b>${esc(c.cfg.name)}</b><small>${esc(c.ich.name)}</small></div>${syncStatus()}</header>
       <main class="a-inhalt">${inhalt}</main>
-      <nav class="a-tabs" style="grid-template-columns:repeat(${tabs.length},1fr)">${tabs.map((t) => `<button class="${t.scan ? 'scan' : ''} ${reiter === t.id && !unter ? 'an' : ''}" data-a="reiter" data-id="${t.id}">${t.scan ? `<span class="kreis">${Icon(t.icon)}</span>` : Icon(t.icon)}${t.name}${t.id === 'freigaben' && nFrei ? `<span class="zahl">${nFrei}</span>` : ''}${t.id === 'mehr' && ungelesen ? `<span class="zahl">${ungelesen}</span>` : ''}</button>`).join('')}</nav>
+      <nav class="a-tabs" style="grid-template-columns:repeat(${tabs.length},1fr)">${tabs.map((t) => `<button class="${t.scan ? 'scan' : ''} ${reiter === t.id && !unter ? 'an' : ''}" data-a="reiter" data-id="${t.id}">${t.scan ? `<span class="kreis">${Icon(t.icon)}</span>` : Icon(t.icon)}${t.name}${t.id === 'freigaben' && nFrei ? `<span class="zahl">${nFrei}</span>` : ''}${t.id === 'mehr' && (ungelesen + (t.zahl || 0)) ? `<span class="zahl">${ungelesen + (t.zahl || 0)}</span>` : ''}</button>`).join('')}</nav>
     </div></div>`;
   }
 
@@ -4960,9 +6219,9 @@ const Studio = (() => {
     const c_offen = () => (cfg().baustellen || []).filter((b) => b.status !== 'fertig').length;
     welt.innerHTML = `<svg class="kanten" width="1" height="1">${kanten}<path id="vorlaeufig" class="vorlaeufig" d=""/></svg>
       ${kn.filter((k) => BAUSTEINE[k.typ]).map((k) => { const B = BAUSTEINE[k.typ]; const g = GRUPPEN[B.gruppe];
-        return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
+        return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''} ${k.aus ? 'ausgeschaltet' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
           ${B.ein.length ? `<span class="port ein" data-port="ein" data-typ="${k.typ}"></span>` : ''}
-          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${esc(info(k))}</div>
+          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${k.aus ? 'beim Kunden ausgeschaltet' : esc(info(k))}</div>
           ${B.gruppe !== 'geplant' && Object.values(BAUSTEINE).some((x) => x.ein.includes(k.typ)) ? `<span class="port aus" data-port="aus" data-typ="${k.typ}"></span>` : ''}</div>`; }).join('')}`;
   }
 
@@ -5180,9 +6439,9 @@ const Studio = (() => {
   }
   function betriebeSeite() {
     return `<h2>Alle Betriebe</h2><p>Jeder Betrieb hat seinen eigenen Aufbau, eigene Daten und eigene Zugänge.</p>
-      <div class="s-karten">${zustand.liste.map((b) => `<div class="s-karte"><b>${esc(b.name)}</b><p>Kennung <span class="mono">${esc(b.kennung)}</span>${b.art === 'muster' ? ' · Vorführbetrieb mit Musterdaten' : b.art === 'leer' ? ' · leerer Betrieb zum Einrichten' : ''}</p>
+      <div class="s-karten">${zustand.liste.map((b) => `<div class="s-karte"><b>${esc(b.name)}</b><p>Kennung <span class="mono">${esc(b.kennung)}</span>${b.art === 'muster' ? ' · Vorführbetrieb mit Musterdaten' : b.art === 'leer' ? ' · leerer Betrieb zum Einrichten' : b.art === 'partner' ? ' · Partnerbetrieb für die Vernetzung' : ''}</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="s-knopf" data-s="betrieb" data-id="${b.id}">Öffnen</button>
-        ${b.art === 'muster' ? `<button class="s-knopf" data-s="zuruecksetzen" data-id="${b.id}">Musterdaten neu laden</button>` : `<button class="s-knopf" data-s="leeren" data-id="${b.id}">Zurücksetzen</button>`}
+        ${b.art === 'muster' || b.art === 'partner' ? `<button class="s-knopf" data-s="zuruecksetzen" data-id="${b.id}">Musterdaten neu laden</button>` : `<button class="s-knopf" data-s="leeren" data-id="${b.id}">Zurücksetzen</button>`}
         ${b.art ? '' : `<button class="s-knopf gefahr" data-s="loeschen" data-id="${b.id}">${Icon('muell')}</button>`}</div></div>`).join('')}
       <div class="s-karte s-formular"><b>Neuen Betrieb anlegen</b><p>Startet leer mit Inhaber-Zugang (Code 1001) und der Mitarbeiter-App.</p>
         <label class="feld"><span>Name</span><input id="nb-name" placeholder="z. B. Dachdeckerei Muster"></label><label class="feld"><span>Kennung</span><input id="nb-kennung" class="mono" placeholder="muster"></label>
@@ -5222,7 +6481,7 @@ const Studio = (() => {
       case 'zuruecksetzen': case 'leeren': {
         if (!confirmZweimal(el)) break;
         el.textContent = 'Wird geladen …';
-        if (id === 'ahlers' || id === 'leer') await Muster.zuruecksetzen(id);
+        if (id === 'ahlers' || id === 'leer' || id === 'hogrefe') await Muster.zuruecksetzen(id);
         else { const alt = await Store.ladeCfg(id); await Store.ersetzeBetrieb(id, { ...Muster.leerCfg(), id, kennung: alt.kennung, name: alt.name, angelegt: Date.now() }, []); }
         meldung('Fertig. Alle offenen Fenster zeigen jetzt die neuen Daten.'); zeichne(true); break;
       }
@@ -5295,10 +6554,11 @@ const Studio = (() => {
       <td style="text-align:center"><input type="checkbox" class="f-pflicht" ${f.pflicht ? 'checked' : ''} aria-label="Pflichtfeld"></td>
       <td><button class="k klein" data-f="feld-weg" data-id="${i}" aria-label="Feld entfernen">${Icon('x')}</button></td></tr>`;
     const inhalt = {
-      werte: Object.keys(B.p).length ? `<div class="bf-raster">${Object.entries(B.p).filter(([, d]) => d.typ !== 'langtext').map(param).join('')}</div>${Object.entries(B.p).filter(([, d]) => d.typ === 'langtext').map(param).join('')}` : '<p class="hinweis-zeile">Dieser Baustein hat keine einstellbaren Werte.</p>',
+      werte: Feinregler.html(typ, werte),
       kunde: `<p class="hinweis-zeile">So heißt der Baustein im Büro und in der App dieses Betriebs. Leer lassen für den Standard.</p>
         <label class="feld"><span>Name beim Kunden</span><input data-k="name" value="${esc(k.name || '')}" placeholder="${esc(B.name)}"></label>
-        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>`,
+        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>
+        <label class="fr-zeile fr-schalter"><span class="fr-name">Beim Kunden eingeschaltet<small>Ausgeschaltet bleibt alles gespeichert, ist aber im Büro und in der App nicht zu sehen. Der Betrieb kann es in seinen Einstellungen selbst wieder einschalten.</small></span><span class="kipp"><input type="checkbox" data-k="an" ${k.aus ? '' : 'checked'}><i></i></span></label>`,
       ablauf: hatAblauf ? `<ol class="bf-ablauf">${ABLAEUFE[typ].map((st) => { const an = !st.schalter || werte[st.schalter] === 'ja';
         return `<li class="${an ? '' : 'aus'}"><div><b>${esc(st.name)}</b><small>${esc(st.text)}</small></div>${st.schalter ? `<label class="schalter"><input type="checkbox" data-schalter="${st.schalter}" ${an ? 'checked' : ''}><span>${an ? 'an' : 'aus'}</span></label>` : '<span class="fest">immer</span>'}</li>`; }).join('')}</ol>` : '',
       felder: hatFelder ? `<p class="hinweis-zeile">Eigene Felder erscheinen beim Erfassen ${['angebote', 'rechnungen'].includes(typ) ? 'im Büro' : 'in der App'} und in der Ansicht im Büro. Mit * sind Pflichtfelder.</p>
@@ -5315,11 +6575,11 @@ const Studio = (() => {
         'feld-weg': (b) => { lesen(); felder.splice(Number(b.dataset.id), 1); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); },
         ok: () => {
           lesen();
-          const p = {}; $$('[data-bp]', hg).forEach((el) => { const d = B.p[el.dataset.bp]; let w = el.value; if (d.typ === 'zahl') { w = Math.min(d.max, Math.max(d.min, Number(w) || d.wert)); } p[el.dataset.bp] = w; });
+          const p = Feinregler.lesen($('[data-tab=werte]', hg), typ); const an = $('[data-k=an]', hg).checked;
           $$('[data-schalter]', hg).forEach((el) => { p[el.dataset.schalter] = el.checked ? 'ja' : 'nein'; });
           const name = ($('[data-k=name]', hg).value || '').trim(); const hinweis = ($('[data-k=hinweis]', hg).value || '').trim();
           const fertig = felder.filter((f) => f.name.trim()).map((f) => ({ ...f, name: f.name.trim() }));
-          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
+          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; if (an) delete x.aus; else x.aus = true; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
           Fenster.schliesse(); meldung(`${name || B.name} übernommen. Büro und App zeigen es sofort.`);
           setTimeout(() => { flaecheZeichnen(); pruefZeichnen(); }, 40);
         },
@@ -5328,7 +6588,7 @@ const Studio = (() => {
     hg.addEventListener('change', (e) => {
       const cb = e.target.closest('[data-schalter]'); if (!cb) return;
       cb.nextElementSibling.textContent = cb.checked ? 'an' : 'aus'; cb.closest('li').classList.toggle('aus', !cb.checked);
-      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.value = cb.checked ? 'ja' : 'nein';
+      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.checked = cb.checked;
     });
     function lesen() {
       $$('#bf-felder tr[data-feld]', hg).forEach((tr) => { const f = felder[Number(tr.dataset.feld)]; if (!f) return; f.name = $('.f-name', tr).value; f.typ = $('.f-typ', tr).value; f.optionen = $('.f-opt', tr).value; f.pflicht = $('.f-pflicht', tr).checked; });
@@ -5517,9 +6777,9 @@ async function boot() {
     } else {
       // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
       const cfg = await Store.ladeCfg('ahlers');
-      if (cfg && (cfg.version || 1) < 5) {
+      if (cfg && (cfg.version || 1) < 6) {
         const t = $('.laden > div');
-        await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
+        await Muster.aktualisieren((n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
       }
     }
   } catch (e) { console.error(e); }

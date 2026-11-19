@@ -12,7 +12,25 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 5,
+      version: 6,
+      lat: 53.035, lon: 8.548,
+      partner: [
+        { id: 'pa1', name: 'Elektro Hogrefe', gewerk: 'Elektro', ansprech: 'Jens Hogrefe', telefon: '04408 80 12 30', email: 'info@elektro-hogrefe.example', fid: 'hogrefe' },
+        { id: 'pa2', name: 'Malerbetrieb Kück', gewerk: 'Maler', ansprech: 'Birte Kück', telefon: '04222 31 07', email: 'info@maler-kueck.example', fid: '' },
+        { id: 'pa3', name: 'Gerüstbau Wessels', gewerk: 'Gerüstbau', ansprech: 'Tobias Wessels', telefon: '04221 68 40 22', email: 'dispo@geruest-wessels.example', fid: '' },
+        { id: 'pa4', name: 'Klempnerei Haase', gewerk: 'Klempner', ansprech: 'Uwe Haase', telefon: '04408 23 19', email: 'haase@klempnerei-haase.example', fid: '' },
+      ],
+      lager: [
+        { id: 'la1', name: 'Dachlatten 30/50', suche: 'dachlatten 30/50', einheit: 'Bd', min: 10, ort: 'Halle, Regal A', lieferant: 'Holzhandel Ritter', ek: 28, nachbestellMenge: 20 },
+        { id: 'la2', name: 'Konterlatten 40/60', suche: 'konterlatten 40/60', einheit: 'Bd', min: 8, ort: 'Halle, Regal A', lieferant: 'Holzhandel Ritter', ek: 34, nachbestellMenge: 15 },
+        { id: 'la3', name: 'Unterdeckbahn 1,5 x 50 m', suche: 'unterdeckbahn', einheit: 'Rollen', min: 2, ort: 'Halle, Regal C', lieferant: 'Dachdecker-Einkauf', ek: 119, nachbestellMenge: 4 },
+        { id: 'la4', name: 'KVH 80x200 C24', suche: 'kvh 80x200', einheit: 'Stk', min: 10, ort: 'Holzlager außen', lieferant: 'Holzhandel Ritter', ek: 21, nachbestellMenge: 30 },
+        { id: 'la5', name: 'Vollgewindeschrauben 8x300', suche: 'vollgewindeschrauben 8x300', einheit: 'Pak', min: 2, ort: 'Halle, Schrank 2', lieferant: 'Würth', ek: 89, nachbestellMenge: 4 },
+        { id: 'la6', name: 'Holzbauwinkel 105', suche: 'holzbauwinkel 105', einheit: 'Stk', min: 20, ort: 'Halle, Schrank 2', lieferant: 'Würth', ek: 1.9, nachbestellMenge: 50 },
+        { id: 'la7', name: 'Sparrennägel 4,0 x 100', einheit: 'Kiste', ort: 'Bulli-Regal', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+        { id: 'la8', name: 'Schrauben 5 x 80 Teilgewinde', einheit: 'Kiste', ort: 'Bulli-Regal', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+        { id: 'la9', name: 'Bits T25 / T30', einheit: 'Kiste', ort: 'Werkstatt', lieferant: 'Würth', zweiKisten: true, nachbestellMenge: 1 },
+      ],
       kalkulation: { faktor: 2.1, aufschlag: 20, lohn: { p3: 23.5, p4: 21.5, p5: 21, p6: 6.5, p7: 17 } },
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
@@ -71,6 +89,11 @@ const Muster = (() => {
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
+          knoten('nachrichten', 610, 700),
+          knoten('kalender', 610, 840),
+          knoten('lager', 610, 1150),
+          knoten('kunden', 890, 900),
+          knoten('partner', 1170, 940),
         ],
         kanten: [
           ['app', 'stempeln'], ['stempeln', 'stunden'], ['app', 'stunden'], ['app', 'urlaub'], ['app', 'belege'],
@@ -80,6 +103,9 @@ const Muster = (() => {
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
           ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'], ['app', 'rechner'],
+          ['app', 'nachrichten'], ['wochenplan', 'kalender'], ['urlaub', 'kalender'], ['angebote', 'kalender'], ['rechnungen', 'kalender'], ['partner', 'kalender'],
+          ['angebote', 'kunden'], ['rechnungen', 'kunden'], ['baustellen', 'kunden'], ['lieferscheine', 'lager'], ['material', 'lager'], ['rechner', 'lager'], ['app', 'lager'],
+          ['baustellen', 'partner'], ['app', 'partner'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -149,6 +175,16 @@ const Muster = (() => {
     const l = (id, tage, pid, lieferant, nummer, bs, status, positionen) => add(id, { typ: 'lieferschein', pid, datum: Datum.plus(heute, -tage), lieferant, nummer, bs, status, positionen, datei: 'muster', notiz: '' });
     l('ls1', 10, 'p3', 'Holzhandel Ritter', 'LS-204471', 'b1', 'geprueft', ['KVH 80x200 C24, 38 Stk', 'BSH 120x240 GL24h, 4 Stk', 'Dachlatten 30/50, 20 Bd']);
     l('ls2', 8, 'p5', 'Baustoffe Nord', '8812-33', 'b2', 'geprueft', ['Pfostenträger U 100, 6 Stk', 'Trapezblech 0,63 mm, 14 Tafeln']);
+    items.find((x) => x.id === 'ls1').eingebucht = true; items.find((x) => x.id === 'ls2').eingebucht = true;
+    // Lager: Anfangsbestand, Wareneingang, Entnahmen für Baustellen
+    const lb = (id, tage, artikel, menge, art, extra = {}) => add(id, { typ: 'lagerbuchung', artikel, menge, art, datum: Datum.plus(heute, -tage), pid: 'p2', ...extra });
+    lb('lb01', 40, 'la1', 14, 'zaehlung', { gezaehlt: 14, quelle: 'Anfangsbestand' }); lb('lb02', 40, 'la2', 6, 'zaehlung', { gezaehlt: 6, quelle: 'Anfangsbestand' });
+    lb('lb03', 40, 'la3', 3, 'zaehlung', { gezaehlt: 3, quelle: 'Anfangsbestand' }); lb('lb04', 40, 'la4', 18, 'zaehlung', { gezaehlt: 18, quelle: 'Anfangsbestand' });
+    lb('lb05', 40, 'la5', 3, 'zaehlung', { gezaehlt: 3, quelle: 'Anfangsbestand' }); lb('lb06', 20, 'la6', 60, 'zaehlung', { gezaehlt: 60, quelle: 'Stichprobe' });
+    lb('lb07', 10, 'la4', 38, 'zugang', { quelle: 'Holzhandel Ritter LS-204471' }); lb('lb08', 10, 'la1', 20, 'zugang', { quelle: 'Holzhandel Ritter LS-204471' });
+    lb('lb09', 9, 'la4', -40, 'abgang', { bs: 'b1', quelle: 'Angebot', bestaetigt: Date.now(), bestaetigtVon: 'p3' }); lb('lb10', 9, 'la1', -18, 'abgang', { bs: 'b1', quelle: 'Rechner', bestaetigt: Date.now(), bestaetigtVon: 'p3' });
+    lb('lb11', 6, 'la5', -1, 'abgang', { bs: 'b3', quelle: 'Entnahme', bestaetigt: Date.now(), bestaetigtVon: 'p4' }); lb('lb12', 6, 'la6', -24, 'abgang', { bs: 'b3', quelle: 'Entnahme', bestaetigt: Date.now(), bestaetigtVon: 'p4' });
+    lb('lb13', 0, 'la2', -4, 'abgang', { bs: 'b1', quelle: 'Rechner' }); lb('lb14', 0, 'la1', -6, 'abgang', { bs: 'b1', quelle: 'Rechner' });
     l('ls3', 2, 'p3', 'Holzhandel Ritter', 'LS-204915', 'b1', 'neu', ['Konterlatten 40/60, 12 Bd', 'Unterdeckbahn 1,5 x 50 m, 3 Rollen']);
     l('ls4', 0, 'p4', 'Würth', '4471-0098', 'b3', 'neu', ['Vollgewindeschrauben 8x300, 2 Pak', 'Holzbauwinkel 105, 40 Stk']);
     // Tagelöhner
@@ -203,10 +239,75 @@ const Muster = (() => {
     // Auftragstafel: zwei frische Anfragen
     add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
     add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });
+    // Nachrichten zwischen Büro und Mitarbeitern
+    const um = (tage, h, m) => { const d = Datum.von(Datum.plus(heute, -tage)); d.setHours(h, m, 0, 0); return d.getTime(); };
+    add('na1', { typ: 'nachricht', mit: 'p3', von: 'p3', text: 'Moin Anke, auf meiner Lohnabrechnung fehlen die 6 Überstunden aus der KW ' + Math.max(1, Datum.kw(heute) - 3) + '. Kannst du mal schauen?', wann: um(1, 16, 42), gelesen: um(1, 17, 5) });
+    add('na2', { typ: 'nachricht', mit: 'p3', von: 'p2', text: 'Schaue ich mir morgen früh an und melde mich.', wann: um(1, 17, 6), gelesen: um(1, 18, 30) });
+    add('na3', { typ: 'nachricht', mit: 'p3', von: 'p3', text: 'Ortgang bei Hinrichs, Brett ist gerissen. Tauschen wir das gleich mit?', bild: 'muster-sparren', wann: um(0, 9, 12) });
+    add('na4', { typ: 'nachricht', mit: 'p5', von: 'p1', text: 'Denkst du an den Schlüssel für den Abstellraum bei Gerdes? Liegt im Bulli.', wann: um(0, 7, 3) });
+    add('na5', { typ: 'nachricht', mit: 'p6', von: 'p6', text: 'Hab Donnerstag Berufsschule, bin Freitag wieder dabei.', wann: um(2, 12, 15), gelesen: um(2, 12, 40) });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });
+    // Kontaktbuch: jeder Name aus Angeboten, Rechnungen, Anfragen und Baustellen genau einmal
+    const kunden = new Map();
+    const merke = (name, d) => { if (!name) return; const k = name.toLowerCase(); const alt = kunden.get(k) || { name, art: 'privat', adresse: '', telefon: '', email: '' }; kunden.set(k, { ...alt, art: d.kundenart || alt.art, adresse: alt.adresse || String(d.adresse || '').replace(', ', '\n'), telefon: alt.telefon || d.telefon || '', email: alt.email || d.email || '' }); };
+    items.filter((i) => ['angebot', 'rechnung', 'vorgang'].includes(i.typ)).forEach((i) => merke(i.kunde, i));
+    ahlersCfg().baustellen.forEach((b) => merke(b.kunde, b));
+    const notizen = { 'renate wilkens': 'Nur vormittags erreichbar', 'holger gerdes': 'Empfiehlt uns weiter (Thölken)' };
+    [...kunden.values()].forEach((k, i) => add(`ku${i + 1}`, { typ: 'kunde', ...k, art: /gmbh|autohaus|verwaltung/i.test(k.name) ? 'gewerblich' : k.art, notiz: notizen[k.name.toLowerCase()] || '' }));
     return items;
+  }
+
+  /* Partnerbetrieb für die Vernetzung: ein Elektriker aus Hude */
+  function hogrefeCfg() {
+    const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
+    return {
+      id: 'hogrefe', version: 6, kennung: 'hogrefe', name: 'Elektro Hogrefe', zusatz: 'Elektroinstallation · Photovoltaik · E-Check', ort: 'Hude', inhaber: 'Jens Hogrefe',
+      strasse: 'Bahnhofstraße 21', plz: '27798', telefon: '04408 80 12 30', email: 'info@elektro-hogrefe.example', farbe: '#1f4e79', kuerzel: 'EH', paket: 'Start', lat: 53.11, lon: 8.46,
+      personen: [
+        { id: 'p1', name: 'Jens Hogrefe', rolle: 'chef', funktion: 'Elektromeister, Inhaber', code: '1001', soll: 0, urlaub: 30 },
+        { id: 'p2', name: 'Sven Otten', rolle: 'geselle', funktion: 'Elektroniker', code: '2001', soll: 40, urlaub: 30 },
+      ],
+      baustellen: [{ id: 'b1', name: 'MFH Lindenhof', ort: 'Hude', adresse: 'Lindenhof 4, 27798 Hude', kunde: 'Wohnbau Hude GmbH', telefon: '', arbeit: 'Elektroinstallation 6 Wohnungen', status: 'laufend', notiz: '' }],
+      tageloehner: [],
+      partner: [{ id: 'pa1', name: 'Zimmerei Ahlers', gewerk: 'Zimmerei', ansprech: 'Jan Ahlers', telefon: '04222 70 41 90', email: 'info@zimmerei-ahlers.example', fid: 'ahlers' }],
+      baukasten: {
+        knoten: [knoten('app', 40, 200), knoten('baustellen', 40, 400), knoten('partner', 330, 400), knoten('kalender', 610, 300)],
+        kanten: [['baustellen', 'partner'], ['partner', 'kalender'], ['app', 'partner']].map(([von, zu]) => ({ von, zu })),
+      },
+      notizen: '', angelegt: Date.now(),
+    };
+  }
+  function netzItems(heute = Datum.heute()) {
+    const mo = Datum.plus(Datum.montag(heute), 7); const ahl = ahlersCfg();
+    const bs = (id) => ahl.baustellen.find((b) => b.id === id);
+    const t = (tage) => Date.now() - tage * 864e5;
+    const basis = (b, an, anName, gewerk, partnerId) => ({ von: 'ahlers', vonName: ahl.name, vonTelefon: ahl.telefon, an, anName, gewerk, partnerId, bs: b.id, bsName: b.name, adresse: b.adresse, kunde: b.kunde });
+    const n1 = `Moin Jens,
+
+der Dachstuhl bei Hinrichs steht. Bevor wir die Aufsparrendämmung drauf machen, müssten die Durchführungen für die PV-Leitungen und die Außenleuchten am Giebel gesetzt sein.
+
+Fotos und Adresse hängen dran. Passt euch der Zeitraum?
+
+Viele Grüße
+Jan Ahlers`;
+    const n2 = `Moin Jens,
+
+bei Steenken in Delmenhorst bauen wir eine Schleppgaube. In die Gaube kommen zwei Steckdosen und Licht, die alte Leitung im Drempel muss vermutlich raus.
+
+Kannst du dir das vorher ansehen? Wir fangen in drei Wochen an.
+
+Viele Grüße
+Jan Ahlers`;
+    return [
+      { id: 'n1', ...basis(bs('b1'), 'hogrefe', 'Elektro Hogrefe', 'Elektro', 'pa1'), zeitVon: mo, zeitBis: Datum.plus(mo, 1), text: n1, fotos: ['muster-dach', 'muster-richtfest'], status: 'zugesagt', termin: { von: mo, bis: Datum.plus(mo, 1) }, erstellt: t(3),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: n1, wann: t(3), name: 'Jan Ahlers' }, { wer: 'an', art: 'zusage', text: 'Passt. Wir kommen Montag um 7 mit zwei Mann. Strom ist auf der Baustelle?', wann: t(2.8), name: 'Jens Hogrefe', zeitVon: mo, zeitBis: Datum.plus(mo, 1) }] },
+      { id: 'n2', ...basis(bs('b4'), 'hogrefe', 'Elektro Hogrefe', 'Elektro', 'pa1'), zeitVon: Datum.plus(mo, 14), zeitBis: Datum.plus(mo, 15), text: n2, fotos: ['muster-dach'], status: 'offen', erstellt: t(1),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: n2, wann: t(1), name: 'Jan Ahlers' }] },
+      { id: 'n3', ...basis(bs('b3'), '', 'Malerbetrieb Kück', 'Maler', 'pa2'), zeitVon: Datum.plus(mo, 7), zeitBis: Datum.plus(mo, 9), text: 'Ortgang- und Traufbretter bei Wilkens streichen, zwei Anstriche.', fotos: [], status: 'extern', erstellt: t(5),
+        verlauf: [{ wer: 'von', art: 'anfrage', text: 'Ortgang- und Traufbretter bei Wilkens streichen, zwei Anstriche.', wann: t(5), name: 'Anke Ahlers' }] },
+    ];
   }
 
   function leerCfg() {
@@ -220,19 +321,30 @@ const Muster = (() => {
   const LISTE = [
     { id: 'ahlers', kennung: 'ahlers', name: 'Zimmerei Ahlers', art: 'muster' },
     { id: 'leer', kennung: 'neu', name: 'Neuer Betrieb', art: 'leer' },
+    { id: 'hogrefe', kennung: 'hogrefe', name: 'Elektro Hogrefe', art: 'partner' },
   ];
 
   async function einrichten(fortschritt) {
     await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
     await Store.ersetzeBetrieb('leer', leerCfg(), [], fortschritt);
+    await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt);
+    await Store.ersetzeNetz(netzItems());
     await Store.setzeBetriebe(LISTE);
+  }
+  /* Neue Musterdaten einspielen, ohne selbst angelegte Betriebe anzufassen */
+  async function aktualisieren(fortschritt) {
+    await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
+    await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt);
+    await Store.ersetzeNetz(netzItems());
+    const meta = await Store.betriebe(); const liste = (meta && meta.liste) || [];
+    await Store.setzeBetriebe([...liste.filter((b) => !LISTE.some((x) => x.id === b.id)), ...LISTE].sort((a, b) => LISTE.findIndex((x) => x.id === a.id) - LISTE.findIndex((x) => x.id === b.id)));
   }
 
   async function zuruecksetzen(fid, fortschritt) {
-    if (fid === 'ahlers') return Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt);
+    if (fid === 'ahlers' || fid === 'hogrefe') { const n = await Store.ersetzeBetrieb('ahlers', ahlersCfg(), ahlersItems(), fortschritt); await Store.ersetzeBetrieb('hogrefe', hogrefeCfg(), [], fortschritt); await Store.ersetzeNetz(netzItems()); return n; }
     if (fid === 'leer') return Store.ersetzeBetrieb('leer', leerCfg(), [], fortschritt);
     return 0;
   }
 
-  return { einrichten, zuruecksetzen, ahlersCfg, leerCfg, LISTE };
+  return { einrichten, aktualisieren, zuruecksetzen, ahlersCfg, leerCfg, LISTE };
 })();

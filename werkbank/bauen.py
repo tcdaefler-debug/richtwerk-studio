@@ -6,7 +6,7 @@ import pathlib
 ordner = pathlib.Path(__file__).resolve().parent
 src = ordner / 'src'
 # Reihenfolge ist wichtig: Hilfen und Speicher zuerst, Start (app.js) zuletzt
-REIHENFOLGE = ['hilfen.js', 'store.js', 'bausteine.js', 'demo.js', 'gemeinsam.js', 'buero.js', 'auftraege.js', 'tafel.js', 'kunde.js', 'sprache.js', 'rechner.js', 'handy.js', 'studio.js', 'app.js']
+REIHENFOLGE = ['hilfen.js', 'store.js', 'bausteine.js', 'demo.js', 'gemeinsam.js', 'buero.js', 'auftraege.js', 'tafel.js', 'kunde.js', 'sprache.js', 'rechner.js', 'betrieb.js', 'netz.js', 'handy.js', 'studio.js', 'app.js']
 
 css = (src / 'stil.css').read_text(encoding='utf-8')
 js = '\n'.join(f'/* ---- {name} ---- */\n' + (src / name).read_text(encoding='utf-8') for name in REIHENFOLGE)

@@ -119,9 +119,9 @@ const Studio = (() => {
     const c_offen = () => (cfg().baustellen || []).filter((b) => b.status !== 'fertig').length;
     welt.innerHTML = `<svg class="kanten" width="1" height="1">${kanten}<path id="vorlaeufig" class="vorlaeufig" d=""/></svg>
       ${kn.filter((k) => BAUSTEINE[k.typ]).map((k) => { const B = BAUSTEINE[k.typ]; const g = GRUPPEN[B.gruppe];
-        return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
+        return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''} ${k.aus ? 'ausgeschaltet' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
           ${B.ein.length ? `<span class="port ein" data-port="ein" data-typ="${k.typ}"></span>` : ''}
-          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${esc(info(k))}</div>
+          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${k.aus ? 'beim Kunden ausgeschaltet' : esc(info(k))}</div>
           ${B.gruppe !== 'geplant' && Object.values(BAUSTEINE).some((x) => x.ein.includes(k.typ)) ? `<span class="port aus" data-port="aus" data-typ="${k.typ}"></span>` : ''}</div>`; }).join('')}`;
   }
 
@@ -339,9 +339,9 @@ const Studio = (() => {
   }
   function betriebeSeite() {
     return `<h2>Alle Betriebe</h2><p>Jeder Betrieb hat seinen eigenen Aufbau, eigene Daten und eigene Zugänge.</p>
-      <div class="s-karten">${zustand.liste.map((b) => `<div class="s-karte"><b>${esc(b.name)}</b><p>Kennung <span class="mono">${esc(b.kennung)}</span>${b.art === 'muster' ? ' · Vorführbetrieb mit Musterdaten' : b.art === 'leer' ? ' · leerer Betrieb zum Einrichten' : ''}</p>
+      <div class="s-karten">${zustand.liste.map((b) => `<div class="s-karte"><b>${esc(b.name)}</b><p>Kennung <span class="mono">${esc(b.kennung)}</span>${b.art === 'muster' ? ' · Vorführbetrieb mit Musterdaten' : b.art === 'leer' ? ' · leerer Betrieb zum Einrichten' : b.art === 'partner' ? ' · Partnerbetrieb für die Vernetzung' : ''}</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="s-knopf" data-s="betrieb" data-id="${b.id}">Öffnen</button>
-        ${b.art === 'muster' ? `<button class="s-knopf" data-s="zuruecksetzen" data-id="${b.id}">Musterdaten neu laden</button>` : `<button class="s-knopf" data-s="leeren" data-id="${b.id}">Zurücksetzen</button>`}
+        ${b.art === 'muster' || b.art === 'partner' ? `<button class="s-knopf" data-s="zuruecksetzen" data-id="${b.id}">Musterdaten neu laden</button>` : `<button class="s-knopf" data-s="leeren" data-id="${b.id}">Zurücksetzen</button>`}
         ${b.art ? '' : `<button class="s-knopf gefahr" data-s="loeschen" data-id="${b.id}">${Icon('muell')}</button>`}</div></div>`).join('')}
       <div class="s-karte s-formular"><b>Neuen Betrieb anlegen</b><p>Startet leer mit Inhaber-Zugang (Code 1001) und der Mitarbeiter-App.</p>
         <label class="feld"><span>Name</span><input id="nb-name" placeholder="z. B. Dachdeckerei Muster"></label><label class="feld"><span>Kennung</span><input id="nb-kennung" class="mono" placeholder="muster"></label>
@@ -381,7 +381,7 @@ const Studio = (() => {
       case 'zuruecksetzen': case 'leeren': {
         if (!confirmZweimal(el)) break;
         el.textContent = 'Wird geladen …';
-        if (id === 'ahlers' || id === 'leer') await Muster.zuruecksetzen(id);
+        if (id === 'ahlers' || id === 'leer' || id === 'hogrefe') await Muster.zuruecksetzen(id);
         else { const alt = await Store.ladeCfg(id); await Store.ersetzeBetrieb(id, { ...Muster.leerCfg(), id, kennung: alt.kennung, name: alt.name, angelegt: Date.now() }, []); }
         meldung('Fertig. Alle offenen Fenster zeigen jetzt die neuen Daten.'); zeichne(true); break;
       }
@@ -454,10 +454,11 @@ const Studio = (() => {
       <td style="text-align:center"><input type="checkbox" class="f-pflicht" ${f.pflicht ? 'checked' : ''} aria-label="Pflichtfeld"></td>
       <td><button class="k klein" data-f="feld-weg" data-id="${i}" aria-label="Feld entfernen">${Icon('x')}</button></td></tr>`;
     const inhalt = {
-      werte: Object.keys(B.p).length ? `<div class="bf-raster">${Object.entries(B.p).filter(([, d]) => d.typ !== 'langtext').map(param).join('')}</div>${Object.entries(B.p).filter(([, d]) => d.typ === 'langtext').map(param).join('')}` : '<p class="hinweis-zeile">Dieser Baustein hat keine einstellbaren Werte.</p>',
+      werte: Feinregler.html(typ, werte),
       kunde: `<p class="hinweis-zeile">So heißt der Baustein im Büro und in der App dieses Betriebs. Leer lassen für den Standard.</p>
         <label class="feld"><span>Name beim Kunden</span><input data-k="name" value="${esc(k.name || '')}" placeholder="${esc(B.name)}"></label>
-        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>`,
+        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>
+        <label class="fr-zeile fr-schalter"><span class="fr-name">Beim Kunden eingeschaltet<small>Ausgeschaltet bleibt alles gespeichert, ist aber im Büro und in der App nicht zu sehen. Der Betrieb kann es in seinen Einstellungen selbst wieder einschalten.</small></span><span class="kipp"><input type="checkbox" data-k="an" ${k.aus ? '' : 'checked'}><i></i></span></label>`,
       ablauf: hatAblauf ? `<ol class="bf-ablauf">${ABLAEUFE[typ].map((st) => { const an = !st.schalter || werte[st.schalter] === 'ja';
         return `<li class="${an ? '' : 'aus'}"><div><b>${esc(st.name)}</b><small>${esc(st.text)}</small></div>${st.schalter ? `<label class="schalter"><input type="checkbox" data-schalter="${st.schalter}" ${an ? 'checked' : ''}><span>${an ? 'an' : 'aus'}</span></label>` : '<span class="fest">immer</span>'}</li>`; }).join('')}</ol>` : '',
       felder: hatFelder ? `<p class="hinweis-zeile">Eigene Felder erscheinen beim Erfassen ${['angebote', 'rechnungen'].includes(typ) ? 'im Büro' : 'in der App'} und in der Ansicht im Büro. Mit * sind Pflichtfelder.</p>
@@ -474,11 +475,11 @@ const Studio = (() => {
         'feld-weg': (b) => { lesen(); felder.splice(Number(b.dataset.id), 1); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); },
         ok: () => {
           lesen();
-          const p = {}; $$('[data-bp]', hg).forEach((el) => { const d = B.p[el.dataset.bp]; let w = el.value; if (d.typ === 'zahl') { w = Math.min(d.max, Math.max(d.min, Number(w) || d.wert)); } p[el.dataset.bp] = w; });
+          const p = Feinregler.lesen($('[data-tab=werte]', hg), typ); const an = $('[data-k=an]', hg).checked;
           $$('[data-schalter]', hg).forEach((el) => { p[el.dataset.schalter] = el.checked ? 'ja' : 'nein'; });
           const name = ($('[data-k=name]', hg).value || '').trim(); const hinweis = ($('[data-k=hinweis]', hg).value || '').trim();
           const fertig = felder.filter((f) => f.name.trim()).map((f) => ({ ...f, name: f.name.trim() }));
-          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
+          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; if (an) delete x.aus; else x.aus = true; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
           Fenster.schliesse(); meldung(`${name || B.name} übernommen. Büro und App zeigen es sofort.`);
           setTimeout(() => { flaecheZeichnen(); pruefZeichnen(); }, 40);
         },
@@ -487,7 +488,7 @@ const Studio = (() => {
     hg.addEventListener('change', (e) => {
       const cb = e.target.closest('[data-schalter]'); if (!cb) return;
       cb.nextElementSibling.textContent = cb.checked ? 'an' : 'aus'; cb.closest('li').classList.toggle('aus', !cb.checked);
-      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.value = cb.checked ? 'ja' : 'nein';
+      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.checked = cb.checked;
     });
     function lesen() {
       $$('#bf-felder tr[data-feld]', hg).forEach((tr) => { const f = felder[Number(tr.dataset.feld)]; if (!f) return; f.name = $('.f-name', tr).value; f.typ = $('.f-typ', tr).value; f.optionen = $('.f-opt', tr).value; f.pflicht = $('.f-pflicht', tr).checked; });

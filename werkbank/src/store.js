@@ -108,7 +108,18 @@ const Store = (() => {
   }
 
   /* ---------- geöffneter Betrieb ---------- */
-  const zustand = { fid: null, cfg: null, items: [], abos: [], hoerer: new Set() };
+  const zustand = { fid: null, cfg: null, items: [], abos: [], hoerer: new Set(), netz: [], netzAbo: null };
+  /* Vernetzung: Anfragen zwischen Betrieben liegen außerhalb der Betriebe unter netz/<id>.
+     Jeder Betrieb sieht nur, was er geschickt hat oder was an ihn geht. */
+  function netzBeobachten() {
+    if (zustand.netzAbo || !backend) return;
+    zustand.netzAbo = backend.watchList('netz', (liste) => {
+      const map = new Map(liste.map((d) => [d.id, { ...d.daten, id: d.id }]));
+      warteschlange.filter((w) => w.pfad.startsWith('netz/')).forEach((w) => { const id = w.pfad.slice(5); if (w.daten === null) map.delete(id); else map.set(id, { ...w.daten, id }); });
+      zustand.netz = [...map.values()];
+      benachrichtige();
+    });
+  }
   const dateiCache = new Map();
 
   function oeffne(fid) {
@@ -213,6 +224,28 @@ const Store = (() => {
     get offen() { return warteschlange.length; },
 
     /* Dateien (Fotos, PDFs) */
+    /* Vernetzung */
+    get netz() { netzBeobachten(); return zustand.netz.filter((n) => n.von === zustand.fid || n.an === zustand.fid); },
+    netzSchreibe(id, daten) {
+      const alt = zustand.netz.find((n) => n.id === id);
+      const neu = { ...(alt || {}), ...daten, geaendert: Date.now() }; delete neu.id;
+      zustand.netz = [...zustand.netz.filter((n) => n.id !== id), { ...neu, id }]; benachrichtige();
+      schreibe(`netz/${id}`, neu);
+    },
+    async dateiVon(fid, id) {
+      const k = fid + '|' + id; if (dateiCache.has(k)) return dateiCache.get(k);
+      if (fid === zustand.fid) return this.datei(id);
+      const d = await backend.get(`b/${fid}/dateien/${id}`); if (d) dateiCache.set(k, d.daten);
+      return d ? d.daten : null;
+    },
+    async ladeCfgVon(fid) { return backend.get(`b/${fid}/cfg/main`); },
+    async speichereCfgVon(fid, cfg) { return backend.set(`b/${fid}/cfg/main`, JSON.parse(JSON.stringify(cfg))); },
+    async ersetzeNetz(liste) {
+      const alt = await backend.list('netz');
+      await Promise.all(alt.map((d) => backend.del(`netz/${d.id}`)));
+      await Promise.all(liste.map((n) => { const d = { ...n }; delete d.id; return backend.set(`netz/${n.id}`, d); }));
+    },
+
     async speichereDatei(dataUrl, name) {
       if (dataUrl.length > 240000) throw new Error('Die Datei ist zu groß (max. ca. 170 KB). Fotos werden automatisch verkleinert, PDFs bitte kleiner speichern.');
       const id = uid('f');

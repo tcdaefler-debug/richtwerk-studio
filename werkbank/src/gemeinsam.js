@@ -159,6 +159,12 @@ function bilderNachladen(wurzel, items) {
     const url = await dateiUrl(img.dataset.datei).catch(() => null);
     if (url && img.isConnected) img.src = url;
   });
+  // Fotos aus einem anderen Betrieb (Anfrage über das Partnerbuch)
+  $$('img[data-netz]', wurzel).forEach(async (img) => {
+    const [fid, id] = img.dataset.netz.split('|');
+    const url = id.startsWith('muster-') ? await dateiUrl(id).catch(() => null) : await Store.dateiVon(fid, id).catch(() => null);
+    if (url && img.isConnected) img.src = url;
+  });
 }
 
 /* Eigene Felder, die Richtwerk pro Betrieb in einen Baustein einbaut

@@ -36,7 +36,7 @@ const Handy = (() => {
     else if (R.stundenImApp()) r.push({ id: 'zeiten', name: 'Zeiten', icon: 'uhr' });
     r.push({ id: 'erfassen', name: 'Erfassen', icon: 'kamera', scan: true });
     if (R.imApp('urlaub')) r.push({ id: 'urlaub', name: 'Urlaub', icon: 'kalender' });
-    r.push({ id: 'mehr', name: 'Mehr', icon: 'mehr' });
+    r.push({ id: 'mehr', name: 'Mehr', icon: 'mehr', zahl: R.imApp('nachrichten') ? Betrieb.ungelesen(c, c.ich.id, false) : 0 });
     return r;
   }
 
@@ -83,6 +83,8 @@ const Handy = (() => {
     const heutePlan = c.geplant(ich.id, c.heute);
     const bsHeute = (lauf && lauf.bs) || (c.baustelle(heutePlan) ? heutePlan : '');
     if (bsHeute && R.hat('baustellen')) html += baustelleKarte(c, bsHeute, lauf ? 'Deine Baustelle' : 'Heute laut Plan');
+    if (bsHeute && R.imApp('lager') && R.an('lager', 'bestaetigen')) html += Betrieb.appLagerKarte(c, bsHeute);
+    if (R.imApp('partner')) html += Netz.appKarte(c, bsHeute);
     if (R.plan()) {
       const morgen = naechsterArbeitstag(c.heute); const wert = c.geplant(ich.id, morgen);
       html += `<div class="a-karte" style="margin-top:12px">${zeile({ sym: 'plan', titel: `${Datum.WT[Datum.wochentag(morgen)]}, ${Datum.kurz(morgen)}: ${esc(c.planText(wert))}`, unter: wert && c.baustelle(wert) ? esc(c.baustelle(wert).ort) : wert ? '' : 'Noch nicht eingeteilt', a: 'reiter', id: 'zeiten' })}</div>`;
@@ -141,7 +143,8 @@ const Handy = (() => {
     if (R.imApp('material') && R.an('material', 'sprache')) k.unshift(`<button class="erfassen-kachel gross sprach-kachel" data-sprache><span class="sym">${Icon('mikro')}</span><span><b>Einsprechen</b><small>Bestellung oder Erinnerung, einfach sagen</small></span></button>`);
     if (R.imApp('rechner')) k.push(`<button class="erfassen-kachel" data-rechner="lattung"><span class="sym">${Icon('rechner')}</span><span><b>Lattung</b><small>Latten und Befestiger für das Dach</small></span></button>`, `<button class="erfassen-kachel" data-rechner="uwert"><span class="sym">${Icon('rechner')}</span><span><b>U-Wert</b><small>Dämmwert für den Bauherrn</small></span></button>`);
     if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
-    return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
+    const lager = R.imApp('lager') && R.an('lager', 'zweiKisten') ? Betrieb.appKisten(c) : '';
+    return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${lager}${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
 
   BILD.urlaub = (c) => {
@@ -159,6 +162,7 @@ const Handy = (() => {
     const doks = c.items.filter((i) => i.typ === 'dokument' && (i.fuer === c.ich.id || i.fuer === 'alle')).sort((a, b) => b.erstellt - a.erstellt);
     return `<div class="unterseite-kopf"><h2>Mehr</h2></div>
       <div class="a-karte">${zeile({ sym: 'person', symKlasse: 'firma', titel: esc(c.ich.name), unter: `${esc(c.ich.funktion || '')} · ${esc(c.cfg.name)}` })}</div>
+      ${c.R.imApp('nachrichten') || c.R.imApp('dokumente') ? `<div class="a-karte">${c.R.imApp('nachrichten') ? (() => { const n = Betrieb.ungelesen(c, c.ich.id, false); return `<button class="a-zeile" data-app-chat><span class="sym">${Icon('angebot')}</span><span class="text"><b>Nachrichten an das Büro</b><small>Fragen, Fotos, Absprachen</small></span>${n ? `<span class="rechts"><span class="a-zahl">${n}</span></span>` : ''}<span class="pfeil">${Icon('pfeil')}</span></button>`; })() : ''}<button class="a-zeile" data-app-ablage><span class="sym">${Icon('dokument')}</span><span class="text"><b>Meine Ablage</b><small>Stundenzettel, Lohnabrechnungen, Dokumente</small></span><span class="pfeil">${Icon('pfeil')}</span></button></div>` : ''}
       ${c.R.imApp('dokumente') ? `<div class="a-titel">Meine Dokumente</div><div class="a-karte">${doks.map((d) => zeile({ sym: 'dokument', titel: esc(d.titel), unter: d.gelesen ? 'gelesen' : '<b style="color:#c23a2b">neu</b>', a: 'dokument', id: d.id })).join('') || '<div class="leer">Noch keine Dokumente.</div>'}</div>` : ''}
       ${c.R.imApp('regie') ? (() => { const offen = c.typ('regie').filter((r) => r.pid === c.ich.id && r.status === 'offen'); return offen.length ? `<div class="a-titel">Noch nicht unterschrieben</div><div class="a-karte">${offen.map((r) => zeile({ sym: 'unterschrift', titel: esc(r.text), unter: `${Datum.kurz(r.datum)} · ${esc(c.bsName(r.bs))}`, a: 'regie-nach', id: r.id })).join('')}</div>` : ''; })() : ''}
       <div class="a-titel">Konto</div><div class="a-karte">${zeile({ sym: 'abmelden', titel: 'Abmelden', unter: 'Ein anderer Mitarbeiter meldet sich an', a: 'abmelden' })}${zeile({ sym: 'x', titel: 'Betrieb trennen', unter: 'Handy von diesem Betrieb lösen', a: 'trennen' })}</div>
@@ -322,7 +326,7 @@ const Handy = (() => {
     return `<div class="ui-app" style="--firma:${esc(c.cfg.farbe)}"><div class="app-rahmen">
       <header class="a-kopf"><span class="firmenzeichen">${esc(c.cfg.kuerzel || c.kuerzel(c.cfg.name))}</span><div class="titel"><b>${esc(c.cfg.name)}</b><small>${esc(c.ich.name)}</small></div>${syncStatus()}</header>
       <main class="a-inhalt">${inhalt}</main>
-      <nav class="a-tabs" style="grid-template-columns:repeat(${tabs.length},1fr)">${tabs.map((t) => `<button class="${t.scan ? 'scan' : ''} ${reiter === t.id && !unter ? 'an' : ''}" data-a="reiter" data-id="${t.id}">${t.scan ? `<span class="kreis">${Icon(t.icon)}</span>` : Icon(t.icon)}${t.name}${t.id === 'freigaben' && nFrei ? `<span class="zahl">${nFrei}</span>` : ''}${t.id === 'mehr' && ungelesen ? `<span class="zahl">${ungelesen}</span>` : ''}</button>`).join('')}</nav>
+      <nav class="a-tabs" style="grid-template-columns:repeat(${tabs.length},1fr)">${tabs.map((t) => `<button class="${t.scan ? 'scan' : ''} ${reiter === t.id && !unter ? 'an' : ''}" data-a="reiter" data-id="${t.id}">${t.scan ? `<span class="kreis">${Icon(t.icon)}</span>` : Icon(t.icon)}${t.name}${t.id === 'freigaben' && nFrei ? `<span class="zahl">${nFrei}</span>` : ''}${t.id === 'mehr' && (ungelesen + (t.zahl || 0)) ? `<span class="zahl">${ungelesen + (t.zahl || 0)}</span>` : ''}</button>`).join('')}</nav>
     </div></div>`;
   }
 

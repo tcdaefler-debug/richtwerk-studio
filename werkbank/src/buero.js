@@ -24,10 +24,11 @@ const Buero = (() => {
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
   /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
-  const EXTRA = { aufgaben: [], einstellungen: [] };
-  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen }) {
-    if (einstellungen) EXTRA.einstellungen.push(einstellungen);
-    nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
+  const EXTRA = { aufgaben: [], einstellungen: [], akte: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen, akte }) {
+    if (akte) EXTRA.akte.push(akte);
+    if (einstellungen) { if (einstellungen.vorne) EXTRA.einstellungen.unshift(einstellungen); else EXTRA.einstellungen.push(einstellungen); }
+    nav.forEach((n) => { let i = -1; NAV.forEach((x, j) => { if (x.gruppe === n.gruppe) i = j; }); if (i < 0) i = NAV.findIndex((x) => x.id === 'baustellen') - 1; NAV.splice(i + 1, 0, n); });
     Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
     if (aufgaben) EXTRA.aufgaben.push(aufgaben);
   }
@@ -400,6 +401,8 @@ const Buero = (() => {
         ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
 
+  const akteBasis = SEITEN.akte;
+  SEITEN.akte = (c) => { const b = c.baustelle(zustand.akte) || (zustand.akte ? null : c.baustellenOffen()[0]); return akteBasis(c) + (b ? EXTRA.akte.map((fn) => fn(c, b)).join('') : ''); };
   const ROLLEN = { chef: 'Inhaber / Chef', buero: 'Büro', geselle: 'Geselle', azubi: 'Auszubildender', helfer: 'Bauhelfer' };
   SEITEN.team = (c) => {
     const istChef = c.ich && c.ich.rolle === 'chef';
@@ -434,8 +437,8 @@ const Buero = (() => {
         <p style="color:#6a726c;font-size:13px;margin:0 0 14px">Anschrift, Steuernummer und Bankverbindung stehen auf Angeboten und Rechnungen.</p>
         <div class="feld"><span>Firmenfarbe</span><div class="farbwahl">${FARBEN.map((f) => `<button type="button" style="background:${f}" class="${c.cfg.farbe === f ? 'an' : ''}" data-a="farbe" data-id="${f}" aria-label="Farbe ${f}"></button>`).join('')}</div></div>
         <button class="k haupt" type="submit">Speichern</button></form></div>
-        <div class="karte"><div class="kopf"><h3>Ihr Funktionsumfang</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
-          ${aktiv.map((t) => `<div class="liste-zeile">${Icon(BAUSTEINE[t].icon)}<div class="text"><b>${esc(BAUSTEINE[t].name)}</b><small>${esc(BAUSTEINE[t].kurz)}</small></div><span class="chip ok">Aktiv</span></div>`).join('')}
+        <div class="karte"><div class="kopf"><h3>Weitere Bausteine</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
+          ${Object.entries(BAUSTEINE).filter(([t, b]) => b.gruppe !== 'geplant' && !c.cfg.baukasten.knoten.some((k) => k.typ === t)).map(([, b]) => `<div class="liste-zeile" style="opacity:.75">${Icon(b.icon)}<div class="text"><b>${esc(b.name)}</b><small>${esc(b.kurz)}</small></div><span class="chip">Auf Anfrage</span></div>`).join('')}
           ${geplant.map(([, b]) => `<div class="liste-zeile" style="opacity:.6">${Icon(b.icon)}<div class="text"><b>${esc(b.name)}</b><small>${esc(b.kurz)}</small></div><span class="chip">Auf Anfrage</span></div>`).join('')}
           <div class="legende">Weitere Funktionen richtet Richtwerk für Sie ein.</div></div></div>
         <div class="karte"><div class="kopf"><h3>Ihre Daten</h3></div><div class="koerper" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span style="flex:1;min-width:240px;color:#5f6862">Alle Daten gehören Ihrem Betrieb. Sie können sie jederzeit vollständig herunterladen.</span><button class="k" data-a="datenexport">${Icon('download')} Alle Daten herunterladen</button></div></div>`;
@@ -1010,7 +1013,8 @@ const Buero = (() => {
     return `${name}.${endung}`;
   }
 
-  return { start, neuZeichnen: zeichne, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
+  function zeigeSeite(id) { zustand.seite = id; zustand.navOffen = false; zeichne(); window.scrollTo(0, 0); }
+  return { start, neuZeichnen: zeichne, zeigeSeite, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
 })();
 
 /* Datei an den Nutzer geben (Artifact-Download, sonst normaler Link) */

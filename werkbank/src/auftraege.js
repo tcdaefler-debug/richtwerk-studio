@@ -186,12 +186,13 @@ const Auftraege = (() => {
     if (!istR) {
       if (d.id && ['entwurf', 'gesendet'].includes(d.status)) knoepfe.push(`<button class="k nein" data-f="status" data-id="abgelehnt">Abgelehnt</button><button class="k ok" data-f="status" data-id="angenommen">${Icon('haken')} Angenommen</button>`);
       if (d.status === 'entwurf' || !d.id) knoepfe.push(`<button class="k" data-f="status" data-id="gesendet">Als gesendet markieren</button>`);
+      if (['entwurf', 'gesendet'].includes(d.status || 'entwurf')) knoepfe.push(`<button class="k haupt" data-f="versenden">${Icon('angebot')} Versenden …</button>`);
       if (['entwurf', 'gesendet'].includes(d.status || 'entwurf') && c.R.an('angebote', 'onlineAnnahme')) knoepfe.push(`<button class="k" data-f="link">${Icon('wolke')} Link für den Kunden</button>`);
       if (d.status === 'angenommen' && c.R.an('angebote', 'bestaetigung')) knoepfe.push(`<button class="k" data-f="drucken" data-id="bestaetigung">${Icon('drucken')} Auftragsbestätigung</button>`);
       if (d.status === 'angenommen' && c.R.verb('angebote', 'rechnungen')) knoepfe.push(`<button class="k haupt" data-f="zur-rechnung">${Icon('rechnung')} Rechnung erstellen</button>`);
     } else {
       if (d.status === 'entwurf') knoepfe.push(`<button class="k haupt" data-f="stellen">${Icon('haken')} Rechnung stellen</button>`);
-      if (d.status === 'gestellt') knoepfe.push(`<button class="k" data-f="storno">Stornieren</button>`, ueberfaellig(c, d) ? `<button class="k" data-f="drucken" data-id="erinnerung">${Icon('drucken')} Zahlungserinnerung</button>` : '', `<button class="k ok" data-f="bezahlt">${Icon('haken')} Bezahlt</button>`);
+      if (d.status === 'gestellt') knoepfe.push(`<button class="k" data-f="storno">Stornieren</button>`, ueberfaellig(c, d) ? (Betrieb.mahnstand(c, d) ? `<button class="k" data-f="mahnen">${Icon('glocke')} ${(d.mahnungen || []).length ? 'Mahnstufe' : 'Zahlungserinnerung'}</button>` : `<button class="k" data-f="drucken" data-id="erinnerung">${Icon('drucken')} Zahlungserinnerung</button>`) : '', `<button class="k ok" data-f="bezahlt">${Icon('haken')} Bezahlt</button>`);
       if (d.status !== 'entwurf' && c.R.p('rechnungen').erechnung !== 'aus') knoepfe.push(`<button class="k" data-f="xml">${Icon('download')} E-Rechnung</button>`);
     }
     const hg = Fenster.oeffne({
@@ -199,7 +200,7 @@ const Auftraege = (() => {
       inhalt: `${!istR && offeneFragen(d).length ? offeneFragen(d).map((q) => `<div class="kundenfrage"><div><b>Frage von ${esc(d.kunde)}</b> <small>${Datum.kurz(Datum.iso(new Date(q.wann)))}</small><p>${esc(q.text)}</p></div><button class="k klein" data-f="frage-erledigt" data-id="${q.wann}">Erledigt</button></div>`).join('') : ''}
         ${!istR && d.angenommenOnline ? `<div class="hinweis-zeile online-ok">${onlineBlock(d)}</div>` : ''}
         ${gesperrt ? `<p class="hinweis-zeile">${d.status === 'bezahlt' ? `Bezahlt am ${Datum.kurz(d.bezahltAm)}.` : d.status === 'storniert' ? 'Storniert.' : `Gestellt am ${Datum.kurz(d.datum)}, fällig am ${Datum.kurz(d.faellig)}.`} Gestellte Rechnungen lassen sich nicht mehr ändern (GoBD). Bei Fehlern stornieren und neu stellen.</p>` : ''}
-        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(d.kunde || '')}" ${dis} placeholder="Name oder Firma"></label>
+        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(d.kunde || '')}" ${dis} placeholder="Name oder Firma" list="kunden-vorschlag" autocomplete="off"><datalist id="kunden-vorschlag">${c.typ('kunde').map((k) => `<option value="${esc(k.name)}">`).join('')}</datalist></label>
           <label class="feld"><span>Kundenart</span><select name="kundenart" ${dis}><option value="privat" ${d.kundenart !== 'gewerblich' ? 'selected' : ''}>Privat</option><option value="gewerblich" ${d.kundenart === 'gewerblich' ? 'selected' : ''}>Gewerblich</option></select></label></div>
         <div class="reihe"><label class="feld"><span>Anschrift (Straße, PLZ Ort)</span><textarea name="adresse" rows="2" ${dis}>${esc(d.adresse || '')}</textarea></label>
           <label class="feld"><span>E-Mail (optional)</span><input name="email" type="email" value="${esc(d.email || '')}" ${dis}></label></div>
@@ -232,6 +233,8 @@ const Auftraege = (() => {
           meldung('Position übernommen');
         },
         speichern: () => { const id = sichern(); if (id) { Fenster.schliesse(); meldung('Gespeichert'); } },
+        versenden: () => { const id = sichern(); if (!id) return; Fenster.schliesse(); Betrieb.versenden(ctxNeu(), Store.items.find((i) => i.id === id)); },
+        mahnen: () => { Fenster.schliesse(); Betrieb.mahnFenster(ctxNeu(), Store.items.find((i) => i.id === d.id)); },
         drucken: (b) => { const id = sichern(); if (!id) return; const neu = Store.items.find((i) => i.id === id); drucken(dokumentHtml(ctxNeu(), neu, b.dataset.id)); },
         status: (b) => {
           const id = sichern(); if (!id) return; const st = b.dataset.id; const a = Store.items.find((i) => i.id === id);
@@ -293,6 +296,7 @@ const Auftraege = (() => {
       if (!w.kunde.trim()) { meldung('Bitte einen Kunden eintragen.', 'fehler'); return null; }
       const daten = { kunde: w.kunde.trim(), kundenart: w.kundenart, adresse: w.adresse.trim(), email: w.email.trim(), betreff: w.betreff.trim(), positionen: positionen.filter((p) => p.text.trim() || zahl(p.preis)), extra: Zusatz.lesen(hg) };
       if (istR) daten.leistung = w.leistung; else if (w.bs !== undefined) daten.bs = w.bs;
+      if (c.R.hat('kunden') && c.R.an('kunden', 'anlegen')) { const kid = Betrieb.kundeSichern(c, { ...daten, telefon: d.telefon }); if (kid) daten.kundeId = kid; }
       if (d.id) { Store.aendere(d.id, daten); return d.id; }
       const neu = istR ? { typ: 'rechnung', status: 'entwurf', ...daten } : { typ: 'angebot', status: 'entwurf', nr: naechsteNummer(c, 'angebot'), datum: c.heute, gueltigBis: Datum.plus(c.heute, Number(c.R.p('angebote').gueltig)), mwst: Number(c.R.p('angebote').mwst), ...daten };
       if (d.telefon) neu.telefon = d.telefon;
@@ -301,6 +305,13 @@ const Auftraege = (() => {
       d = { ...neu, id };
       return id;
     }
+    const kundeFeld = $('[name=kunde]', hg);
+    if (kundeFeld && !gesperrt) kundeFeld.addEventListener('change', () => {
+      const k = c.typ('kunde').find((x) => x.name.toLowerCase() === kundeFeld.value.trim().toLowerCase()); if (!k) return;
+      const setze = (n, v) => { const el = $(`[name=${n}]`, hg); if (el && v && !el.value.trim()) el.value = v; };
+      setze('adresse', k.adresse); setze('email', k.email); const art = $('[name=kundenart]', hg); if (art && k.art) art.value = k.art;
+      if (k.telefon && !d.telefon) d.telefon = k.telefon;
+    });
     $('#pos-liste', hg).addEventListener('input', (e) => {
       const tr = e.target.closest('tr[data-pos]'); if (!tr) return;
       if (e.target.classList.contains('p-text')) { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }

@@ -172,6 +172,8 @@ const BAUSTEINE = {
       praefix: { typ: 'text', name: 'Nummer beginnt mit', wert: 'R' },
       ziel: { typ: 'zahl', name: 'Zahlungsziel', wert: 14, min: 0, max: 60, einheit: 'Tage' },
       mahnung: { typ: 'zahl', name: 'Erinnerung nach', wert: 7, min: 1, max: 30, einheit: 'Tage über Ziel' },
+      mahnAbstand: { typ: 'zahl', name: 'Nächste Mahnstufe nach', wert: 14, min: 7, max: 30, einheit: 'Tage' },
+      mahngebuehr: { typ: 'zahl', name: 'Mahngebühr ab 2. Mahnung', wert: 5, min: 0, max: 15, einheit: '€' },
       erechnung: { typ: 'wahl', name: 'E-Rechnung', wert: 'XRechnung (XML)', optionen: ['XRechnung (XML)', 'aus'] },
       lohnanteil: { typ: 'schalter', name: 'Arbeitskosten nach § 35a ausweisen', wert: 'ja' },
       schluss: { typ: 'langtext', name: 'Text nach den Positionen', wert: 'Vielen Dank für Ihren Auftrag. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer.' },
@@ -195,6 +197,62 @@ const BAUSTEINE = {
     p: {
       spalten: { typ: 'text', name: 'Spalten (sechs, mit Komma)', wert: 'Anfrage, Angebot, Auftrag, Auf der Baustelle, Rechnung, Bezahlt' },
       bezahltTage: { typ: 'zahl', name: 'Bezahlte Karten zeigen', wert: 30, min: 7, max: 365, einheit: 'Tage' },
+    },
+  },
+
+  kunden: {
+    name: 'Kunden', gruppe: 'stamm', icon: 'person',
+    kurz: 'Kontaktbuch: jeder Kunde mit Angeboten, Baustellen, Rechnungen und Fotos.',
+    wofuer: 'Die Telefonnummer steht im Handy vom Chef, die Anschrift im alten Angebot, die Fotos auf dem Handy vom Gesellen.',
+    ein: ['angebote', 'rechnungen', 'baustellen'],
+    p: {
+      anlegen: { typ: 'schalter', name: 'Neue Namen aus Angeboten übernehmen', wert: 'ja' },
+      umsatz: { typ: 'schalter', name: 'Umsatz und offene Beträge zeigen', wert: 'ja' },
+    },
+  },
+  kalender: {
+    name: 'Kalender', gruppe: 'stamm', icon: 'kalender',
+    kurz: 'Monat und Tag wie im Outlook: Einsätze, Termine, Urlaub, Fälligkeiten, Wetter.',
+    wofuer: 'Termine stehen im Taschenkalender, der Wochenplan an der Wand, das Wetter schaut jeder selbst nach.',
+    ein: ['wochenplan', 'urlaub', 'angebote', 'rechnungen', 'partner'],
+    p: {
+      wetter: { typ: 'schalter', name: 'Wetter vor Ort anzeigen', wert: 'ja' },
+      regen: { typ: 'zahl', name: 'Warnung ab Regen', wert: 5, min: 1, max: 20, einheit: 'mm/Tag' },
+      wind: { typ: 'zahl', name: 'Warnung ab Wind', wert: 50, min: 20, max: 90, einheit: 'km/h' },
+      faellige: { typ: 'schalter', name: 'Fällige Rechnungen eintragen', wert: 'ja' },
+    },
+  },
+  nachrichten: {
+    name: 'Nachrichten', gruppe: 'erfassen', icon: 'angebot',
+    kurz: 'Chat zwischen Büro und jedem Mitarbeiter, mit Bildern. Statt WhatsApp.',
+    wofuer: 'Fotos und Rückfragen gehen über private WhatsApp-Gruppen und sind nach dem Handywechsel weg.',
+    ein: ['app'],
+    p: {
+      bilder: { typ: 'schalter', name: 'Bilder erlaubt', wert: 'ja' },
+      gelesen: { typ: 'schalter', name: 'Gelesen anzeigen', wert: 'ja' },
+    },
+  },
+  lager: {
+    name: 'Lager', gruppe: 'erfassen', icon: 'material',
+    kurz: 'Bestand führt sich aus Lieferscheinen und Baustellen, gezählt wird nur stichprobenweise.',
+    wofuer: 'Keiner weiß, wie viele Konterlatten noch da sind. Die Inventur kostet jedes Jahr einen Samstag.',
+    ein: ['lieferscheine', 'material', 'rechner', 'app'],
+    p: {
+      bestaetigen: { typ: 'schalter', name: 'Mitarbeiter bestätigen Entnahmen', wert: 'ja' },
+      stichprobe: { typ: 'zahl', name: 'Artikel pro Stichprobe', wert: 4, min: 1, max: 12, einheit: 'Stück' },
+      zweiKisten: { typ: 'schalter', name: 'Zwei-Kisten für Kleinteile', wert: 'ja' },
+    },
+  },
+  partner: {
+    name: 'Partnerbuch', gruppe: 'auftrag', icon: 'team',
+    kurz: 'Befreundete Gewerke anfragen: Adresse, Fotos, Zeitraum gehen mit einem Klick raus.',
+    wofuer: 'Für den Elektriker oder Maler wird jedes Mal telefoniert, Fotos per WhatsApp geschickt und der Termin dann doch vergessen.',
+    ein: ['baustellen', 'app'],
+    p: {
+      fotos: { typ: 'schalter', name: 'Fotos aus dem Bautagebuch mitschicken', wert: 'ja' },
+      frist: { typ: 'zahl', name: 'Antwort erbeten in', wert: 3, min: 1, max: 14, einheit: 'Tage' },
+      imKalender: { typ: 'schalter', name: 'Zusagen im Kalender eintragen', wert: 'ja' },
+      gewerke: { typ: 'text', name: 'Gewerke', wert: 'Elektro, Maler, Klempner, Heizung/Sanitär, Gerüstbau, Statik' },
     },
   },
 
@@ -224,7 +282,7 @@ const ABLAEUFE = {
     { name: 'Entwurf', text: 'Aus dem Angebot übernommen oder neu, Regiezettel der Baustelle dazu' },
     { name: 'Stellen', text: 'Fortlaufende Nummer, Datum, Fälligkeit. Danach nicht mehr änderbar' },
     { name: 'Arbeitskosten ausweisen', text: 'Für Privatkunden (§ 35a EStG)', schalter: 'lohnanteil' },
-    { name: 'Überfällig', text: 'Hinweis in der Übersicht, Zahlungserinnerung druckbar' },
+    { name: 'Überfällig', text: 'Hinweis in der Übersicht, dann Zahlungserinnerung, 1., 2. und letzte Mahnung im eingestellten Abstand' },
     { name: 'Bezahlt', text: 'Zahlungseingang abhaken' },
   ],
   tafel: [
@@ -242,7 +300,7 @@ const ABLAEUFE = {
   ],
 };
 /* In diese Bausteine kann Richtwerk eigene Felder einbauen */
-const MIT_FELDERN = ['belege', 'lieferscheine', 'material', 'bautagebuch', 'regie', 'angebote', 'rechnungen'];
+const MIT_FELDERN = ['kunden', 'belege', 'lieferscheine', 'material', 'bautagebuch', 'regie', 'angebote', 'rechnungen'];
 
 const GRUPPEN = {
   quelle: { name: 'Start', farbe: '#6f94ff' },
@@ -257,7 +315,7 @@ const GRUPPEN = {
 /* Regeln, die sich aus dem Aufbau eines Betriebs ergeben */
 function regeln(cfg) {
   const bk = (cfg && cfg.baukasten) || { knoten: [], kanten: [] };
-  const typen = new Set(bk.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant').map((k) => k.typ));
+  const typen = new Set(bk.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant' && !k.aus).map((k) => k.typ));
   const hat = (t) => typen.has(t);
   const verb = (a, b) => hat(a) && hat(b) && bk.kanten.some((k) => k.von === a && k.zu === b);
   const p = (t) => {
@@ -337,6 +395,21 @@ function wirkungen(cfg, typ) {
     out.push(R.p('rechnungen').erechnung === 'aus' ? 'Keine E-Rechnung.' : 'Zu jeder Rechnung gibt es die E-Rechnung als XRechnung-Datei.');
     out.push(R.verb('rechnungen', 'export') ? `Ausgangsrechnungen kommen ins Monatspaket für ${R.p('export').empfaenger}.` : 'Geht nicht ans Steuerbüro.');
   }
+  if (typ === 'kunden') {
+    out.push('Im Büro als Bereich „Kunden“ mit einer Akte pro Kunde.');
+    out.push(R.an('kunden', 'anlegen') ? 'Wer im Angebot neu ist, wird einmal als Kunde angelegt. Nichts wird doppelt eingetragen.' : 'Kunden werden nur von Hand angelegt.');
+  }
+  if (typ === 'kalender') out.push('Im Büro als Bereich „Kalender“.' + (R.an('kalender', 'wetter') ? ` Mit Wetter, Warnung ab ${R.p('kalender').regen} mm Regen oder ${R.p('kalender').wind} km/h Wind.` : ' Ohne Wetter.'));
+  if (typ === 'nachrichten') out.push(R.imApp('nachrichten') ? 'Mitarbeiter schreiben dem Büro aus der App' + (R.an('nachrichten', 'bilder') ? ', auch mit Fotos.' : ', nur Text.') : 'Mit der App verbinden, sonst gibt es niemanden zum Schreiben.');
+  if (typ === 'lager') {
+    out.push('Im Büro als Bereich „Lager“.');
+    out.push(R.verb('lieferscheine', 'lager') ? 'Lieferscheine werden als Wareneingang angeboten.' : 'Mit „Lieferscheine“ verbinden, damit Zugänge von selbst kommen.');
+    if (R.imApp('lager') && R.an('lager', 'bestaetigen')) out.push('Auf der Baustelle bestätigen die Mitarbeiter Entnahmen mit „Passt“ oder „Anders“.');
+  }
+  if (typ === 'partner') {
+    out.push('Im Büro als Bereich „Partner“. Aus jeder Baustelle kann ein Partner angefragt werden.');
+    out.push(R.an('partner', 'imKalender') ? 'Sagt der Partner zu, steht er im Kalender der Baustelle.' : 'Zusagen werden nicht in den Kalender eingetragen.');
+  }
   const k = ((cfg && cfg.baukasten && cfg.baukasten.knoten) || []).find((x) => x.typ === typ) || {};
   if (k.name) out.push(`Heißt beim Kunden „${k.name}“.`);
   if ((k.felder || []).length) out.push(`${k.felder.length} eigene ${k.felder.length === 1 ? 'Feld' : 'Felder'}: ${k.felder.map((f) => f.name).join(', ')}.`);
@@ -348,3 +421,46 @@ function wirkungen(cfg, typ) {
 function leererBaukasten() {
   return { knoten: [{ id: 'k_app', typ: 'app', x: 60, y: 220, p: {} }], kanten: [] };
 }
+
+/* Feinregler: dieselben Bedienelemente im Entwickler-Tool und in den
+   Einstellungen des Betriebs. Zahl = Regler + Zahlenfeld, Schalter = Kippschalter,
+   Auswahl = Knopfleiste (bis drei Möglichkeiten) oder Liste. */
+const Feinregler = (() => {
+  function feld(name, d, w) {
+    if (d.typ === 'langtext') return `<label class="feld fr-lang"><span>${esc(d.name)}</span><textarea data-bp="${name}" rows="${name === 'agb' || name === 'katalog' || name === 'widerrufText' ? 8 : 3}" class="${name === 'katalog' || name === 'lieferanten' ? 'mono' : ''}">${esc(w)}</textarea></label>`;
+    if (d.typ === 'schalter') return `<label class="fr-zeile fr-schalter"><span class="fr-name">${esc(d.name)}</span><span class="kipp"><input type="checkbox" data-bp="${name}" data-art="schalter" ${w === 'ja' ? 'checked' : ''}><i></i></span></label>`;
+    if (d.typ === 'wahl') {
+      const opt = d.optionen || [];
+      if (opt.length <= 3 && opt.every((o) => o.length <= 16)) return `<div class="fr-zeile"><span class="fr-name">${esc(d.name)}</span><span class="fr-wahl" role="radiogroup">${opt.map((o) => `<label><input type="radio" name="fr-${name}" data-bp="${name}" data-art="wahl" value="${esc(o)}" ${o === w ? 'checked' : ''}><span>${esc(o)}</span></label>`).join('')}</span></div>`;
+      return `<label class="fr-zeile"><span class="fr-name">${esc(d.name)}</span><select data-bp="${name}">${opt.map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    }
+    if (d.typ === 'text') return `<label class="feld"><span>${esc(d.name)}</span><input data-bp="${name}" value="${esc(w)}"></label>`;
+    const schritt = d.min % 1 || d.max <= 5 ? 0.1 : d.max > 300 ? 10 : 1;
+    return `<div class="fr-zeile fr-zahl"><span class="fr-name">${esc(d.name)}</span><input type="range" data-regler="${name}" min="${d.min}" max="${d.max}" step="${schritt}" value="${esc(w)}" aria-label="${esc(d.name)}"><span class="fr-wert"><input type="number" data-bp="${name}" data-art="zahl" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${schritt}" aria-label="${esc(d.name)} in ${esc(d.einheit)}"><small>${esc(d.einheit)}</small></span></div>`;
+  }
+  function html(typ, werte, { ohneLang = false } = {}) {
+    const B = BAUSTEINE[typ]; const e = Object.entries(B.p || {});
+    if (!e.length) return '<p class="hinweis-zeile">Dieser Baustein hat keine Feineinstellungen.</p>';
+    const kurz = e.filter(([, d]) => d.typ !== 'langtext' && d.typ !== 'text'); const text = e.filter(([, d]) => d.typ === 'text'); const lang = ohneLang ? [] : e.filter(([, d]) => d.typ === 'langtext');
+    return `${kurz.length ? `<div class="fr-liste">${kurz.map(([n, d]) => feld(n, d, werte[n])).join('')}</div>` : ''}${text.map(([n, d]) => feld(n, d, werte[n])).join('')}${lang.map(([n, d]) => feld(n, d, werte[n])).join('')}`;
+  }
+  function lesen(wurzel, typ) {
+    const B = BAUSTEINE[typ]; const p = {};
+    $$('[data-bp]', wurzel).forEach((el) => {
+      const n = el.dataset.bp; const d = B.p[n]; if (!d) return;
+      if (el.dataset.art === 'schalter') p[n] = el.checked ? 'ja' : 'nein';
+      else if (el.dataset.art === 'wahl') { if (el.checked) p[n] = el.value; }
+      else if (d.typ === 'zahl') p[n] = Math.min(d.max, Math.max(d.min, Number(String(el.value).replace(',', '.')) || d.wert));
+      else p[n] = el.value;
+    });
+    return p;
+  }
+  // Regler und Zahlenfeld laufen gemeinsam
+  document.addEventListener('input', (e) => {
+    const r = e.target.closest && e.target.closest('[data-regler]');
+    if (r) { const z = r.parentElement.querySelector(`[data-bp="${r.dataset.regler}"]`); if (z) z.value = r.value; return; }
+    const z = e.target.closest && e.target.closest('[data-art=zahl]');
+    if (z) { const reg = z.closest('.fr-zahl').querySelector('[data-regler]'); if (reg) reg.value = z.value; }
+  });
+  return { html, lesen };
+})();
