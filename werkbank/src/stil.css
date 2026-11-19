@@ -771,3 +771,63 @@ body.kunde-modus { background: #eef0f2; }
   .kd-kopf .kd-knopf { padding: 8px 10px; font-size: 13px; }
   .kd-firma small { display: none; }
 }
+
+/* ---------- Einsprechen ---------- */
+.sp-mikro { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.sp-mikro small { display: block; color: #6a726c; font-size: 12.5px; margin-top: 2px; }
+.sp-knopf { width: 64px; height: 64px; border-radius: 50%; border: 0; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; flex: none; cursor: pointer; }
+.sp-knopf .ic { width: 28px; height: 28px; }
+.sp-knopf.an { background: #c0392b; animation: sp-puls 1.2s infinite; }
+@keyframes sp-puls { 0% { box-shadow: 0 0 0 0 rgba(192,57,43,.45); } 70% { box-shadow: 0 0 0 14px rgba(192,57,43,0); } 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); } }
+.sp-erkannt { border: 1px solid #dadfd7; border-radius: 6px; padding: 12px; background: #fafbf9; }
+.sp-kopf { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
+.sp-pos td { padding: 4px 8px; }
+.sp-leer { color: #6a726c; font-size: 13px; margin: 6px 0 0; }
+.sp-ausblick { font-size: 12px; color: #7a827c; margin: 12px 0 0; }
+.sprach-kopf { display: inline-flex; align-items: center; gap: 6px; }
+.a-gruss { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 4px 16px; }
+.a-gruss h1 { margin: 0; font-size: 26px; font-weight: 600; }
+.sprach-rund { width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; flex: none; }
+.sprach-rund .ic { width: 22px; height: 22px; }
+.erin-haken { border: 1px solid #cfd4cc; background: #fff; border-radius: 50%; width: 34px; height: 34px; display: grid; place-items: center; flex: none; }
+.erin-haken .ic { width: 16px; height: 16px; }
+.bestell-gruppe .kopf .rechts { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.bestell-gruppe .kopf a.k { text-decoration: none; }
+.liste-zeile small .ic { width: 12px; height: 12px; vertical-align: -1px; }
+
+/* ---------- Rechner ---------- */
+.r-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0 14px; }
+.mit-einheit { display: flex; align-items: stretch; }
+.mit-einheit input { flex: 1; min-width: 0; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+.mit-einheit i { font-style: normal; font-size: 12px; color: #5f6862; background: #eef0ec; border: 1px solid #d9ddd6; border-left: 0; border-radius: 0 4px 4px 0; padding: 0 8px; display: grid; place-items: center; white-space: nowrap; }
+.r-ergebnis { border-top: 2px solid #1d2420; margin-top: 6px; padding-top: 12px; }
+.r-kacheln { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.r-kacheln > div { border: 1px solid #dadfd7; border-radius: 4px; padding: 8px 10px; }
+.r-kacheln small { display: block; font-size: 11.5px; color: #66706a; }
+.r-kacheln b { font-size: 20px; font-variant-numeric: tabular-nums; }
+.r-kacheln i { display: block; font-style: normal; font-size: 11px; color: #7a827c; }
+.r-kacheln .gross.ok { background: var(--ok-hell); } .r-kacheln .gross.info { background: #e7f0fa; } .r-kacheln .gross.bad { background: #fbebeb; }
+.r-grenzen { list-style: none; padding: 0; margin: 0 0 8px; font-size: 13px; }
+.r-grenzen li { padding: 4px 0 4px 20px; position: relative; }
+.r-grenzen li::before { content: ''; position: absolute; left: 4px; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: #c0392b; }
+.r-grenzen li.ok::before { background: #2f7a4f; }
+.r-hinweis { font-size: 12px; color: #6a726c; margin: 10px 0 0; }
+.r-richtwert { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #7a5a10; background: #fff4df; border-radius: 10px; padding: 3px 9px; }
+.r-richtwert .ic { width: 13px; height: 13px; }
+.r-schichten td { padding: 4px 6px; }
+.r-schichten select, .r-schichten input:not([type=checkbox]) { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 5px 6px; font: inherit; font-size: 13px; }
+
+/* ---------- Kalkulation im Angebot ---------- */
+.kalk { border: 1px solid #c9d3e6; background: #f4f7fc; border-radius: 6px; padding: 12px; margin: 4px 0 10px; }
+.kalk-kopf small { display: block; color: #5f6862; font-size: 12px; margin: 2px 0 8px; }
+.kalk-raster { display: grid; grid-template-columns: repeat(5, minmax(110px, 1fr)); gap: 0 10px; }
+.kalk-raster .breit { grid-column: 1 / -1; }
+.kalk-fuss { display: flex; gap: 12px; align-items: center; justify-content: space-between; font-size: 13px; flex-wrap: wrap; }
+@media (max-width: 760px) { .kalk-raster { grid-template-columns: 1fr 1fr; } }
+.muster-hinweis { display: flex; gap: 8px; align-items: center; font-size: 13px; background: #fff4df; color: #6d4b10; border-radius: 6px; padding: 8px 10px; margin: 0 0 12px; }
+.muster-hinweis .ic { width: 16px; height: 16px; }
+.recht-knoepfe .k { margin: 0 6px 6px 0; }
+.r-hersteller { border: 1px solid #e3d3a8; background: #fffaf0; border-radius: 4px; padding: 10px 12px; margin-top: 10px; font-size: 13px; }
+.r-hersteller p { margin: 4px 0 8px; color: #5f5640; }
+.r-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.r-links a { text-decoration: none; }

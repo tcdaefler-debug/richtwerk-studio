@@ -156,7 +156,7 @@ async function boot() {
     } else {
       // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
       const cfg = await Store.ladeCfg('ahlers');
-      if (cfg && (cfg.version || 1) < 4) {
+      if (cfg && (cfg.version || 1) < 5) {
         const t = $('.laden > div');
         await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
       }

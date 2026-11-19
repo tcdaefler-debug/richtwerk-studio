@@ -72,7 +72,11 @@ const BAUSTEINE = {
     kurz: 'Geselle meldet, was fehlt. Der Chef sieht es gesammelt.',
     wofuer: 'Material wird per Anruf beim Chef bestellt, der gerade auf dem Dach steht.',
     ein: ['app', 'baustellen'],
-    p: { haendler: { typ: 'text', name: 'Bestellen bei', wert: 'Holzhandel Ritter' } },
+    p: {
+      haendler: { typ: 'text', name: 'Bestellen bei (Standard)', wert: 'Holzhandel Ritter' },
+      lieferanten: { typ: 'langtext', name: 'Händler (Name | Telefon | E-Mail)', wert: 'Holzhandel Ritter | 04221 99 87 0 | bestellung@holz-ritter.example\nDachdecker-Einkauf | 04431 70 22 0 | ganderkesee@dachdecker-einkauf.example\nBaustoffe Wübbe | 04222 41 18 | info@wuebbe-baustoffe.example' },
+      sprache: { typ: 'schalter', name: 'Einsprechen erlaubt', wert: 'ja' },
+    },
   },
   tagelohn: {
     name: 'Tagelöhner', gruppe: 'erfassen', icon: 'helfer',
@@ -174,6 +178,15 @@ const BAUSTEINE = {
     },
   },
 
+  rechner: {
+    name: 'Rechner', gruppe: 'auftrag', icon: 'rechner',
+    kurz: 'Lattung, Materialmengen und U-Wert, als PDF. Richtwerte, Statik bleibt beim Hersteller.',
+    wofuer: 'Latten und Schrauben werden auf dem Zettel überschlagen, beim Bauherrn fehlt eine schnelle Aussage zum Dämmwert.',
+    ein: ['app'],
+    p: {
+      verschnitt: { typ: 'zahl', name: 'Verschnitt Latten', wert: 10, min: 0, max: 30, einheit: '%' },
+    },
+  },
   tafel: {
     name: 'Auftragstafel', gruppe: 'auftrag', icon: 'plan',
     kurz: 'Jeder Auftrag eine Karte: Anfrage, Angebot, Auftrag, Baustelle, Rechnung, Bezahlt.',
@@ -188,6 +201,8 @@ const BAUSTEINE = {
   /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
   wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
   geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
+  assistent: { name: 'KI-Assistent', gruppe: 'geplant', icon: 'mikro', kurz: 'Anfrage einsprechen, daraus Aufmaß und Angebotsentwurf.', wofuer: 'Nach dem Kundentelefonat wird alles abends noch einmal abgetippt.', ein: [], p: {} },
+  lasten: { name: 'Wind- und Schneelast', gruppe: 'geplant', icon: 'rechner', kurz: 'Zonen nach Standort, Höhe und Gelände.', wofuer: 'Lastzonen werden jedes Mal in Tabellen nachgeschlagen.', ein: [], p: {} },
   aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
 };
 
@@ -305,6 +320,12 @@ function wirkungen(cfg, typ) {
   }
   if (typ === 'angebote') {
     out.push(R.an('angebote', 'onlineAnnahme') ? `Der Kunde bekommt einen Link, nimmt online an${R.an('angebote', 'unterschriftOnline') ? ' und unterschreibt' : ''}. Das Büro sieht es sofort.` : 'Angebote werden nur gedruckt oder als PDF verschickt.');
+  }
+  if (typ === 'material') {
+    out.push(R.an('material', 'sprache') ? 'Chef und Mitarbeiter können Bestellungen und Erinnerungen einsprechen.' : 'Einsprechen ist aus.');
+  }
+  if (typ === 'rechner') {
+    out.push('Im Büro als Bereich „Rechner“' + (R.imApp('rechner') ? ' und in der App unter „Erfassen“.' : '. Mit der App verbinden, damit die Gesellen ihn auf dem Dach haben.'));
   }
   if (typ === 'tafel') {
     out.push('Im Büro als Bereich „Auftragstafel“ mit Karten zum Verschieben.');

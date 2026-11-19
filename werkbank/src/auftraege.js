@@ -18,7 +18,7 @@ const Auftraege = (() => {
   function summen(doc, mwst) {
     const netto = rund((doc.positionen || []).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
     const steuer = rund(netto * mwst / 100);
-    const lohn = rund((doc.positionen || []).filter((p) => p.einheit === 'Std' || p.lohn).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
+    const lohn = rund((doc.positionen || []).reduce((s, p) => s + (p.lohnBetrag ? zahl(p.lohnBetrag) : p.einheit === 'Std' || p.lohn ? rund(zahl(p.menge) * zahl(p.preis)) : 0), 0));
     return { netto, steuer, brutto: rund(netto + steuer), lohn };
   }
   const mwstVon = (c, d) => (d.mwst !== undefined ? Number(d.mwst) : Number(c.R.p('angebote').mwst));
@@ -209,7 +209,9 @@ const Auftraege = (() => {
         <div class="pos-huelle"><table class="t pos-tabelle"><thead><tr><th>Pos.</th><th>Leistung</th><th style="width:90px">Menge</th><th style="width:90px">Einheit</th><th style="width:110px">Einzelpreis €</th><th class="r" style="width:110px">Gesamt</th><th></th></tr></thead><tbody id="pos-liste"></tbody></table></div>
         ${gesperrt ? '' : `<div class="pos-werkzeug"><button class="k klein" type="button" data-f="pos-neu">${Icon('plus')} Position</button>
           ${kat.length ? `<select id="katalog" aria-label="Aus dem Leistungskatalog übernehmen"><option value="">Aus Katalog übernehmen …</option>${kat.map((k, i) => `<option value="${i}">${esc(k.text)} (${Zahl.eur(k.preis)}/${esc(k.einheit)})</option>`).join('')}</select>` : ''}
+          ${!istR ? `<button class="k klein" type="button" data-f="kalk-auf">${Icon('rechner')} Position kalkulieren</button>` : ''}
           ${regieOffen.length ? `<button class="k klein" type="button" data-f="regie">${Icon('unterschrift')} ${regieOffen.length} Regiezettel übernehmen</button>` : ''}</div>`}
+        ${gesperrt || istR ? '' : kalkPanel(c)}
         <div class="pos-summe" id="pos-summe"></div>`,
       fuss: `${d.id && d.status === 'entwurf' ? `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>` : '<span style="margin-right:auto"></span>'}
         <button class="k" data-f="drucken" data-id="${istR ? 'rechnung' : 'angebot'}">${Icon('drucken')} Ansehen & drucken</button>${knoepfe.join('')}${gesperrt ? '' : '<button class="k haupt" data-f="speichern">Speichern</button>'}`,
@@ -221,6 +223,13 @@ const Auftraege = (() => {
           regieOffen.forEach((r) => positionen.push({ text: `Regiearbeit ${Datum.kurz(r.datum)}: ${r.text}${r.material ? ` (Material: ${r.material})` : ''}, lt. Regiebericht`, menge: Number(r.stunden) * Number(r.leute || 1), einheit: 'Std', preis: satz, regie: r.id }));
           zeichnen(); meldung(`${regieOffen.length} Regiezettel übernommen. Sie werden beim Stellen als abgerechnet markiert.`);
           const knopf = $('[data-f=regie]', hg); if (knopf) knopf.remove();
+        },
+        'kalk-auf': () => { const p = $('#kalk', hg); p.hidden = !p.hidden; if (!p.hidden) { kalkRechnen(); $('[data-k=text]', p).focus(); } },
+        'kalk-uebernehmen': () => {
+          const r = kalkRechnen(); if (!r) return meldung('Bitte Menge und Material oder Stunden eintragen.', 'fehler');
+          lesen(); positionen.push({ text: r.text || 'Leistung', menge: r.menge, einheit: r.einheit, preis: r.preis, lohnBetrag: r.lohn, kalk: { ek: r.ek, std: r.std, satz: r.satz, aufschlag: r.aufschlag } });
+          zeichnen(); $('#kalk', hg).hidden = true; $$('#kalk input', hg).forEach((i) => { if (i.dataset.k !== 'menge') i.value = ''; });
+          meldung('Position übernommen');
         },
         speichern: () => { const id = sichern(); if (id) { Fenster.schliesse(); meldung('Gespeichert'); } },
         drucken: (b) => { const id = sichern(); if (!id) return; const neu = Store.items.find((i) => i.id === id); drucken(dokumentHtml(ctxNeu(), neu, b.dataset.id)); },
@@ -298,6 +307,15 @@ const Auftraege = (() => {
       const g = rund(zahl($('.p-menge', tr).value) * zahl($('.p-preis', tr).value)); $('.p-gesamt', tr).textContent = Zahl.eur(g);
       lesen(); summeZeigen();
     });
+    function kalkRechnen() {
+      const p = $('#kalk', hg); if (!p) return null; const v = (k) => $(`[data-k=${k}]`, p).value;
+      const K = kalk(c); const satz = Number(v('satz')) || 0; const menge = zahl(v('menge')); const ek = zahl(v('ek')); const std = zahl(v('std'));
+      const mat = rund(ek * (1 + K.aufschlag / 100)); const lohn = rund(std * satz); const gesamt = rund(mat + lohn);
+      const preis = menge ? rund(gesamt / menge) : 0;
+      $('#kalk-aus', hg).innerHTML = menge && gesamt ? `Material ${Zahl.eur(ek)} + ${K.aufschlag} % = <b>${Zahl.eur(mat)}</b> · Lohn ${String(std).replace('.', ',')} Std × ${Zahl.eur(satz)} = <b>${Zahl.eur(lohn)}</b> · Einzelpreis <b>${Zahl.eur(preis)} je ${esc(v('einheit'))}</b>` : 'Menge und Material oder Stunden eintragen.';
+      return menge && gesamt ? { text: v('text').trim(), menge, einheit: v('einheit'), preis, lohn, ek, std, satz, aufschlag: K.aufschlag } : null;
+    }
+    const kp = $('#kalk', hg); if (kp) kp.addEventListener('input', kalkRechnen);
     const kSel = $('#katalog', hg);
     if (kSel) kSel.addEventListener('change', () => { if (kSel.value === '') return; lesen(); const k = kat[Number(kSel.value)]; positionen.push({ text: k.text, menge: 1, einheit: k.einheit, preis: k.preis }); kSel.value = ''; zeichnen(); });
     zeichnen(); bilderNachladen(hg, Store.items);
@@ -325,6 +343,40 @@ const Auftraege = (() => {
     return `${Datum.kurz(tage[0])}${tage[0].slice(0, 4)} bis ${Datum.kurz(tage[tage.length - 1])}${tage[tage.length - 1].slice(0, 4)}`;
   }
   const ctxNeu = () => kontext(Store.cfg, Store.items, (Sitzung.lies('buero') || {}).pid);
+
+  /* ---------- Kalkulation: Stundenlohn × Faktor = Verrechnungssatz, Material mit Aufschlag ---------- */
+  function kalk(c) {
+    const k = c.cfg.kalkulation || {}; const faktor = Number(k.faktor) || 2; const aufschlag = Number(k.aufschlag ?? 15);
+    const lohn = k.lohn || {};
+    const leute = c.arbeiter().map((p) => ({ p, lohn: Number(lohn[p.id]) || 0 })).filter((x) => x.lohn);
+    const gesellen = leute.filter((x) => x.p.rolle !== 'azubi');
+    const mittel = gesellen.length ? gesellen.reduce((s, x) => s + x.lohn, 0) / gesellen.length : 0;
+    return { faktor, aufschlag, leute, mittel, satz: rund(mittel * faktor) };
+  }
+  function kalkPanel(c) {
+    const K = kalk(c);
+    return `<div class="kalk" id="kalk" hidden><div class="kalk-kopf"><b>Position kalkulieren</b><small>Material mit ${K.aufschlag} % Aufschlag, Lohn mit Faktor ${String(K.faktor).replace('.', ',')}. Einstellbar unter Einstellungen → Kalkulation.</small></div>
+      <div class="kalk-raster"><label class="feld breit"><span>Leistung</span><input data-k="text" placeholder="z. B. Dachfenster 78 x 118 einbauen inkl. Eindeckrahmen"></label>
+        <label class="feld"><span>Menge</span><input data-k="menge" inputmode="decimal" value="1"></label>
+        <label class="feld"><span>Einheit</span><select data-k="einheit">${EINHEITEN.map((e) => `<option>${e}</option>`).join('')}</select></label>
+        <label class="feld"><span>Material Einkauf gesamt €</span><input data-k="ek" inputmode="decimal" placeholder="0"></label>
+        <label class="feld"><span>Stunden gesamt</span><input data-k="std" inputmode="decimal" placeholder="0"></label>
+        <label class="feld"><span>Stundensatz</span><select data-k="satz"><option value="${K.satz}">Mittellohn: ${Zahl.eur(K.satz)}</option>${K.leute.map((x) => `<option value="${rund(x.lohn * K.faktor)}">${esc(x.p.name)}: ${Zahl.eur(rund(x.lohn * K.faktor))}</option>`).join('')}</select></label></div>
+      <div class="kalk-fuss"><span id="kalk-aus"></span><button class="k haupt klein" type="button" data-f="kalk-uebernehmen">Übernehmen</button></div></div>`;
+  }
+  function kalkEinstellungen(c) {
+    if (!c.R.hat('angebote')) return '';
+    const K = kalk(c); const lohn = (c.cfg.kalkulation || {}).lohn || {};
+    return `<div class="karte" id="kalk-einst"><div class="kopf"><h3>Kalkulation</h3><span class="chip">fließt in Angebote</span></div><div class="koerper">
+      <div class="einstellungen-raster"><label class="feld"><span>Faktor auf den Stundenlohn</span><input data-kk="faktor" inputmode="decimal" value="${String(K.faktor).replace('.', ',')}"></label>
+        <label class="feld"><span>Materialaufschlag %</span><input data-kk="aufschlag" inputmode="decimal" value="${String(K.aufschlag).replace('.', ',')}"></label>
+        <div class="feld"><span>Mittellohn / Verrechnungssatz</span><b style="display:block;padding:8px 0">${Zahl.eur(K.mittel)} → ${Zahl.eur(K.satz)} je Std.</b></div></div>
+      <div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th><th class="r" style="width:150px">Stundenlohn €</th><th class="r">Verrechnungssatz</th></tr></thead><tbody>
+        ${c.arbeiter().map((p) => `<tr><td>${esc(p.name)} <small style="color:#7a827c">${esc(p.funktion || '')}</small></td><td class="r"><input class="num" style="width:110px;text-align:right" data-lohn="${p.id}" inputmode="decimal" value="${lohn[p.id] ? String(lohn[p.id]).replace('.', ',') : ''}"></td><td class="r num">${lohn[p.id] ? Zahl.eur(rund(lohn[p.id] * K.faktor)) : '–'}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p style="color:#6a726c;font-size:13px;margin:10px 0 12px">Der Faktor deckt Lohnnebenkosten, Gemeinkosten, Wagnis und Gewinn. Der Mittellohn ist der Durchschnitt der Gesellen und Helfer, ohne Azubis.</p>
+      <button class="k haupt" data-a="kalk-speichern">Kalkulation speichern</button></div></div>`;
+  }
 
   /* Aufgaben für die Übersicht */
   function aufgaben(c) {
@@ -366,9 +418,16 @@ const Auftraege = (() => {
             los: (b, hg) => { const w = Fenster.werte(hg); Uebergabe.buchhaltungsPaket(c, w.von, w.bis); },
           } });
       },
+      'kalk-speichern'(el, c) {
+        const r = $('#kalk-einst'); const lohn = {};
+        $$('[data-lohn]', r).forEach((i) => { const v = zahl(i.value); if (v) lohn[i.dataset.lohn] = v; });
+        Store.speichereCfg({ ...Store.cfg, kalkulation: { faktor: zahl($('[data-kk=faktor]', r).value) || 2, aufschlag: zahl($('[data-kk=aufschlag]', r).value), lohn } });
+        meldung('Kalkulation gespeichert');
+      },
       'auf-filter'(el) { zustand.filter = el.dataset.id; Buero.neuZeichnen(); },
     },
     aufgaben,
+    einstellungen: kalkEinstellungen,
   });
 
   return { summen, xrechnung, dokumentHtml, mwstVon, ueberfaellig, baustelleAusAngebot, offeneFragen, editor, chipDoc, STATUS };

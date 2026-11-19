@@ -6,6 +6,21 @@
    Rechts: das Angebot so, wie es gedruckt aussieht.
    Was der Kunde hier tut, steht sofort in der Betriebszentrale.
    ========================================================================= */
+/* Rechtliche Texte: vorhanden und sichtbar, aber Muster. Vor dem echten Einsatz prüfen lassen. */
+const RECHT_TITEL = { agb: 'Allgemeine Geschäftsbedingungen', widerruf: 'Widerrufsbelehrung', datenschutz: 'Datenschutzhinweis', impressum: 'Impressum' };
+function rechtText(c, was) {
+  const P = c.R.p('angebote'); const f = c.cfg;
+  if (was === 'impressum') return [`Angaben gemäß § 5 DDG`, `${f.name}${f.inhaber ? `\nInhaber: ${f.inhaber}` : ''}`, [f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join('\n'), [f.telefon && 'Telefon: ' + f.telefon, f.email && 'E-Mail: ' + f.email].filter(Boolean).join('\n'), f.ustid ? 'Umsatzsteuer-Identifikationsnummer: ' + f.ustid : '', 'Zuständige Handwerkskammer: [bitte ergänzen]\nEintragung in die Handwerksrolle: [bitte ergänzen]\nBerufshaftpflichtversicherung: [Versicherer und Geltungsbereich ergänzen]', 'Verbraucherstreitbeilegung: Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.'].filter(Boolean).join('\n\n');
+  return { agb: P.agb, widerruf: P.widerrufText, datenschutz: P.datenschutz }[was] || '';
+}
+
+Buero.erweitern({
+  einstellungen: (c) => `<div class="karte"><div class="kopf"><h3>Rechtliche Texte</h3><span class="chip warn">Muster, vor Einsatz prüfen</span></div><div class="koerper recht-knoepfe">
+    <p style="margin:0 0 12px;color:#5f6862">Diese Texte erscheinen auf Angeboten und auf der Seite, auf der Ihre Kunden online annehmen. Richtwerk pflegt sie für Sie ein. Die Muster ersetzen keine Rechtsberatung.</p>
+    ${Object.entries(RECHT_TITEL).map(([k, t]) => `<button class="k" data-a="recht" data-id="${k}">${Icon('paragraph')} ${t}</button>`).join(' ')}</div></div>`,
+  aktionen: { recht(el) { KundenSeite.lesen(el.dataset.id); } },
+});
+
 const KundenSeite = (() => {
   let leer = true;
 
@@ -98,7 +113,7 @@ const KundenSeite = (() => {
         </aside>
         <main class="kd-papier" aria-label="Angebot als Dokument">${Auftraege.dokumentHtml(c, a, a.status === 'angenommen' && c.R.an('angebote', 'bestaetigung') ? 'bestaetigung' : 'angebot')}</main>
       </div>
-      <footer class="kd-fuss">${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''} · ${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}${f.telefon ? ' · Tel. ' + esc(f.telefon) : ''} · <button class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutz</button></footer>
+      <footer class="kd-fuss">${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''} · ${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}${f.telefon ? ' · Tel. ' + esc(f.telefon) : ''} · <button class="kd-link" data-k="lesen" data-id="impressum">Impressum</button> · <button class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutz</button> · <button class="kd-link" data-k="lesen" data-id="agb">AGB</button></footer>
     </div>`;
     bilderNachladen(Wurzel(), Store.items);
     unterschrift();
@@ -118,10 +133,10 @@ const KundenSeite = (() => {
   }
 
   function lesen(was) {
-    const P = ctx().R.p('angebote');
-    const titel = { agb: 'Allgemeine Geschäftsbedingungen', widerruf: 'Widerrufsbelehrung', datenschutz: 'Datenschutzhinweis' }[was];
-    const text = { agb: P.agb, widerruf: P.widerrufText, datenschutz: P.datenschutz }[was] || '';
-    Fenster.oeffne({ titel, bereich: 'ui-buero-fenster kd-fenster', inhalt: `<div class="kd-lesetext">${esc(text).replace(/\n/g, '<br>')}</div>`,
+    const c = ctx(); const P = c.R.p('angebote');
+    const titel = RECHT_TITEL[was];
+    const text = rechtText(c, was);
+    Fenster.oeffne({ titel, bereich: 'ui-buero-fenster kd-fenster', inhalt: `<p class="muster-hinweis">${Icon('paragraph')} Mustertext: vor dem Einsatz von einem Anwalt prüfen lassen.</p><div class="kd-lesetext">${esc(text).replace(/\n/g, '<br>')}</div>`,
       fuss: `<button class="k" data-f="druck">${Icon('drucken')} Drucken / speichern</button><button class="k haupt" data-f="zu">Schließen</button>`,
       aktionen: { druck: () => drucken(`<div class="dokument"><h2>${esc(titel)}</h2><p>${esc(text).replace(/\n/g, '<br>')}</p></div>`) } });
   }
@@ -167,5 +182,5 @@ const KundenSeite = (() => {
     });
   }
 
-  return { start };
+  return { start, lesen: (was) => lesen(was) };
 })();

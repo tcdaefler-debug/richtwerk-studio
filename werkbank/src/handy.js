@@ -46,7 +46,9 @@ const Handy = (() => {
   BILD.start = (c) => {
     const R = c.R; const ich = c.ich; const h = new Date().getHours();
     const gruss = h < 11 ? 'Moin' : h < 18 ? 'Moin' : 'Guten Abend';
-    let html = `<div class="a-titel">${esc(Datum.lang(c.heute))}</div><h1 style="margin:0 4px 16px;font-size:26px;font-weight:600">${gruss}, ${esc(ich.name.split(' ')[0])}</h1>`;
+    let html = `<div class="a-titel">${esc(Datum.lang(c.heute))}</div><div class="a-gruss"><h1>${gruss}, ${esc(ich.name.split(' ')[0])}</h1>${R.hat('material') && R.an('material', 'sprache') ? `<button class="sprach-rund" data-sprache aria-label="Einsprechen">${Icon('mikro')}</button>` : ''}</div>`;
+    const erin = Sprache.meine(c);
+    if (erin.length) html += `<div class="a-titel">Erinnerungen</div><div class="a-karte">${erin.map((e) => `<div class="a-zeile"><span class="sym">${Icon('glocke')}</span><div class="text"><b>${esc(e.text)}</b><small>${esc(Sprache.wann(c, e))}</small></div><button class="erin-haken" data-erinnerung="${e.id}" aria-label="Erledigt">${Icon('haken')}</button></div>`).join('')}</div>`;
 
     if (ich.rolle === 'chef' || ich.rolle === 'buero') {
       const o = c.offen(); const n = o.urlaub.length + o.stunden.length + o.belege.filter((b) => b.status === 'offen').length + o.material.length;
@@ -136,6 +138,8 @@ const Handy = (() => {
     if (R.imApp('urlaub') && R.p('urlaub').krank === 'ja') k.push(`<button class="erfassen-kachel" data-a="unter" data-id="krank"><span class="sym">${Icon('krank')}</span><span><b>Krank melden</b><small>geht direkt ans Büro</small></span></button>`);
     if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>${esc(R.name('regie'))}</b><small>${esc(R.hinweis('regie') || 'Zusatzarbeit, Kunde unterschreibt')}</small></span></button>`);
     if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>${esc(R.name('bautagebuch'))}</b><small>${esc(R.hinweis('bautagebuch') || 'Fotos und Notiz zum Tag')}</small></span></button>`);
+    if (R.imApp('material') && R.an('material', 'sprache')) k.unshift(`<button class="erfassen-kachel gross sprach-kachel" data-sprache><span class="sym">${Icon('mikro')}</span><span><b>Einsprechen</b><small>Bestellung oder Erinnerung, einfach sagen</small></span></button>`);
+    if (R.imApp('rechner')) k.push(`<button class="erfassen-kachel" data-rechner="lattung"><span class="sym">${Icon('rechner')}</span><span><b>Lattung</b><small>Latten und Befestiger für das Dach</small></span></button>`, `<button class="erfassen-kachel" data-rechner="uwert"><span class="sym">${Icon('rechner')}</span><span><b>U-Wert</b><small>Dämmwert für den Bauherrn</small></span></button>`);
     if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
     return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };

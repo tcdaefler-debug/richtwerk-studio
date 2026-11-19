@@ -778,6 +778,66 @@ body.kunde-modus { background: #eef0f2; }
   .kd-firma small { display: none; }
 }
 
+/* ---------- Einsprechen ---------- */
+.sp-mikro { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.sp-mikro small { display: block; color: #6a726c; font-size: 12.5px; margin-top: 2px; }
+.sp-knopf { width: 64px; height: 64px; border-radius: 50%; border: 0; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; flex: none; cursor: pointer; }
+.sp-knopf .ic { width: 28px; height: 28px; }
+.sp-knopf.an { background: #c0392b; animation: sp-puls 1.2s infinite; }
+@keyframes sp-puls { 0% { box-shadow: 0 0 0 0 rgba(192,57,43,.45); } 70% { box-shadow: 0 0 0 14px rgba(192,57,43,0); } 100% { box-shadow: 0 0 0 0 rgba(192,57,43,0); } }
+.sp-erkannt { border: 1px solid #dadfd7; border-radius: 6px; padding: 12px; background: #fafbf9; }
+.sp-kopf { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; }
+.sp-pos td { padding: 4px 8px; }
+.sp-leer { color: #6a726c; font-size: 13px; margin: 6px 0 0; }
+.sp-ausblick { font-size: 12px; color: #7a827c; margin: 12px 0 0; }
+.sprach-kopf { display: inline-flex; align-items: center; gap: 6px; }
+.a-gruss { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 4px 16px; }
+.a-gruss h1 { margin: 0; font-size: 26px; font-weight: 600; }
+.sprach-rund { width: 48px; height: 48px; border-radius: 50%; border: 0; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; flex: none; }
+.sprach-rund .ic { width: 22px; height: 22px; }
+.erin-haken { border: 1px solid #cfd4cc; background: #fff; border-radius: 50%; width: 34px; height: 34px; display: grid; place-items: center; flex: none; }
+.erin-haken .ic { width: 16px; height: 16px; }
+.bestell-gruppe .kopf .rechts { display: flex; gap: 6px; flex-wrap: wrap; margin-left: auto; }
+.bestell-gruppe .kopf a.k { text-decoration: none; }
+.liste-zeile small .ic { width: 12px; height: 12px; vertical-align: -1px; }
+
+/* ---------- Rechner ---------- */
+.r-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0 14px; }
+.mit-einheit { display: flex; align-items: stretch; }
+.mit-einheit input { flex: 1; min-width: 0; border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+.mit-einheit i { font-style: normal; font-size: 12px; color: #5f6862; background: #eef0ec; border: 1px solid #d9ddd6; border-left: 0; border-radius: 0 4px 4px 0; padding: 0 8px; display: grid; place-items: center; white-space: nowrap; }
+.r-ergebnis { border-top: 2px solid #1d2420; margin-top: 6px; padding-top: 12px; }
+.r-kacheln { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-bottom: 12px; }
+.r-kacheln > div { border: 1px solid #dadfd7; border-radius: 4px; padding: 8px 10px; }
+.r-kacheln small { display: block; font-size: 11.5px; color: #66706a; }
+.r-kacheln b { font-size: 20px; font-variant-numeric: tabular-nums; }
+.r-kacheln i { display: block; font-style: normal; font-size: 11px; color: #7a827c; }
+.r-kacheln .gross.ok { background: var(--ok-hell); } .r-kacheln .gross.info { background: #e7f0fa; } .r-kacheln .gross.bad { background: #fbebeb; }
+.r-grenzen { list-style: none; padding: 0; margin: 0 0 8px; font-size: 13px; }
+.r-grenzen li { padding: 4px 0 4px 20px; position: relative; }
+.r-grenzen li::before { content: ''; position: absolute; left: 4px; top: 10px; width: 8px; height: 8px; border-radius: 50%; background: #c0392b; }
+.r-grenzen li.ok::before { background: #2f7a4f; }
+.r-hinweis { font-size: 12px; color: #6a726c; margin: 10px 0 0; }
+.r-richtwert { margin-right: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: #7a5a10; background: #fff4df; border-radius: 10px; padding: 3px 9px; }
+.r-richtwert .ic { width: 13px; height: 13px; }
+.r-schichten td { padding: 4px 6px; }
+.r-schichten select, .r-schichten input:not([type=checkbox]) { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 5px 6px; font: inherit; font-size: 13px; }
+
+/* ---------- Kalkulation im Angebot ---------- */
+.kalk { border: 1px solid #c9d3e6; background: #f4f7fc; border-radius: 6px; padding: 12px; margin: 4px 0 10px; }
+.kalk-kopf small { display: block; color: #5f6862; font-size: 12px; margin: 2px 0 8px; }
+.kalk-raster { display: grid; grid-template-columns: repeat(5, minmax(110px, 1fr)); gap: 0 10px; }
+.kalk-raster .breit { grid-column: 1 / -1; }
+.kalk-fuss { display: flex; gap: 12px; align-items: center; justify-content: space-between; font-size: 13px; flex-wrap: wrap; }
+@media (max-width: 760px) { .kalk-raster { grid-template-columns: 1fr 1fr; } }
+.muster-hinweis { display: flex; gap: 8px; align-items: center; font-size: 13px; background: #fff4df; color: #6d4b10; border-radius: 6px; padding: 8px 10px; margin: 0 0 12px; }
+.muster-hinweis .ic { width: 16px; height: 16px; }
+.recht-knoepfe .k { margin: 0 6px 6px 0; }
+.r-hersteller { border: 1px solid #e3d3a8; background: #fffaf0; border-radius: 4px; padding: 10px 12px; margin-top: 10px; font-size: 13px; }
+.r-hersteller p { margin: 4px 0 8px; color: #5f5640; }
+.r-links { display: flex; gap: 6px; flex-wrap: wrap; }
+.r-links a { text-decoration: none; }
+
 </style>
 <div id="wurzel"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -910,6 +970,9 @@ const Icon = (name) => {
     start: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z',
     uhr: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
     kalender: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+    mikro: 'M12 3a3 3 0 00-3 3v6a3 3 0 006 0V6a3 3 0 00-3-3zM6 11a6 6 0 0012 0M12 17v4M9 21h6',
+    rechner: 'M6 3h12v18H6zM9 7h6M9 11h1M12 11h0M15 11h0M9 14h1M12 14h0M15 14h0M9 17h1M12 17h0M15 17h0',
+    paragraph: 'M14 4h-3.5a3 3 0 000 6H14M10 4v16M14 4v16M9 20h6',
     beleg: 'M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6',
     liefer: 'M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-.01M17 19a2 2 0 1 0 0-.01',
     person: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21c0-4 4-6 8-6s8 2 8 6',
@@ -1277,7 +1340,11 @@ const BAUSTEINE = {
     kurz: 'Geselle meldet, was fehlt. Der Chef sieht es gesammelt.',
     wofuer: 'Material wird per Anruf beim Chef bestellt, der gerade auf dem Dach steht.',
     ein: ['app', 'baustellen'],
-    p: { haendler: { typ: 'text', name: 'Bestellen bei', wert: 'Holzhandel Ritter' } },
+    p: {
+      haendler: { typ: 'text', name: 'Bestellen bei (Standard)', wert: 'Holzhandel Ritter' },
+      lieferanten: { typ: 'langtext', name: 'Händler (Name | Telefon | E-Mail)', wert: 'Holzhandel Ritter | 04221 99 87 0 | bestellung@holz-ritter.example\nDachdecker-Einkauf | 04431 70 22 0 | ganderkesee@dachdecker-einkauf.example\nBaustoffe Wübbe | 04222 41 18 | info@wuebbe-baustoffe.example' },
+      sprache: { typ: 'schalter', name: 'Einsprechen erlaubt', wert: 'ja' },
+    },
   },
   tagelohn: {
     name: 'Tagelöhner', gruppe: 'erfassen', icon: 'helfer',
@@ -1379,6 +1446,15 @@ const BAUSTEINE = {
     },
   },
 
+  rechner: {
+    name: 'Rechner', gruppe: 'auftrag', icon: 'rechner',
+    kurz: 'Lattung, Materialmengen und U-Wert, als PDF. Richtwerte, Statik bleibt beim Hersteller.',
+    wofuer: 'Latten und Schrauben werden auf dem Zettel überschlagen, beim Bauherrn fehlt eine schnelle Aussage zum Dämmwert.',
+    ein: ['app'],
+    p: {
+      verschnitt: { typ: 'zahl', name: 'Verschnitt Latten', wert: 10, min: 0, max: 30, einheit: '%' },
+    },
+  },
   tafel: {
     name: 'Auftragstafel', gruppe: 'auftrag', icon: 'plan',
     kurz: 'Jeder Auftrag eine Karte: Anfrage, Angebot, Auftrag, Baustelle, Rechnung, Bezahlt.',
@@ -1393,6 +1469,8 @@ const BAUSTEINE = {
   /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
   wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
   geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
+  assistent: { name: 'KI-Assistent', gruppe: 'geplant', icon: 'mikro', kurz: 'Anfrage einsprechen, daraus Aufmaß und Angebotsentwurf.', wofuer: 'Nach dem Kundentelefonat wird alles abends noch einmal abgetippt.', ein: [], p: {} },
+  lasten: { name: 'Wind- und Schneelast', gruppe: 'geplant', icon: 'rechner', kurz: 'Zonen nach Standort, Höhe und Gelände.', wofuer: 'Lastzonen werden jedes Mal in Tabellen nachgeschlagen.', ein: [], p: {} },
   aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
 };
 
@@ -1511,6 +1589,12 @@ function wirkungen(cfg, typ) {
   if (typ === 'angebote') {
     out.push(R.an('angebote', 'onlineAnnahme') ? `Der Kunde bekommt einen Link, nimmt online an${R.an('angebote', 'unterschriftOnline') ? ' und unterschreibt' : ''}. Das Büro sieht es sofort.` : 'Angebote werden nur gedruckt oder als PDF verschickt.');
   }
+  if (typ === 'material') {
+    out.push(R.an('material', 'sprache') ? 'Chef und Mitarbeiter können Bestellungen und Erinnerungen einsprechen.' : 'Einsprechen ist aus.');
+  }
+  if (typ === 'rechner') {
+    out.push('Im Büro als Bereich „Rechner“' + (R.imApp('rechner') ? ' und in der App unter „Erfassen“.' : '. Mit der App verbinden, damit die Gesellen ihn auf dem Dach haben.'));
+  }
   if (typ === 'tafel') {
     out.push('Im Büro als Bereich „Auftragstafel“ mit Karten zum Verschieben.');
     out.push(R.hat('angebote') ? 'Karten sind mit Angebot, Baustellenakte und Rechnung verknüpft.' : 'Ohne „Angebote“ bleiben die Karten reine Notizen.');
@@ -1548,7 +1632,8 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 4,
+      version: 5,
+      kalkulation: { faktor: 2.1, aufschlag: 20, lohn: { p3: 23.5, p4: 21.5, p5: 21, p6: 6.5, p7: 17 } },
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
@@ -1602,6 +1687,7 @@ const Muster = (() => {
           knoten('angebote', 890, 640),
           knoten('rechnungen', 1170, 760),
           knoten('tafel', 1170, 580),
+          knoten('rechner', 610, 1010),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -1613,7 +1699,7 @@ const Muster = (() => {
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
-          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'],
+          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'], ['app', 'rechner'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -1729,6 +1815,11 @@ const Muster = (() => {
       positionen: [pos('Sparren austauschen bis 5 m', 3, 'Stk', 185), pos('KVH C24 liefern, gehobelt', 0.4, 'm³', 620), pos('Zimmerer-Facharbeiter', 14, 'Std', 58), pos('Entsorgung Altholz', 1, 'psch', 120)] });
     add('re3', { typ: 'rechnung', status: 'entwurf', kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', bs: 'b2', angebot: 'an1', angebotNr: `A-${j}-014`, mwst: 19, leistung: '',
       positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    // Eingesprochen: Bestellung vom Vorarbeiter, Erinnerung vom Chef
+    add('m3', { typ: 'material', pid: 'p3', datum: heute, bs: 'b1', text: '6 Pal. Dachsteine, 1 Pal. Gratziegel, 3 Rollen Firstrolle', positionen: [{ menge: 6, einheit: 'Pal.', text: 'Dachsteine' }, { menge: 1, einheit: 'Pal.', text: 'Gratziegel' }, { menge: 3, einheit: 'Rollen', text: 'Firstrolle' }], lieferant: 'Dachdecker-Einkauf', quelle: 'sprache', status: 'offen' });
+    add('er1', { typ: 'erinnerung', pid: 'p1', datum: Datum.plus(heute, -1), text: 'Gerdes wegen Rinne und Fallrohr anrufen', faellig: heute, quelle: 'sprache' });
+    add('er2', { typ: 'erinnerung', pid: 'p1', datum: heute, text: 'Kran für die Gaube Steenken anfragen', faellig: Datum.plus(heute, 1), quelle: 'sprache' });
+    add('er3', { typ: 'erinnerung', pid: 'p3', datum: heute, text: 'Akku-Schrauber zum Service bringen', faellig: Datum.plus(heute, 1), quelle: 'sprache' });
     // Auftragstafel: zwei frische Anfragen
     add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
     add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });
@@ -1975,8 +2066,9 @@ const Buero = (() => {
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
   /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
-  const EXTRA = { aufgaben: [] };
-  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben }) {
+  const EXTRA = { aufgaben: [], einstellungen: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen }) {
+    if (einstellungen) EXTRA.einstellungen.push(einstellungen);
     nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
     Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
     if (aufgaben) EXTRA.aufgaben.push(aufgaben);
@@ -2050,7 +2142,7 @@ const Buero = (() => {
     }
     const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
     if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
-    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen"><button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button></div></div>`)));
+    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen">${t.erinnerung ? `<button class="k klein ok" data-erinnerung="${t.erinnerung}">${Icon('haken')} Erledigt</button>` : `<button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button>`}</div></div>`)));
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -2215,12 +2307,16 @@ const Buero = (() => {
     const offen = c.typ('material').filter((m) => m.status !== 'erledigt').sort((a, b) => b.datum.localeCompare(a.datum));
     const erledigt = c.typ('material').filter((m) => m.status === 'erledigt').sort((a, b) => b.datum.localeCompare(a.datum)).slice(0, 10);
     const haendler = c.R.p('material').haendler;
-    const text = offen.map((m) => `- ${m.text} (Baustelle: ${c.bsName(m.bs)})`).join('\n');
-    const mail = `mailto:?subject=${encodeURIComponent('Bestellung ' + (c.cfg.name || ''))}&body=${encodeURIComponent(`Guten Tag,\n\nwir bestellen:\n${text}\n\nViele Grüße\n${c.ich ? c.ich.name : ''}\n${c.cfg.name}`)}`;
-    const zeile = (m) => `<div class="liste-zeile"><div class="text"><b>${esc(m.text)}</b><small>${esc(c.bsName(m.bs))} · ${esc(c.person(m.pid).name)} · ${Datum.kurz(m.datum)}</small></div>${chip(m.status)}
+    const liste = Sprache.lieferantenListe(c);
+    const gruppen = {}; offen.forEach((m) => { const l = m.lieferant || haendler; (gruppen[l] = gruppen[l] || []).push(m); });
+    const zeilenText = (ms) => ms.flatMap((m) => (m.positionen && m.positionen.length ? m.positionen.map((p) => `- ${String(p.menge).replace('.', ',')} ${p.einheit} ${p.text}`) : [`- ${m.text}`]).map((z) => `${z}${m.bs ? ` (Baustelle ${c.bsName(m.bs)}, ${(c.baustelle(m.bs) || {}).adresse || ''})` : ''}`)).join('\n');
+    const mail = (l, ms) => { const h = liste.find((x) => x.name === l) || {}; return `mailto:${encodeURIComponent(h.email || '')}?subject=${encodeURIComponent('Bestellung ' + (c.cfg.name || ''))}&body=${encodeURIComponent(`Guten Tag,\n\nwir bestellen:\n${zeilenText(ms)}\n\nBitte kurz bestätigen mit Liefertermin.\n\nViele Grüße\n${c.ich ? c.ich.name : ''}\n${c.cfg.name}${c.cfg.telefon ? '\nTel. ' + c.cfg.telefon : ''}`)}`; };
+    const gruppeHtml = ([l, ms]) => { const h = liste.find((x) => x.name === l) || {};
+      return `<div class="karte bestell-gruppe"><div class="kopf"><h3>${esc(l)}</h3><span class="chip warn">${ms.length}</span><div class="rechts">${h.telefon ? `<a class="k klein" href="tel:${esc(h.telefon.replace(/\s+/g, ''))}">${Icon('telefon')} ${esc(h.telefon)}</a>` : ''}<a class="k klein" href="${mail(l, ms)}">${Icon('angebot')} Als E-Mail</a><button class="k klein" data-a="material-alle" data-id="${esc(l)}">Alle bestellt</button></div></div>${ms.map(zeile).join('')}</div>`; };
+    const zeile = (m) => `<div class="liste-zeile"><div class="text"><b>${m.positionen && m.positionen.length ? m.positionen.map((p) => `${String(p.menge).replace('.', ',')} ${esc(p.einheit)} ${esc(p.text)}`).join('<br>') : esc(m.text)}</b><small>${m.quelle === 'sprache' ? `${Icon('mikro')} eingesprochen · ` : m.quelle === 'rechner' ? 'aus dem Rechner · ' : ''}${esc(c.bsName(m.bs))} · ${esc(c.person(m.pid).name)} · ${Datum.kurz(m.datum)}</small></div>${chip(m.status)}
       <div class="aktionen">${m.status === 'offen' ? `<button class="k klein" data-a="material" data-id="${m.id}" data-wert="bestellt">Bestellt</button>` : ''}${m.status !== 'erledigt' ? `<button class="k klein ok" data-a="material" data-id="${m.id}" data-wert="erledigt">${Icon('haken')} Erledigt</button>` : ''}</div></div>`;
-    return seitenkopf('Materialbedarf', `Was auf den Baustellen fehlt · Bestellung bei ${esc(haendler)}`, offen.length ? `<a class="k haupt" href="${mail}" style="text-decoration:none">${Icon('download')} Bestellung als E-Mail</a>` : '')
-      + `<div class="karte"><div class="kopf"><h3>Offen</h3><span class="chip ${offen.length ? 'warn' : ''}">${offen.length}</span></div>${offen.map(zeile).join('') || leer('Nichts offen.')}</div>
+    return seitenkopf(esc(c.R.name('material')), 'Was auf den Baustellen fehlt, sortiert nach Händler. Anrufen oder als E-Mail schicken.', c.R.an('material', 'sprache') ? `<button class="k haupt" data-sprache>${Icon('mikro')} Einsprechen</button>` : '')
+      + (offen.length ? Object.entries(gruppen).map(gruppeHtml).join('') : `<div class="karte"><div class="kopf"><h3>Offen</h3></div>${leer('Nichts offen.')}</div>`) + `
         <div class="karte"><div class="kopf"><h3>Zuletzt erledigt</h3></div>${erledigt.map(zeile).join('') || leer('Noch nichts.')}</div>`;
   };
 
@@ -2360,7 +2456,7 @@ const Buero = (() => {
   SEITEN.einstellungen = (c) => {
     const aktiv = c.cfg.baukasten.knoten.map((k) => k.typ).filter((t) => BAUSTEINE[t] && BAUSTEINE[t].gruppe !== 'geplant');
     const geplant = Object.entries(BAUSTEINE).filter(([, b]) => b.gruppe === 'geplant');
-    return seitenkopf('Einstellungen', 'Angaben zum Betrieb und Ihr Funktionsumfang')
+    return seitenkopf('Einstellungen', 'Angaben zum Betrieb und Ihr Funktionsumfang') + EXTRA.einstellungen.map((fn) => fn(c)).join('')
       + `<div class="zwei"><div class="karte"><div class="kopf"><h3>Betrieb</h3></div><form class="koerper" id="f-einst">
         <div class="einstellungen-raster">
           <label class="feld"><span>Name</span><input name="name" value="${esc(c.cfg.name)}"></label>
@@ -2408,6 +2504,7 @@ const Buero = (() => {
         <div class="firma">${esc(c.cfg.name)}<small>Betriebszentrale</small></div>
         <span class="luecke"></span>
         <div class="suche nur-breit" role="search"><span class="sym">${Icon('suche')}</span><input id="b-suche" type="search" placeholder="Suchen: Baustelle, Kunde, Beleg …" aria-label="Suchen" autocomplete="off"><div class="treffer" id="b-treffer" hidden></div></div>
+        ${c.R.hat('material') && c.R.an('material', 'sprache') ? `<button class="flach sprach-kopf" data-sprache title="Bestellung oder Erinnerung einsprechen">${Icon('mikro')}<span class="nur-breit">Einsprechen</span></button>` : ''}
         <div class="wer">${esc(c.ich.name)}<small>${esc(c.ich.funktion || ROLLEN[c.ich.rolle])}</small></div>
         <span class="rund">${esc(c.kuerzel(c.ich.name))}</span>
         <button class="flach" data-a="abmelden" title="Abmelden">${Icon('abmelden')}<span class="nur-breit">Abmelden</span></button>
@@ -2509,6 +2606,7 @@ const Buero = (() => {
     'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
     nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
     planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'material-alle'(el, c) { c.typ('material').filter((m) => m.status === 'offen' && (m.lieferant || c.R.p('material').haendler) === el.dataset.id).forEach((m) => Store.aendere(m.id, { status: 'bestellt' })); meldung('Als bestellt markiert'); },
     'plan-ics'(el, c) { speichern(`Wochenplan_KW${Datum.kw(zustand.planWoche)}.ics`, new Blob([Uebergabe.planIcs(c, zustand.planWoche)], { type: 'text/calendar' })); meldung('Kalenderdatei gespeichert. Sie lässt sich in Outlook, Google- oder Apple-Kalender öffnen.'); },
     'plan-vorwoche'(el, c) {
       const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
@@ -2989,7 +3087,7 @@ const Auftraege = (() => {
   function summen(doc, mwst) {
     const netto = rund((doc.positionen || []).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
     const steuer = rund(netto * mwst / 100);
-    const lohn = rund((doc.positionen || []).filter((p) => p.einheit === 'Std' || p.lohn).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
+    const lohn = rund((doc.positionen || []).reduce((s, p) => s + (p.lohnBetrag ? zahl(p.lohnBetrag) : p.einheit === 'Std' || p.lohn ? rund(zahl(p.menge) * zahl(p.preis)) : 0), 0));
     return { netto, steuer, brutto: rund(netto + steuer), lohn };
   }
   const mwstVon = (c, d) => (d.mwst !== undefined ? Number(d.mwst) : Number(c.R.p('angebote').mwst));
@@ -3180,7 +3278,9 @@ const Auftraege = (() => {
         <div class="pos-huelle"><table class="t pos-tabelle"><thead><tr><th>Pos.</th><th>Leistung</th><th style="width:90px">Menge</th><th style="width:90px">Einheit</th><th style="width:110px">Einzelpreis €</th><th class="r" style="width:110px">Gesamt</th><th></th></tr></thead><tbody id="pos-liste"></tbody></table></div>
         ${gesperrt ? '' : `<div class="pos-werkzeug"><button class="k klein" type="button" data-f="pos-neu">${Icon('plus')} Position</button>
           ${kat.length ? `<select id="katalog" aria-label="Aus dem Leistungskatalog übernehmen"><option value="">Aus Katalog übernehmen …</option>${kat.map((k, i) => `<option value="${i}">${esc(k.text)} (${Zahl.eur(k.preis)}/${esc(k.einheit)})</option>`).join('')}</select>` : ''}
+          ${!istR ? `<button class="k klein" type="button" data-f="kalk-auf">${Icon('rechner')} Position kalkulieren</button>` : ''}
           ${regieOffen.length ? `<button class="k klein" type="button" data-f="regie">${Icon('unterschrift')} ${regieOffen.length} Regiezettel übernehmen</button>` : ''}</div>`}
+        ${gesperrt || istR ? '' : kalkPanel(c)}
         <div class="pos-summe" id="pos-summe"></div>`,
       fuss: `${d.id && d.status === 'entwurf' ? `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>` : '<span style="margin-right:auto"></span>'}
         <button class="k" data-f="drucken" data-id="${istR ? 'rechnung' : 'angebot'}">${Icon('drucken')} Ansehen & drucken</button>${knoepfe.join('')}${gesperrt ? '' : '<button class="k haupt" data-f="speichern">Speichern</button>'}`,
@@ -3192,6 +3292,13 @@ const Auftraege = (() => {
           regieOffen.forEach((r) => positionen.push({ text: `Regiearbeit ${Datum.kurz(r.datum)}: ${r.text}${r.material ? ` (Material: ${r.material})` : ''}, lt. Regiebericht`, menge: Number(r.stunden) * Number(r.leute || 1), einheit: 'Std', preis: satz, regie: r.id }));
           zeichnen(); meldung(`${regieOffen.length} Regiezettel übernommen. Sie werden beim Stellen als abgerechnet markiert.`);
           const knopf = $('[data-f=regie]', hg); if (knopf) knopf.remove();
+        },
+        'kalk-auf': () => { const p = $('#kalk', hg); p.hidden = !p.hidden; if (!p.hidden) { kalkRechnen(); $('[data-k=text]', p).focus(); } },
+        'kalk-uebernehmen': () => {
+          const r = kalkRechnen(); if (!r) return meldung('Bitte Menge und Material oder Stunden eintragen.', 'fehler');
+          lesen(); positionen.push({ text: r.text || 'Leistung', menge: r.menge, einheit: r.einheit, preis: r.preis, lohnBetrag: r.lohn, kalk: { ek: r.ek, std: r.std, satz: r.satz, aufschlag: r.aufschlag } });
+          zeichnen(); $('#kalk', hg).hidden = true; $$('#kalk input', hg).forEach((i) => { if (i.dataset.k !== 'menge') i.value = ''; });
+          meldung('Position übernommen');
         },
         speichern: () => { const id = sichern(); if (id) { Fenster.schliesse(); meldung('Gespeichert'); } },
         drucken: (b) => { const id = sichern(); if (!id) return; const neu = Store.items.find((i) => i.id === id); drucken(dokumentHtml(ctxNeu(), neu, b.dataset.id)); },
@@ -3269,6 +3376,15 @@ const Auftraege = (() => {
       const g = rund(zahl($('.p-menge', tr).value) * zahl($('.p-preis', tr).value)); $('.p-gesamt', tr).textContent = Zahl.eur(g);
       lesen(); summeZeigen();
     });
+    function kalkRechnen() {
+      const p = $('#kalk', hg); if (!p) return null; const v = (k) => $(`[data-k=${k}]`, p).value;
+      const K = kalk(c); const satz = Number(v('satz')) || 0; const menge = zahl(v('menge')); const ek = zahl(v('ek')); const std = zahl(v('std'));
+      const mat = rund(ek * (1 + K.aufschlag / 100)); const lohn = rund(std * satz); const gesamt = rund(mat + lohn);
+      const preis = menge ? rund(gesamt / menge) : 0;
+      $('#kalk-aus', hg).innerHTML = menge && gesamt ? `Material ${Zahl.eur(ek)} + ${K.aufschlag} % = <b>${Zahl.eur(mat)}</b> · Lohn ${String(std).replace('.', ',')} Std × ${Zahl.eur(satz)} = <b>${Zahl.eur(lohn)}</b> · Einzelpreis <b>${Zahl.eur(preis)} je ${esc(v('einheit'))}</b>` : 'Menge und Material oder Stunden eintragen.';
+      return menge && gesamt ? { text: v('text').trim(), menge, einheit: v('einheit'), preis, lohn, ek, std, satz, aufschlag: K.aufschlag } : null;
+    }
+    const kp = $('#kalk', hg); if (kp) kp.addEventListener('input', kalkRechnen);
     const kSel = $('#katalog', hg);
     if (kSel) kSel.addEventListener('change', () => { if (kSel.value === '') return; lesen(); const k = kat[Number(kSel.value)]; positionen.push({ text: k.text, menge: 1, einheit: k.einheit, preis: k.preis }); kSel.value = ''; zeichnen(); });
     zeichnen(); bilderNachladen(hg, Store.items);
@@ -3296,6 +3412,40 @@ const Auftraege = (() => {
     return `${Datum.kurz(tage[0])}${tage[0].slice(0, 4)} bis ${Datum.kurz(tage[tage.length - 1])}${tage[tage.length - 1].slice(0, 4)}`;
   }
   const ctxNeu = () => kontext(Store.cfg, Store.items, (Sitzung.lies('buero') || {}).pid);
+
+  /* ---------- Kalkulation: Stundenlohn × Faktor = Verrechnungssatz, Material mit Aufschlag ---------- */
+  function kalk(c) {
+    const k = c.cfg.kalkulation || {}; const faktor = Number(k.faktor) || 2; const aufschlag = Number(k.aufschlag ?? 15);
+    const lohn = k.lohn || {};
+    const leute = c.arbeiter().map((p) => ({ p, lohn: Number(lohn[p.id]) || 0 })).filter((x) => x.lohn);
+    const gesellen = leute.filter((x) => x.p.rolle !== 'azubi');
+    const mittel = gesellen.length ? gesellen.reduce((s, x) => s + x.lohn, 0) / gesellen.length : 0;
+    return { faktor, aufschlag, leute, mittel, satz: rund(mittel * faktor) };
+  }
+  function kalkPanel(c) {
+    const K = kalk(c);
+    return `<div class="kalk" id="kalk" hidden><div class="kalk-kopf"><b>Position kalkulieren</b><small>Material mit ${K.aufschlag} % Aufschlag, Lohn mit Faktor ${String(K.faktor).replace('.', ',')}. Einstellbar unter Einstellungen → Kalkulation.</small></div>
+      <div class="kalk-raster"><label class="feld breit"><span>Leistung</span><input data-k="text" placeholder="z. B. Dachfenster 78 x 118 einbauen inkl. Eindeckrahmen"></label>
+        <label class="feld"><span>Menge</span><input data-k="menge" inputmode="decimal" value="1"></label>
+        <label class="feld"><span>Einheit</span><select data-k="einheit">${EINHEITEN.map((e) => `<option>${e}</option>`).join('')}</select></label>
+        <label class="feld"><span>Material Einkauf gesamt €</span><input data-k="ek" inputmode="decimal" placeholder="0"></label>
+        <label class="feld"><span>Stunden gesamt</span><input data-k="std" inputmode="decimal" placeholder="0"></label>
+        <label class="feld"><span>Stundensatz</span><select data-k="satz"><option value="${K.satz}">Mittellohn: ${Zahl.eur(K.satz)}</option>${K.leute.map((x) => `<option value="${rund(x.lohn * K.faktor)}">${esc(x.p.name)}: ${Zahl.eur(rund(x.lohn * K.faktor))}</option>`).join('')}</select></label></div>
+      <div class="kalk-fuss"><span id="kalk-aus"></span><button class="k haupt klein" type="button" data-f="kalk-uebernehmen">Übernehmen</button></div></div>`;
+  }
+  function kalkEinstellungen(c) {
+    if (!c.R.hat('angebote')) return '';
+    const K = kalk(c); const lohn = (c.cfg.kalkulation || {}).lohn || {};
+    return `<div class="karte" id="kalk-einst"><div class="kopf"><h3>Kalkulation</h3><span class="chip">fließt in Angebote</span></div><div class="koerper">
+      <div class="einstellungen-raster"><label class="feld"><span>Faktor auf den Stundenlohn</span><input data-kk="faktor" inputmode="decimal" value="${String(K.faktor).replace('.', ',')}"></label>
+        <label class="feld"><span>Materialaufschlag %</span><input data-kk="aufschlag" inputmode="decimal" value="${String(K.aufschlag).replace('.', ',')}"></label>
+        <div class="feld"><span>Mittellohn / Verrechnungssatz</span><b style="display:block;padding:8px 0">${Zahl.eur(K.mittel)} → ${Zahl.eur(K.satz)} je Std.</b></div></div>
+      <div class="tabelle-huelle"><table class="t"><thead><tr><th>Mitarbeiter</th><th class="r" style="width:150px">Stundenlohn €</th><th class="r">Verrechnungssatz</th></tr></thead><tbody>
+        ${c.arbeiter().map((p) => `<tr><td>${esc(p.name)} <small style="color:#7a827c">${esc(p.funktion || '')}</small></td><td class="r"><input class="num" style="width:110px;text-align:right" data-lohn="${p.id}" inputmode="decimal" value="${lohn[p.id] ? String(lohn[p.id]).replace('.', ',') : ''}"></td><td class="r num">${lohn[p.id] ? Zahl.eur(rund(lohn[p.id] * K.faktor)) : '–'}</td></tr>`).join('')}
+      </tbody></table></div>
+      <p style="color:#6a726c;font-size:13px;margin:10px 0 12px">Der Faktor deckt Lohnnebenkosten, Gemeinkosten, Wagnis und Gewinn. Der Mittellohn ist der Durchschnitt der Gesellen und Helfer, ohne Azubis.</p>
+      <button class="k haupt" data-a="kalk-speichern">Kalkulation speichern</button></div></div>`;
+  }
 
   /* Aufgaben für die Übersicht */
   function aufgaben(c) {
@@ -3337,9 +3487,16 @@ const Auftraege = (() => {
             los: (b, hg) => { const w = Fenster.werte(hg); Uebergabe.buchhaltungsPaket(c, w.von, w.bis); },
           } });
       },
+      'kalk-speichern'(el, c) {
+        const r = $('#kalk-einst'); const lohn = {};
+        $$('[data-lohn]', r).forEach((i) => { const v = zahl(i.value); if (v) lohn[i.dataset.lohn] = v; });
+        Store.speichereCfg({ ...Store.cfg, kalkulation: { faktor: zahl($('[data-kk=faktor]', r).value) || 2, aufschlag: zahl($('[data-kk=aufschlag]', r).value), lohn } });
+        meldung('Kalkulation gespeichert');
+      },
       'auf-filter'(el) { zustand.filter = el.dataset.id; Buero.neuZeichnen(); },
     },
     aufgaben,
+    einstellungen: kalkEinstellungen,
   });
 
   return { summen, xrechnung, dokumentHtml, mwstVon, ueberfaellig, baustelleAusAngebot, offeneFragen, editor, chipDoc, STATUS };
@@ -3562,6 +3719,21 @@ const Tafel = (() => {
    Rechts: das Angebot so, wie es gedruckt aussieht.
    Was der Kunde hier tut, steht sofort in der Betriebszentrale.
    ========================================================================= */
+/* Rechtliche Texte: vorhanden und sichtbar, aber Muster. Vor dem echten Einsatz prüfen lassen. */
+const RECHT_TITEL = { agb: 'Allgemeine Geschäftsbedingungen', widerruf: 'Widerrufsbelehrung', datenschutz: 'Datenschutzhinweis', impressum: 'Impressum' };
+function rechtText(c, was) {
+  const P = c.R.p('angebote'); const f = c.cfg;
+  if (was === 'impressum') return [`Angaben gemäß § 5 DDG`, `${f.name}${f.inhaber ? `\nInhaber: ${f.inhaber}` : ''}`, [f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join('\n'), [f.telefon && 'Telefon: ' + f.telefon, f.email && 'E-Mail: ' + f.email].filter(Boolean).join('\n'), f.ustid ? 'Umsatzsteuer-Identifikationsnummer: ' + f.ustid : '', 'Zuständige Handwerkskammer: [bitte ergänzen]\nEintragung in die Handwerksrolle: [bitte ergänzen]\nBerufshaftpflichtversicherung: [Versicherer und Geltungsbereich ergänzen]', 'Verbraucherstreitbeilegung: Wir sind nicht bereit und nicht verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.'].filter(Boolean).join('\n\n');
+  return { agb: P.agb, widerruf: P.widerrufText, datenschutz: P.datenschutz }[was] || '';
+}
+
+Buero.erweitern({
+  einstellungen: (c) => `<div class="karte"><div class="kopf"><h3>Rechtliche Texte</h3><span class="chip warn">Muster, vor Einsatz prüfen</span></div><div class="koerper recht-knoepfe">
+    <p style="margin:0 0 12px;color:#5f6862">Diese Texte erscheinen auf Angeboten und auf der Seite, auf der Ihre Kunden online annehmen. Richtwerk pflegt sie für Sie ein. Die Muster ersetzen keine Rechtsberatung.</p>
+    ${Object.entries(RECHT_TITEL).map(([k, t]) => `<button class="k" data-a="recht" data-id="${k}">${Icon('paragraph')} ${t}</button>`).join(' ')}</div></div>`,
+  aktionen: { recht(el) { KundenSeite.lesen(el.dataset.id); } },
+});
+
 const KundenSeite = (() => {
   let leer = true;
 
@@ -3654,7 +3826,7 @@ const KundenSeite = (() => {
         </aside>
         <main class="kd-papier" aria-label="Angebot als Dokument">${Auftraege.dokumentHtml(c, a, a.status === 'angenommen' && c.R.an('angebote', 'bestaetigung') ? 'bestaetigung' : 'angebot')}</main>
       </div>
-      <footer class="kd-fuss">${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''} · ${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}${f.telefon ? ' · Tel. ' + esc(f.telefon) : ''} · <button class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutz</button></footer>
+      <footer class="kd-fuss">${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''} · ${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}${f.telefon ? ' · Tel. ' + esc(f.telefon) : ''} · <button class="kd-link" data-k="lesen" data-id="impressum">Impressum</button> · <button class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutz</button> · <button class="kd-link" data-k="lesen" data-id="agb">AGB</button></footer>
     </div>`;
     bilderNachladen(Wurzel(), Store.items);
     unterschrift();
@@ -3674,10 +3846,10 @@ const KundenSeite = (() => {
   }
 
   function lesen(was) {
-    const P = ctx().R.p('angebote');
-    const titel = { agb: 'Allgemeine Geschäftsbedingungen', widerruf: 'Widerrufsbelehrung', datenschutz: 'Datenschutzhinweis' }[was];
-    const text = { agb: P.agb, widerruf: P.widerrufText, datenschutz: P.datenschutz }[was] || '';
-    Fenster.oeffne({ titel, bereich: 'ui-buero-fenster kd-fenster', inhalt: `<div class="kd-lesetext">${esc(text).replace(/\n/g, '<br>')}</div>`,
+    const c = ctx(); const P = c.R.p('angebote');
+    const titel = RECHT_TITEL[was];
+    const text = rechtText(c, was);
+    Fenster.oeffne({ titel, bereich: 'ui-buero-fenster kd-fenster', inhalt: `<p class="muster-hinweis">${Icon('paragraph')} Mustertext: vor dem Einsatz von einem Anwalt prüfen lassen.</p><div class="kd-lesetext">${esc(text).replace(/\n/g, '<br>')}</div>`,
       fuss: `<button class="k" data-f="druck">${Icon('drucken')} Drucken / speichern</button><button class="k haupt" data-f="zu">Schließen</button>`,
       aktionen: { druck: () => drucken(`<div class="dokument"><h2>${esc(titel)}</h2><p>${esc(text).replace(/\n/g, '<br>')}</p></div>`) } });
   }
@@ -3723,7 +3895,332 @@ const KundenSeite = (() => {
     });
   }
 
-  return { start };
+  return { start, lesen: (was) => lesen(was) };
+})();
+
+/* ---- sprache.js ---- */
+/* =========================================================================
+   Einsprechen: Erinnerungen und Materialbestellungen per Sprache
+   Spracherkennung: in claude.ai die Diktierfunktion der Seite, sonst die des
+   Browsers (Chrome, Edge, Safari). Wo es keine gibt, bleibt das Textfeld
+   (die Diktiertaste der Handy-Tastatur funktioniert dort trotzdem).
+   Aus dem Text wird erkannt: Händler, Mengen mit Einheit, Fälligkeit.
+   ========================================================================= */
+const Sprache = (() => {
+  /* ---------- Spracherkennung ---------- */
+  let diktat = null;
+  try { if (window.claude && typeof window.claude.use === 'function') window.claude.use('dictation').then((d) => { diktat = d; }).catch(() => {}); } catch { /* ohne */ }
+  const BrowserSR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const verfuegbar = () => !!(diktat || BrowserSR);
+
+  /* ---------- Text verstehen ---------- */
+  const ZAHLWORT = { ein: 1, eine: 1, einen: 1, einer: 1, zwei: 2, drei: 3, vier: 4, 'fünf': 5, fuenf: 5, sechs: 6, sieben: 7, acht: 8, neun: 9, zehn: 10, elf: 11, 'zwölf': 12, zwanzig: 20, dreißig: 30, fünfzig: 50, hundert: 100, halbe: 0.5 };
+  const EINHEIT = [
+    [/^paletten?$/i, 'Pal.'], [/^rollen?$/i, 'Rollen'], [/^(stück|stk\.?)$/i, 'Stk'], [/^bund$/i, 'Bund'], [/^(pakete?|pack|packungen?)$/i, 'Pak.'],
+    [/^kartons?$/i, 'Kart.'], [/^eimer$/i, 'Eimer'], [/^(sack|säcke)$/i, 'Sack'], [/^(m²|qm|quadratmeter)$/i, 'm²'], [/^(m³|kubik(meter)?)$/i, 'm³'],
+    [/^(meter|m|lfm|laufmeter|laufende meter)$/i, 'm'], [/^(kg|kilo(gramm)?)$/i, 'kg'], [/^(liter|l)$/i, 'l'], [/^(dosen?|kartuschen?)$/i, 'Dosen'], [/^(kisten?|boxen?|schachteln?)$/i, 'Kisten'], [/^(tafeln|platten)$/i, 'Platten'],
+  ];
+  const zahlVon = (w) => { const s = String(w).toLowerCase().replace(',', '.'); return /^\d+(\.\d+)?$/.test(s) ? Number(s) : ZAHLWORT[s]; };
+  const WT = { montag: 1, dienstag: 2, mittwoch: 3, donnerstag: 4, freitag: 5, samstag: 6 };
+
+  function lieferantenListe(c) {
+    return String(c.R.p('material').lieferanten || '').split('\n').map((z) => z.split('|').map((s) => s.trim())).filter((t) => t[0]).map(([name, telefon, email]) => ({ name, telefon: telefon || '', email: email || '' }));
+  }
+
+  function verstehen(c, roh) {
+    const text = String(roh || '').replace(/\s+/g, ' ').trim();
+    const klein = text.toLowerCase();
+    // Händler: bekannte zuerst, sonst „bei/beim X“
+    let lieferant = '';
+    const bekannte = lieferantenListe(c);
+    const treffer = bekannte.find((l) => { const n = l.name.toLowerCase(); const kern = n.split(/[\s-]+/)[0]; return klein.includes(n) || (kern.length > 3 && klein.includes(kern)); });
+    if (treffer) lieferant = treffer.name;
+    else { const m = text.match(/\b(?:bei|beim|von)\s+(?:der |dem |den )?([A-ZÄÖÜ][\wäöüß.&-]*(?:[\s-](?:[A-ZÄÖÜ][\wäöüß.&-]*|Einkauf|Handel))*)/); if (m && !/^(Baustelle|Kunde|Chef)/.test(m[1])) lieferant = m[1].replace(/[.,]$/, ''); }
+    // Fälligkeit
+    let faellig = '';
+    if (/übermorgen/.test(klein)) faellig = Datum.plus(c.heute, 2);
+    else if (/morgen/.test(klein)) faellig = Datum.plus(c.heute, 1);
+    else if (/\bheute\b/.test(klein)) faellig = c.heute;
+    else { const w = Object.keys(WT).find((t) => klein.includes(t)); if (w) { let d = Datum.plus(c.heute, 1); while (Datum.wochentag(d) !== WT[w] - 1) d = Datum.plus(d, 1); faellig = d; } }
+    // Mengen: „6 Paletten Steine“, „eine Palette Gratziegel“, „3 Rollen Firstrolle“
+    const positionen = [];
+    const teile = text.split(/,|;|\.\s|\bund\b|\bsowie\b|\bplus\b|\n/i);
+    teile.forEach((t) => {
+      const m = t.trim().match(/(?:^|\s)(\d+(?:[.,]\d+)?|ein|eine|einen|einer|zwei|drei|vier|fünf|fuenf|sechs|sieben|acht|neun|zehn|elf|zwölf|zwanzig|dreißig|fünfzig|hundert|halbe)\s+(.+)$/i);
+      if (!m) return; const menge = zahlVon(m[1]); if (!menge) return;
+      const worte = m[2].trim().split(/\s+/);
+      let einheit = ''; const e = EINHEIT.find(([r]) => r.test(worte[0])); if (e && worte.length > 1) { einheit = e[1]; worte.shift(); }
+      let was = worte.join(' ').replace(/^(stück|stk)\s+/i, '').replace(/\s+(bestellen|besorgen|mitbringen|holen|ordern)\b.*$/i, '').replace(/\b(beim|bei|von)\s+.*$/i, '').replace(/[.!?]+$/, '').trim();
+      if (!was || /^(uhr|tage?n?|wochen?|minuten?|mal|erinnerung|frage|termin|moment|bestellung|sache|gefallen)\b/i.test(was)) return;
+      if (!einheit && /^(paletten?|rollen?)$/i.test(was)) return;
+      positionen.push({ menge, einheit: einheit || 'Stk', text: was.charAt(0).toUpperCase() + was.slice(1) });
+    });
+    const art = positionen.length ? 'bestellung' : 'erinnerung';
+    // Kurzer Titel für Erinnerungen: Floskeln vorne weg
+    const kurz = text.replace(/^(bitte\s+)?(schreib(e)?\s+(mir\s+)?(eine\s+)?erinnerung,?\s*|erinner(e|n)?\s+(mich|uns)\s*(daran)?,?\s*|nicht vergessen,?\s*)/i, '').replace(/^(dass|das)\s+(ich|wir)\s+/i, '').replace(/^an\s+/i, '');
+    return { art, text, kurz: kurz.charAt(0).toUpperCase() + kurz.slice(1), lieferant, faellig, positionen };
+  }
+
+  /* ---------- Dialog ---------- */
+  let hoert = false; let stopFn = null;
+  function oeffne(c, bereich = 'ui-buero-fenster') {
+    let erkannt = verstehen(c, '');
+    const kannHoeren = verfuegbar();
+    const hg = Fenster.oeffne({
+      titel: 'Einsprechen', bereich: `${bereich} sprach-fenster`,
+      inhalt: `<div class="sp-mikro">
+          <button type="button" class="sp-knopf" data-f="hoeren" ${kannHoeren ? '' : 'hidden'} aria-label="Aufnahme starten">${Icon('mikro')}</button>
+          <div><b id="sp-status">${kannHoeren ? 'Antippen und sprechen' : 'Hier eintippen oder die Diktiertaste der Tastatur nutzen'}</b>
+          <small>z. B. „Beim Dachdecker-Einkauf bestellen: 6 Paletten Steine, eine Palette Gratziegel, 3 Rollen Firstrolle“ oder „Erinnere mich morgen, Gerdes wegen der Rinne anzurufen“</small></div></div>
+        <label class="feld"><span>Text</span><textarea id="sp-text" rows="3" placeholder="Was soll ich aufschreiben?"></textarea></label>
+        <div id="sp-ergebnis"></div>
+        <p class="sp-ausblick">Die Erkennung von Mengen und Händlern läuft nach festen Regeln im Programm. Ausblick: Ein KI-Assistent, der aus dem Gesprochenen auch Aufmaße und Angebotsentwürfe macht, ist in Planung.</p>`,
+      fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="speichern">${Icon('haken')} Speichern</button>`,
+      aktionen: {
+        hoeren: () => (hoert ? stopp() : hoeren()),
+        art: (b) => { erkannt.art = b.dataset.id; zeigen(); },
+        speichern: () => speichern(),
+      },
+    });
+    const feld = $('#sp-text', hg);
+    feld.addEventListener('input', () => { erkannt = verstehen(c, feld.value); zeigen(); });
+    hg.addEventListener('change', (e) => { if (e.target.id === 'sp-lieferant') erkannt.lieferant = e.target.value.trim(); if (e.target.id === 'sp-faellig') erkannt.faellig = e.target.value; });
+    function status(t, an) { const s = $('#sp-status', hg); if (s) s.textContent = t; const k = $('.sp-knopf', hg); if (k) k.classList.toggle('an', !!an); }
+    function zeigen() {
+      const e = erkannt; const z = $('#sp-ergebnis', hg); if (!z) return;
+      if (!e.text) { z.innerHTML = ''; return; }
+      const wahl = `<span class="segment"><button type="button" class="${e.art === 'bestellung' ? 'an' : ''}" data-f="art" data-id="bestellung">Bestellung</button><button type="button" class="${e.art === 'erinnerung' ? 'an' : ''}" data-f="art" data-id="erinnerung">Erinnerung</button></span>`;
+      z.innerHTML = `<div class="sp-erkannt"><div class="sp-kopf"><b>Erkannt</b>${wahl}</div>
+        ${e.art === 'bestellung' ? `<div class="reihe"><label class="feld"><span>Bei</span><input id="sp-lieferant" list="sp-liste" value="${esc(e.lieferant)}" placeholder="${esc(c.R.p('material').haendler)}"><datalist id="sp-liste">${lieferantenListe(c).map((l) => `<option value="${esc(l.name)}">`).join('')}</datalist></label>
+          ${c.R.mitBaustelle('material') ? `<label class="feld"><span>Baustelle</span><select id="sp-bs"><option value="">ohne Baustelle</option>${c.baustellenOffen().map((b) => `<option value="${b.id}">${esc(b.name)}</option>`).join('')}</select></label>` : ''}</div>
+          ${e.positionen.length ? `<table class="t sp-pos"><tbody>${e.positionen.map((p) => `<tr><td class="r num">${String(p.menge).replace('.', ',')}</td><td>${esc(p.einheit)}</td><td>${esc(p.text)}</td></tr>`).join('')}</tbody></table>` : '<p class="sp-leer">Keine Mengen erkannt. Die Bestellung wird als Text gespeichert.</p>'}`
+        : `<div class="reihe"><label class="feld"><span>Erinnerung</span><input id="sp-kurz" value="${esc(e.kurz)}"></label><label class="feld"><span>Wann</span><input id="sp-faellig" type="date" value="${esc(e.faellig || c.heute)}"></label></div>`}</div>`;
+    }
+    function hoeren() {
+      hoert = true; status('Ich höre zu …', true);
+      const basis = feld.value ? feld.value.replace(/\s*$/, ' ') : '';
+      let fertig = basis;
+      const neu = (t, vorlaeufig) => { feld.value = (fertig + (vorlaeufig || '')).trimStart(); if (!vorlaeufig) fertig = feld.value; erkannt = verstehen(c, feld.value); zeigen(); };
+      if (diktat) {
+        const ab = [diktat.onPartial(({ text }) => neu('', text)), diktat.onFinal(({ text }) => { fertig += text; neu(''); }),
+          diktat.onState(({ state, reason }) => { if (state === 'idle') { hoert = false; ab.forEach((u) => u()); status(reason === 'not_granted' ? 'Mikrofon nicht erlaubt. Bitte eintippen.' : 'Fertig. Noch etwas? Nochmal antippen.', false); } })];
+        diktat.start({ language: 'de' }).catch((err) => { hoert = false; ab.forEach((u) => u()); status(err && err.code === 'not_granted' ? 'Mikrofon nicht erlaubt. Bitte eintippen.' : 'Spracherkennung gerade nicht verfügbar. Bitte eintippen.', false); });
+        stopFn = () => diktat.stop();
+        return;
+      }
+      const sr = new BrowserSR(); sr.lang = 'de-DE'; sr.interimResults = true; sr.continuous = true;
+      sr.onresult = (ev) => { let vorl = ''; for (let i = ev.resultIndex; i < ev.results.length; i++) { const r = ev.results[i]; if (r.isFinal) { fertig += (fertig && !/\s$/.test(fertig) ? ' ' : '') + r[0].transcript.trim(); neu(''); } else vorl += r[0].transcript; } if (vorl) neu('', (fertig && !/\s$/.test(fertig) ? ' ' : '') + vorl); };
+      sr.onerror = (ev) => { status(ev.error === 'not-allowed' ? 'Mikrofon nicht erlaubt. Bitte eintippen.' : 'Nicht verstanden. Nochmal antippen oder eintippen.', false); };
+      sr.onend = () => { hoert = false; status('Fertig. Noch etwas? Nochmal antippen.', false); };
+      try { sr.start(); } catch { hoert = false; status('Spracherkennung gerade nicht verfügbar. Bitte eintippen.', false); }
+      stopFn = () => sr.stop();
+    }
+    function stopp() { hoert = false; if (stopFn) stopFn(); status('Fertig.', false); }
+    async function speichern() {
+      if (hoert) { stopp(); await new Promise((r) => setTimeout(r, 400)); }
+      const e = verstehen(c, feld.value); e.art = erkannt.art || e.art;
+      if (!e.text) return meldung('Bitte etwas einsprechen oder eintippen.', 'fehler');
+      const pid = c.ich ? c.ich.id : '';
+      if (e.art === 'bestellung') {
+        const lief = ($('#sp-lieferant', hg) || {}).value; const bs = ($('#sp-bs', hg) || {}).value || '';
+        const text = e.positionen.length ? e.positionen.map((p) => `${String(p.menge).replace('.', ',')} ${p.einheit} ${p.text}`).join(', ') : e.text;
+        Store.neu({ typ: 'material', pid, datum: c.heute, bs, text, positionen: e.positionen, lieferant: (lief || e.lieferant || '').trim(), quelle: 'sprache', status: 'offen' });
+        meldung(c.ich && ['chef', 'buero'].includes(c.ich.rolle) ? 'Auf der Bestellliste' : 'An den Chef gesendet');
+      } else {
+        Store.neu({ typ: 'erinnerung', pid, datum: c.heute, text: (($('#sp-kurz', hg) || {}).value || e.kurz).trim(), faellig: ($('#sp-faellig', hg) || {}).value || e.faellig || c.heute, quelle: 'sprache' });
+        meldung('Erinnerung gespeichert');
+      }
+      Fenster.schliesse();
+    }
+    if (kannHoeren) setTimeout(() => { const k = $('.sp-knopf', hg); if (k) k.focus(); }, 50);
+  }
+
+  /* Knöpfe mit data-sprache gehen überall (Büro und App) */
+  document.addEventListener('click', (ev) => {
+    const el = ev.target.closest && ev.target.closest('[data-sprache]'); if (!el) return;
+    ev.preventDefault();
+    const app = document.body.classList.contains('app-modus');
+    const s = Sitzung.lies(app ? 'app' : 'buero') || {};
+    oeffne(kontext(Store.cfg, Store.items, s.pid), app ? 'ui-buero-fenster app-fenster' : 'ui-buero-fenster');
+  });
+
+  /* Erinnerungen abhaken (Büro und App) */
+  document.addEventListener('click', (ev) => {
+    const el = ev.target.closest && ev.target.closest('[data-erinnerung]'); if (!el) return;
+    ev.preventDefault(); ev.stopPropagation();
+    Store.aendere(el.dataset.erinnerung, { erledigt: Date.now() }); meldung('Erledigt');
+  }, true);
+  const meine = (c) => c.typ('erinnerung').filter((e) => !e.erledigt && c.ich && e.pid === c.ich.id).sort((a, b) => (a.faellig || '').localeCompare(b.faellig || ''));
+  const wann = (c, e) => (!e.faellig ? '' : e.faellig < c.heute ? 'überfällig seit ' + Datum.kurz(e.faellig) : e.faellig === c.heute ? 'heute' : e.faellig === Datum.plus(c.heute, 1) ? 'morgen' : Datum.WT[Datum.wochentag(e.faellig)] + ', ' + Datum.kurz(e.faellig));
+  Buero.erweitern({ aufgaben: (c) => meine(c).filter((e) => !e.faellig || e.faellig <= Datum.plus(c.heute, 1)).map((e) => ({ titel: e.text, unter: `Erinnerung · ${wann(c, e)}`, erinnerung: e.id })) });
+
+  return { oeffne, verstehen, lieferantenListe, meine, wann };
+})();
+
+/* ---- rechner.js ---- */
+/* =========================================================================
+   Rechner für die Baustelle: Lattung mit Schrauben bei Aufsparrendämmung
+   und U-Wert eines Bauteils. Ergebnisse sind Richtwerte, kein Ersatz für
+   Statik, Herstellerangaben oder einen Energieberater. Druck = PDF.
+   ========================================================================= */
+const Rechner = (() => {
+  const zahl = (v) => Number(String(v ?? '').replace(',', '.')) || 0;
+  const z1 = (n, s = 1) => (Math.round(n * 10 ** s) / 10 ** s).toLocaleString('de-DE', { minimumFractionDigits: s, maximumFractionDigits: s });
+  const ganz = (n) => Math.round(n).toLocaleString('de-DE');
+  const feld = (name, titel, wert, einheit, extra = '') => `<label class="feld"><span>${titel}</span><div class="mit-einheit"><input name="${name}" inputmode="decimal" value="${esc(String(wert).replace('.', ','))}" ${extra}><i>${einheit}</i></div></label>`;
+  const HINWEIS = 'Richtwert zur Planung und Bestellung. Maßgeblich sind Statik, Verlegeanleitung und Zulassung des Herstellers.';
+  const HERSTELLER = [['SFS', 'https://www.sfs.com'], ['Würth', 'https://www.wuerth.de'], ['SPAX', 'https://www.spax.com'], ['Steico', 'https://www.steico.com'], ['Gutex', 'https://www.gutex.de'], ['Bauder', 'https://www.bauder.de']];
+
+  /* ---------- Lattung ---------- */
+  function lattung(w) {
+    const traufe = zahl(w.traufe); const sparren = zahl(w.sparren); const flaechen = Math.max(1, Math.round(zahl(w.flaechen)));
+    const abstand = zahl(w.abstand) / 100; const lattweite = zahl(w.lattweite) / 100; const sAbst = zahl(w.schraubAbstand) / 100;
+    const [klH, klB] = String(w.kl).split('/').map(Number); const [tlH, tlB] = String(w.tl).split('/').map(Number);
+    const daemm = zahl(w.daemmung); const tiefe = zahl(w.tiefe); const versch = 1 + zahl(w.verschnitt) / 100;
+    if (!traufe || !sparren || !abstand || !lattweite) return null;
+    const nSparren = Math.floor(traufe / abstand + 1e-9) + 1;
+    const reihen = Math.ceil(sparren / lattweite - 1e-9) + 1;
+    const klLfm = nSparren * sparren * flaechen * versch;
+    const tlLfm = reihen * traufe * flaechen * versch;
+    const schraubenJeSparren = Math.ceil(sparren / sAbst - 1e-9) + 1;
+    const schrauben = Math.ceil(nSparren * schraubenJeSparren * flaechen * 1.03);
+    const mindLaenge = klH + daemm + (tiefe || 80);
+    const laenge = Math.ceil(mindLaenge / 20) * 20;
+    const befestiger = Math.ceil(nSparren * reihen * flaechen * 1.05);
+    const flaeche = traufe * sparren * flaechen;
+    return { nSparren, reihen, klLfm, tlLfm, schraubenJeSparren, schrauben, mindLaenge, laenge, befestiger, flaeche, klB, klH, tlB, tlH, flaechen, daemm, lattStk: Math.ceil(tlLfm / zahl(w.lattlaenge || 4)), klStk: Math.ceil(klLfm / zahl(w.lattlaenge || 4)) };
+  }
+  function lattungHtml(c, w, e) {
+    const zeilen = [
+      [`Konterlatten ${e.klH}/${e.klB} mm`, `${z1(e.klLfm)} lfm`, `ca. ${e.klStk} Stk à ${z1(zahl(w.lattlaenge), 1)} m`],
+      [`Traglatten ${e.tlH}/${e.tlB} mm`, `${z1(e.tlLfm)} lfm`, `ca. ${e.lattStk} Stk à ${z1(zahl(w.lattlaenge), 1)} m`],
+      ['Befestiger Traglatte (je Kreuzungspunkt)', `${ganz(e.befestiger)} Stk`, 'Nägel oder Schrauben nach Herstellerangabe'],
+    ];
+    return `<div class="r-ergebnis"><div class="r-kacheln">
+        <div><small>Dachfläche</small><b>${z1(e.flaeche)} m²</b></div><div><small>Sparren je Fläche</small><b>${e.nSparren}</b></div><div><small>Lattreihen</small><b>${e.reihen}</b></div></div>
+      <table class="t"><thead><tr><th>Material</th><th class="r">Menge</th><th>Hinweis</th></tr></thead><tbody>${zeilen.map(([a, b, h]) => `<tr><td>${a}</td><td class="r num">${b}</td><td>${h}</td></tr>`).join('')}</tbody></table>
+      ${e.daemm ? `<div class="r-hersteller"><b>Schrauben für die Konterlatte durch ${e.daemm} mm Aufsparrendämmung</b><p>Anzahl, Länge und Abstand hängen von Schneelast, Windsog und Dachneigung ab. Sie werden mit dem Bemessungsprogramm des Herstellers ermittelt, dessen Dämmung oder Schrauben verbaut werden. Richtwerk rechnet sie bewusst nicht selbst.</p>
+        <div class="r-links">${HERSTELLER.map(([n, u]) => `<a class="k klein" href="${u}" target="_blank" rel="noopener">${n}</a>`).join('')}</div></div>` : ''}
+      <p class="r-hinweis">Verschnitt ${z1(zahl(w.verschnitt), 0)} % auf Latten, 5 % auf Befestiger. ${HINWEIS}</p></div>`;
+  }
+
+  /* ---------- U-Wert ---------- */
+  const STOFFE = [
+    ['Mineralwolle WLS 035', 0.035], ['Mineralwolle WLS 032', 0.032], ['Holzfaser WLS 040', 0.040], ['Holzfaser-Unterdeckplatte WLS 045', 0.045], ['Zellulose WLS 040', 0.040],
+    ['PIR/PUR WLS 023', 0.023], ['EPS WLS 035', 0.035], ['Holz (Sparren, Schalung)', 0.13], ['OSB-Platte', 0.13], ['Gipskartonplatte', 0.25], ['Ziegelmauerwerk (alt)', 0.81], ['Beton', 2.1], ['Eigener Wert', 0],
+  ];
+  const STD_SCHICHTEN = [
+    { stoff: 'Holzfaser-Unterdeckplatte WLS 045', d: 60, lambda: 0.045, zw: false },
+    { stoff: 'Mineralwolle WLS 035', d: 180, lambda: 0.035, zw: true },
+    { stoff: 'OSB-Platte', d: 15, lambda: 0.13, zw: false },
+    { stoff: 'Gipskartonplatte', d: 12.5, lambda: 0.25, zw: false },
+  ];
+  function uwert(schichten, w) {
+    const rsi = 0.10; const rse = w.belueftet === 'ja' ? 0.10 : 0.04;
+    const f = Math.min(0.5, Math.max(0, zahl(w.holz) / 100));
+    let rG = rsi + rse; let rH = rsi + rse;
+    schichten.forEach((s) => { const d = zahl(s.d) / 1000; const l = zahl(s.lambda); if (!d || !l) return; rG += d / l; rH += d / (s.zw ? 0.13 : l); });
+    const hatZw = schichten.some((s) => s.zw);
+    const u = hatZw ? f / rH + (1 - f) / rG : 1 / rG;
+    const vorher = zahl(w.vorher); const flaeche = zahl(w.flaeche);
+    return { u, rG, vorher, flaeche, ersparnis: vorher > u && flaeche ? (vorher - u) * flaeche * 84 : 0, f, hatZw };
+  }
+  function uHtml(e) {
+    const ampel = e.u <= 0.14 ? 'ok' : e.u <= 0.24 ? 'info' : 'bad';
+    return `<div class="r-ergebnis"><div class="r-kacheln">
+        <div class="gross ${ampel}"><small>U-Wert</small><b>${z1(e.u, 3)}</b><i>W/(m²·K)</i></div>
+        ${e.vorher ? `<div><small>Vorher</small><b>${z1(e.vorher, 2)}</b><i>W/(m²·K)</i></div><div><small>Verbesserung</small><b>${e.vorher > e.u ? z1(100 * (e.vorher - e.u) / e.vorher, 0) + ' %' : '–'}</b></div>` : ''}
+        ${e.ersparnis ? `<div><small>Heizwärme gespart, grob</small><b>${ganz(e.ersparnis)}</b><i>kWh im Jahr</i></div>` : ''}</div>
+      <ul class="r-grenzen">
+        <li class="${e.u <= 0.24 ? 'ok' : 'bad'}">${e.u <= 0.24 ? 'Erfüllt' : 'Nicht erfüllt'}: Höchstwert 0,24 W/(m²·K) für Steildächer bei Erneuerung (GEG, Anlage 7)</li>
+        <li class="${e.u <= 0.14 ? 'ok' : 'bad'}">${e.u <= 0.14 ? 'Erfüllt' : 'Nicht erfüllt'}: 0,14 W/(m²·K) für die Förderung als Einzelmaßnahme (BEG, Dachflächen)</li></ul>
+      <p class="r-hinweis">Vereinfacht nach DIN EN ISO 6946: Rsi 0,10${e.f && e.hatZw ? `, Holzanteil ${z1(e.f * 100, 0)} % in der Dämmebene (λ 0,13)` : ''}, ohne Wärmebrücken und Korrekturen. Ersparnis geschätzt mit 84 kKh/a. Grenzwerte vor Angebot auf aktuellen Stand prüfen. Kein Ersatz für einen Energieausweis oder die Berechnung eines Energieberaters.</p></div>`;
+  }
+
+  /* ---------- Fenster ---------- */
+  function oeffne(c, art = 'lattung', bereich = 'ui-buero-fenster') {
+    const P = c.R.hat('rechner') ? c.R.p('rechner') : {};
+    let schichten = JSON.parse(JSON.stringify(STD_SCHICHTEN));
+    const reiter = `<div class="bf-reiter r-reiter"><button type="button" data-f="art" data-id="lattung" class="${art === 'lattung' ? 'an' : ''}">Lattung</button><button type="button" data-f="art" data-id="uwert" class="${art === 'uwert' ? 'an' : ''}">U-Wert</button></div>`;
+    const formLattung = `<form id="r-form" class="r-form">
+        <div class="r-raster">${feld('traufe', 'Länge an der Traufe', 10.5, 'm')}${feld('sparren', 'Sparrenlänge (Traufe bis First)', 6.2, 'm')}${feld('flaechen', 'Dachflächen (Satteldach = 2)', 2, 'Stk')}
+          ${feld('abstand', 'Sparrenabstand', 75, 'cm')}${feld('lattweite', 'Lattweite (laut Ziegel)', 33.5, 'cm')}${feld('daemmung', 'Aufsparrendämmung', 160, 'mm')}
+          <label class="feld"><span>Konterlatte</span><select name="kl">${['40/60', '30/50', '50/80', '60/80'].map((v) => `<option ${v === '40/60' ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+          <label class="feld"><span>Traglatte</span><select name="tl">${['30/50', '40/60', '24/48'].map((v) => `<option ${v === '30/50' ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
+          ${feld('verschnitt', 'Verschnitt Latten', P.verschnitt || 10, '%')}${feld('lattlaenge', 'Lattenlänge', 4, 'm')}</div>
+      </form>`;
+    const formU = () => `<form id="r-form" class="r-form">
+        <table class="t r-schichten"><thead><tr><th>Schicht von außen nach innen</th><th style="width:96px">Dicke mm</th><th style="width:96px">λ W/(m·K)</th><th style="width:96px" title="Liegt zwischen den Sparren">Zw. Sparren</th><th></th></tr></thead><tbody>
+          ${schichten.map((s, i) => `<tr data-i="${i}"><td><select data-k="stoff">${STOFFE.map(([n]) => `<option ${n === s.stoff ? 'selected' : ''}>${n}</option>`).join('')}</select></td>
+            <td><input data-k="d" inputmode="decimal" value="${String(s.d).replace('.', ',')}"></td><td><input data-k="lambda" inputmode="decimal" value="${String(s.lambda).replace('.', ',')}"></td>
+            <td style="text-align:center"><input type="checkbox" data-k="zw" ${s.zw ? 'checked' : ''} aria-label="Zwischen den Sparren"></td><td><button type="button" class="k klein" data-f="schicht-weg" data-id="${i}" aria-label="Schicht entfernen">${Icon('x')}</button></td></tr>`).join('')}
+        </tbody></table><button type="button" class="k klein" data-f="schicht-neu" style="margin:8px 0 14px">${Icon('plus')} Schicht</button>
+        <div class="r-raster">${feld('holz', 'Holzanteil zwischen den Sparren', 12, '%')}${feld('vorher', 'U-Wert vorher (optional)', '', 'W/(m²·K)')}${feld('flaeche', 'Fläche (optional)', '', 'm²')}
+          <label class="feld"><span>Dach hinterlüftet (Ziegel, Schiefer)</span><select name="belueftet"><option value="ja">ja</option><option value="nein">nein</option></select></label></div>
+      </form>`;
+    const hg = Fenster.oeffne({
+      titel: 'Rechner', breit: true, bereich: `${bereich} rechner-fenster`,
+      inhalt: `${reiter}<div id="r-koerper"></div>`,
+      fuss: `<span class="r-richtwert">${Icon('glocke')} Richtwert</span><button class="k" data-f="bestellen" id="r-bestellen">${Icon('material')} Auf die Bestellliste</button><button class="k haupt" data-f="drucken">${Icon('drucken')} PDF / Drucken</button>`,
+      aktionen: {
+        art: (b) => { art = b.dataset.id; $$('.r-reiter button', hg).forEach((x) => x.classList.toggle('an', x === b)); aufbauen(); },
+        'schicht-neu': () => { lesenSchichten(); schichten.push({ stoff: 'Mineralwolle WLS 035', d: 100, lambda: 0.035, zw: false }); aufbauen(); },
+        'schicht-weg': (b) => { lesenSchichten(); schichten.splice(Number(b.dataset.id), 1); aufbauen(); },
+        drucken: () => drucken(dokument()),
+        bestellen: () => {
+          const e = lattung(werte()); if (!e) return;
+          const positionen = [{ menge: Math.round(e.klLfm), einheit: 'm', text: `Konterlatte ${e.klH}/${e.klB}` }, { menge: Math.round(e.tlLfm), einheit: 'm', text: `Dachlatte ${e.tlH}/${e.tlB}` }, { menge: e.befestiger, einheit: 'Stk', text: 'Befestiger Traglatte' }];
+          Store.neu({ typ: 'material', pid: c.ich ? c.ich.id : '', datum: c.heute, bs: '', text: positionen.map((p) => `${p.menge} ${p.einheit} ${p.text}`).join(', '), positionen, lieferant: '', quelle: 'rechner', status: 'offen' });
+          meldung('Auf der Bestellliste');
+        },
+      },
+    });
+    const werte = () => Object.fromEntries(new FormData($('#r-form', hg)));
+    function lesenSchichten() { $$('.r-schichten tr[data-i]', hg).forEach((tr) => { const s = schichten[Number(tr.dataset.i)]; s.stoff = $('[data-k=stoff]', tr).value; s.d = zahl($('[data-k=d]', tr).value); s.lambda = zahl($('[data-k=lambda]', tr).value); s.zw = $('[data-k=zw]', tr).checked; }); }
+    function rechnen() {
+      const out = $('#r-aus', hg); if (!out) return;
+      if (art === 'lattung') { const e = lattung(werte()); out.innerHTML = e ? lattungHtml(c, werte(), e) : '<p class="r-hinweis">Bitte Maße eintragen.</p>'; }
+      else { lesenSchichten(); out.innerHTML = uHtml(uwert(schichten, werte())); }
+    }
+    function aufbauen() { $('#r-koerper', hg).innerHTML = (art === 'lattung' ? formLattung : formU()) + '<div id="r-aus"></div>'; $('#r-bestellen', hg).hidden = art !== 'lattung'; rechnen(); }
+    hg.addEventListener('input', rechnen);
+    hg.addEventListener('change', (ev) => {
+      if (ev.target.dataset.k === 'stoff') { const st = STOFFE.find(([n]) => n === ev.target.value); if (st && st[1]) ev.target.closest('tr').querySelector('[data-k=lambda]').value = String(st[1]).replace('.', ','); }
+      rechnen();
+    });
+    function dokument() {
+      const f = c.cfg; const w = werte();
+      const titel = art === 'lattung' ? 'Materialermittlung Lattung' : 'U-Wert-Berechnung (Richtwert)';
+      const eingaben = art === 'lattung'
+        ? `<table class="d-pos"><tbody>${[['Länge Traufe', w.traufe + ' m'], ['Sparrenlänge', w.sparren + ' m'], ['Dachflächen', w.flaechen], ['Sparrenabstand', w.abstand + ' cm'], ['Lattweite', w.lattweite + ' cm'], ['Aufsparrendämmung', w.daemmung + ' mm'], ['Konterlatte / Traglatte', `${w.kl} / ${w.tl} mm`]].map(([a, b]) => `<tr><td>${a}</td><td class="r">${esc(b)}</td></tr>`).join('')}</tbody></table>`
+        : `<table class="d-pos"><thead><tr><th>Schicht (außen nach innen)</th><th class="r">Dicke</th><th class="r">λ</th></tr></thead><tbody>${schichten.map((s) => `<tr><td>${esc(s.stoff)}${s.zw ? ' (zwischen den Sparren)' : ''}</td><td class="r">${String(s.d).replace('.', ',')} mm</td><td class="r">${String(s.lambda).replace('.', ',')}</td></tr>`).join('')}</tbody></table>`;
+      return `<div class="dokument"><div class="d-kopf"><div class="d-firma"><b>${esc(f.name)}</b><span>${esc(f.zusatz || '')}</span></div><div class="d-adresse">${[f.strasse, [f.plz, f.ort].filter(Boolean).join(' '), f.telefon && 'Tel. ' + f.telefon].filter(Boolean).map(esc).join('<br>')}</div></div>
+        <h2 style="margin-top:28px">${titel}</h2><p class="d-klein">Erstellt am ${Datum.kurz(c.heute)}${c.heute.slice(0, 4)}${c.ich ? ' von ' + esc(c.ich.name) : ''}</p>
+        <h3 style="font-size:13px">Eingaben</h3>${eingaben}<h3 style="font-size:13px">Ergebnis</h3>${$('#r-aus', hg).innerHTML}</div>`;
+    }
+    aufbauen();
+  }
+
+  document.addEventListener('click', (ev) => {
+    const el = ev.target.closest && ev.target.closest('[data-rechner]'); if (!el) return;
+    ev.preventDefault();
+    const app = document.body.classList.contains('app-modus');
+    const s = Sitzung.lies(app ? 'app' : 'buero') || {};
+    oeffne(kontext(Store.cfg, Store.items, s.pid), el.dataset.rechner || 'lattung', app ? 'ui-buero-fenster app-fenster' : 'ui-buero-fenster');
+  });
+
+  /* Seite im Büro */
+  Buero.erweitern({
+    nav: [{ id: 'rechner', name: 'Rechner', icon: 'rechner', braucht: 'rechner', gruppe: 'Aufträge' }],
+    seiten: {
+      rechner: (c) => Buero.teile.seitenkopf(esc(c.R.name('rechner')), 'Material und Dämmwerte schnell ausrechnen, als PDF für Kunde oder Baustelle')
+        + `<div class="zwei"><div class="karte"><div class="kopf"><h3>Lattung</h3><span class="chip">Richtwert</span></div><div class="koerper"><p style="margin:0 0 14px;color:#5f6862">Konterlatten, Traglatten und Befestiger aus Traufe, Sparrenlänge und Lattweite. Schrauben durch die Aufsparrendämmung über die Rechner der Hersteller.</p><button class="k haupt" data-rechner="lattung">Rechner öffnen</button></div></div>
+          <div class="karte"><div class="kopf"><h3>U-Wert</h3><span class="chip">Richtwert</span></div><div class="koerper"><p style="margin:0 0 14px;color:#5f6862">Schichtaufbau eintragen, U-Wert sehen, mit GEG-Höchstwert und Förderwert vergleichen. Für das Gespräch mit dem Bauherrn.</p><button class="k haupt" data-rechner="uwert">Rechner öffnen</button></div></div></div>
+          <div class="karte"><div class="kopf"><h3>In Planung</h3></div><div class="koerper" style="color:#5f6862">Wind- und Schneelast nach Standort, Aufmaß aus Fotos oder Drohnenbildern und 3D-Ansichten werden gerade geprüft. Sie erscheinen hier, sobald sie zuverlässig rechnen.</div></div>`,
+    },
+  });
+
+  return { oeffne, lattung, uwert };
 })();
 
 /* ---- handy.js ---- */
@@ -3775,7 +4272,9 @@ const Handy = (() => {
   BILD.start = (c) => {
     const R = c.R; const ich = c.ich; const h = new Date().getHours();
     const gruss = h < 11 ? 'Moin' : h < 18 ? 'Moin' : 'Guten Abend';
-    let html = `<div class="a-titel">${esc(Datum.lang(c.heute))}</div><h1 style="margin:0 4px 16px;font-size:26px;font-weight:600">${gruss}, ${esc(ich.name.split(' ')[0])}</h1>`;
+    let html = `<div class="a-titel">${esc(Datum.lang(c.heute))}</div><div class="a-gruss"><h1>${gruss}, ${esc(ich.name.split(' ')[0])}</h1>${R.hat('material') && R.an('material', 'sprache') ? `<button class="sprach-rund" data-sprache aria-label="Einsprechen">${Icon('mikro')}</button>` : ''}</div>`;
+    const erin = Sprache.meine(c);
+    if (erin.length) html += `<div class="a-titel">Erinnerungen</div><div class="a-karte">${erin.map((e) => `<div class="a-zeile"><span class="sym">${Icon('glocke')}</span><div class="text"><b>${esc(e.text)}</b><small>${esc(Sprache.wann(c, e))}</small></div><button class="erin-haken" data-erinnerung="${e.id}" aria-label="Erledigt">${Icon('haken')}</button></div>`).join('')}</div>`;
 
     if (ich.rolle === 'chef' || ich.rolle === 'buero') {
       const o = c.offen(); const n = o.urlaub.length + o.stunden.length + o.belege.filter((b) => b.status === 'offen').length + o.material.length;
@@ -3865,6 +4364,8 @@ const Handy = (() => {
     if (R.imApp('urlaub') && R.p('urlaub').krank === 'ja') k.push(`<button class="erfassen-kachel" data-a="unter" data-id="krank"><span class="sym">${Icon('krank')}</span><span><b>Krank melden</b><small>geht direkt ans Büro</small></span></button>`);
     if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>${esc(R.name('regie'))}</b><small>${esc(R.hinweis('regie') || 'Zusatzarbeit, Kunde unterschreibt')}</small></span></button>`);
     if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>${esc(R.name('bautagebuch'))}</b><small>${esc(R.hinweis('bautagebuch') || 'Fotos und Notiz zum Tag')}</small></span></button>`);
+    if (R.imApp('material') && R.an('material', 'sprache')) k.unshift(`<button class="erfassen-kachel gross sprach-kachel" data-sprache><span class="sym">${Icon('mikro')}</span><span><b>Einsprechen</b><small>Bestellung oder Erinnerung, einfach sagen</small></span></button>`);
+    if (R.imApp('rechner')) k.push(`<button class="erfassen-kachel" data-rechner="lattung"><span class="sym">${Icon('rechner')}</span><span><b>Lattung</b><small>Latten und Befestiger für das Dach</small></span></button>`, `<button class="erfassen-kachel" data-rechner="uwert"><span class="sym">${Icon('rechner')}</span><span><b>U-Wert</b><small>Dämmwert für den Bauherrn</small></span></button>`);
     if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
     return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
@@ -5014,7 +5515,7 @@ async function boot() {
     } else {
       // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
       const cfg = await Store.ladeCfg('ahlers');
-      if (cfg && (cfg.version || 1) < 4) {
+      if (cfg && (cfg.version || 1) < 5) {
         const t = $('.laden > div');
         await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
       }

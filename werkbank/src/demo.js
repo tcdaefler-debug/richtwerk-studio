@@ -12,7 +12,8 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 4,
+      version: 5,
+      kalkulation: { faktor: 2.1, aufschlag: 20, lohn: { p3: 23.5, p4: 21.5, p5: 21, p6: 6.5, p7: 17 } },
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
@@ -66,6 +67,7 @@ const Muster = (() => {
           knoten('angebote', 890, 640),
           knoten('rechnungen', 1170, 760),
           knoten('tafel', 1170, 580),
+          knoten('rechner', 610, 1010),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -77,7 +79,7 @@ const Muster = (() => {
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
-          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'],
+          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'], ['app', 'rechner'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -193,6 +195,11 @@ const Muster = (() => {
       positionen: [pos('Sparren austauschen bis 5 m', 3, 'Stk', 185), pos('KVH C24 liefern, gehobelt', 0.4, 'm³', 620), pos('Zimmerer-Facharbeiter', 14, 'Std', 58), pos('Entsorgung Altholz', 1, 'psch', 120)] });
     add('re3', { typ: 'rechnung', status: 'entwurf', kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', bs: 'b2', angebot: 'an1', angebotNr: `A-${j}-014`, mwst: 19, leistung: '',
       positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    // Eingesprochen: Bestellung vom Vorarbeiter, Erinnerung vom Chef
+    add('m3', { typ: 'material', pid: 'p3', datum: heute, bs: 'b1', text: '6 Pal. Dachsteine, 1 Pal. Gratziegel, 3 Rollen Firstrolle', positionen: [{ menge: 6, einheit: 'Pal.', text: 'Dachsteine' }, { menge: 1, einheit: 'Pal.', text: 'Gratziegel' }, { menge: 3, einheit: 'Rollen', text: 'Firstrolle' }], lieferant: 'Dachdecker-Einkauf', quelle: 'sprache', status: 'offen' });
+    add('er1', { typ: 'erinnerung', pid: 'p1', datum: Datum.plus(heute, -1), text: 'Gerdes wegen Rinne und Fallrohr anrufen', faellig: heute, quelle: 'sprache' });
+    add('er2', { typ: 'erinnerung', pid: 'p1', datum: heute, text: 'Kran für die Gaube Steenken anfragen', faellig: Datum.plus(heute, 1), quelle: 'sprache' });
+    add('er3', { typ: 'erinnerung', pid: 'p3', datum: heute, text: 'Akku-Schrauber zum Service bringen', faellig: Datum.plus(heute, 1), quelle: 'sprache' });
     // Auftragstafel: zwei frische Anfragen
     add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
     add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });

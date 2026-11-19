@@ -24,8 +24,9 @@ const Buero = (() => {
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
   /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
-  const EXTRA = { aufgaben: [] };
-  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben }) {
+  const EXTRA = { aufgaben: [], einstellungen: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben, einstellungen }) {
+    if (einstellungen) EXTRA.einstellungen.push(einstellungen);
     nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
     Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
     if (aufgaben) EXTRA.aufgaben.push(aufgaben);
@@ -99,7 +100,7 @@ const Buero = (() => {
     }
     const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
     if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
-    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen"><button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button></div></div>`)));
+    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen">${t.erinnerung ? `<button class="k klein ok" data-erinnerung="${t.erinnerung}">${Icon('haken')} Erledigt</button>` : `<button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button>`}</div></div>`)));
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -264,12 +265,16 @@ const Buero = (() => {
     const offen = c.typ('material').filter((m) => m.status !== 'erledigt').sort((a, b) => b.datum.localeCompare(a.datum));
     const erledigt = c.typ('material').filter((m) => m.status === 'erledigt').sort((a, b) => b.datum.localeCompare(a.datum)).slice(0, 10);
     const haendler = c.R.p('material').haendler;
-    const text = offen.map((m) => `- ${m.text} (Baustelle: ${c.bsName(m.bs)})`).join('\n');
-    const mail = `mailto:?subject=${encodeURIComponent('Bestellung ' + (c.cfg.name || ''))}&body=${encodeURIComponent(`Guten Tag,\n\nwir bestellen:\n${text}\n\nViele Grüße\n${c.ich ? c.ich.name : ''}\n${c.cfg.name}`)}`;
-    const zeile = (m) => `<div class="liste-zeile"><div class="text"><b>${esc(m.text)}</b><small>${esc(c.bsName(m.bs))} · ${esc(c.person(m.pid).name)} · ${Datum.kurz(m.datum)}</small></div>${chip(m.status)}
+    const liste = Sprache.lieferantenListe(c);
+    const gruppen = {}; offen.forEach((m) => { const l = m.lieferant || haendler; (gruppen[l] = gruppen[l] || []).push(m); });
+    const zeilenText = (ms) => ms.flatMap((m) => (m.positionen && m.positionen.length ? m.positionen.map((p) => `- ${String(p.menge).replace('.', ',')} ${p.einheit} ${p.text}`) : [`- ${m.text}`]).map((z) => `${z}${m.bs ? ` (Baustelle ${c.bsName(m.bs)}, ${(c.baustelle(m.bs) || {}).adresse || ''})` : ''}`)).join('\n');
+    const mail = (l, ms) => { const h = liste.find((x) => x.name === l) || {}; return `mailto:${encodeURIComponent(h.email || '')}?subject=${encodeURIComponent('Bestellung ' + (c.cfg.name || ''))}&body=${encodeURIComponent(`Guten Tag,\n\nwir bestellen:\n${zeilenText(ms)}\n\nBitte kurz bestätigen mit Liefertermin.\n\nViele Grüße\n${c.ich ? c.ich.name : ''}\n${c.cfg.name}${c.cfg.telefon ? '\nTel. ' + c.cfg.telefon : ''}`)}`; };
+    const gruppeHtml = ([l, ms]) => { const h = liste.find((x) => x.name === l) || {};
+      return `<div class="karte bestell-gruppe"><div class="kopf"><h3>${esc(l)}</h3><span class="chip warn">${ms.length}</span><div class="rechts">${h.telefon ? `<a class="k klein" href="tel:${esc(h.telefon.replace(/\s+/g, ''))}">${Icon('telefon')} ${esc(h.telefon)}</a>` : ''}<a class="k klein" href="${mail(l, ms)}">${Icon('angebot')} Als E-Mail</a><button class="k klein" data-a="material-alle" data-id="${esc(l)}">Alle bestellt</button></div></div>${ms.map(zeile).join('')}</div>`; };
+    const zeile = (m) => `<div class="liste-zeile"><div class="text"><b>${m.positionen && m.positionen.length ? m.positionen.map((p) => `${String(p.menge).replace('.', ',')} ${esc(p.einheit)} ${esc(p.text)}`).join('<br>') : esc(m.text)}</b><small>${m.quelle === 'sprache' ? `${Icon('mikro')} eingesprochen · ` : m.quelle === 'rechner' ? 'aus dem Rechner · ' : ''}${esc(c.bsName(m.bs))} · ${esc(c.person(m.pid).name)} · ${Datum.kurz(m.datum)}</small></div>${chip(m.status)}
       <div class="aktionen">${m.status === 'offen' ? `<button class="k klein" data-a="material" data-id="${m.id}" data-wert="bestellt">Bestellt</button>` : ''}${m.status !== 'erledigt' ? `<button class="k klein ok" data-a="material" data-id="${m.id}" data-wert="erledigt">${Icon('haken')} Erledigt</button>` : ''}</div></div>`;
-    return seitenkopf('Materialbedarf', `Was auf den Baustellen fehlt · Bestellung bei ${esc(haendler)}`, offen.length ? `<a class="k haupt" href="${mail}" style="text-decoration:none">${Icon('download')} Bestellung als E-Mail</a>` : '')
-      + `<div class="karte"><div class="kopf"><h3>Offen</h3><span class="chip ${offen.length ? 'warn' : ''}">${offen.length}</span></div>${offen.map(zeile).join('') || leer('Nichts offen.')}</div>
+    return seitenkopf(esc(c.R.name('material')), 'Was auf den Baustellen fehlt, sortiert nach Händler. Anrufen oder als E-Mail schicken.', c.R.an('material', 'sprache') ? `<button class="k haupt" data-sprache>${Icon('mikro')} Einsprechen</button>` : '')
+      + (offen.length ? Object.entries(gruppen).map(gruppeHtml).join('') : `<div class="karte"><div class="kopf"><h3>Offen</h3></div>${leer('Nichts offen.')}</div>`) + `
         <div class="karte"><div class="kopf"><h3>Zuletzt erledigt</h3></div>${erledigt.map(zeile).join('') || leer('Noch nichts.')}</div>`;
   };
 
@@ -409,7 +414,7 @@ const Buero = (() => {
   SEITEN.einstellungen = (c) => {
     const aktiv = c.cfg.baukasten.knoten.map((k) => k.typ).filter((t) => BAUSTEINE[t] && BAUSTEINE[t].gruppe !== 'geplant');
     const geplant = Object.entries(BAUSTEINE).filter(([, b]) => b.gruppe === 'geplant');
-    return seitenkopf('Einstellungen', 'Angaben zum Betrieb und Ihr Funktionsumfang')
+    return seitenkopf('Einstellungen', 'Angaben zum Betrieb und Ihr Funktionsumfang') + EXTRA.einstellungen.map((fn) => fn(c)).join('')
       + `<div class="zwei"><div class="karte"><div class="kopf"><h3>Betrieb</h3></div><form class="koerper" id="f-einst">
         <div class="einstellungen-raster">
           <label class="feld"><span>Name</span><input name="name" value="${esc(c.cfg.name)}"></label>
@@ -457,6 +462,7 @@ const Buero = (() => {
         <div class="firma">${esc(c.cfg.name)}<small>Betriebszentrale</small></div>
         <span class="luecke"></span>
         <div class="suche nur-breit" role="search"><span class="sym">${Icon('suche')}</span><input id="b-suche" type="search" placeholder="Suchen: Baustelle, Kunde, Beleg …" aria-label="Suchen" autocomplete="off"><div class="treffer" id="b-treffer" hidden></div></div>
+        ${c.R.hat('material') && c.R.an('material', 'sprache') ? `<button class="flach sprach-kopf" data-sprache title="Bestellung oder Erinnerung einsprechen">${Icon('mikro')}<span class="nur-breit">Einsprechen</span></button>` : ''}
         <div class="wer">${esc(c.ich.name)}<small>${esc(c.ich.funktion || ROLLEN[c.ich.rolle])}</small></div>
         <span class="rund">${esc(c.kuerzel(c.ich.name))}</span>
         <button class="flach" data-a="abmelden" title="Abmelden">${Icon('abmelden')}<span class="nur-breit">Abmelden</span></button>
@@ -558,6 +564,7 @@ const Buero = (() => {
     'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
     nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
     planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'material-alle'(el, c) { c.typ('material').filter((m) => m.status === 'offen' && (m.lieferant || c.R.p('material').haendler) === el.dataset.id).forEach((m) => Store.aendere(m.id, { status: 'bestellt' })); meldung('Als bestellt markiert'); },
     'plan-ics'(el, c) { speichern(`Wochenplan_KW${Datum.kw(zustand.planWoche)}.ics`, new Blob([Uebergabe.planIcs(c, zustand.planWoche)], { type: 'text/calendar' })); meldung('Kalenderdatei gespeichert. Sie lässt sich in Outlook, Google- oder Apple-Kalender öffnen.'); },
     'plan-vorwoche'(el, c) {
       const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
