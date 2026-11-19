@@ -20,3 +20,10 @@ Das Studio läuft als Seite auf claude.ai. Änderungen an `richtwerk-studio.html
 2. **Handy-App Bautest**: dieselbe Datei, Seite `#handy` (Vollbild fürs Handy). Beide Seiten gleichen sich live über die Artifact-Datenbank ab (Dokument `betrieb/daten`).
 3. **Entwickler-Tool Richtwerk Studio**: `baukasten/richtwerk-studio.html`, verwaltet alle Betriebe.
 Neu bauen: `python3 baukasten/standalone.py kunden/bautest/kunde.json kunden/bautest/bautest-app.html`
+
+## Werkbank (Stand 2026-11-19, Vorführ-Version)
+Neu aufgebaut, ersetzt für Vorführungen Website, Hammer-App und altes Studio.
+- Quelltext: `werkbank/src/` (eine Datei pro Bereich: `buero.js`, `handy.js`, `studio.js`, Baukasten-Regeln in `bausteine.js`, Musterdaten in `demo.js`, Speicher in `store.js`).
+- Bauen: `python3 werkbank/bauen.py` erzeugt `werkbank/richtwerk-werkbank.html` (für das Artifact) und `richtwerk-werkbank-offline.html` (direkt im Browser, Daten nur lokal).
+- Startseite mit drei Bereichen: `#buero`, `#app`, `#studio`. Daten geteilt über die Artifact-Datenbank (`meta/betriebe`, `b/<betrieb>/cfg/main`, `b/<betrieb>/items/*`, `b/<betrieb>/dateien/*`).
+- Musterbetrieb `ahlers` (Zimmerei Ahlers), leerer Betrieb `neu`, Entwicklerzugang `richtwerk`.

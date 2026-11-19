@@ -1,0 +1,189 @@
+/* =========================================================================
+   Baukasten: Welche Bausteine es gibt und was eine Verbindung bewirkt.
+   Ein Betrieb speichert seinen Aufbau als Graph:
+     cfg.baukasten = { knoten: [{id, typ, x, y, p:{...}}], kanten: [{von, zu}] }
+   "von" und "zu" sind Bausteintypen (jeder Typ kommt höchstens einmal vor).
+   ========================================================================= */
+const BAUSTEINE = {
+  app: {
+    name: 'Mitarbeiter-App', gruppe: 'quelle', icon: 'person',
+    kurz: 'Jeder Mitarbeiter meldet sich mit seinem Code am Handy an.',
+    wofuer: 'Zettelwirtschaft im Bulli: Stunden, Belege und Lieferscheine kommen direkt vom Handy ins Büro.',
+    ein: [], p: {},
+  },
+  baustellen: {
+    name: 'Baustellen', gruppe: 'stamm', icon: 'haus',
+    kurz: 'Liste der laufenden Baustellen. Verbunden: Einträge bekommen eine Baustelle.',
+    wofuer: 'Am Monatsende weiß keiner mehr, welcher Beleg zu welchem Kunden gehört.',
+    ein: [], p: {},
+  },
+  stempeln: {
+    name: 'Stempeluhr', gruppe: 'erfassen', icon: 'uhr',
+    kurz: 'Arbeitsbeginn und Feierabend mit einem Knopf. Erzeugt Stundeneinträge.',
+    wofuer: 'Stunden werden freitags aus dem Gedächtnis aufgeschrieben und stimmen selten.',
+    ein: ['app'],
+    p: {
+      rundung: { typ: 'zahl', name: 'Auf Minuten runden', wert: 15, min: 1, max: 30, einheit: 'Min.' },
+      pause6: { typ: 'zahl', name: 'Pause ab 6 Std.', wert: 30, min: 0, max: 60, einheit: 'Min.' },
+      pause9: { typ: 'zahl', name: 'Pause ab 9 Std.', wert: 45, min: 0, max: 90, einheit: 'Min.' },
+    },
+  },
+  stunden: {
+    name: 'Stundenzettel', gruppe: 'erfassen', icon: 'kalender',
+    kurz: 'Arbeitszeit pro Tag mit Baustelle und Tätigkeit, auch nachträglich.',
+    wofuer: 'Die Stundenzettel für den Lohn werden jeden Monat abgetippt.',
+    ein: ['app', 'stempeln', 'baustellen'],
+    p: {
+      soll: { typ: 'zahl', name: 'Sollstunden pro Woche', wert: 40, min: 10, max: 50, einheit: 'Std.' },
+      nachtrag: { typ: 'zahl', name: 'Nachtragen bis zurück', wert: 7, min: 0, max: 31, einheit: 'Tage' },
+      maxTag: { typ: 'zahl', name: 'Warnung ab', wert: 10, min: 6, max: 12, einheit: 'Std./Tag' },
+    },
+  },
+  urlaub: {
+    name: 'Urlaub & Krank', gruppe: 'erfassen', icon: 'krank',
+    kurz: 'Urlaub beantragen, krank melden, Resturlaub sehen.',
+    wofuer: 'Urlaub wird mündlich abgesprochen und dann vergessen; keiner kennt seinen Resturlaub.',
+    ein: ['app'],
+    p: {
+      tage: { typ: 'zahl', name: 'Urlaubstage pro Jahr', wert: 30, min: 20, max: 36, einheit: 'Tage' },
+      vorlauf: { typ: 'zahl', name: 'Vorlauf für Anträge', wert: 3, min: 0, max: 60, einheit: 'Tage' },
+      krank: { typ: 'wahl', name: 'Krankmeldung per App', wert: 'ja', optionen: ['ja', 'nein'] },
+    },
+  },
+  belege: {
+    name: 'Belege', gruppe: 'erfassen', icon: 'beleg',
+    kurz: 'Tankquittung oder Baumarkt-Bon fotografieren statt sammeln.',
+    wofuer: 'Kassenbons verbleichen im Handschuhfach und fehlen beim Steuerberater.',
+    ein: ['app', 'baustellen'],
+    p: {
+      kategorien: { typ: 'text', name: 'Kategorien', wert: 'Tanken, Material, Werkzeug, Verpflegung, Sonstiges' },
+      grenze: { typ: 'zahl', name: 'Chef prüft ab', wert: 100, min: 0, max: 2000, einheit: '€' },
+    },
+  },
+  lieferscheine: {
+    name: 'Lieferscheine', gruppe: 'erfassen', icon: 'liefer',
+    kurz: 'Lieferschein auf der Baustelle abfotografieren, landet beim Auftrag.',
+    wofuer: 'Lieferscheine gehen verloren, Rechnungen vom Händler lassen sich nicht prüfen.',
+    ein: ['app', 'baustellen'],
+    p: { lieferanten: { typ: 'text', name: 'Lieferanten', wert: 'Holzhandel Ritter, Baustoffe Nord, Würth, Sonstiger' } },
+  },
+  material: {
+    name: 'Materialbedarf', gruppe: 'erfassen', icon: 'material',
+    kurz: 'Geselle meldet, was fehlt. Der Chef sieht es gesammelt.',
+    wofuer: 'Material wird per Anruf beim Chef bestellt, der gerade auf dem Dach steht.',
+    ein: ['app', 'baustellen'],
+    p: { haendler: { typ: 'text', name: 'Bestellen bei', wert: 'Holzhandel Ritter' } },
+  },
+  tagelohn: {
+    name: 'Tagelöhner', gruppe: 'erfassen', icon: 'helfer',
+    kurz: 'Aushilfen mit Stunden und Satz erfassen, Quittung erzeugen.',
+    wofuer: 'Aushilfen werden bar bezahlt, am Jahresende fehlt der Nachweis.',
+    ein: ['baustellen'],
+    p: {
+      satz: { typ: 'zahl', name: 'Stundensatz', wert: 16, min: 13.9, max: 40, einheit: '€/Std.' },
+      grenzeTage: { typ: 'zahl', name: 'Warnung ab', wert: 60, min: 10, max: 70, einheit: 'Tage/Jahr' },
+    },
+  },
+  freigabe: {
+    name: 'Freigabe Chef', gruppe: 'pruefen', icon: 'haken',
+    kurz: 'Was hier hineinläuft, muss erst freigegeben werden.',
+    wofuer: 'Der Chef will sehen, was abgerechnet wird, bevor es zum Steuerbüro geht.',
+    ein: ['stunden', 'urlaub', 'belege', 'tagelohn', 'material'],
+    p: { wer: { typ: 'wahl', name: 'Wer darf freigeben', wert: 'Chef und Büro', optionen: ['Chef', 'Chef und Büro'] } },
+  },
+  export: {
+    name: 'Steuerberater-Paket', gruppe: 'ausgeben', icon: 'paket',
+    kurz: 'Monatspaket als ZIP: Stunden, Belege, Lieferscheine, Tagelohn.',
+    wofuer: 'Der Pendelordner zum Steuerbüro kostet jeden Monat einen halben Tag.',
+    ein: ['stunden', 'belege', 'lieferscheine', 'tagelohn', 'freigabe'],
+    p: {
+      empfaenger: { typ: 'text', name: 'Steuerbüro', wert: 'Steuerbüro Janssen & Partner' },
+      stichtag: { typ: 'zahl', name: 'Abgabe bis Folgemonat', wert: 5, min: 1, max: 28, einheit: 'Tag' },
+      format: { typ: 'wahl', name: 'Format Stunden', wert: 'DATEV (CSV)', optionen: ['DATEV (CSV)', 'Excel (CSV)'] },
+    },
+  },
+  dokumente: {
+    name: 'Lohnzettel & Dokumente', gruppe: 'ausgeben', icon: 'dokument',
+    kurz: 'Büro lädt Lohnabrechnungen hoch, jeder sieht nur seine eigenen.',
+    wofuer: 'Lohnzettel werden ausgedruckt und im Bauwagen verteilt.',
+    ein: ['app'],
+    p: {},
+  },
+
+  /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
+  bautagebuch: { name: 'Bautagebuch', gruppe: 'geplant', icon: 'stift', kurz: 'Fotos und Notizen pro Tag und Baustelle.', wofuer: 'Bei Mängelstreit fehlt der Nachweis, wer wann was gemacht hat.', ein: [], p: {} },
+  wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
+  wochenplan: { name: 'Wochenplan', gruppe: 'geplant', icon: 'kalender', kurz: 'Wer ist nächste Woche auf welcher Baustelle.', wofuer: 'Der Plan steht nur im Kopf vom Chef; Sonntagabend wird telefoniert.', ein: [], p: {} },
+  geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
+  aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
+  angebote: { name: 'Angebote & Rechnungen', gruppe: 'geplant', icon: 'beleg', kurz: 'Anbindung an das Rechnungsprogramm des Betriebs.', wofuer: 'Rechnungen werden Wochen nach Fertigstellung geschrieben, Geld fehlt.', ein: [], p: {} },
+};
+
+const GRUPPEN = {
+  quelle: { name: 'Start', farbe: '#6f94ff' },
+  stamm: { name: 'Stammdaten', farbe: '#8b95a3' },
+  erfassen: { name: 'Erfassen', farbe: '#3fb37f' },
+  pruefen: { name: 'Prüfen', farbe: '#e5a530' },
+  ausgeben: { name: 'Ausgeben', farbe: '#ff6b3d' },
+  geplant: { name: 'In Planung', farbe: '#5a6270' },
+};
+
+/* Regeln, die sich aus dem Aufbau eines Betriebs ergeben */
+function regeln(cfg) {
+  const bk = (cfg && cfg.baukasten) || { knoten: [], kanten: [] };
+  const typen = new Set(bk.knoten.filter((k) => BAUSTEINE[k.typ] && BAUSTEINE[k.typ].gruppe !== 'geplant').map((k) => k.typ));
+  const hat = (t) => typen.has(t);
+  const verb = (a, b) => hat(a) && hat(b) && bk.kanten.some((k) => k.von === a && k.zu === b);
+  const p = (t) => {
+    const def = (BAUSTEINE[t] && BAUSTEINE[t].p) || {};
+    const knoten = bk.knoten.find((k) => k.typ === t);
+    const out = {};
+    for (const [k, d] of Object.entries(def)) out[k] = knoten && knoten.p && knoten.p[k] !== undefined ? knoten.p[k] : d.wert;
+    return out;
+  };
+  const liste = (t, k) => String(p(t)[k] || '').split(',').map((s) => s.trim()).filter(Boolean);
+  return {
+    hat, verb, p, liste,
+    imApp: (t) => hat('app') && verb('app', t),
+    mitBaustelle: (t) => verb('baustellen', t),
+    freigabe: (t) => verb(t, 'freigabe'),
+    imExport: (t) => verb(t, 'export') || (verb(t, 'freigabe') && verb('freigabe', 'export')),
+    stempeln: () => hat('app') && verb('app', 'stempeln') && verb('stempeln', 'stunden'),
+    stundenImApp: () => hat('app') && (verb('app', 'stunden') || verb('stempeln', 'stunden') && verb('app', 'stempeln')),
+    darfFreigeben: (rolle) => rolle === 'chef' || (rolle === 'buero' && p('freigabe').wer === 'Chef und Büro'),
+  };
+}
+
+/* Klartext: Was bewirkt der Aufbau? (für das Entwickler-Tool) */
+function wirkungen(cfg, typ) {
+  const R = regeln(cfg); const B = BAUSTEINE[typ]; const out = [];
+  if (!B) return out;
+  if (B.gruppe === 'geplant') return ['Noch in Entwicklung. Beim Kunden nicht sichtbar.'];
+  const imBuero = { stunden: 'Stunden', urlaub: 'Urlaub', belege: 'Belege', lieferscheine: 'Lieferscheine', tagelohn: 'Tagelöhner', export: 'Steuerberater', baustellen: 'Baustellen', material: 'Material', dokumente: 'Steuerberater' }[typ];
+  if (imBuero) out.push(`Im Büro als Bereich „${imBuero}“ sichtbar.`);
+  if (['stempeln', 'stunden', 'urlaub', 'belege', 'lieferscheine', 'material', 'dokumente'].includes(typ)) {
+    if (typ === 'stunden') out.push(R.stundenImApp() ? 'Mitarbeiter sehen und erfassen Stunden in der App.' : 'Nicht mit der App verbunden: Stunden nur im Büro.');
+    else out.push(R.imApp(typ) ? 'In der Mitarbeiter-App sichtbar.' : 'Nicht mit der App verbunden: Mitarbeiter sehen das nicht.');
+  }
+  if (typ === 'stempeln') out.push(R.verb('stempeln', 'stunden') ? 'Jedes Stempeln wird ein Stundeneintrag.' : 'Nicht mit dem Stundenzettel verbunden: Stempeln ist ausgeschaltet.');
+  if (R.mitBaustelle(typ)) out.push('Mitarbeiter wählen eine Baustelle aus.');
+  if (R.freigabe(typ)) out.push(typ === 'belege' ? `Belege ab ${Zahl.eur(R.p('belege').grenze)} muss ${R.p('freigabe').wer === 'Chef' ? 'der Chef' : 'Chef oder Büro'} freigeben.` : `Muss erst von ${R.p('freigabe').wer === 'Chef' ? 'dem Chef' : 'Chef oder Büro'} freigegeben werden.`);
+  else if (['stunden', 'urlaub', 'belege', 'tagelohn', 'material'].includes(typ)) out.push(typ === 'material' ? 'Ohne Freigabe: geht direkt auf die Bestell-Liste.' : 'Ohne Freigabe: gilt sofort als erledigt.');
+  if (['stunden', 'belege', 'lieferscheine', 'tagelohn'].includes(typ)) out.push(R.imExport(typ) ? `Kommt ins Monatspaket für ${R.p('export').empfaenger}.` : 'Geht nicht ans Steuerbüro.');
+  if (typ === 'export') {
+    const drin = ['stunden', 'belege', 'lieferscheine', 'tagelohn'].filter(R.imExport).map((t) => BAUSTEINE[t].name);
+    out.push(drin.length ? 'Im Paket: ' + drin.join(', ') + '.' : 'Noch nichts angeschlossen.');
+    if (R.verb('freigabe', 'export')) out.push('Über die Freigabe kommen nur freigegebene Einträge ins Paket.');
+  }
+  if (typ === 'freigabe') {
+    const rein = B.ein.filter((t) => R.verb(t, 'freigabe')).map((t) => BAUSTEINE[t].name);
+    out.push(rein.length ? 'Prüft: ' + rein.join(', ') + '.' : 'Noch nichts angeschlossen.');
+  }
+  if (typ === 'tagelohn' && R.p('tagelohn').satz < 13.9) out.push('Achtung: unter dem Mindestlohn von 13,90 €.');
+  return out;
+}
+
+/* Standard-Aufbau für einen neuen, leeren Betrieb */
+function leererBaukasten() {
+  return { knoten: [{ id: 'k_app', typ: 'app', x: 60, y: 220, p: {} }], kanten: [] };
+}
