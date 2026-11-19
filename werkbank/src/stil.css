@@ -599,3 +599,175 @@ dl.daten dd { margin: 0; font-weight: 500; }
 /* ---------- Fokus für Tastaturbedienung ---------- */
 :focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
 .ui-buero :focus-visible, .ui-app :focus-visible { outline-color: var(--firma); }
+
+/* ---------- Angebote und Rechnungen ---------- */
+.hinweis-zeile { margin: 0 0 14px; padding: 10px 12px; background: #f3f4f1; border-radius: 4px; font-size: 13px; color: #4a534d; }
+.pos-huelle { overflow-x: auto; border: 1px solid #e1e5de; border-radius: 4px; }
+.pos-tabelle td { padding: 6px 8px; vertical-align: top; }
+.pos-tabelle textarea, .pos-tabelle input, .pos-tabelle select { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 6px 8px; font: inherit; font-size: 13px; background: #fff; resize: none; overflow: hidden; }
+.pos-tabelle textarea { min-width: 260px; min-height: 32px; }
+.pos-tabelle input.num { text-align: right; }
+.pos-tabelle :disabled { background: #fafbf9; color: #1d2420; border-color: transparent; }
+.pos-tabelle .p-gesamt { padding-top: 12px; }
+.pos-werkzeug { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+.pos-werkzeug select { border: 1px solid #c8cdc5; border-radius: 4px; padding: 5px 8px; font-size: 13px; background: #fff; max-width: 360px; }
+.pos-summe { display: flex; justify-content: flex-end; gap: 22px; padding: 12px 4px 0; font-size: 14px; color: #4a534d; flex-wrap: wrap; }
+.pos-summe b { color: #1d2420; margin-left: 6px; }
+.pos-summe .gesamt b { font-size: 17px; }
+.reihe.zusatz { border-top: 1px dashed #d9ddd6; padding-top: 12px; }
+.feld.janein, .a-feld.janein { display: flex; align-items: center; gap: 10px; }
+.feld.janein input, .a-feld.janein input { width: 20px; height: 20px; }
+.feld.janein span, .a-feld.janein span { margin: 0; }
+
+/* Dokument: Bildschirm-Vorschau und Druck (A4) */
+.dokument { font-family: var(--schrift); color: #111; font-size: 12.5px; line-height: 1.5; max-width: 780px; margin: 0 auto; background: #fff; }
+.dokument .d-kopf { display: flex; justify-content: space-between; gap: 20px; border-bottom: 2px solid var(--firma, #2f5e4e); padding-bottom: 12px; }
+.dokument .d-firma b { display: block; font-size: 20px; letter-spacing: -.01em; }
+.dokument .d-firma span { color: #555; }
+.dokument .d-adresse { text-align: right; color: #444; font-size: 11.5px; }
+.dokument .d-mitte { display: flex; justify-content: space-between; gap: 20px; margin: 34px 0 26px; }
+.dokument .d-empf { min-height: 90px; }
+.dokument .d-empf small { display: block; font-size: 9.5px; color: #777; text-decoration: underline; margin-bottom: 6px; }
+.dokument .d-meta { display: grid; grid-template-columns: auto auto; gap: 2px 14px; margin: 0; font-size: 11.5px; align-self: flex-start; }
+.dokument .d-meta dt { color: #666; }
+.dokument .d-meta dd { margin: 0; text-align: right; font-weight: 600; }
+.dokument h2 { font-size: 16px; margin: 0 0 12px; }
+.dokument .d-pos { width: 100%; border-collapse: collapse; margin: 14px 0 8px; }
+.dokument .d-pos th { text-align: left; border-bottom: 1px solid #333; padding: 5px 6px; font-size: 11px; }
+.dokument .d-pos td { border-bottom: 1px solid #e3e3e3; padding: 6px; vertical-align: top; }
+.dokument .r { text-align: right; }
+.dokument .d-summe { margin-left: auto; border-collapse: collapse; min-width: 280px; }
+.dokument .d-summe td { padding: 3px 6px; }
+.dokument .d-summe .gesamt td { border-top: 2px solid #111; font-weight: 700; font-size: 14px; padding-top: 6px; }
+.dokument .d-klein { font-size: 11px; color: #444; margin: 8px 0; }
+.dokument .d-fuss { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid #ccc; margin-top: 30px; padding-top: 8px; font-size: 10px; color: #555; }
+.dokument .d-agb { margin-top: 30px; padding-top: 16px; border-top: 1px dashed #bbb; font-size: 10.5px; color: #333; }
+.dokument .d-agb h3 { font-size: 13px; margin: 0 0 8px; }
+@media print {
+  #druck .dokument { max-width: none; }
+  #druck .d-agb { break-before: page; border: 0; margin-top: 0; }
+  #druck .d-pos tr { break-inside: avoid; }
+}
+
+/* ---------- Entwickler-Tool: Baustein öffnen ---------- */
+.fenster-hg.bf .fenster .kopf h3 { display: flex; align-items: center; gap: 8px; }
+.fenster-hg.bf .fenster .kopf h3 .ic { width: 18px; height: 18px; }
+.bf-reiter { display: flex; gap: 4px; border-bottom: 1px solid #e1e5de; margin: -4px 0 16px; }
+.bf-reiter button { border: 0; background: none; padding: 9px 12px; font-size: 14px; color: #5f6862; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.bf-reiter button.an { color: #1d2420; font-weight: 600; border-bottom-color: #ff6b3d; }
+.bf-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 16px; }
+.fenster textarea.mono { font-family: var(--mono); font-size: 12.5px; }
+.bf-ablauf { list-style: none; padding: 0; margin: 0; counter-reset: schritt; }
+.bf-ablauf li { counter-increment: schritt; display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 50px; border: 1px solid #e1e5de; border-radius: 6px; position: relative; margin-bottom: 18px; background: #fff; }
+.bf-ablauf li::before { content: counter(schritt); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #1d2420; color: #fff; font-size: 12px; display: grid; place-items: center; font-family: var(--mono); }
+.bf-ablauf li:not(:last-child)::after { content: ''; position: absolute; left: 25px; bottom: -19px; height: 18px; border-left: 2px solid #c8cdc5; }
+.bf-ablauf li.aus { opacity: .5; border-style: dashed; }
+.bf-ablauf li.aus::before { background: #9aa19c; }
+.bf-ablauf li > div { flex: 1; }
+.bf-ablauf b { display: block; font-size: 14px; }
+.bf-ablauf small { color: #6a726c; font-size: 12.5px; }
+.bf-ablauf .fest { font-size: 12px; color: #8a928c; }
+.bf-ablauf .schalter { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+.bf-ablauf .schalter input { width: 18px; height: 18px; }
+.bf-felder td { padding: 6px; }
+.bf-felder input:not([type=checkbox]), .bf-felder select { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 6px 8px; font-size: 13px; }
+.bf-fuer { margin-right: auto; font-size: 12px; color: #7a827c; }
+
+/* ---------- Kundenfragen und Online-Annahme im Büro ---------- */
+.kundenfrage { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; border: 1px solid #f0d9a8; background: #fff8ea; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; }
+.kundenfrage p { margin: 4px 0 0; }
+.kundenfrage small { color: #7a6a4a; }
+.hinweis-zeile.online-ok { background: #edf6f0; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.hinweis-zeile.online-ok p { margin: 0; flex: 1; min-width: 220px; color: #24553a; font-size: 13px; }
+.d-unterschrift { display: block; max-width: 220px; max-height: 70px; margin: 4px 0 8px; }
+.hinweis-zeile .d-unterschrift { margin: 0; max-height: 50px; background: #fff; border-radius: 4px; }
+
+/* ---------- Auftragstafel ---------- */
+.tafel { display: grid; grid-template-columns: repeat(6, minmax(178px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 12px; align-items: start; scroll-snap-type: x proximity; }
+.t-spalte { background: #e3e6e0; border-radius: 6px; padding: 8px; min-height: 240px; display: flex; flex-direction: column; gap: 8px; scroll-snap-align: start; transition: background .12s; }
+.t-spalte.ueber { background: #d3dcd4; box-shadow: inset 0 0 0 2px var(--firma, #2f5e4e); }
+.t-spalte > header { display: flex; align-items: baseline; gap: 8px; padding: 2px 4px 4px; }
+.t-spalte > header b { font-size: 13px; }
+.t-spalte > header small { margin-left: auto; color: #66706a; font-size: 12px; }
+.t-zahl { font-size: 11px; background: #fff; border-radius: 10px; padding: 0 7px; color: #535c56; font-weight: 600; }
+.t-liste { display: flex; flex-direction: column; gap: 8px; }
+.t-karte { background: #fff; border: 1px solid #d6dbd3; border-radius: 6px; padding: 10px 10px 8px; cursor: grab; box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+.t-karte:hover { border-color: #b9c0b6; }
+.t-karte.zieht { opacity: .45; }
+.t-karte:focus-visible { outline: 2px solid var(--firma, #2f5e4e); outline-offset: 2px; }
+.t-oben { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.t-oben .num { color: #4a534d; font-size: 12px; white-space: nowrap; }
+.t-karte p { margin: 3px 0 4px; font-size: 13px; color: #3c4540; }
+.t-karte > small { display: block; color: #7a827c; font-size: 12px; margin-bottom: 4px; }
+.t-chips { display: flex; gap: 4px; flex-wrap: wrap; margin: 4px 0; }
+.t-chips .ic { width: 12px; height: 12px; }
+.t-unten { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; margin-top: 6px; }
+.t-links { display: flex; flex-wrap: wrap; gap: 2px 8px; }
+.t-link { border: 0; background: none; padding: 2px 0; font-size: 12px; color: #2b5b9c; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.t-link:hover { text-decoration: underline; }
+.t-link .ic { width: 13px; height: 13px; }
+.t-pfeile { display: flex; gap: 4px; }
+.t-pfeile .k.klein { padding: 3px 5px; }
+.t-leer { border: 1px dashed #bfc6bc; border-radius: 6px; padding: 18px 8px; text-align: center; color: #8a928c; font-size: 12px; }
+.t-neu { border: 0; background: none; text-align: left; padding: 6px 6px; color: #535c56; font-size: 13px; border-radius: 4px; display: flex; align-items: center; gap: 6px; }
+.t-neu:hover { background: #d8dcd5; }
+
+/* ---------- Angebot online (Seite für den Kunden) ---------- */
+body.kunde-modus { background: #eef0f2; }
+.kd { min-height: 100vh; display: flex; flex-direction: column; color: #1c2230; }
+.kd-kopf { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 24px; background: #fff; border-bottom: 1px solid #dde1e6; }
+.kd-firma { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.kd-firma b { display: block; font-size: 15px; }
+.kd-firma small { color: #69707c; font-size: 12px; }
+.kd-zeichen { width: 38px; height: 38px; border-radius: 8px; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 14px; letter-spacing: .02em; flex: none; }
+.kd-raster { flex: 1; display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 24px; padding: 24px; max-width: 1320px; width: 100%; margin: 0 auto; align-items: start; }
+.kd-links { background: #fff; border: 1px solid #dde1e6; border-radius: 10px; padding: 22px; position: sticky; top: 16px; }
+.kd-links h1 { font-size: 20px; margin: 0 0 14px; letter-spacing: -.01em; }
+.kd-uebersicht { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 18px; padding: 14px; background: #f5f6f8; border-radius: 8px; font-size: 14px; }
+.kd-uebersicht dt { color: #69707c; }
+.kd-uebersicht dd { margin: 0; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+.kd-uebersicht dd.gross { font-size: 18px; font-weight: 700; }
+.kd fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.kd fieldset:disabled { opacity: .5; }
+.kd-haken { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #eef0f3; font-size: 13.5px; line-height: 1.45; cursor: pointer; }
+.kd-haken input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--firma, #2f5e4e); }
+.kd-haken.frei span { color: #4f5664; }
+.kd-link { border: 0; background: none; padding: 0; font: inherit; color: #2350a0; text-decoration: underline; cursor: pointer; }
+.kd-feld { display: block; margin-top: 14px; }
+.kd-feld > span { display: block; font-size: 12.5px; color: #4f5664; margin-bottom: 5px; font-weight: 500; }
+.kd-feld input, .kd-feld textarea { width: 100%; border: 1px solid #ccd1d8; border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 15px; background: #fff; }
+.kd-feld input:focus, .kd-feld textarea:focus { outline: 2px solid color-mix(in srgb, var(--firma, #2f5e4e) 50%, transparent); border-color: var(--firma, #2f5e4e); }
+.kd-unterschrift { height: 150px; }
+.kd-recht { font-size: 12.5px; color: #4f5664; margin: 14px 0; line-height: 1.5; }
+.kd-knopf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #ccd1d8; background: #fff; color: #1c2230; border-radius: 8px; padding: 10px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+.kd-knopf:hover { background: #f5f6f8; }
+.kd-knopf.voll { width: 100%; background: var(--firma, #2f5e4e); border-color: var(--firma, #2f5e4e); color: #fff; padding: 13px; font-size: 15px; font-weight: 600; }
+.kd-knopf.voll:hover { filter: brightness(1.08); }
+.kd-knopf.voll:disabled { opacity: .7; cursor: wait; }
+.kd-knopf .ic { width: 16px; height: 16px; }
+.kd-frage { margin-top: 18px; border-top: 1px solid #eef0f3; padding-top: 14px; }
+.kd-frage summary { cursor: pointer; font-weight: 500; color: #2350a0; font-size: 14px; }
+.kd-frage form .kd-knopf { margin-top: 12px; }
+.kd-danke { display: flex; gap: 8px; align-items: center; color: #24553a; margin: 0; }
+.kd-danke .ic { width: 18px; height: 18px; }
+.kd-warn { background: #fff4df; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; color: #6d4b10; margin: 0 0 10px; }
+.kd-fertig { text-align: left; }
+.kd-fertig > .ic { width: 34px; height: 34px; color: #fff; background: #2f7a4f; border-radius: 50%; padding: 7px; }
+.kd-fertig h2 { font-size: 18px; margin: 10px 0 6px; }
+.kd-fertig p { font-size: 14px; color: #3d4452; }
+.kd-fertig .kd-knopf { margin: 6px 0 4px; width: 100%; }
+.kd-klein { font-size: 13px; color: #69707c; }
+.kd-papier { background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(20,30,50,.08), 0 8px 24px rgba(20,30,50,.06); padding: 48px 52px; min-width: 0; overflow-x: auto; }
+.kd-fuss { text-align: center; font-size: 12px; color: #7a818d; padding: 14px 16px 24px; }
+.kd-fuss .kd-link { color: inherit; }
+.kd-leer { max-width: 520px; margin: 18vh auto; padding: 0 16px; text-align: center; }
+.kd-leer h1 { font-size: 22px; }
+.kd-lesetext { font-size: 14px; line-height: 1.6; max-height: 60vh; overflow: auto; }
+@media (max-width: 900px) {
+  .kd-raster { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+  .kd-links { position: static; padding: 16px; }
+  .kd-papier { padding: 20px 16px; order: 2; }
+  .kd-kopf { padding: 10px 16px; }
+  .kd-kopf .kd-knopf { padding: 8px 10px; font-size: 13px; }
+  .kd-firma small { display: none; }
+}

@@ -117,7 +117,11 @@ const Store = (() => {
     Object.assign(zustand, { fid, cfg: null, items: [], abos: [] });
     zustand.abos.push(backend.watchDoc(`b/${fid}/cfg/main`, (cfg) => { zustand.cfg = cfg; benachrichtige(); }));
     zustand.abos.push(backend.watchList(`b/${fid}/items`, (liste) => {
-      zustand.items = liste.map((d) => ({ ...d.daten, id: d.id }));
+      // Was noch in der Warteschlange liegt, ist neuer als der Stand vom Server
+      const map = new Map(liste.map((d) => [d.id, { ...d.daten, id: d.id }]));
+      const kopf = `b/${fid}/items/`;
+      warteschlange.filter((w) => w.pfad.startsWith(kopf)).forEach((w) => { const id = w.pfad.slice(kopf.length); if (w.daten === null) map.delete(id); else map.set(id, { ...w.daten, id }); });
+      zustand.items = [...map.values()];
       benachrichtige();
     }));
   }
@@ -149,7 +153,8 @@ const Store = (() => {
         const w = warteschlange[0];
         try { w.daten === null ? await backend.del(w.pfad) : await backend.set(w.pfad, w.daten); }
         catch (e) { console.warn('Später erneut:', w.pfad, e && e.message); break; }
-        warteschlange.shift(); merke();
+        // Nur genau diesen Eintrag entfernen: während des Schreibens kann ein neuerer Stand derselben Sache dazugekommen sein
+        const i = warteschlange.indexOf(w); if (i >= 0) warteschlange.splice(i, 1); merke();
       }
     } finally { laeuft = false; benachrichtige(); }
   }

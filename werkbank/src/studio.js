@@ -108,6 +108,7 @@ const Studio = (() => {
     const info = (k) => {
       const B = BAUSTEINE[k.typ]; if (B.gruppe === 'geplant') return 'in Entwicklung';
       const p = R.p(k.typ); const def = B.p;
+      if (k.typ === 'angebote' || k.typ === 'rechnungen') return `${(Store.items || []).filter((i) => i.typ === (k.typ === 'angebote' ? 'angebot' : 'rechnung')).length} im Betrieb · ${(ABLAEUFE[k.typ] || []).length} Schritte`;
       const teile = Object.entries(def).filter(([, d]) => d.typ === 'zahl').slice(0, 2).map(([n, d]) => `${String(p[n]).replace('.', ',')} ${d.einheit}`);
       if (k.typ === 'app') return `${cfg().personen.length} Zugänge`;
       if (k.typ === 'baustellen') return `${c_offen()} laufend`;
@@ -120,7 +121,7 @@ const Studio = (() => {
       ${kn.filter((k) => BAUSTEINE[k.typ]).map((k) => { const B = BAUSTEINE[k.typ]; const g = GRUPPEN[B.gruppe];
         return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
           ${B.ein.length ? `<span class="port ein" data-port="ein" data-typ="${k.typ}"></span>` : ''}
-          <div class="k-kopf">${Icon(B.icon)}${esc(B.name)}</div><div class="k-info">${esc(info(k))}</div>
+          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${esc(info(k))}</div>
           ${B.gruppe !== 'geplant' && Object.values(BAUSTEINE).some((x) => x.ein.includes(k.typ)) ? `<span class="port aus" data-port="aus" data-typ="${k.typ}"></span>` : ''}</div>`; }).join('')}`;
   }
 
@@ -141,10 +142,15 @@ const Studio = (() => {
     const params = Object.entries(B.p).map(([name, d]) => {
       const w = werte[name];
       if (d.typ === 'wahl') return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><select data-param="${name}">${d.optionen.map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></div></div>`;
+      if (d.typ === 'langtext') return '';
+      if (d.typ === 'schalter') return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><select data-param="${name}">${['ja', 'nein'].map((o) => `<option ${o === w ? 'selected' : ''}>${o}</option>`).join('')}</select></div></div>`;
       if (d.typ === 'text') return `<div class="s-param text"><label>${esc(d.name)}</label><div class="wert"><input data-param="${name}" value="${esc(w)}"></div></div>`;
       return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><input type="number" data-param="${name}" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${d.min % 1 ? 0.1 : 1}"><em>${esc(d.einheit)}</em></div></div>`;
     }).join('');
-    p.innerHTML = `<div class="block" style="--g:${g.farbe}"><div class="s-titel">${esc(g.name)}</div><h3>${Icon(B.icon)}${esc(B.name)}</h3><div class="klein">${esc(B.kurz)}</div>
+    const kn = knoten(typ);
+    const anpassung = [kn.name && 'eigener Name', (kn.felder || []).length && `${kn.felder.length} eigene Felder`, Object.values(B.p).some((x) => x.typ === 'langtext') && 'Texte'].filter(Boolean);
+    p.innerHTML = `<div class="block" style="--g:${g.farbe}"><div class="s-titel">${esc(g.name)}</div><h3>${Icon(B.icon)}${esc(kn.name || B.name)}</h3><div class="klein">${esc(B.kurz)}</div>
+        <button class="s-knopf orange" style="margin-top:12px;width:100%;justify-content:center" data-s="oeffnen">${Icon('stift')} Baustein öffnen${anpassung.length ? ` · ${esc(anpassung.join(', '))}` : ''}</button>
         <div class="problem"><b>Problem im Betrieb</b>${esc(B.wofuer)}</div></div>
       ${params ? `<div class="block"><div class="s-titel">Werte für ${esc(c.name)}</div>${params}</div>` : ''}
       <div class="block"><div class="s-titel">Wirkung</div><ul class="wirkung">${wirkungen(c, typ).map((w) => `<li>${esc(w)}</li>`).join('')}</ul></div>
@@ -159,7 +165,7 @@ const Studio = (() => {
     app: { app: 'start' }, stempeln: { app: 'start' }, stunden: { buero: 'stunden', app: 'zeiten' }, urlaub: { buero: 'urlaub', app: 'urlaub' },
     belege: { buero: 'belege', app: 'u:beleg' }, lieferscheine: { buero: 'lieferscheine', app: 'u:lieferschein' }, material: { buero: 'material', app: 'u:material' },
     tagelohn: { buero: 'tagelohn' }, freigabe: { buero: 'uebersicht', app: 'freigaben' }, export: { buero: 'steuer' }, dokumente: { buero: 'steuer', app: 'mehr' },
-    baustellen: { buero: 'baustellen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' },
+    baustellen: { buero: 'baustellen' }, angebote: { buero: 'angebote' }, rechnungen: { buero: 'rechnungen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' }, tafel: { buero: 'tafel' },
   };
   const OHNE_AUSWAHL = { buero: 'uebersicht', app: 'start' };
   function vorschauZiel(typ) { return typ ? (VORSCHAU[typ] || null) : OHNE_AUSWAHL; }
@@ -267,6 +273,10 @@ const Studio = (() => {
     fl.addEventListener('pointerup', ende);
     fl.addEventListener('pointercancel', () => { zustand.aktion = null; zeichne(); });
   }
+  document.addEventListener('dblclick', (e) => {
+    if (aktiverBereich !== Studio) return;
+    const kn = e.target.closest('#welt [data-knoten]'); if (kn) bausteinFenster(kn.dataset.knoten);
+  });
   function zielUnter(e) {
     const el = document.elementFromPoint(e.clientX, e.clientY);
     const k = el && el.closest('[data-knoten]'); return k ? k.dataset.knoten : null;
@@ -352,6 +362,7 @@ const Studio = (() => {
       case 'einpassen': einpassen(); break;
       case 'vmodus': zustand.vorschau = id; pruefZeichnen(); break;
       case 'vgross': vorschauGross(); break;
+      case 'oeffnen': bausteinFenster(zustand.gewaehlt); break;
       case 'entfernen': {
         const typ = zustand.gewaehlt; if (typ === 'app') { meldung('Die Mitarbeiter-App ist der Start jedes Betriebs.', 'fehler'); break; }
         aendereBaukasten((b) => { b.knoten = b.knoten.filter((k) => k.typ !== typ); b.kanten = b.kanten.filter((k) => k.von !== typ && k.zu !== typ); });
@@ -422,6 +433,66 @@ const Studio = (() => {
       await Store.speichereCfg(c); standZeigen('gespeichert');
     }
   });
+
+  /* ---------- Baustein öffnen: Werte, Texte, Ablauf, eigene Felder ---------- */
+  function bausteinFenster(typ, reiter = 'werte') {
+    const B = BAUSTEINE[typ]; const k = knoten(typ); if (!B || !k) return;
+    const R = regeln(cfg()); const werte = R.p(typ);
+    const felder = JSON.parse(JSON.stringify(k.felder || []));
+    const hatAblauf = !!ABLAEUFE[typ]; const hatFelder = MIT_FELDERN.includes(typ);
+    const tabs = [['werte', 'Werte'], ['kunde', 'Beim Kunden'], ...(hatAblauf ? [['ablauf', 'Ablauf']] : []), ...(hatFelder ? [['felder', 'Eigene Felder']] : [])];
+    const param = ([name, d]) => {
+      const w = werte[name];
+      if (d.typ === 'langtext') return `<label class="feld"><span>${esc(d.name)}</span><textarea data-bp="${name}" rows="${name === 'agb' || name === 'katalog' ? 8 : 3}" class="${name === 'katalog' ? 'mono' : ''}">${esc(w)}</textarea></label>`;
+      if (d.typ === 'wahl' || d.typ === 'schalter') return `<label class="feld"><span>${esc(d.name)}</span><select data-bp="${name}">${(d.optionen || ['ja', 'nein']).map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+      if (d.typ === 'text') return `<label class="feld"><span>${esc(d.name)}</span><input data-bp="${name}" value="${esc(w)}"></label>`;
+      return `<label class="feld"><span>${esc(d.name)} (${esc(d.einheit)}, ${d.min} bis ${d.max})</span><input type="number" data-bp="${name}" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${d.min % 1 ? 0.1 : 1}"></label>`;
+    };
+    const feldZeile = (f, i) => `<tr data-feld="${i}"><td><input class="f-name" value="${esc(f.name)}" placeholder="z. B. Kostenstelle" aria-label="Feldname"></td>
+      <td><select class="f-typ" aria-label="Art">${[['text', 'Text'], ['zahl', 'Zahl'], ['wahl', 'Auswahl'], ['janein', 'Ja/Nein']].map(([v, t]) => `<option value="${v}" ${f.typ === v ? 'selected' : ''}>${t}</option>`).join('')}</select></td>
+      <td><input class="f-opt" value="${esc(f.optionen || '')}" placeholder="nur bei Auswahl: A, B, C" aria-label="Auswahlmöglichkeiten"></td>
+      <td style="text-align:center"><input type="checkbox" class="f-pflicht" ${f.pflicht ? 'checked' : ''} aria-label="Pflichtfeld"></td>
+      <td><button class="k klein" data-f="feld-weg" data-id="${i}" aria-label="Feld entfernen">${Icon('x')}</button></td></tr>`;
+    const inhalt = {
+      werte: Object.keys(B.p).length ? `<div class="bf-raster">${Object.entries(B.p).filter(([, d]) => d.typ !== 'langtext').map(param).join('')}</div>${Object.entries(B.p).filter(([, d]) => d.typ === 'langtext').map(param).join('')}` : '<p class="hinweis-zeile">Dieser Baustein hat keine einstellbaren Werte.</p>',
+      kunde: `<p class="hinweis-zeile">So heißt der Baustein im Büro und in der App dieses Betriebs. Leer lassen für den Standard.</p>
+        <label class="feld"><span>Name beim Kunden</span><input data-k="name" value="${esc(k.name || '')}" placeholder="${esc(B.name)}"></label>
+        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>`,
+      ablauf: hatAblauf ? `<ol class="bf-ablauf">${ABLAEUFE[typ].map((st) => { const an = !st.schalter || werte[st.schalter] === 'ja';
+        return `<li class="${an ? '' : 'aus'}"><div><b>${esc(st.name)}</b><small>${esc(st.text)}</small></div>${st.schalter ? `<label class="schalter"><input type="checkbox" data-schalter="${st.schalter}" ${an ? 'checked' : ''}><span>${an ? 'an' : 'aus'}</span></label>` : '<span class="fest">immer</span>'}</li>`; }).join('')}</ol>` : '',
+      felder: hatFelder ? `<p class="hinweis-zeile">Eigene Felder erscheinen beim Erfassen ${['angebote', 'rechnungen'].includes(typ) ? 'im Büro' : 'in der App'} und in der Ansicht im Büro. Mit * sind Pflichtfelder.</p>
+        <table class="t bf-felder"><thead><tr><th>Name</th><th>Art</th><th>Auswahl</th><th>Pflicht</th><th></th></tr></thead><tbody id="bf-felder">${felder.map(feldZeile).join('')}</tbody></table>
+        <button class="k klein" data-f="feld-neu" style="margin-top:10px">${Icon('plus')} Feld hinzufügen</button>` : '',
+    };
+    const hg = Fenster.oeffne({
+      titel: `${Icon(B.icon)} ${esc(k.name || B.name)}`, breit: true, bereich: 'ui-buero-fenster bf',
+      inhalt: `<nav class="bf-reiter">${tabs.map(([t, n]) => `<button class="${t === reiter ? 'an' : ''}" data-f="reiter" data-id="${t}">${n}</button>`).join('')}</nav>${tabs.map(([t]) => `<section data-tab="${t}" ${t === reiter ? '' : 'hidden'}>${inhalt[t]}</section>`).join('')}`,
+      fuss: `<span class="bf-fuer">für ${esc(cfg().name)}</span><button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Übernehmen</button>`,
+      aktionen: {
+        reiter: (b) => { $$('.bf-reiter button', hg).forEach((x) => x.classList.toggle('an', x === b)); $$('[data-tab]', hg).forEach((sec) => { sec.hidden = sec.dataset.tab !== b.dataset.id; }); },
+        'feld-neu': () => { lesen(); felder.push({ id: Store.uid('x'), name: '', typ: 'text', optionen: '', pflicht: false }); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); $$('.f-name', hg).pop().focus(); },
+        'feld-weg': (b) => { lesen(); felder.splice(Number(b.dataset.id), 1); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); },
+        ok: () => {
+          lesen();
+          const p = {}; $$('[data-bp]', hg).forEach((el) => { const d = B.p[el.dataset.bp]; let w = el.value; if (d.typ === 'zahl') { w = Math.min(d.max, Math.max(d.min, Number(w) || d.wert)); } p[el.dataset.bp] = w; });
+          $$('[data-schalter]', hg).forEach((el) => { p[el.dataset.schalter] = el.checked ? 'ja' : 'nein'; });
+          const name = ($('[data-k=name]', hg).value || '').trim(); const hinweis = ($('[data-k=hinweis]', hg).value || '').trim();
+          const fertig = felder.filter((f) => f.name.trim()).map((f) => ({ ...f, name: f.name.trim() }));
+          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
+          Fenster.schliesse(); meldung(`${name || B.name} übernommen. Büro und App zeigen es sofort.`);
+          setTimeout(() => { flaecheZeichnen(); pruefZeichnen(); }, 40);
+        },
+      },
+    });
+    hg.addEventListener('change', (e) => {
+      const cb = e.target.closest('[data-schalter]'); if (!cb) return;
+      cb.nextElementSibling.textContent = cb.checked ? 'an' : 'aus'; cb.closest('li').classList.toggle('aus', !cb.checked);
+      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.value = cb.checked ? 'ja' : 'nein';
+    });
+    function lesen() {
+      $$('#bf-felder tr[data-feld]', hg).forEach((tr) => { const f = felder[Number(tr.dataset.feld)]; if (!f) return; f.name = $('.f-name', tr).value; f.typ = $('.f-typ', tr).value; f.optionen = $('.f-opt', tr).value; f.pflicht = $('.f-pflicht', tr).checked; });
+    }
+  }
 
   function einpassen() {
     const fl = $('#flaeche'); if (!fl) return; const kn = bk().knoten; if (!kn.length) return;

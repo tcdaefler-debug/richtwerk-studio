@@ -62,6 +62,7 @@ function zeige() {
   if (ziel === 'buero') return Buero.start();
   if (ziel === 'app') return Handy.start();
   if (ziel === 'studio') return Studio.start();
+  if (ziel.startsWith('angebot/')) { aktiverBereich = null; return KundenSeite.start(ziel); }
   aktiverBereich = null;
   return startseite();
 }
@@ -155,7 +156,7 @@ async function boot() {
     } else {
       // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
       const cfg = await Store.ladeCfg('ahlers');
-      if (cfg && (cfg.version || 1) < 2) {
+      if (cfg && (cfg.version || 1) < 4) {
         const t = $('.laden > div');
         await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
       }

@@ -130,13 +130,13 @@ const Handy = (() => {
   BILD.erfassen = (c) => {
     const R = c.R; const k = [];
     if (R.imApp('belege')) k.push(`<button class="erfassen-kachel gross" data-a="unter" data-id="beleg"><span class="sym">${Icon('kamera')}</span><span><b>Beleg scannen</b><small>Tankquittung, Baumarkt, Werkzeug</small></span></button>`);
-    if (R.imApp('lieferscheine')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="lieferschein"><span class="sym">${Icon('liefer')}</span><span><b>Lieferschein</b><small>abfotografieren</small></span></button>`);
+    if (R.imApp('lieferscheine')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="lieferschein"><span class="sym">${Icon('liefer')}</span><span><b>${esc(R.name('lieferscheine').replace(/e$/, ''))}</b><small>${esc(R.hinweis('lieferscheine') || 'abfotografieren')}</small></span></button>`);
     if (R.stundenImApp()) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="stunden"><span class="sym">${Icon('uhr')}</span><span><b>Stunden</b><small>nachtragen</small></span></button>`);
     if (R.imApp('urlaub')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="urlaubsantrag"><span class="sym">${Icon('kalender')}</span><span><b>Urlaub</b><small>beantragen</small></span></button>`);
     if (R.imApp('urlaub') && R.p('urlaub').krank === 'ja') k.push(`<button class="erfassen-kachel" data-a="unter" data-id="krank"><span class="sym">${Icon('krank')}</span><span><b>Krank melden</b><small>geht direkt ans Büro</small></span></button>`);
-    if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>Regiezettel</b><small>Zusatzarbeit, Kunde unterschreibt</small></span></button>`);
-    if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>Bautagebuch</b><small>Fotos und Notiz zum Tag</small></span></button>`);
-    if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>Material</b><small>fehlt auf der Baustelle</small></span></button>`);
+    if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>${esc(R.name('regie'))}</b><small>${esc(R.hinweis('regie') || 'Zusatzarbeit, Kunde unterschreibt')}</small></span></button>`);
+    if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>${esc(R.name('bautagebuch'))}</b><small>${esc(R.hinweis('bautagebuch') || 'Fotos und Notiz zum Tag')}</small></span></button>`);
+    if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
     return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
 
@@ -226,6 +226,7 @@ const Handy = (() => {
   UNTER.material = (c) => `${unterKopf('Material anfordern')}<div class="a-karte" style="padding:16px">
     ${c.R.mitBaustelle('material') ? bsAuswahl(c, (c.baustellenOffen()[0] || {}).id) : ''}
     <label class="a-feld"><span>Was fehlt?</span><textarea name="text" placeholder="z. B. 10 Bund Dachlatten 30/50"></textarea></label>
+    ${Zusatz.app(c, 'material')}
     <button class="gross-knopf firma" data-a="speichere-material">${Icon('haken')} An den Chef senden</button></div>`;
 
   function scanFormular(c, art) {
@@ -244,6 +245,7 @@ const Handy = (() => {
     return `${unterKopf(istBeleg ? 'Beleg scannen' : 'Lieferschein')}${flaeche}
       <div class="a-karte" style="padding:16px">${felder}${c.R.mitBaustelle(istBeleg ? 'belege' : 'lieferscheine') ? bsAuswahl(c, d.bs !== undefined ? d.bs : (c.laeuft(c.ich.id) || c.baustellenOffen()[0] || {}).bs || (c.baustellenOffen()[0] || {}).id) : ''}
       <label class="a-feld"><span>Notiz (optional)</span><input name="notiz" value="${esc(d.notiz || '')}"></label>
+      ${Zusatz.app(c, istBeleg ? 'belege' : 'lieferscheine', d.extra)}
       <button class="gross-knopf firma" data-a="speichere-scan" data-id="${art}" ${d.bild ? '' : 'disabled'}>${Icon('upload')} Ans Büro senden</button></div>`;
   }
   UNTER.beleg = (c) => scanFormular(c, 'beleg');
@@ -267,6 +269,7 @@ const Handy = (() => {
       <label class="a-feld"><span>Was wurde gemacht? Besonderheiten?</span><textarea name="text" placeholder="z. B. Sparren gesetzt, Holz am Ortgang morsch">${esc(d.text || '')}</textarea></label>
       <div class="a-feld"><span>Fotos (${fotos.length} von ${max})</span><div class="foto-reihe">${fotos.map((f, i) => `<span class="foto"><img src="${f}" alt="Foto ${i + 1}"><button data-a="foto-weg" data-id="${i}" aria-label="Foto entfernen">${Icon('x')}</button></span>`).join('')}
         ${fotos.length < max ? `<button class="foto neu" data-a="tb-foto" aria-label="Foto aufnehmen">${Icon('kamera')}</button>` : ''}</div></div>
+      ${Zusatz.app(c, 'bautagebuch', d.extra)}
       <button class="gross-knopf firma" data-a="speichere-tagebuch">${Icon('haken')} Speichern</button></div>`;
   };
 
@@ -279,7 +282,7 @@ const Handy = (() => {
         ${bsAuswahl(c, d.bs !== undefined ? d.bs : ((c.laeuft(c.ich.id) || {}).bs || (c.baustellenOffen()[0] || {}).id))}
         <label class="a-feld"><span>Was wurde zusätzlich gemacht?</span><textarea name="text" placeholder="z. B. 2 Sparren ausgetauscht, morsch">${esc(d.text || '')}</textarea></label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label class="a-feld"><span>Leute</span><input type="number" name="leute" inputmode="numeric" min="1" max="9" value="${esc(d.leute || 1)}"></label><label class="a-feld"><span>Stunden je Person</span><input name="stunden" inputmode="decimal" placeholder="z. B. 2,5" value="${esc(d.stunden || '')}"></label></div>
-        <label class="a-feld"><span>Material (optional)</span><input name="material" placeholder="z. B. KVH 80x180, 2 x 5 m" value="${esc(d.material || '')}"></label></div>`;
+        <label class="a-feld"><span>Material (optional)</span><input name="material" placeholder="z. B. KVH 80x180, 2 x 5 m" value="${esc(d.material || '')}"></label>${Zusatz.app(c, 'regie', d.extra)}</div>`;
     return `${unterKopf(nach ? 'Unterschrift einholen' : 'Regiezettel')}${kopf}
       <div class="a-titel">Bestätigung durch den Kunden</div>
       <div class="a-karte" style="padding:16px"><label class="a-feld"><span>Name des Kunden</span><input name="kunde" value="${esc(d.kunde || (nach ? '' : (c.baustelle(d.bs || (c.laeuft(c.ich.id) || {}).bs) || {}).kunde || ''))}"></label>
@@ -489,10 +492,11 @@ const Handy = (() => {
     async 'speichere-tagebuch'(el, c) {
       const w = werte(); const fotos = zustand.daten.fotos || [];
       if (!(w.text || '').trim() && !fotos.length) return meldung('Bitte ein Foto oder eine Notiz.', 'fehler');
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'bautagebuch', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
       el.disabled = true; el.textContent = 'Wird gespeichert …';
       try {
         const ids = []; for (const f of fotos) ids.push(await Store.speichereDatei(f, 'foto.jpg'));
-        Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: c.heute, bs: w.bs || '', wetter: w.wetter || '', text: (w.text || '').trim(), fotos: ids });
+        Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: c.heute, bs: w.bs || '', wetter: w.wetter || '', text: (w.text || '').trim(), fotos: ids, extra });
         gesendet('Im Bautagebuch', ids.length ? `${ids.length} ${ids.length === 1 ? 'Foto' : 'Fotos'} gespeichert. Das Büro sieht sie bei der Baustelle.` : 'Das Büro sieht den Eintrag bei der Baustelle.', 'tagebuch');
       } catch (err) { el.disabled = false; el.textContent = 'Speichern'; meldung(err.message, 'fehler'); }
     },
@@ -507,7 +511,8 @@ const Handy = (() => {
         const stunden = Number(String(w.stunden || '').replace(',', '.'));
         if (!(w.text || '').trim()) return meldung('Was wurde zusätzlich gemacht?', 'fehler');
         if (!stunden || stunden <= 0) return meldung('Bitte die Stunden eintragen.', 'fehler');
-        neu = { typ: 'regie', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), leute: Math.max(1, Number(w.leute) || 1), stunden, material: (w.material || '').trim() };
+        const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'regie', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
+        neu = { typ: 'regie', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), leute: Math.max(1, Number(w.leute) || 1), stunden, material: (w.material || '').trim(), extra };
       }
       el.disabled = true;
       try {
@@ -567,22 +572,25 @@ const Handy = (() => {
     },
     'speichere-material'(el, c) {
       const w = werte(); if (!w.text || !w.text.trim()) return meldung('Was fehlt denn?', 'fehler');
-      Store.neu({ typ: 'material', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), status: 'offen' });
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'material', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
+      Store.neu({ typ: 'material', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), extra, status: 'offen' });
       gesendet('Gesendet', 'Der Chef sieht deine Anforderung.', 'material');
     },
     async 'speichere-scan'(el, c) {
       const art = el.dataset.id; const w = werte(); const d = zustand.daten;
       if (!d.bild) return;
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, art === 'beleg' ? 'belege' : 'lieferscheine', extra);
+      if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
       let betrag = 0;
       if (art === 'beleg') { betrag = Number(String(w.betrag || '').replace(/\./g, '').replace(',', '.')); if (!betrag || betrag <= 0) return meldung('Bitte den Betrag eingeben.', 'fehler'); }
       el.disabled = true; el.innerHTML = 'Wird gesendet …';
       try {
         const datei = await Store.speichereDatei(d.bild, `${art}.jpg`);
         if (art === 'beleg') {
-          Store.neu({ typ: 'beleg', pid: c.ich.id, datum: c.heute, betrag, kategorie: w.kategorie, haendler: w.haendler, bs: w.bs || '', notiz: w.notiz, datei, status: startStatus(c.R, 'beleg', { betrag }) });
+          Store.neu({ typ: 'beleg', pid: c.ich.id, datum: c.heute, betrag, kategorie: w.kategorie, haendler: w.haendler, bs: w.bs || '', notiz: w.notiz, datei, extra, status: startStatus(c.R, 'beleg', { betrag }) });
           gesendet('Beleg gesendet', `${Zahl.eur(betrag)} · ${w.kategorie}. Den Zettel kannst du wegwerfen, wenn der Chef es sagt.`, 'beleg');
         } else {
-          Store.neu({ typ: 'lieferschein', pid: c.ich.id, datum: c.heute, lieferant: w.lieferant, nummer: w.nummer, bs: w.bs || '', notiz: w.notiz, datei, status: 'neu' });
+          Store.neu({ typ: 'lieferschein', pid: c.ich.id, datum: c.heute, lieferant: w.lieferant, nummer: w.nummer, bs: w.bs || '', notiz: w.notiz, datei, extra, status: 'neu' });
           gesendet('Lieferschein gesendet', 'Liegt jetzt beim Auftrag im Büro.', 'lieferschein');
         }
       } catch (err) { el.disabled = false; el.textContent = 'Ans Büro senden'; meldung(err.message, 'fehler'); }

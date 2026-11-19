@@ -608,6 +608,178 @@ dl.daten dd { margin: 0; font-weight: 500; }
 :focus-visible { outline: 2px solid #1f6feb; outline-offset: 2px; }
 .ui-buero :focus-visible, .ui-app :focus-visible { outline-color: var(--firma); }
 
+/* ---------- Angebote und Rechnungen ---------- */
+.hinweis-zeile { margin: 0 0 14px; padding: 10px 12px; background: #f3f4f1; border-radius: 4px; font-size: 13px; color: #4a534d; }
+.pos-huelle { overflow-x: auto; border: 1px solid #e1e5de; border-radius: 4px; }
+.pos-tabelle td { padding: 6px 8px; vertical-align: top; }
+.pos-tabelle textarea, .pos-tabelle input, .pos-tabelle select { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 6px 8px; font: inherit; font-size: 13px; background: #fff; resize: none; overflow: hidden; }
+.pos-tabelle textarea { min-width: 260px; min-height: 32px; }
+.pos-tabelle input.num { text-align: right; }
+.pos-tabelle :disabled { background: #fafbf9; color: #1d2420; border-color: transparent; }
+.pos-tabelle .p-gesamt { padding-top: 12px; }
+.pos-werkzeug { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+.pos-werkzeug select { border: 1px solid #c8cdc5; border-radius: 4px; padding: 5px 8px; font-size: 13px; background: #fff; max-width: 360px; }
+.pos-summe { display: flex; justify-content: flex-end; gap: 22px; padding: 12px 4px 0; font-size: 14px; color: #4a534d; flex-wrap: wrap; }
+.pos-summe b { color: #1d2420; margin-left: 6px; }
+.pos-summe .gesamt b { font-size: 17px; }
+.reihe.zusatz { border-top: 1px dashed #d9ddd6; padding-top: 12px; }
+.feld.janein, .a-feld.janein { display: flex; align-items: center; gap: 10px; }
+.feld.janein input, .a-feld.janein input { width: 20px; height: 20px; }
+.feld.janein span, .a-feld.janein span { margin: 0; }
+
+/* Dokument: Bildschirm-Vorschau und Druck (A4) */
+.dokument { font-family: var(--schrift); color: #111; font-size: 12.5px; line-height: 1.5; max-width: 780px; margin: 0 auto; background: #fff; }
+.dokument .d-kopf { display: flex; justify-content: space-between; gap: 20px; border-bottom: 2px solid var(--firma, #2f5e4e); padding-bottom: 12px; }
+.dokument .d-firma b { display: block; font-size: 20px; letter-spacing: -.01em; }
+.dokument .d-firma span { color: #555; }
+.dokument .d-adresse { text-align: right; color: #444; font-size: 11.5px; }
+.dokument .d-mitte { display: flex; justify-content: space-between; gap: 20px; margin: 34px 0 26px; }
+.dokument .d-empf { min-height: 90px; }
+.dokument .d-empf small { display: block; font-size: 9.5px; color: #777; text-decoration: underline; margin-bottom: 6px; }
+.dokument .d-meta { display: grid; grid-template-columns: auto auto; gap: 2px 14px; margin: 0; font-size: 11.5px; align-self: flex-start; }
+.dokument .d-meta dt { color: #666; }
+.dokument .d-meta dd { margin: 0; text-align: right; font-weight: 600; }
+.dokument h2 { font-size: 16px; margin: 0 0 12px; }
+.dokument .d-pos { width: 100%; border-collapse: collapse; margin: 14px 0 8px; }
+.dokument .d-pos th { text-align: left; border-bottom: 1px solid #333; padding: 5px 6px; font-size: 11px; }
+.dokument .d-pos td { border-bottom: 1px solid #e3e3e3; padding: 6px; vertical-align: top; }
+.dokument .r { text-align: right; }
+.dokument .d-summe { margin-left: auto; border-collapse: collapse; min-width: 280px; }
+.dokument .d-summe td { padding: 3px 6px; }
+.dokument .d-summe .gesamt td { border-top: 2px solid #111; font-weight: 700; font-size: 14px; padding-top: 6px; }
+.dokument .d-klein { font-size: 11px; color: #444; margin: 8px 0; }
+.dokument .d-fuss { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; border-top: 1px solid #ccc; margin-top: 30px; padding-top: 8px; font-size: 10px; color: #555; }
+.dokument .d-agb { margin-top: 30px; padding-top: 16px; border-top: 1px dashed #bbb; font-size: 10.5px; color: #333; }
+.dokument .d-agb h3 { font-size: 13px; margin: 0 0 8px; }
+@media print {
+  #druck .dokument { max-width: none; }
+  #druck .d-agb { break-before: page; border: 0; margin-top: 0; }
+  #druck .d-pos tr { break-inside: avoid; }
+}
+
+/* ---------- Entwickler-Tool: Baustein öffnen ---------- */
+.fenster-hg.bf .fenster .kopf h3 { display: flex; align-items: center; gap: 8px; }
+.fenster-hg.bf .fenster .kopf h3 .ic { width: 18px; height: 18px; }
+.bf-reiter { display: flex; gap: 4px; border-bottom: 1px solid #e1e5de; margin: -4px 0 16px; }
+.bf-reiter button { border: 0; background: none; padding: 9px 12px; font-size: 14px; color: #5f6862; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.bf-reiter button.an { color: #1d2420; font-weight: 600; border-bottom-color: #ff6b3d; }
+.bf-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0 16px; }
+.fenster textarea.mono { font-family: var(--mono); font-size: 12.5px; }
+.bf-ablauf { list-style: none; padding: 0; margin: 0; counter-reset: schritt; }
+.bf-ablauf li { counter-increment: schritt; display: flex; align-items: center; gap: 14px; padding: 12px 14px 12px 50px; border: 1px solid #e1e5de; border-radius: 6px; position: relative; margin-bottom: 18px; background: #fff; }
+.bf-ablauf li::before { content: counter(schritt); position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 24px; height: 24px; border-radius: 50%; background: #1d2420; color: #fff; font-size: 12px; display: grid; place-items: center; font-family: var(--mono); }
+.bf-ablauf li:not(:last-child)::after { content: ''; position: absolute; left: 25px; bottom: -19px; height: 18px; border-left: 2px solid #c8cdc5; }
+.bf-ablauf li.aus { opacity: .5; border-style: dashed; }
+.bf-ablauf li.aus::before { background: #9aa19c; }
+.bf-ablauf li > div { flex: 1; }
+.bf-ablauf b { display: block; font-size: 14px; }
+.bf-ablauf small { color: #6a726c; font-size: 12.5px; }
+.bf-ablauf .fest { font-size: 12px; color: #8a928c; }
+.bf-ablauf .schalter { display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer; }
+.bf-ablauf .schalter input { width: 18px; height: 18px; }
+.bf-felder td { padding: 6px; }
+.bf-felder input:not([type=checkbox]), .bf-felder select { width: 100%; border: 1px solid #d9ddd6; border-radius: 4px; padding: 6px 8px; font-size: 13px; }
+.bf-fuer { margin-right: auto; font-size: 12px; color: #7a827c; }
+
+/* ---------- Kundenfragen und Online-Annahme im Büro ---------- */
+.kundenfrage { display: flex; gap: 12px; align-items: flex-start; justify-content: space-between; border: 1px solid #f0d9a8; background: #fff8ea; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; }
+.kundenfrage p { margin: 4px 0 0; }
+.kundenfrage small { color: #7a6a4a; }
+.hinweis-zeile.online-ok { background: #edf6f0; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.hinweis-zeile.online-ok p { margin: 0; flex: 1; min-width: 220px; color: #24553a; font-size: 13px; }
+.d-unterschrift { display: block; max-width: 220px; max-height: 70px; margin: 4px 0 8px; }
+.hinweis-zeile .d-unterschrift { margin: 0; max-height: 50px; background: #fff; border-radius: 4px; }
+
+/* ---------- Auftragstafel ---------- */
+.tafel { display: grid; grid-template-columns: repeat(6, minmax(178px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 12px; align-items: start; scroll-snap-type: x proximity; }
+.t-spalte { background: #e3e6e0; border-radius: 6px; padding: 8px; min-height: 240px; display: flex; flex-direction: column; gap: 8px; scroll-snap-align: start; transition: background .12s; }
+.t-spalte.ueber { background: #d3dcd4; box-shadow: inset 0 0 0 2px var(--firma, #2f5e4e); }
+.t-spalte > header { display: flex; align-items: baseline; gap: 8px; padding: 2px 4px 4px; }
+.t-spalte > header b { font-size: 13px; }
+.t-spalte > header small { margin-left: auto; color: #66706a; font-size: 12px; }
+.t-zahl { font-size: 11px; background: #fff; border-radius: 10px; padding: 0 7px; color: #535c56; font-weight: 600; }
+.t-liste { display: flex; flex-direction: column; gap: 8px; }
+.t-karte { background: #fff; border: 1px solid #d6dbd3; border-radius: 6px; padding: 10px 10px 8px; cursor: grab; box-shadow: 0 1px 0 rgba(0,0,0,.04); }
+.t-karte:hover { border-color: #b9c0b6; }
+.t-karte.zieht { opacity: .45; }
+.t-karte:focus-visible { outline: 2px solid var(--firma, #2f5e4e); outline-offset: 2px; }
+.t-oben { display: flex; justify-content: space-between; gap: 8px; font-size: 13px; }
+.t-oben .num { color: #4a534d; font-size: 12px; white-space: nowrap; }
+.t-karte p { margin: 3px 0 4px; font-size: 13px; color: #3c4540; }
+.t-karte > small { display: block; color: #7a827c; font-size: 12px; margin-bottom: 4px; }
+.t-chips { display: flex; gap: 4px; flex-wrap: wrap; margin: 4px 0; }
+.t-chips .ic { width: 12px; height: 12px; }
+.t-unten { display: flex; align-items: flex-end; justify-content: space-between; gap: 6px; margin-top: 6px; }
+.t-links { display: flex; flex-wrap: wrap; gap: 2px 8px; }
+.t-link { border: 0; background: none; padding: 2px 0; font-size: 12px; color: #2b5b9c; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.t-link:hover { text-decoration: underline; }
+.t-link .ic { width: 13px; height: 13px; }
+.t-pfeile { display: flex; gap: 4px; }
+.t-pfeile .k.klein { padding: 3px 5px; }
+.t-leer { border: 1px dashed #bfc6bc; border-radius: 6px; padding: 18px 8px; text-align: center; color: #8a928c; font-size: 12px; }
+.t-neu { border: 0; background: none; text-align: left; padding: 6px 6px; color: #535c56; font-size: 13px; border-radius: 4px; display: flex; align-items: center; gap: 6px; }
+.t-neu:hover { background: #d8dcd5; }
+
+/* ---------- Angebot online (Seite für den Kunden) ---------- */
+body.kunde-modus { background: #eef0f2; }
+.kd { min-height: 100vh; display: flex; flex-direction: column; color: #1c2230; }
+.kd-kopf { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 24px; background: #fff; border-bottom: 1px solid #dde1e6; }
+.kd-firma { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.kd-firma b { display: block; font-size: 15px; }
+.kd-firma small { color: #69707c; font-size: 12px; }
+.kd-zeichen { width: 38px; height: 38px; border-radius: 8px; background: var(--firma, #2f5e4e); color: #fff; display: grid; place-items: center; font-weight: 600; font-size: 14px; letter-spacing: .02em; flex: none; }
+.kd-raster { flex: 1; display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 24px; padding: 24px; max-width: 1320px; width: 100%; margin: 0 auto; align-items: start; }
+.kd-links { background: #fff; border: 1px solid #dde1e6; border-radius: 10px; padding: 22px; position: sticky; top: 16px; }
+.kd-links h1 { font-size: 20px; margin: 0 0 14px; letter-spacing: -.01em; }
+.kd-uebersicht { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0 0 18px; padding: 14px; background: #f5f6f8; border-radius: 8px; font-size: 14px; }
+.kd-uebersicht dt { color: #69707c; }
+.kd-uebersicht dd { margin: 0; text-align: right; font-weight: 500; font-variant-numeric: tabular-nums; }
+.kd-uebersicht dd.gross { font-size: 18px; font-weight: 700; }
+.kd fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.kd fieldset:disabled { opacity: .5; }
+.kd-haken { display: flex; gap: 10px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #eef0f3; font-size: 13.5px; line-height: 1.45; cursor: pointer; }
+.kd-haken input { width: 18px; height: 18px; margin: 1px 0 0; flex: none; accent-color: var(--firma, #2f5e4e); }
+.kd-haken.frei span { color: #4f5664; }
+.kd-link { border: 0; background: none; padding: 0; font: inherit; color: #2350a0; text-decoration: underline; cursor: pointer; }
+.kd-feld { display: block; margin-top: 14px; }
+.kd-feld > span { display: block; font-size: 12.5px; color: #4f5664; margin-bottom: 5px; font-weight: 500; }
+.kd-feld input, .kd-feld textarea { width: 100%; border: 1px solid #ccd1d8; border-radius: 8px; padding: 10px 12px; font: inherit; font-size: 15px; background: #fff; }
+.kd-feld input:focus, .kd-feld textarea:focus { outline: 2px solid color-mix(in srgb, var(--firma, #2f5e4e) 50%, transparent); border-color: var(--firma, #2f5e4e); }
+.kd-unterschrift { height: 150px; }
+.kd-recht { font-size: 12.5px; color: #4f5664; margin: 14px 0; line-height: 1.5; }
+.kd-knopf { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid #ccd1d8; background: #fff; color: #1c2230; border-radius: 8px; padding: 10px 14px; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; }
+.kd-knopf:hover { background: #f5f6f8; }
+.kd-knopf.voll { width: 100%; background: var(--firma, #2f5e4e); border-color: var(--firma, #2f5e4e); color: #fff; padding: 13px; font-size: 15px; font-weight: 600; }
+.kd-knopf.voll:hover { filter: brightness(1.08); }
+.kd-knopf.voll:disabled { opacity: .7; cursor: wait; }
+.kd-knopf .ic { width: 16px; height: 16px; }
+.kd-frage { margin-top: 18px; border-top: 1px solid #eef0f3; padding-top: 14px; }
+.kd-frage summary { cursor: pointer; font-weight: 500; color: #2350a0; font-size: 14px; }
+.kd-frage form .kd-knopf { margin-top: 12px; }
+.kd-danke { display: flex; gap: 8px; align-items: center; color: #24553a; margin: 0; }
+.kd-danke .ic { width: 18px; height: 18px; }
+.kd-warn { background: #fff4df; border-radius: 8px; padding: 10px 12px; font-size: 13.5px; color: #6d4b10; margin: 0 0 10px; }
+.kd-fertig { text-align: left; }
+.kd-fertig > .ic { width: 34px; height: 34px; color: #fff; background: #2f7a4f; border-radius: 50%; padding: 7px; }
+.kd-fertig h2 { font-size: 18px; margin: 10px 0 6px; }
+.kd-fertig p { font-size: 14px; color: #3d4452; }
+.kd-fertig .kd-knopf { margin: 6px 0 4px; width: 100%; }
+.kd-klein { font-size: 13px; color: #69707c; }
+.kd-papier { background: #fff; border-radius: 4px; box-shadow: 0 1px 3px rgba(20,30,50,.08), 0 8px 24px rgba(20,30,50,.06); padding: 48px 52px; min-width: 0; overflow-x: auto; }
+.kd-fuss { text-align: center; font-size: 12px; color: #7a818d; padding: 14px 16px 24px; }
+.kd-fuss .kd-link { color: inherit; }
+.kd-leer { max-width: 520px; margin: 18vh auto; padding: 0 16px; text-align: center; }
+.kd-leer h1 { font-size: 22px; }
+.kd-lesetext { font-size: 14px; line-height: 1.6; max-height: 60vh; overflow: auto; }
+@media (max-width: 900px) {
+  .kd-raster { grid-template-columns: 1fr; padding: 12px; gap: 12px; }
+  .kd-links { position: static; padding: 16px; }
+  .kd-papier { padding: 20px 16px; order: 2; }
+  .kd-kopf { padding: 10px 16px; }
+  .kd-kopf .kd-knopf { padding: 8px 10px; font-size: 13px; }
+  .kd-firma small { display: none; }
+}
+
 </style>
 <div id="wurzel"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -774,6 +946,8 @@ const Icon = (name) => {
     drucken: 'M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z',
     karte: 'M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 11a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
     telefon: 'M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z',
+    angebot: 'M6 3h9l4 4v14H6zM15 3v4h4M9 12h7M9 16h5M9 8h3',
+    rechnung: 'M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5-2 1.5zM9 8h6M9 12h6M9 16h3',
     wolke: 'M7 18a4 4 0 0 1-.5-8A6 6 0 0 1 18 9a4.5 4.5 0 0 1-.5 9z',
   }[name] || '';
   return `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${p}"/></svg>`;
@@ -899,7 +1073,11 @@ const Store = (() => {
     Object.assign(zustand, { fid, cfg: null, items: [], abos: [] });
     zustand.abos.push(backend.watchDoc(`b/${fid}/cfg/main`, (cfg) => { zustand.cfg = cfg; benachrichtige(); }));
     zustand.abos.push(backend.watchList(`b/${fid}/items`, (liste) => {
-      zustand.items = liste.map((d) => ({ ...d.daten, id: d.id }));
+      // Was noch in der Warteschlange liegt, ist neuer als der Stand vom Server
+      const map = new Map(liste.map((d) => [d.id, { ...d.daten, id: d.id }]));
+      const kopf = `b/${fid}/items/`;
+      warteschlange.filter((w) => w.pfad.startsWith(kopf)).forEach((w) => { const id = w.pfad.slice(kopf.length); if (w.daten === null) map.delete(id); else map.set(id, { ...w.daten, id }); });
+      zustand.items = [...map.values()];
       benachrichtige();
     }));
   }
@@ -931,7 +1109,8 @@ const Store = (() => {
         const w = warteschlange[0];
         try { w.daten === null ? await backend.del(w.pfad) : await backend.set(w.pfad, w.daten); }
         catch (e) { console.warn('Später erneut:', w.pfad, e && e.message); break; }
-        warteschlange.shift(); merke();
+        // Nur genau diesen Eintrag entfernen: während des Schreibens kann ein neuerer Stand derselben Sache dazugekommen sein
+        const i = warteschlange.indexOf(w); if (i >= 0) warteschlange.splice(i, 1); merke();
       }
     } finally { laeuft = false; benachrichtige(); }
   }
@@ -1123,7 +1302,7 @@ const BAUSTEINE = {
     name: 'Steuerberater-Paket', gruppe: 'ausgeben', icon: 'paket',
     kurz: 'Monatspaket als ZIP: Stunden, Belege, Lieferscheine, Tagelohn.',
     wofuer: 'Der Pendelordner zum Steuerbüro kostet jeden Monat einen halben Tag.',
-    ein: ['stunden', 'belege', 'lieferscheine', 'tagelohn', 'freigabe'],
+    ein: ['stunden', 'belege', 'lieferscheine', 'tagelohn', 'freigabe', 'rechnungen'],
     p: {
       empfaenger: { typ: 'text', name: 'Steuerbüro', wert: 'Steuerbüro Janssen & Partner' },
       stichtag: { typ: 'zahl', name: 'Abgabe bis Folgemonat', wert: 5, min: 1, max: 28, einheit: 'Tag' },
@@ -1163,12 +1342,99 @@ const BAUSTEINE = {
     p: { tage: { typ: 'wahl', name: 'Planen für', wert: 'Mo bis Fr', optionen: ['Mo bis Fr', 'Mo bis Sa'] } },
   },
 
+  angebote: {
+    name: 'Angebote', gruppe: 'auftrag', icon: 'angebot',
+    kurz: 'Angebote mit Positionen, Katalog und AGB. Angenommen wird es zum Auftrag mit Baustelle.',
+    wofuer: 'Angebote entstehen abends in Word, Preise werden jedes Mal neu gesucht, angenommene Aufträge landen auf einem Zettel.',
+    ein: ['baustellen'],
+    p: {
+      praefix: { typ: 'text', name: 'Nummer beginnt mit', wert: 'A' },
+      gueltig: { typ: 'zahl', name: 'Gültig für', wert: 30, min: 7, max: 90, einheit: 'Tage' },
+      mwst: { typ: 'zahl', name: 'Mehrwertsteuer', wert: 19, min: 0, max: 19, einheit: '%' },
+      baustelleAnlegen: { typ: 'schalter', name: 'Angenommen: Baustelle anlegen', wert: 'ja' },
+      bestaetigung: { typ: 'schalter', name: 'Auftragsbestätigung drucken', wert: 'ja' },
+      agbAnhang: { typ: 'schalter', name: 'AGB als Anlage', wert: 'ja' },
+      onlineAnnahme: { typ: 'schalter', name: 'Kunde nimmt online an (Link)', wert: 'ja' },
+      unterschriftOnline: { typ: 'schalter', name: 'Online: Unterschrift verlangen', wert: 'ja' },
+      fragen: { typ: 'schalter', name: 'Online: Kunde kann Fragen stellen', wert: 'ja' },
+      widerruf: { typ: 'wahl', name: 'Widerruf bei Privatkunden', wert: 'Belehrung mit Arbeitsbeginn', optionen: ['Belehrung mit Arbeitsbeginn', 'Ausschluss Maßanfertigung', 'nicht anzeigen'] },
+      einleitung: { typ: 'langtext', name: 'Text vor den Positionen', wert: 'Sehr geehrte Damen und Herren,\nvielen Dank für Ihre Anfrage. Gern bieten wir Ihnen folgende Arbeiten an:' },
+      schluss: { typ: 'langtext', name: 'Text nach den Positionen', wert: 'Wir freuen uns auf Ihren Auftrag. Bei Fragen erreichen Sie uns jederzeit telefonisch.' },
+      katalog: { typ: 'langtext', name: 'Leistungskatalog (Text | Einheit | Preis)', wert: 'Abbund Dachstuhl nach Plan | m² | 38,50\nAufstellen und Richten Dachstuhl | m² | 24,00\nKVH C24 liefern, gehobelt | m³ | 620,00\nAufsparrendämmung 160 mm inkl. Unterdeckbahn | m² | 89,00\nSparren austauschen bis 5 m | Stk | 185,00\nZimmerer-Facharbeiter | Std | 58,00\nBaustelleneinrichtung | psch | 450,00' },
+      widerrufText: { typ: 'langtext', name: 'Widerrufsbelehrung', wert: 'Widerrufsrecht\nSie haben das Recht, binnen vierzehn Tagen ohne Angabe von Gründen diesen Vertrag zu widerrufen. Die Widerrufsfrist beträgt vierzehn Tage ab dem Tag des Vertragsabschlusses.\nUm Ihr Widerrufsrecht auszuüben, müssen Sie uns mittels einer eindeutigen Erklärung (z. B. ein mit der Post versandter Brief oder eine E-Mail) über Ihren Entschluss, diesen Vertrag zu widerrufen, informieren. Zur Wahrung der Widerrufsfrist reicht es aus, dass Sie die Mitteilung vor Ablauf der Frist absenden.\nFolgen des Widerrufs\nWenn Sie diesen Vertrag widerrufen, haben wir Ihnen alle Zahlungen, die wir von Ihnen erhalten haben, unverzüglich und spätestens binnen vierzehn Tagen zurückzuzahlen. Haben Sie verlangt, dass die Arbeiten während der Widerrufsfrist beginnen sollen, so haben Sie uns einen angemessenen Betrag zu zahlen, der dem Anteil der bis zum Widerruf bereits erbrachten Leistungen entspricht.' },
+      datenschutz: { typ: 'langtext', name: 'Datenschutzhinweis', wert: 'Wir verarbeiten Ihren Namen, Ihre Anschrift und Ihre Kontaktdaten nur, um das Angebot zu erstellen und den Auftrag auszuführen (Art. 6 Abs. 1 lit. b DSGVO). Rechnungsdaten bewahren wir so lange auf, wie es das Steuerrecht verlangt. Eine Weitergabe an Dritte erfolgt nur, soweit es für den Auftrag nötig ist (z. B. an das Steuerbüro). Sie haben das Recht auf Auskunft, Berichtigung und Löschung. Fragen dazu richten Sie bitte an die im Angebot genannte Anschrift.' },
+      agb: { typ: 'langtext', name: 'AGB', wert: '1. Geltung: Für alle Aufträge gelten diese Bedingungen sowie die VOB Teil B in der bei Vertragsschluss gültigen Fassung, soweit nichts anderes vereinbart ist.\n2. Preise: Alle Preise sind Festpreise für die angebotenen Mengen. Abgerechnet wird nach tatsächlichem Aufmaß.\n3. Zusatzarbeiten: Arbeiten, die nicht im Angebot enthalten sind, werden nach Aufwand (Regiebericht) zu den vereinbarten Stundensätzen berechnet.\n4. Zahlung: Rechnungen sind innerhalb der angegebenen Frist ohne Abzug zu zahlen. Bei Aufträgen über 5.000 € können Abschläge nach Baufortschritt verlangt werden.\n5. Eigentum: Gelieferte Materialien bleiben bis zur vollständigen Bezahlung unser Eigentum.\n6. Gewährleistung: Es gelten die gesetzlichen Fristen.' },
+    },
+  },
+  rechnungen: {
+    name: 'Rechnungen', gruppe: 'auftrag', icon: 'rechnung',
+    kurz: 'Rechnung aus Angebot und Regiezetteln, mit fortlaufender Nummer und E-Rechnung.',
+    wofuer: 'Rechnungen werden Wochen nach der Fertigstellung geschrieben, Regiearbeiten vergessen, offene Posten fallen keinem auf.',
+    ein: ['angebote', 'regie', 'baustellen'],
+    p: {
+      praefix: { typ: 'text', name: 'Nummer beginnt mit', wert: 'R' },
+      ziel: { typ: 'zahl', name: 'Zahlungsziel', wert: 14, min: 0, max: 60, einheit: 'Tage' },
+      mahnung: { typ: 'zahl', name: 'Erinnerung nach', wert: 7, min: 1, max: 30, einheit: 'Tage über Ziel' },
+      erechnung: { typ: 'wahl', name: 'E-Rechnung', wert: 'XRechnung (XML)', optionen: ['XRechnung (XML)', 'aus'] },
+      lohnanteil: { typ: 'schalter', name: 'Arbeitskosten nach § 35a ausweisen', wert: 'ja' },
+      schluss: { typ: 'langtext', name: 'Text nach den Positionen', wert: 'Vielen Dank für Ihren Auftrag. Bitte überweisen Sie den Betrag unter Angabe der Rechnungsnummer.' },
+    },
+  },
+
+  tafel: {
+    name: 'Auftragstafel', gruppe: 'auftrag', icon: 'plan',
+    kurz: 'Jeder Auftrag eine Karte: Anfrage, Angebot, Auftrag, Baustelle, Rechnung, Bezahlt.',
+    wofuer: 'Anfragen stehen auf Zetteln am Kühlschrank, keiner weiß, welches Angebot noch offen ist und welche Baustelle schon abgerechnet wurde.',
+    ein: ['angebote', 'rechnungen', 'baustellen'],
+    p: {
+      spalten: { typ: 'text', name: 'Spalten (sechs, mit Komma)', wert: 'Anfrage, Angebot, Auftrag, Auf der Baustelle, Rechnung, Bezahlt' },
+      bezahltTage: { typ: 'zahl', name: 'Bezahlte Karten zeigen', wert: 30, min: 7, max: 365, einheit: 'Tage' },
+    },
+  },
+
   /* ---- In Planung: im Entwickler-Tool sichtbar, beim Kunden noch nicht ---- */
   wetter: { name: 'Schlechtwetter', gruppe: 'geplant', icon: 'glocke', kurz: 'Ausfalltage für Saison-Kurzarbeitergeld markieren.', wofuer: 'Schlechtwetterstunden müssen für die Agentur sauber belegt werden.', ein: [], p: {} },
   geraete: { name: 'Geräte & Fahrzeuge', gruppe: 'geplant', icon: 'liefer', kurz: 'Wo steht der Kran, wann ist der TÜV fällig.', wofuer: 'Werkzeug bleibt auf der alten Baustelle liegen, Prüffristen laufen ab.', ein: [], p: {} },
   aufmass: { name: 'Aufmaß', gruppe: 'geplant', icon: 'stift', kurz: 'Maße vor Ort ins Handy, ab ins Angebot.', wofuer: 'Aufmaß auf dem Zettel wird abends nochmal abgetippt.', ein: [], p: {} },
-  angebote: { name: 'Angebote & Rechnungen', gruppe: 'geplant', icon: 'beleg', kurz: 'Anbindung an das Rechnungsprogramm des Betriebs.', wofuer: 'Rechnungen werden Wochen nach Fertigstellung geschrieben, Geld fehlt.', ein: [], p: {} },
 };
+
+/* Was im Inneren eines Bausteins passiert (im Entwickler-Tool unter „Ablauf“).
+   schalter = Parameter, der diesen Schritt ein- oder ausschaltet. */
+const ABLAEUFE = {
+  angebote: [
+    { name: 'Angebot schreiben', text: 'Positionen von Hand oder aus dem Leistungskatalog, Texte davor und danach' },
+    { name: 'Senden und nachfassen', text: 'Nach 10 Tagen ohne Antwort steht es in der Übersicht unter „Zu erledigen“' },
+    { name: 'Online annehmen', text: 'Der Kunde öffnet einen Link, liest Angebot und AGB, setzt die Haken und nimmt verbindlich an', schalter: 'onlineAnnahme' },
+    { name: 'Unterschrift', text: 'Mit Finger oder Maus unter der Annahme', schalter: 'unterschriftOnline' },
+    { name: 'Frage zum Angebot', text: 'Statt anzunehmen kann der Kunde eine Frage schicken. Sie steht im Büro unter „Zu erledigen“', schalter: 'fragen' },
+    { name: 'Angenommen', text: 'Wird zum Auftrag' },
+    { name: 'Baustelle anlegen', text: 'Mit Kunde, Anschrift und Betreff', schalter: 'baustelleAnlegen' },
+    { name: 'Auftragsbestätigung', text: 'Druckbar mit denselben Positionen', schalter: 'bestaetigung' },
+    { name: 'AGB als Anlage', text: 'Zweite Seite des Angebots', schalter: 'agbAnhang' },
+  ],
+  rechnungen: [
+    { name: 'Entwurf', text: 'Aus dem Angebot übernommen oder neu, Regiezettel der Baustelle dazu' },
+    { name: 'Stellen', text: 'Fortlaufende Nummer, Datum, Fälligkeit. Danach nicht mehr änderbar' },
+    { name: 'Arbeitskosten ausweisen', text: 'Für Privatkunden (§ 35a EStG)', schalter: 'lohnanteil' },
+    { name: 'Überfällig', text: 'Hinweis in der Übersicht, Zahlungserinnerung druckbar' },
+    { name: 'Bezahlt', text: 'Zahlungseingang abhaken' },
+  ],
+  tafel: [
+    { name: 'Anfrage', text: 'Neue Karte mit Kunde, Telefon und Besichtigungstermin' },
+    { name: 'Angebot', text: 'Aus der Karte wird mit einem Klick das Angebot' },
+    { name: 'Auftrag', text: 'Rückt von selbst weiter, wenn das Angebot angenommen ist (auch online)' },
+    { name: 'Auf der Baustelle', text: 'Sobald jemand auf die Baustelle stempelt' },
+    { name: 'Rechnung und Bezahlt', text: 'Folgt der Rechnung, bezahlte Karten verschwinden nach einiger Zeit' },
+  ],
+  regie: [
+    { name: 'Aufschreiben', text: 'Arbeit, Leute, Stunden, Material auf dem Handy' },
+    { name: 'Unterschrift', text: 'Der Kunde unterschreibt mit dem Finger' },
+    { name: 'Später unterschreiben', text: 'Wenn der Kunde nicht da ist', schalter: 'ohneUnterschrift' },
+    { name: 'Abrechnen', text: 'In die Rechnung übernehmen oder von Hand abhaken' },
+  ],
+};
+/* In diese Bausteine kann Richtwerk eigene Felder einbauen */
+const MIT_FELDERN = ['belege', 'lieferscheine', 'material', 'bautagebuch', 'regie', 'angebote', 'rechnungen'];
 
 const GRUPPEN = {
   quelle: { name: 'Start', farbe: '#6f94ff' },
@@ -1176,6 +1442,7 @@ const GRUPPEN = {
   erfassen: { name: 'Erfassen', farbe: '#3fb37f' },
   pruefen: { name: 'Prüfen', farbe: '#e5a530' },
   ausgeben: { name: 'Ausgeben', farbe: '#ff6b3d' },
+  auftrag: { name: 'Aufträge', farbe: '#b58cff' },
   geplant: { name: 'In Planung', farbe: '#5a6270' },
 };
 
@@ -1202,6 +1469,10 @@ function regeln(cfg) {
     stempeln: () => hat('app') && verb('app', 'stempeln') && verb('stempeln', 'stunden'),
     stundenImApp: () => hat('app') && (verb('app', 'stunden') || verb('stempeln', 'stunden') && verb('app', 'stempeln')),
     plan: () => verb('baustellen', 'wochenplan'),
+    name: (t) => { const k = bk.knoten.find((x) => x.typ === t); return (k && k.name) || (BAUSTEINE[t] ? BAUSTEINE[t].name : t); },
+    hinweis: (t) => { const k = bk.knoten.find((x) => x.typ === t); return (k && k.hinweis) || ''; },
+    felder: (t) => { const k = bk.knoten.find((x) => x.typ === t); return (k && k.felder) || []; },
+    an: (t, k) => p(t)[k] === 'ja',
     darfFreigeben: (rolle) => rolle === 'chef' || (rolle === 'buero' && p('freigabe').wer === 'Chef und Büro'),
   };
 }
@@ -1234,6 +1505,27 @@ function wirkungen(cfg, typ) {
   if (typ === 'regie') out.push(R.p('regie').ohneUnterschrift === 'ja' ? 'Ist der Kunde nicht da, kann der Zettel ohne Unterschrift gespeichert werden.' : 'Speichern nur mit Unterschrift des Kunden.');
   if (typ === 'wochenplan') out.push(R.hat('app') ? 'Mitarbeiter sehen ihren Plan in der App; beim Einstempeln steht die geplante Baustelle oben.' : 'Ohne App nur im Büro sichtbar.');
   if (typ === 'wochenplan' && !R.verb('baustellen', 'wochenplan')) out.push('Mit „Baustellen“ verbinden, sonst gibt es nichts zu verplanen.');
+  if (typ === 'angebote') {
+    out.push('Im Büro als Bereich „Angebote“ sichtbar.');
+    out.push(R.an('angebote', 'baustelleAnlegen') ? 'Wird ein Angebot angenommen, entsteht die Baustelle automatisch.' : 'Angenommene Angebote legen keine Baustelle an.');
+    out.push(R.verb('angebote', 'rechnungen') ? 'Aus jedem Angebot wird mit einem Klick die Rechnung.' : 'Mit „Rechnungen“ verbinden, damit aus dem Angebot die Rechnung wird.');
+  }
+  if (typ === 'angebote') {
+    out.push(R.an('angebote', 'onlineAnnahme') ? `Der Kunde bekommt einen Link, nimmt online an${R.an('angebote', 'unterschriftOnline') ? ' und unterschreibt' : ''}. Das Büro sieht es sofort.` : 'Angebote werden nur gedruckt oder als PDF verschickt.');
+  }
+  if (typ === 'tafel') {
+    out.push('Im Büro als Bereich „Auftragstafel“ mit Karten zum Verschieben.');
+    out.push(R.hat('angebote') ? 'Karten sind mit Angebot, Baustellenakte und Rechnung verknüpft.' : 'Ohne „Angebote“ bleiben die Karten reine Notizen.');
+  }
+  if (typ === 'rechnungen') {
+    out.push('Im Büro als Bereich „Rechnungen“ sichtbar, mit offenen Posten und Erinnerung.');
+    if (R.verb('regie', 'rechnungen')) out.push('Unterschriebene Regiezettel der Baustelle werden zur Übernahme angeboten.');
+    out.push(R.p('rechnungen').erechnung === 'aus' ? 'Keine E-Rechnung.' : 'Zu jeder Rechnung gibt es die E-Rechnung als XRechnung-Datei.');
+    out.push(R.verb('rechnungen', 'export') ? `Ausgangsrechnungen kommen ins Monatspaket für ${R.p('export').empfaenger}.` : 'Geht nicht ans Steuerbüro.');
+  }
+  const k = ((cfg && cfg.baukasten && cfg.baukasten.knoten) || []).find((x) => x.typ === typ) || {};
+  if (k.name) out.push(`Heißt beim Kunden „${k.name}“.`);
+  if ((k.felder || []).length) out.push(`${k.felder.length} eigene ${k.felder.length === 1 ? 'Feld' : 'Felder'}: ${k.felder.map((f) => f.name).join(', ')}.`);
   if (typ === 'tagelohn' && R.p('tagelohn').satz < 13.9) out.push('Achtung: unter dem Mindestlohn von 13,90 €.');
   return out;
 }
@@ -1258,11 +1550,20 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 2,
+      version: 4,
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
       ort: 'Ganderkesee',
+      inhaber: 'Jan Ahlers',
+      strasse: 'Gewerbestraße 9',
+      plz: '27777',
+      telefon: '04222 70 41 90',
+      email: 'info@zimmerei-ahlers.example',
+      steuernr: '64/123/45678',
+      ustid: 'DE299999999',
+      bank: 'Volksbank Ganderkesee',
+      iban: 'DE89 3704 0044 0532 0130 00',
       farbe: '#2f5e4e',
       kuerzel: 'ZA',
       paket: 'Start',
@@ -1300,6 +1601,9 @@ const Muster = (() => {
           knoten('bautagebuch', 330, 740),
           knoten('regie', 330, 830),
           knoten('wochenplan', 330, 920),
+          knoten('angebote', 890, 640),
+          knoten('rechnungen', 1170, 760),
+          knoten('tafel', 1170, 580),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -1311,6 +1615,7 @@ const Muster = (() => {
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
+          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -1407,6 +1712,28 @@ const Muster = (() => {
     };
     planWoche(montag, plan[2]);
     planWoche(Datum.plus(montag, 7), { p3: 'b1', p4: 'b3', p5: 'b2', p6: 'b3', p7: 'b1' });
+    // Angebote und Rechnungen
+    const j = heute.slice(0, 4);
+    const pos = (text, menge, einheit, preis) => ({ text, menge, einheit, preis });
+    add('an1', { typ: 'angebot', nr: `A-${j}-014`, datum: Datum.plus(heute, -40), gueltigBis: Datum.plus(heute, -10), kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', status: 'angenommen', entschieden: Date.now() - 30 * 864e5, bs: 'b2', mwst: 19,
+      positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    add('an2', { typ: 'angebot', nr: `A-${j}-017`, datum: Datum.plus(heute, -21), gueltigBis: Datum.plus(heute, 9), kunde: 'Jörg Steenken', kundenart: 'privat', adresse: 'Stedinger Straße 120\n27753 Delmenhorst', betreff: 'Schleppgaube Dachgeschoss', status: 'angenommen', entschieden: Date.now() - 6 * 864e5, bs: 'b4', mwst: 19, schluessel: 'k7Q2m9xTe4Lw', gesehen: Date.now() - 5 * 864e5,
+      angenommenOnline: { name: 'Jörg Steenken', wann: Date.now() - 6 * 864e5 - 3 * 36e5, unterschrift: 'muster-unterschrift', agb: true, widerruf: 'belehrung', beginnVorFrist: true, datenschutz: true },
+      positionen: [pos('Dachöffnung herstellen, Sparren auswechseln', 1, 'psch', 1850), pos('Schleppgaube 3,2 m breit abbinden und aufstellen', 1, 'psch', 6400), pos('Aufsparrendämmung 160 mm inkl. Unterdeckbahn', 14, 'm²', 89), pos('Zimmerer-Facharbeiter', 24, 'Std', 58)] });
+    add('an3', { typ: 'angebot', nr: `A-${j}-019`, datum: Datum.plus(heute, -12), gueltigBis: Datum.plus(heute, 18), kunde: 'Bäckerei Logemann GmbH', kundenart: 'gewerblich', adresse: 'Bremer Straße 41\n27777 Ganderkesee', email: 'buchhaltung@logemann.example', betreff: 'Vordach Lieferzone', status: 'gesendet', mwst: 19, schluessel: 'p3Vn8sRc1Hy6',
+      fragen: [{ text: 'Ist die Rinne inklusive Fallrohr bis zum Kanalanschluss? Und könnten Sie in den Herbstferien anfangen, dann ist bei uns weniger Lieferverkehr. (Rückruf: 04222 81 33 0)', wann: Date.now() - 20 * 36e5 }],
+      positionen: [pos('Vordach 8,0 x 2,5 m, BSH GL24h, sichtbar gehobelt', 1, 'psch', 5200), pos('Dacheindeckung Trapezblech mit Rinne', 20, 'm²', 74), pos('Montage mit Hubsteiger', 16, 'Std', 58)] });
+    add('an4', { typ: 'angebot', nr: `A-${j}-020`, datum: Datum.plus(heute, -2), gueltigBis: Datum.plus(heute, 28), kunde: 'Familie Brinkmann', kundenart: 'privat', adresse: 'Am Sportplatz 7\n27798 Hude', betreff: 'Terrassenüberdachung', status: 'entwurf', mwst: 19,
+      positionen: [pos('Terrassenüberdachung 5,0 x 3,5 m, Douglasie, Stegplatten', 1, 'psch', 6800), pos('Zimmerer-Facharbeiter', 16, 'Std', 58)] });
+    add('re1', { typ: 'rechnung', nr: `R-${j}-031`, datum: Datum.plus(heute, -26), faellig: Datum.plus(heute, -12), bezahltAm: Datum.plus(heute, -14), kunde: 'Renate Wilkens', kundenart: 'privat', adresse: 'Hauptstraße 52\n26203 Wardenburg', betreff: 'Abschlag Dachsanierung', leistung: 'Abschlag nach Baufortschritt', status: 'bezahlt', mwst: 19,
+      positionen: [pos('1. Abschlag Dachsanierung lt. Angebot A-' + j + '-009, 40 %', 1, 'psch', 9200)] });
+    add('re2', { typ: 'rechnung', nr: `R-${j}-033`, datum: Datum.plus(heute, -29), faellig: Datum.plus(heute, -15), kunde: 'Hausverwaltung Nordlicht GmbH', kundenart: 'gewerblich', adresse: 'Lange Straße 12\n27749 Delmenhorst', email: 'rechnung@nordlicht.example', betreff: 'Reparatur Dachstuhl nach Sturmschaden', leistung: `${Datum.kurz(Datum.plus(heute, -36))}${j} bis ${Datum.kurz(Datum.plus(heute, -33))}${j}`, status: 'gestellt', mwst: 19,
+      positionen: [pos('Sparren austauschen bis 5 m', 3, 'Stk', 185), pos('KVH C24 liefern, gehobelt', 0.4, 'm³', 620), pos('Zimmerer-Facharbeiter', 14, 'Std', 58), pos('Entsorgung Altholz', 1, 'psch', 120)] });
+    add('re3', { typ: 'rechnung', status: 'entwurf', kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', bs: 'b2', angebot: 'an1', angebotNr: `A-${j}-014`, mwst: 19, leistung: '',
+      positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    // Auftragstafel: zwei frische Anfragen
+    add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
+    add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });
@@ -1605,6 +1932,24 @@ function bilderNachladen(wurzel, items) {
   });
 }
 
+/* Eigene Felder, die Richtwerk pro Betrieb in einen Baustein einbaut
+   (im Entwickler-Tool: Baustein öffnen → Felder). Werte landen in eintrag.extra. */
+const Zusatz = {
+  liste: (c, typ) => (c && c.R ? c.R.felder(typ) : []),
+  feld(f, wert, klasse, gesperrt) {
+    const dis = gesperrt ? 'disabled' : ''; const name = `data-zusatz="${esc(f.id)}"`;
+    const pflicht = f.pflicht ? ' *' : '';
+    if (f.typ === 'wahl') return `<label class="${klasse}"><span>${esc(f.name)}${pflicht}</span><select ${name} ${dis}><option value=""></option>${String(f.optionen || '').split(',').map((o) => o.trim()).filter(Boolean).map((o) => `<option ${o === wert ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    if (f.typ === 'janein') return `<label class="${klasse} janein"><input type="checkbox" ${name} ${wert === 'ja' ? 'checked' : ''} ${dis}><span>${esc(f.name)}</span></label>`;
+    return `<label class="${klasse}"><span>${esc(f.name)}${pflicht}</span><input ${name} ${f.typ === 'zahl' ? 'inputmode="decimal"' : ''} value="${esc(wert ?? '')}" ${dis}></label>`;
+  },
+  app(c, typ, extra = {}) { return Zusatz.liste(c, typ).map((f) => Zusatz.feld(f, (extra || {})[f.id], 'a-feld', false)).join(''); },
+  buero(c, typ, extra = {}, gesperrt = false) { const l = Zusatz.liste(c, typ); return l.length ? `<div class="reihe zusatz">${l.map((f) => Zusatz.feld(f, (extra || {})[f.id], 'feld', gesperrt)).join('')}</div>` : ''; },
+  lesen(wurzel) { const out = {}; $$('[data-zusatz]', wurzel).forEach((el) => { out[el.dataset.zusatz] = el.type === 'checkbox' ? (el.checked ? 'ja' : 'nein') : el.value.trim(); }); return out; },
+  fehlt(c, typ, extra) { const f = Zusatz.liste(c, typ).find((x) => x.pflicht && !(extra || {})[x.id]); return f ? f.name : ''; },
+  anzeige(c, typ, extra) { return Zusatz.liste(c, typ).filter((f) => extra && extra[f.id]).map((f) => `<dt>${esc(f.name)}</dt><dd>${esc(extra[f.id])}</dd>`).join(''); },
+};
+
 /* ---- buero.js ---- */
 /* =========================================================================
    Betriebszentrale (Büro am Computer)
@@ -1631,6 +1976,13 @@ const Buero = (() => {
     { id: 'team', name: 'Team & Zugänge', icon: 'team', gruppe: 'Stammdaten' },
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
+  /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
+  const EXTRA = { aufgaben: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben }) {
+    nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
+    Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
+    if (aufgaben) EXTRA.aufgaben.push(aufgaben);
+  }
   const sichtbar = (n, c) => {
     if (n.nurChef && c.ich && c.ich.rolle !== 'chef') return false;
     if (!n.braucht) return true;
@@ -1644,7 +1996,7 @@ const Buero = (() => {
   const verlauf = (c, e) => {
     const v = (e && e.verlauf) || []; if (!v.length) return '';
     const l = v[v.length - 1]; const d = new Date(l.wann);
-    return `<p class="verlauf">Zuletzt geändert ${l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
+    return `<p class="verlauf">Zuletzt geändert ${l.wer === 'kunde' ? 'vom Kunden (online) ' : l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
   };
   const bsOptionen = (c, gewaehlt, mitLeer = true) => (mitLeer ? `<option value="">ohne Baustelle</option>` : '') + c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('');
   const personOptionen = (c, gewaehlt, liste = c.arbeiter()) => liste.map((p) => `<option value="${p.id}" ${p.id === gewaehlt ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
@@ -1700,6 +2052,7 @@ const Buero = (() => {
     }
     const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
     if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
+    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen"><button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button></div></div>`)));
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -1796,7 +2149,7 @@ const Buero = (() => {
     const kopf = tage.map((d) => `<th${d === c.heute ? ' style="color:var(--firma)"' : ''}>${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
     return seitenkopf('Wochenplan', `KW ${Datum.kw(mo)} · Die Mitarbeiter sehen ihren Plan in der App, sobald er hier eingetragen ist`,
       `<span class="wochenwahl"><button class="k klein" data-a="planwoche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(mo)} – ${Datum.kurz(tage[n - 1])}${tage[n - 1].slice(0, 4)}</b><button class="k klein" data-a="planwoche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
-       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
+       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="plan-ics">${Icon('kalender')} Kalenderdatei</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
       + `<div class="karte" id="druck-plan"><div class="kopf"><h3>Wer ist wo</h3></div><div class="tabelle-huelle"><table class="t plan"><thead><tr><th>Mitarbeiter</th>${kopf}</tr></thead><tbody>${zeilen || `<tr><td colspan="7">${leer('Noch keine Mitarbeiter.')}</td></tr>`}</tbody></table></div></div>
       <div class="karte"><div class="kopf"><h3>Nach Baustelle</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th>${kopf}</tr></thead><tbody>${proBaustelle || `<tr><td colspan="7">${leer('Keine laufenden Baustellen.')}</td></tr>`}</tbody></table></div></div>`;
   };
@@ -1929,6 +2282,10 @@ const Buero = (() => {
       const fehlt = inh.tl.length - inh.tlOk.length;
       liste.push(punkt(!fehlt, `Tagelohn: ${inh.tlOk.length} Einsätze, ${Zahl.eur(inh.tlOk.reduce((s, e) => s + e.stunden * e.satz, 0))}`, fehlt ? `${fehlt} ${fehlt === 1 ? 'Einsatz' : 'Einsätze'} noch nicht freigegeben.` : 'mit Name, Datum, Stunden und Satz'));
     }
+    if (R.imExport('rechnungen')) {
+      const rn = Uebergabe.gestellte(c, (r) => (r.datum || '').startsWith(ym));
+      liste.push(punkt(true, `Ausgangsrechnungen: ${rn.length} Stück`, 'Liste als CSV und je Rechnung die E-Rechnung (XRechnung)'));
+    }
     const doks = c.typ('dokument').sort((a, b) => b.erstellt - a.erstellt);
     const exportKarte = R.hat('export') ? `<div class="karte"><div class="kopf"><h3>Monatspaket für ${esc(p.empfaenger)}</h3><div class="rechts"><button class="k klein" data-a="monat" data-id="-1">${Icon('zurueck')}</button><b style="min-width:130px;text-align:center">${esc(Datum.monatName(ym))}</b><button class="k klein" data-a="monat" data-id="1">${Icon('pfeil')}</button></div></div>
         <ul class="pruefliste">${liste.join('') || `<li>${leer('Im Baukasten ist noch nichts an das Steuerbüro-Paket angeschlossen.')}</li>`}</ul>
@@ -1986,7 +2343,7 @@ const Buero = (() => {
         ${regie.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Datum</th><th>Arbeit</th><th class="r">Stunden</th><th class="r">Betrag</th><th>Kunde</th><th>Status</th></tr></thead><tbody>${regie.map((r) => `<tr class="klickbar" data-a="regie" data-id="${r.id}"><td>${Datum.kurz(r.datum)}</td><td>${esc(r.text)}</td><td class="r num">${r.leute > 1 ? `${r.leute} × ${Zahl.std(r.stunden)}` : Zahl.std(r.stunden)}</td><td class="r num">${Zahl.eur(regieBetrag(c, r))}</td><td>${esc(r.kunde || '–')}</td><td>${r.status === 'offen' ? '<span class="chip warn">Ohne Unterschrift</span>' : chip(r.status)}</td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Zusatzarbeiten. Die Gesellen schreiben sie in der App auf, der Kunde unterschreibt auf dem Handy.')}</div>` : ''}
       ${c.R.hat('bautagebuch') ? `<div class="karte"><div class="kopf"><h3>Bautagebuch</h3>${tagebuch.length ? `<button class="k klein" data-a="drucken" data-id="tagebuch">${Icon('drucken')} Drucken</button>` : ''}</div>
         <div id="druck-tagebuch">${tagebuch.length ? tagebuch.map((t) => `<div class="tagebuch-eintrag"><div class="wann"><b>${esc(Datum.mittel(t.datum))}</b><small>${esc(WETTER[t.wetter] || t.wetter || '')}</small><small>${esc(c.person(t.pid).name)}</small></div>
-          <div class="was"><p>${esc(t.text)}</p>${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
+          <div class="was"><p>${esc(t.text)}</p>${Zusatz.anzeige(c, 'bautagebuch', t.extra) ? `<dl class="daten" style="margin-bottom:10px">${Zusatz.anzeige(c, 'bautagebuch', t.extra)}</dl>` : ''}${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
       <div class="karte"><div class="kopf"><h3>Lieferscheine und Belege</h3></div>
         ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
@@ -2011,8 +2368,18 @@ const Buero = (() => {
           <label class="feld"><span>Name</span><input name="name" value="${esc(c.cfg.name)}"></label>
           <label class="feld"><span>Kürzel (2 Buchstaben)</span><input name="kuerzel" maxlength="2" value="${esc(c.cfg.kuerzel)}"></label>
           <label class="feld"><span>Zusatz</span><input name="zusatz" value="${esc(c.cfg.zusatz)}"></label>
+          <label class="feld"><span>Inhaber</span><input name="inhaber" value="${esc(c.cfg.inhaber || '')}"></label>
+          <label class="feld"><span>Straße</span><input name="strasse" value="${esc(c.cfg.strasse || '')}"></label>
+          <label class="feld"><span>PLZ</span><input name="plz" inputmode="numeric" maxlength="5" value="${esc(c.cfg.plz || '')}"></label>
           <label class="feld"><span>Ort</span><input name="ort" value="${esc(c.cfg.ort)}"></label>
+          <label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(c.cfg.telefon || '')}"></label>
+          <label class="feld"><span>E-Mail</span><input name="email" type="email" value="${esc(c.cfg.email || '')}"></label>
+          <label class="feld"><span>Steuernummer</span><input name="steuernr" value="${esc(c.cfg.steuernr || '')}"></label>
+          <label class="feld"><span>USt-IdNr.</span><input name="ustid" value="${esc(c.cfg.ustid || '')}"></label>
+          <label class="feld"><span>Bank</span><input name="bank" value="${esc(c.cfg.bank || '')}"></label>
+          <label class="feld"><span>IBAN</span><input name="iban" value="${esc(c.cfg.iban || '')}"></label>
         </div>
+        <p style="color:#6a726c;font-size:13px;margin:0 0 14px">Anschrift, Steuernummer und Bankverbindung stehen auf Angeboten und Rechnungen.</p>
         <div class="feld"><span>Firmenfarbe</span><div class="farbwahl">${FARBEN.map((f) => `<button type="button" style="background:${f}" class="${c.cfg.farbe === f ? 'an' : ''}" data-a="farbe" data-id="${f}" aria-label="Farbe ${f}"></button>`).join('')}</div></div>
         <button class="k haupt" type="submit">Speichern</button></form></div>
         <div class="karte"><div class="kopf"><h3>Ihr Funktionsumfang</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
@@ -2032,8 +2399,9 @@ const Buero = (() => {
     let gruppe = '';
     const nav = NAV.filter((n) => sichtbar(n, c)).map((n) => {
       const kopf = n.gruppe !== gruppe ? `<div class="gruppe">${n.gruppe}</div>` : ''; gruppe = n.gruppe;
-      const z = n.zahl ? n.zahl(o) : 0;
-      return `${kopf}<button class="${zustand.seite === n.id ? 'aktiv' : ''}" data-a="gehe" data-id="${n.id}">${Icon(n.icon)}${n.name}${z ? `<span class="zahl">${z}</span>` : ''}</button>`;
+      const z = n.zahl ? n.zahl(o, c) : 0;
+      const name = typeof n.braucht === 'string' && c.R.hat(n.braucht) && c.R.name(n.braucht) !== BAUSTEINE[n.braucht].name ? esc(c.R.name(n.braucht)) : n.name;
+      return `${kopf}<button class="${zustand.seite === n.id ? 'aktiv' : ''}" data-a="gehe" data-id="${n.id}" ${zustand.seite === n.id ? 'aria-current="page"' : ''}>${Icon(n.icon)}${name}${z ? `<span class="zahl">${z}</span>` : ''}</button>`;
     }).join('');
     return `<div class="ui-buero ${kompakt() ? 'kompakt' : ''} ${zustand.navOffen ? 'nav-offen' : ''}" style="--firma:${esc(c.cfg.farbe)}">
       <header class="b-kopf">
@@ -2126,7 +2494,8 @@ const Buero = (() => {
     if (aktiverBereich !== Buero || e.target.id !== 'f-einst') return;
     e.preventDefault();
     const w = Object.fromEntries(new FormData(e.target));
-    Store.speichereCfg({ ...Store.cfg, name: w.name.trim() || Store.cfg.name, kuerzel: w.kuerzel.trim().toUpperCase(), zusatz: w.zusatz, ort: w.ort });
+    const felder = ['zusatz', 'ort', 'inhaber', 'strasse', 'plz', 'telefon', 'email', 'steuernr', 'ustid', 'bank', 'iban'];
+    Store.speichereCfg({ ...Store.cfg, name: w.name.trim() || Store.cfg.name, kuerzel: w.kuerzel.trim().toUpperCase(), ...Object.fromEntries(felder.map((k) => [k, (w[k] || '').trim()])) });
     document.activeElement.blur(); meldung('Gespeichert');
     setTimeout(zeichne, 50);
   });
@@ -2142,6 +2511,7 @@ const Buero = (() => {
     'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
     nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
     planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'plan-ics'(el, c) { speichern(`Wochenplan_KW${Datum.kw(zustand.planWoche)}.ics`, new Blob([Uebergabe.planIcs(c, zustand.planWoche)], { type: 'text/calendar' })); meldung('Kalenderdatei gespeichert. Sie lässt sich in Outlook, Google- oder Apple-Kalender öffnen.'); },
     'plan-vorwoche'(el, c) {
       const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
       if (!alt) return meldung('In der Vorwoche ist nichts geplant.', 'fehler');
@@ -2257,7 +2627,7 @@ const Buero = (() => {
         : `<div class="reihe"><label class="feld"><span>Lieferant</span><input name="lieferant" value="${esc(e.lieferant)}"></label><label class="feld"><span>Lieferschein-Nr.</span><input name="nummer" value="${esc(e.nummer || '')}"></label></div>`}
         ${c.R.hat('baustellen') ? `<label class="feld"><span>Baustelle</span><select name="bs">${bsOptionen(c, e.bs)}</select></label>` : ''}
         <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(e.notiz || '')}"></label>
-        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>${verlauf(c, e)}
+        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}${Zusatz.anzeige(c, istBeleg ? 'belege' : 'lieferscheine', e.extra)}</dl>${verlauf(c, e)}
       </div></div>`,
       fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>
         ${e.status === 'offen' && darf ? `<button class="k nein" data-f="status" data-id="abgelehnt">Ablehnen</button><button class="k haupt" data-f="status" data-id="freigegeben">${Icon('haken')} Freigeben</button>` : ''}
@@ -2446,7 +2816,7 @@ const Buero = (() => {
       <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Regiebericht</b><br>${esc(Datum.lang(r.datum))}</div></div>
       <dl class="daten"><dt>Baustelle</dt><dd>${esc(b.name)}${b.adresse ? `, ${esc(b.adresse)}` : ''}</dd><dt>Ausgeführte Arbeit</dt><dd>${esc(r.text)}</dd>
       <dt>Arbeitszeit</dt><dd>${r.leute > 1 ? `${r.leute} Mitarbeiter × ${Zahl.std(r.stunden)} Std. = ` : ''}<b>${Zahl.std(regieStunden(r))} Std.</b></dd>
-      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
+      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}${Zusatz.anzeige(c, 'regie', r.extra)}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
       <div class="nw-unterschrift"><div>${r.unterschrift ? `<img data-datei="${esc(r.unterschrift)}" alt="Unterschrift" style="height:64px;display:block">` : '<div style="height:64px"></div>'}Auftraggeber${r.kunde ? ': ' + esc(r.kunde) : ''}</div><div><div style="height:64px"></div>${esc(c.cfg.name)}</div></div>
       <p class="nw-fuss">Die oben genannten Arbeiten wurden zusätzlich zum Auftrag ausgeführt und werden nach Aufwand abgerechnet.</p></div>`;
   }
@@ -2566,6 +2936,7 @@ const Buero = (() => {
         }
         z.file('Lieferscheine.csv', csv(zeilen));
       }
+      if (c.R.imExport('rechnungen')) Uebergabe.rechnungenInZip(c, z.folder('Rechnungen'), (r) => (r.datum || '').startsWith(ym));
       if (inh.tlOk.length) {
         const zeilen = [['Datum', 'Name', 'Stunden', 'Satz', 'Betrag', 'Baustelle', 'Bezahlt']];
         inh.tlOk.forEach((e) => zeilen.push([Datum.kurz(e.datum) + e.datum.slice(0, 4), c.tageloehner(e.tid).name, dez(e.stunden), dez(e.satz), dez(e.stunden * e.satz), c.bsName(e.bs), e.bezahlt ? 'bar' : 'offen']));
@@ -2585,7 +2956,7 @@ const Buero = (() => {
     return `${name}.${endung}`;
   }
 
-  return { start, neuZeichnen: zeichne, html, ROLLEN };
+  return { start, neuZeichnen: zeichne, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
 })();
 
 /* Datei an den Nutzer geben (Artifact-Download, sonst normaler Link) */
@@ -2598,6 +2969,764 @@ async function speichern(dateiname, daten) {
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = dateiname; document.body.appendChild(a); a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
 }
+
+/* ---- auftraege.js ---- */
+/* =========================================================================
+   Angebote und Rechnungen (Büro)
+   Ablauf: Angebot (Entwurf → gesendet → angenommen/abgelehnt)
+           → angenommen: Baustelle wird angelegt
+           → Rechnung aus dem Angebot, unterschriebene Regiezettel dazu
+           → gestellt (Nummer fest, nicht mehr änderbar) → bezahlt
+   Dokumente werden als HTML erzeugt, gedruckt (oder als PDF gespeichert)
+   und als E-Rechnung im XRechnung-Format (UBL) heruntergeladen.
+   ========================================================================= */
+const Auftraege = (() => {
+  const EINHEITEN = ['Stk', 'm', 'm²', 'm³', 'lfm', 'Std', 'psch', 'kg', 't'];
+  const zustand = { filter: 'offen' };
+  const { seitenkopf, leer } = Buero.teile;
+
+  /* ---------- Rechnen ---------- */
+  const zahl = (v) => Number(String(v ?? '').replace(/\./g, '').replace(',', '.')) || 0;
+  const rund = (n) => Math.round(n * 100) / 100;
+  function summen(doc, mwst) {
+    const netto = rund((doc.positionen || []).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
+    const steuer = rund(netto * mwst / 100);
+    const lohn = rund((doc.positionen || []).filter((p) => p.einheit === 'Std' || p.lohn).reduce((s, p) => s + rund(zahl(p.menge) * zahl(p.preis)), 0));
+    return { netto, steuer, brutto: rund(netto + steuer), lohn };
+  }
+  const mwstVon = (c, d) => (d.mwst !== undefined ? Number(d.mwst) : Number(c.R.p('angebote').mwst));
+  function naechsteNummer(c, typ) {
+    const praefix = (c.R.p(typ === 'angebot' ? 'angebote' : 'rechnungen').praefix || (typ === 'angebot' ? 'A' : 'R')).trim();
+    const jahr = c.heute.slice(0, 4); const kopf = `${praefix}-${jahr}-`;
+    const max = c.typ(typ).map((d) => d.nr || '').filter((n) => n.startsWith(kopf)).reduce((m, n) => Math.max(m, Number(n.slice(kopf.length)) || 0), 0);
+    return kopf + String(max + 1).padStart(3, '0');
+  }
+  function katalog(c) {
+    return String(c.R.p('angebote').katalog || '').split('\n').map((z) => z.split('|').map((s) => s.trim())).filter((t) => t[0]).map(([text, einheit, preis]) => ({ text, einheit: einheit || 'Stk', preis: zahl(preis) }));
+  }
+  const ueberfaellig = (c, r) => r.status === 'gestellt' && r.faellig && r.faellig < c.heute;
+  const tageUeber = (c, r) => Math.round((Datum.von(c.heute) - Datum.von(r.faellig)) / 864e5);
+
+  const STATUS = {
+    entwurf: ['Entwurf', ''], gesendet: ['Gesendet', 'info'], angenommen: ['Angenommen', 'ok'], abgelehnt: ['Abgelehnt', 'bad'],
+    gestellt: ['Offen', 'warn'], bezahlt: ['Bezahlt', 'ok'], storniert: ['Storniert', ''],
+  };
+  const chipDoc = (c, d) => {
+    if (d.typ === 'rechnung' && ueberfaellig(c, d)) return `<span class="chip bad">${tageUeber(c, d)} Tage überfällig</span>`;
+    const [t, k] = STATUS[d.status] || [d.status, '']; return `<span class="chip ${k}">${esc(t)}</span>`;
+  };
+
+  /* ---------- Seiten ---------- */
+  function angeboteSeite(c) {
+    const alle = c.typ('angebot').sort((a, b) => (b.nr || '').localeCompare(a.nr || '') || b.erstellt - a.erstellt);
+    const f = zustand.filter;
+    const liste = alle.filter((a) => (f === 'offen' ? ['entwurf', 'gesendet'].includes(a.status) : f === 'alle' ? true : a.status === f));
+    const offenSumme = alle.filter((a) => a.status === 'gesendet').reduce((s, a) => s + summen(a, mwstVon(c, a)).netto, 0);
+    const quote = (() => { const ent = alle.filter((a) => ['angenommen', 'abgelehnt'].includes(a.status)); return ent.length ? Math.round(100 * ent.filter((a) => a.status === 'angenommen').length / ent.length) : null; })();
+    const tabs = [['offen', 'Offen'], ['angenommen', 'Angenommen'], ['abgelehnt', 'Abgelehnt'], ['alle', 'Alle']];
+    return seitenkopf(esc(c.R.name('angebote')), 'Angebote schreiben, nachfassen und in Aufträge umwandeln', `<button class="k haupt" data-a="angebot-neu">${Icon('plus')} Neues Angebot</button>`)
+      + `<div class="kacheln">
+        <div class="kachel"><div class="titel">Warten auf Antwort</div><div class="wert">${alle.filter((a) => a.status === 'gesendet').length}</div><div class="fuss">${Zahl.eur(offenSumme)} netto</div></div>
+        <div class="kachel"><div class="titel">Angenommen ${c.heute.slice(0, 4)}</div><div class="wert">${Zahl.eur(alle.filter((a) => a.status === 'angenommen' && (a.entschieden || a.datum).toString().slice(0, 4) >= c.heute.slice(0, 4)).reduce((s, a) => s + summen(a, mwstVon(c, a)).netto, 0))}</div><div class="fuss">netto</div></div>
+        <div class="kachel"><div class="titel">Annahmequote</div><div class="wert">${quote === null ? '–' : quote + ' %'}</div><div class="fuss">der entschiedenen Angebote</div></div>
+      </div>
+      <div class="karte"><div class="kopf"><span class="segment">${tabs.map(([k, t]) => `<button class="${f === k ? 'an' : ''}" data-a="auf-filter" data-id="${k}">${t}</button>`).join('')}</span></div>
+      ${liste.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betreff</th><th class="r">Netto</th><th>Status</th></tr></thead><tbody>
+        ${liste.map((a) => { const alt = a.status === 'gesendet' && a.gueltigBis && a.gueltigBis < c.heute;
+          return `<tr class="klickbar" data-a="angebot" data-id="${a.id}"><td class="mono">${esc(a.nr || '–')}</td><td>${Datum.kurz(a.datum)}</td><td>${esc(a.kunde)}</td><td>${esc(a.betreff)}</td><td class="r num">${Zahl.eur(summen(a, mwstVon(c, a)).netto)}</td><td>${chipDoc(c, a)}${alt ? ' <span class="chip warn">abgelaufen</span>' : ''}</td></tr>`; }).join('')}
+      </tbody></table></div>` : leer(f === 'offen' ? 'Keine offenen Angebote.' : 'Keine Angebote in dieser Auswahl.')}</div>`;
+  }
+
+  function rechnungenSeite(c) {
+    const alle = c.typ('rechnung').sort((a, b) => (b.nr || '~').localeCompare(a.nr || '~') || b.erstellt - a.erstellt);
+    const f = zustand.filter === 'angenommen' || zustand.filter === 'abgelehnt' ? 'offen' : zustand.filter;
+    const liste = alle.filter((r) => (f === 'offen' ? ['entwurf', 'gestellt'].includes(r.status) : f === 'alle' ? true : r.status === f));
+    const offen = alle.filter((r) => r.status === 'gestellt'); const ueber = offen.filter((r) => ueberfaellig(c, r));
+    const brutto = (r) => summen(r, mwstVon(c, r)).brutto;
+    const monat = c.heute.slice(0, 7);
+    return seitenkopf(esc(c.R.name('rechnungen')), 'Rechnungen stellen, Zahlungseingänge abhaken, säumige Kunden erinnern', `<button class="k" data-a="rechnung-export" title="Rechnungsliste und E-Rechnungen für Buchhaltung oder Steuerbüro">${Icon('download')} Für die Buchhaltung</button><button class="k haupt" data-a="rechnung-neu">${Icon('plus')} Neue Rechnung</button>`)
+      + `<div class="kacheln">
+        <div class="kachel ${ueber.length ? 'achtung' : ''}"><div class="titel">Offene Posten</div><div class="wert">${Zahl.eur(offen.reduce((s, r) => s + brutto(r), 0))}</div><div class="fuss">${offen.length} Rechnungen${ueber.length ? `, davon ${ueber.length} überfällig` : ''}</div></div>
+        <div class="kachel"><div class="titel">Gestellt ${esc(Datum.monatName(monat).split(' ')[0])}</div><div class="wert">${Zahl.eur(alle.filter((r) => r.status !== 'entwurf' && r.status !== 'storniert' && (r.datum || '').startsWith(monat)).reduce((s, r) => s + summen(r, mwstVon(c, r)).netto, 0))}</div><div class="fuss">netto</div></div>
+        <div class="kachel"><div class="titel">Bezahlt ${esc(Datum.monatName(monat).split(' ')[0])}</div><div class="wert">${Zahl.eur(alle.filter((r) => r.status === 'bezahlt' && (r.bezahltAm || '').startsWith(monat)).reduce((s, r) => s + brutto(r), 0))}</div><div class="fuss">brutto eingegangen</div></div>
+      </div>
+      <div class="karte"><div class="kopf"><span class="segment">${[['offen', 'Offen'], ['bezahlt', 'Bezahlt'], ['alle', 'Alle']].map(([k, t]) => `<button class="${f === k ? 'an' : ''}" data-a="auf-filter" data-id="${k}">${t}</button>`).join('')}</span></div>
+      ${liste.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Nummer</th><th>Datum</th><th>Kunde</th><th>Betreff</th><th class="r">Brutto</th><th>Fällig</th><th>Status</th></tr></thead><tbody>
+        ${liste.map((r) => `<tr class="klickbar" data-a="rechnung" data-id="${r.id}"><td class="mono">${esc(r.nr || 'Entwurf')}</td><td>${r.datum ? Datum.kurz(r.datum) : '–'}</td><td>${esc(r.kunde)}</td><td>${esc(r.betreff)}</td><td class="r num">${Zahl.eur(brutto(r))}</td><td>${r.faellig ? Datum.kurz(r.faellig) : '–'}</td><td>${chipDoc(c, r)}</td></tr>`).join('')}
+      </tbody></table></div>` : leer('Keine Rechnungen in dieser Auswahl.')}</div>`;
+  }
+
+  /* ---------- Dokument (Ansicht = Druck) ---------- */
+  function absender(c) { const f = c.cfg; return [f.name, f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(' · '); }
+  function dokumentHtml(c, d, art) {
+    const f = c.cfg; const mwst = mwstVon(c, d); const s = summen(d, mwst);
+    const titel = { angebot: 'Angebot', bestaetigung: 'Auftragsbestätigung', rechnung: 'Rechnung', erinnerung: 'Zahlungserinnerung' }[art];
+    const istRechnung = art === 'rechnung' || art === 'erinnerung';
+    const text = (t) => esc(t || '').replace(/\n/g, '<br>');
+    const einleitung = art === 'angebot' ? c.R.p('angebote').einleitung : art === 'bestaetigung' ? 'Sehr geehrte Damen und Herren,\nvielen Dank für Ihren Auftrag. Hiermit bestätigen wir die Ausführung folgender Arbeiten:' : art === 'erinnerung' ? `Sehr geehrte Damen und Herren,\nsicher ist es Ihrer Aufmerksamkeit entgangen: Unsere Rechnung ${d.nr} vom ${Datum.kurz(d.datum)}${d.datum.slice(0, 4)} über ${Zahl.eur(s.brutto)} war am ${Datum.kurz(d.faellig)}${d.faellig.slice(0, 4)} fällig. Bitte überweisen Sie den Betrag innerhalb der nächsten 7 Tage.` : 'Sehr geehrte Damen und Herren,\nfür die ausgeführten Arbeiten erlauben wir uns, wie folgt zu berechnen:';
+    const schluss = art === 'angebot' ? `${c.R.p('angebote').schluss}${c.R.an('angebote', 'agbAnhang') ? '\nEs gelten unsere Allgemeinen Geschäftsbedingungen (Anlage).' : ''}` : istRechnung ? `Zahlbar bis ${Datum.kurz(d.faellig || c.heute)}${(d.faellig || c.heute).slice(0, 4)} ohne Abzug.\n${c.R.p('rechnungen').schluss}` : 'Wir freuen uns auf die Zusammenarbeit.';
+    const datum = art === 'erinnerung' ? c.heute : (d.datum || c.heute);
+    const meta = [[`${titel === 'Zahlungserinnerung' ? 'Rechnung' : titel}-Nr.`, d.nr || 'Entwurf'], ['Datum', Datum.kurz(datum) + datum.slice(0, 4)],
+      ...(art === 'angebot' && d.gueltigBis ? [['Gültig bis', Datum.kurz(d.gueltigBis) + d.gueltigBis.slice(0, 4)]] : []),
+      ...(istRechnung && d.leistung ? [['Leistungszeitraum', d.leistung]] : []),
+      ...(d.angebotNr && art !== 'angebot' ? [['Zu Angebot', d.angebotNr]] : [])];
+    const pos = (d.positionen || []).map((p, i) => `<tr><td>${i + 1}</td><td>${text(p.text)}</td><td class="r num">${String(zahl(p.menge)).replace('.', ',')} ${esc(p.einheit)}</td><td class="r num">${Zahl.eur(zahl(p.preis))}</td><td class="r num">${Zahl.eur(rund(zahl(p.menge) * zahl(p.preis)))}</td></tr>`).join('');
+    const privat = d.kundenart !== 'gewerblich';
+    return `<div class="dokument">
+      <div class="d-kopf"><div class="d-firma"><b>${esc(f.name)}</b><span>${esc(f.zusatz || '')}</span></div><div class="d-adresse">${[f.strasse, [f.plz, f.ort].filter(Boolean).join(' '), f.telefon && 'Tel. ' + f.telefon, f.email].filter(Boolean).map(esc).join('<br>')}</div></div>
+      <div class="d-mitte"><div class="d-empf"><small>${esc(absender(c))}</small>${esc(d.kunde || '')}<br>${text(d.adresse)}</div>
+        <dl class="d-meta">${meta.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl></div>
+      <h2>${titel}${d.betreff ? ': ' + esc(d.betreff) : ''}</h2>
+      <p>${text(einleitung)}</p>
+      ${art === 'erinnerung' ? '' : `<table class="d-pos"><thead><tr><th>Pos.</th><th>Leistung</th><th class="r">Menge</th><th class="r">Einzelpreis</th><th class="r">Gesamt</th></tr></thead><tbody>${pos}</tbody></table>
+      <table class="d-summe"><tr><td>Summe netto</td><td class="r num">${Zahl.eur(s.netto)}</td></tr><tr><td>zzgl. ${mwst} % MwSt.</td><td class="r num">${Zahl.eur(s.steuer)}</td></tr><tr class="gesamt"><td>Gesamtbetrag</td><td class="r num">${Zahl.eur(s.brutto)}</td></tr></table>`}
+      ${istRechnung && art === 'rechnung' && privat && c.R.an('rechnungen', 'lohnanteil') && s.lohn ? `<p class="d-klein">Im Rechnungsbetrag enthaltene Arbeitskosten (§ 35a EStG): ${Zahl.eur(s.lohn)} netto zzgl. ${Zahl.eur(rund(s.lohn * mwst / 100))} MwSt.</p>` : ''}
+      ${istRechnung && art === 'rechnung' && privat ? '<p class="d-klein">Sie sind gesetzlich verpflichtet, diese Rechnung zwei Jahre aufzubewahren (§ 14b UStG).</p>' : ''}
+      <p>${text(schluss)}</p><p>Mit freundlichen Grüßen<br>${esc(f.inhaber || f.name)}</p>
+      ${art === 'bestaetigung' ? onlineBlock(d) : ''}
+      <div class="d-fuss"><span>${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''}</span><span>${f.steuernr ? 'St.-Nr. ' + esc(f.steuernr) : ''}${f.ustid ? ' · USt-IdNr. ' + esc(f.ustid) : ''}</span><span>${f.bank ? esc(f.bank) + ' · ' : ''}${f.iban ? 'IBAN ' + esc(f.iban) : ''}</span></div>
+      ${art === 'angebot' && c.R.an('angebote', 'agbAnhang') ? `<div class="d-agb"><h3>Allgemeine Geschäftsbedingungen</h3><p>${text(c.R.p('angebote').agb)}</p></div>` : ''}
+    </div>`;
+  }
+
+  /* ---------- E-Rechnung (XRechnung, UBL-Syntax) ---------- */
+  const x = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const betrag = (n) => rund(n).toFixed(2);
+  const EINHEIT_CODE = { Stk: 'H87', m: 'MTR', 'm²': 'MTK', 'm³': 'MTQ', lfm: 'MTR', Std: 'HUR', psch: 'LS', kg: 'KGM', t: 'TNE' };
+  function xrechnung(c, r) {
+    const f = c.cfg; const mwst = mwstVon(c, r); const s = summen(r, mwst);
+    const adr = (strasse, plzort) => { const m = String(plzort || '').match(/^(\d{5})\s+(.*)$/); return `<cac:PostalAddress><cbc:StreetName>${x(strasse)}</cbc:StreetName><cbc:CityName>${x(m ? m[2] : plzort)}</cbc:CityName><cbc:PostalZone>${x(m ? m[1] : '')}</cbc:PostalZone><cac:Country><cbc:IdentificationCode>DE</cbc:IdentificationCode></cac:Country></cac:PostalAddress>`; };
+    const [kStrasse, ...kRest] = String(r.adresse || '').split('\n');
+    const zeilen = (r.positionen || []).map((p, i) => `
+  <cac:InvoiceLine><cbc:ID>${i + 1}</cbc:ID><cbc:InvoicedQuantity unitCode="${EINHEIT_CODE[p.einheit] || 'C62'}">${zahl(p.menge)}</cbc:InvoicedQuantity><cbc:LineExtensionAmount currencyID="EUR">${betrag(zahl(p.menge) * zahl(p.preis))}</cbc:LineExtensionAmount>
+    <cac:Item><cbc:Name>${x(String(p.text).split('\n')[0].slice(0, 100))}</cbc:Name><cac:ClassifiedTaxCategory><cbc:ID>S</cbc:ID><cbc:Percent>${mwst}</cbc:Percent><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:ClassifiedTaxCategory></cac:Item>
+    <cac:Price><cbc:PriceAmount currencyID="EUR">${betrag(zahl(p.preis))}</cbc:PriceAmount></cac:Price></cac:InvoiceLine>`).join('');
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<ubl:Invoice xmlns:ubl="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+  <cbc:CustomizationID>urn:cen.eu:en16931:2017#compliant#urn:xeinkauf.de:kosit:xrechnung_3.0</cbc:CustomizationID>
+  <cbc:ProfileID>urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</cbc:ProfileID>
+  <cbc:ID>${x(r.nr)}</cbc:ID><cbc:IssueDate>${r.datum}</cbc:IssueDate><cbc:DueDate>${r.faellig}</cbc:DueDate>
+  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>${r.leistung ? `<cbc:Note>Leistungszeitraum: ${x(r.leistung)}</cbc:Note>` : ''}
+  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode><cbc:BuyerReference>${x(r.leitweg || r.nr)}</cbc:BuyerReference>
+  <cac:AccountingSupplierParty><cac:Party>${f.email ? `<cbc:EndpointID schemeID="EM">${x(f.email)}</cbc:EndpointID>` : ''}<cac:PartyName><cbc:Name>${x(f.name)}</cbc:Name></cac:PartyName>${adr(f.strasse, [f.plz, f.ort].filter(Boolean).join(' '))}
+    ${f.ustid ? `<cac:PartyTaxScheme><cbc:CompanyID>${x(f.ustid)}</cbc:CompanyID><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:PartyTaxScheme>` : ''}${f.steuernr ? `<cac:PartyTaxScheme><cbc:CompanyID>${x(f.steuernr)}</cbc:CompanyID><cac:TaxScheme><cbc:ID>FC</cbc:ID></cac:TaxScheme></cac:PartyTaxScheme>` : ''}
+    <cac:PartyLegalEntity><cbc:RegistrationName>${x(f.name)}</cbc:RegistrationName></cac:PartyLegalEntity>
+    <cac:Contact><cbc:Name>${x(f.inhaber || f.name)}</cbc:Name><cbc:Telephone>${x(f.telefon || '')}</cbc:Telephone><cbc:ElectronicMail>${x(f.email || '')}</cbc:ElectronicMail></cac:Contact></cac:Party></cac:AccountingSupplierParty>
+  <cac:AccountingCustomerParty><cac:Party>${r.email ? `<cbc:EndpointID schemeID="EM">${x(r.email)}</cbc:EndpointID>` : ''}<cac:PartyName><cbc:Name>${x(r.kunde)}</cbc:Name></cac:PartyName>${adr(kStrasse, kRest.join(' '))}
+    <cac:PartyLegalEntity><cbc:RegistrationName>${x(r.kunde)}</cbc:RegistrationName></cac:PartyLegalEntity></cac:Party></cac:AccountingCustomerParty>
+  <cac:PaymentMeans><cbc:PaymentMeansCode>58</cbc:PaymentMeansCode><cbc:PaymentID>${x(r.nr)}</cbc:PaymentID><cac:PayeeFinancialAccount><cbc:ID>${x(String(f.iban || '').replace(/\s+/g, ''))}</cbc:ID><cbc:Name>${x(f.name)}</cbc:Name></cac:PayeeFinancialAccount></cac:PaymentMeans>
+  <cac:PaymentTerms><cbc:Note>Zahlbar bis ${x(r.faellig)} ohne Abzug.</cbc:Note></cac:PaymentTerms>
+  <cac:TaxTotal><cbc:TaxAmount currencyID="EUR">${betrag(s.steuer)}</cbc:TaxAmount><cac:TaxSubtotal><cbc:TaxableAmount currencyID="EUR">${betrag(s.netto)}</cbc:TaxableAmount><cbc:TaxAmount currencyID="EUR">${betrag(s.steuer)}</cbc:TaxAmount><cac:TaxCategory><cbc:ID>S</cbc:ID><cbc:Percent>${mwst}</cbc:Percent><cac:TaxScheme><cbc:ID>VAT</cbc:ID></cac:TaxScheme></cac:TaxCategory></cac:TaxSubtotal></cac:TaxTotal>
+  <cac:LegalMonetaryTotal><cbc:LineExtensionAmount currencyID="EUR">${betrag(s.netto)}</cbc:LineExtensionAmount><cbc:TaxExclusiveAmount currencyID="EUR">${betrag(s.netto)}</cbc:TaxExclusiveAmount><cbc:TaxInclusiveAmount currencyID="EUR">${betrag(s.brutto)}</cbc:TaxInclusiveAmount><cbc:PayableAmount currencyID="EUR">${betrag(s.brutto)}</cbc:PayableAmount></cac:LegalMonetaryTotal>${zeilen}
+</ubl:Invoice>
+`;
+  }
+
+  /* Angenommenes Angebot → Baustelle (aus dem Büro und bei der Online-Annahme) */
+  function baustelleAusAngebot(a) {
+    const bs = Store.uid('b'); const [strasse, ...rest] = String(a.adresse || '').split('\n');
+    const ort = (rest.join(' ').match(/\d{5}\s+(.*)/) || [])[1] || rest.join(' ');
+    Store.speichereCfg({ ...Store.cfg, baustellen: [...(Store.cfg.baustellen || []), { id: bs, name: a.betreff || a.kunde, kunde: a.kunde, adresse: [strasse, rest.join(' ')].filter(Boolean).join(', '), ort, telefon: a.telefon || '', arbeit: a.betreff, status: 'geplant', notiz: `Auftrag aus Angebot ${a.nr}` }] });
+    return bs;
+  }
+  /* Link, den der Kunde bekommt. Der Schlüssel im Link verhindert, dass man fremde Angebote durch Raten öffnet. */
+  const kundenLink = (fid, a) => `${location.href.split('#')[0]}#angebot/${fid}/${a.id}/${a.schluessel}`;
+  const offeneFragen = (a) => (a.fragen || []).filter((f) => !f.erledigt);
+  function onlineBlock(a) {
+    const o = a.angenommenOnline; if (!o) return '';
+    const z = new Date(o.wann);
+    return `<p class="d-klein d-online">Online angenommen am ${Datum.kurz(Datum.iso(z))}${Datum.iso(z).slice(0, 4)} um ${String(z.getHours()).padStart(2, '0')}:${String(z.getMinutes()).padStart(2, '0')} Uhr von ${esc(o.name)}. AGB akzeptiert${o.widerruf === 'belehrung' ? ', Widerrufsbelehrung erhalten' + (o.beginnVorFrist ? ', Beginn vor Ablauf der Widerrufsfrist verlangt' : '') : o.widerruf === 'massanfertigung' ? ', Hinweis Maßanfertigung bestätigt' : ''}.</p>${o.unterschrift ? `<img class="d-unterschrift" data-datei="${esc(o.unterschrift)}" alt="Unterschrift ${esc(o.name)}">` : ''}`;
+  }
+
+  /* ---------- Bearbeiten (Angebot und Rechnung teilen sich den Editor) ---------- */
+  function positionZeile(p, i, gesperrt) {
+    const dis = gesperrt ? 'disabled' : '';
+    return `<tr data-pos="${i}"><td class="num">${i + 1}</td><td><textarea class="p-text" rows="1" ${dis} aria-label="Leistung Position ${i + 1}">${esc(p.text || '')}</textarea></td>
+      <td><input class="p-menge num" inputmode="decimal" value="${esc(String(p.menge ?? '').replace('.', ','))}" ${dis} aria-label="Menge"></td>
+      <td><select class="p-einheit" ${dis} aria-label="Einheit">${EINHEITEN.map((e) => `<option ${e === p.einheit ? 'selected' : ''}>${e}</option>`).join('')}</select></td>
+      <td><input class="p-preis num" inputmode="decimal" value="${esc(p.preis !== undefined && p.preis !== '' ? String(rund(zahl(p.preis))).replace('.', ',') : '')}" ${dis} aria-label="Einzelpreis in Euro"></td>
+      <td class="r num p-gesamt">${Zahl.eur(rund(zahl(p.menge) * zahl(p.preis)))}</td>
+      <td>${gesperrt ? '' : `<button class="k klein" type="button" data-f="pos-weg" data-id="${i}" aria-label="Position ${i + 1} entfernen">${Icon('x')}</button>`}</td></tr>`;
+  }
+  function editor(c, d) {
+    const istR = d.typ === 'rechnung'; const gesperrt = istR && d.status !== 'entwurf';
+    const kat = katalog(c);
+    const regieOffen = istR && d.bs && c.R.verb('regie', 'rechnungen') ? c.typ('regie').filter((r) => r.bs === d.bs && r.status === 'unterschrieben') : [];
+    let positionen = JSON.parse(JSON.stringify(d.positionen || []));
+    const dis = gesperrt ? 'disabled' : '';
+    const titel = istR ? (d.nr ? `Rechnung ${esc(d.nr)}` : 'Rechnung (Entwurf)') : (d.nr ? `Angebot ${esc(d.nr)}` : 'Neues Angebot');
+    const knoepfe = [];
+    if (!istR) {
+      if (d.id && ['entwurf', 'gesendet'].includes(d.status)) knoepfe.push(`<button class="k nein" data-f="status" data-id="abgelehnt">Abgelehnt</button><button class="k ok" data-f="status" data-id="angenommen">${Icon('haken')} Angenommen</button>`);
+      if (d.status === 'entwurf' || !d.id) knoepfe.push(`<button class="k" data-f="status" data-id="gesendet">Als gesendet markieren</button>`);
+      if (['entwurf', 'gesendet'].includes(d.status || 'entwurf') && c.R.an('angebote', 'onlineAnnahme')) knoepfe.push(`<button class="k" data-f="link">${Icon('wolke')} Link für den Kunden</button>`);
+      if (d.status === 'angenommen' && c.R.an('angebote', 'bestaetigung')) knoepfe.push(`<button class="k" data-f="drucken" data-id="bestaetigung">${Icon('drucken')} Auftragsbestätigung</button>`);
+      if (d.status === 'angenommen' && c.R.verb('angebote', 'rechnungen')) knoepfe.push(`<button class="k haupt" data-f="zur-rechnung">${Icon('rechnung')} Rechnung erstellen</button>`);
+    } else {
+      if (d.status === 'entwurf') knoepfe.push(`<button class="k haupt" data-f="stellen">${Icon('haken')} Rechnung stellen</button>`);
+      if (d.status === 'gestellt') knoepfe.push(`<button class="k" data-f="storno">Stornieren</button>`, ueberfaellig(c, d) ? `<button class="k" data-f="drucken" data-id="erinnerung">${Icon('drucken')} Zahlungserinnerung</button>` : '', `<button class="k ok" data-f="bezahlt">${Icon('haken')} Bezahlt</button>`);
+      if (d.status !== 'entwurf' && c.R.p('rechnungen').erechnung !== 'aus') knoepfe.push(`<button class="k" data-f="xml">${Icon('download')} E-Rechnung</button>`);
+    }
+    const hg = Fenster.oeffne({
+      titel, breit: true, bereich: 'ui-buero-fenster',
+      inhalt: `${!istR && offeneFragen(d).length ? offeneFragen(d).map((q) => `<div class="kundenfrage"><div><b>Frage von ${esc(d.kunde)}</b> <small>${Datum.kurz(Datum.iso(new Date(q.wann)))}</small><p>${esc(q.text)}</p></div><button class="k klein" data-f="frage-erledigt" data-id="${q.wann}">Erledigt</button></div>`).join('') : ''}
+        ${!istR && d.angenommenOnline ? `<div class="hinweis-zeile online-ok">${onlineBlock(d)}</div>` : ''}
+        ${gesperrt ? `<p class="hinweis-zeile">${d.status === 'bezahlt' ? `Bezahlt am ${Datum.kurz(d.bezahltAm)}.` : d.status === 'storniert' ? 'Storniert.' : `Gestellt am ${Datum.kurz(d.datum)}, fällig am ${Datum.kurz(d.faellig)}.`} Gestellte Rechnungen lassen sich nicht mehr ändern (GoBD). Bei Fehlern stornieren und neu stellen.</p>` : ''}
+        <div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(d.kunde || '')}" ${dis} placeholder="Name oder Firma"></label>
+          <label class="feld"><span>Kundenart</span><select name="kundenart" ${dis}><option value="privat" ${d.kundenart !== 'gewerblich' ? 'selected' : ''}>Privat</option><option value="gewerblich" ${d.kundenart === 'gewerblich' ? 'selected' : ''}>Gewerblich</option></select></label></div>
+        <div class="reihe"><label class="feld"><span>Anschrift (Straße, PLZ Ort)</span><textarea name="adresse" rows="2" ${dis}>${esc(d.adresse || '')}</textarea></label>
+          <label class="feld"><span>E-Mail (optional)</span><input name="email" type="email" value="${esc(d.email || '')}" ${dis}></label></div>
+        <div class="reihe"><label class="feld"><span>Betreff</span><input name="betreff" value="${esc(d.betreff || '')}" ${dis} placeholder="z. B. Dachstuhl Neubau EFH"></label>
+          ${istR ? `<label class="feld"><span>Leistungszeitraum</span><input name="leistung" value="${esc(d.leistung || '')}" ${dis} placeholder="z. B. 02.11. bis 13.11.2026"></label>` : `<label class="feld"><span>Baustelle (optional)</span><select name="bs" ${dis}><option value="">neu beim Annehmen</option>${(c.cfg.baustellen || []).map((b) => `<option value="${b.id}" ${b.id === d.bs ? 'selected' : ''}>${esc(b.name)}</option>`).join('')}</select></label>`}</div>
+        ${Zusatz.buero(c, d.typ === 'rechnung' ? 'rechnungen' : 'angebote', d.extra, gesperrt)}
+        <div class="pos-huelle"><table class="t pos-tabelle"><thead><tr><th>Pos.</th><th>Leistung</th><th style="width:90px">Menge</th><th style="width:90px">Einheit</th><th style="width:110px">Einzelpreis €</th><th class="r" style="width:110px">Gesamt</th><th></th></tr></thead><tbody id="pos-liste"></tbody></table></div>
+        ${gesperrt ? '' : `<div class="pos-werkzeug"><button class="k klein" type="button" data-f="pos-neu">${Icon('plus')} Position</button>
+          ${kat.length ? `<select id="katalog" aria-label="Aus dem Leistungskatalog übernehmen"><option value="">Aus Katalog übernehmen …</option>${kat.map((k, i) => `<option value="${i}">${esc(k.text)} (${Zahl.eur(k.preis)}/${esc(k.einheit)})</option>`).join('')}</select>` : ''}
+          ${regieOffen.length ? `<button class="k klein" type="button" data-f="regie">${Icon('unterschrift')} ${regieOffen.length} Regiezettel übernehmen</button>` : ''}</div>`}
+        <div class="pos-summe" id="pos-summe"></div>`,
+      fuss: `${d.id && d.status === 'entwurf' ? `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>` : '<span style="margin-right:auto"></span>'}
+        <button class="k" data-f="drucken" data-id="${istR ? 'rechnung' : 'angebot'}">${Icon('drucken')} Ansehen & drucken</button>${knoepfe.join('')}${gesperrt ? '' : '<button class="k haupt" data-f="speichern">Speichern</button>'}`,
+      aktionen: {
+        'pos-neu': () => { lesen(); positionen.push({ text: '', menge: 1, einheit: 'Stk', preis: '' }); zeichnen(); $$('.p-text', hg).pop().focus(); },
+        'pos-weg': (b) => { lesen(); positionen.splice(Number(b.dataset.id), 1); zeichnen(); },
+        regie: () => {
+          lesen(); const satz = Number(c.R.p('regie').satz);
+          regieOffen.forEach((r) => positionen.push({ text: `Regiearbeit ${Datum.kurz(r.datum)}: ${r.text}${r.material ? ` (Material: ${r.material})` : ''}, lt. Regiebericht`, menge: Number(r.stunden) * Number(r.leute || 1), einheit: 'Std', preis: satz, regie: r.id }));
+          zeichnen(); meldung(`${regieOffen.length} Regiezettel übernommen. Sie werden beim Stellen als abgerechnet markiert.`);
+          const knopf = $('[data-f=regie]', hg); if (knopf) knopf.remove();
+        },
+        speichern: () => { const id = sichern(); if (id) { Fenster.schliesse(); meldung('Gespeichert'); } },
+        drucken: (b) => { const id = sichern(); if (!id) return; const neu = Store.items.find((i) => i.id === id); drucken(dokumentHtml(ctxNeu(), neu, b.dataset.id)); },
+        status: (b) => {
+          const id = sichern(); if (!id) return; const st = b.dataset.id; const a = Store.items.find((i) => i.id === id);
+          const patch = { status: st, ...(st !== 'gesendet' ? { entschieden: Date.now() } : {}) };
+          if (st === 'angenommen' && !a.bs && c.R.an('angebote', 'baustelleAnlegen')) {
+            patch.bs = baustelleAusAngebot(a); meldung('Auftrag angenommen. Die Baustelle ist angelegt.');
+          } else meldung(st === 'angenommen' ? 'Auftrag angenommen' : st === 'abgelehnt' ? 'Als abgelehnt markiert' : 'Als gesendet markiert');
+          Store.aendere(id, patch); Fenster.schliesse();
+        },
+        'zur-rechnung': () => {
+          const id = sichern(); const a = Store.items.find((i) => i.id === id);
+          const vorhanden = c.typ('rechnung').find((r) => r.angebot === id && r.status !== 'storniert');
+          if (vorhanden) { meldung('Zu diesem Angebot gibt es schon eine Rechnung.'); return editor(ctxNeu(), vorhanden); }
+          const r = { typ: 'rechnung', status: 'entwurf', kunde: a.kunde, kundenart: a.kundenart, adresse: a.adresse, email: a.email, betreff: a.betreff, bs: a.bs || '', angebot: id, angebotNr: a.nr, positionen: JSON.parse(JSON.stringify(a.positionen || [])), mwst: mwstVon(c, a), leistung: leistungszeitraum(c, a.bs) };
+          Store.neu(r).then((rid) => editor(ctxNeu(), Store.items.find((i) => i.id === rid)));
+        },
+        stellen: () => {
+          const id = sichern(); if (!id) return; const r = Store.items.find((i) => i.id === id);
+          if (!(r.positionen || []).length) return meldung('Die Rechnung hat keine Positionen.', 'fehler');
+          if (!r.kunde || !r.adresse) return meldung('Für eine Rechnung braucht es Name und Anschrift des Kunden.', 'fehler');
+          const f = c.cfg; if (!f.strasse || !(f.steuernr || f.ustid)) return meldung('Bitte zuerst Anschrift und Steuernummer des Betriebs unter „Einstellungen“ eintragen.', 'fehler');
+          const nr = naechsteNummer(ctxNeu(), 'rechnung');
+          Store.aendere(id, { status: 'gestellt', nr, datum: c.heute, faellig: Datum.plus(c.heute, Number(c.R.p('rechnungen').ziel)) });
+          (r.positionen || []).filter((p) => p.regie).forEach((p) => Store.aendere(p.regie, { status: 'abgerechnet', rechnung: nr }));
+          Fenster.schliesse(); meldung(`Rechnung ${nr} gestellt`);
+        },
+        link: () => {
+          const id = sichern(); if (!id) return; let a = Store.items.find((i) => i.id === id);
+          const patch = {}; if (!a.schluessel) patch.schluessel = Math.random().toString(36).slice(2, 10) + Math.random().toString(36).slice(2, 10);
+          if (a.status === 'entwurf') patch.status = 'gesendet';
+          if (Object.keys(patch).length) Store.aendere(id, patch);
+          a = { ...a, ...patch }; linkFenster(c, a);
+        },
+        'frage-erledigt': (b) => { Store.aendere(d.id, { fragen: (d.fragen || []).map((q) => (String(q.wann) === b.dataset.id ? { ...q, erledigt: Date.now() } : q)) }); b.closest('.kundenfrage').remove(); meldung('Frage als erledigt markiert'); },
+        bezahlt: () => { Store.aendere(d.id, { status: 'bezahlt', bezahltAm: c.heute }); Fenster.schliesse(); meldung('Als bezahlt markiert'); },
+        storno: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich stornieren?'; return; } Store.aendere(d.id, { status: 'storniert' }); Fenster.schliesse(); meldung('Rechnung storniert. Die Nummer bleibt belegt.'); },
+        xml: () => speichern(`${d.nr}_XRechnung.xml`, new Blob([xrechnung(c, d)], { type: 'application/xml' })),
+        loeschen: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich löschen?'; return; } Store.loesche(d.id); Fenster.schliesse(); meldung('Gelöscht'); },
+      },
+    });
+    function zeichnen() {
+      $('#pos-liste', hg).innerHTML = positionen.map((p, i) => positionZeile(p, i, gesperrt)).join('') || `<tr><td colspan="7">${leer('Noch keine Positionen.')}</td></tr>`;
+      summeZeigen();
+    }
+    function summeZeigen() {
+      const s = summen({ positionen }, mwstVon(c, d));
+      $('#pos-summe', hg).innerHTML = `<span>Netto <b class="num">${Zahl.eur(s.netto)}</b></span><span>MwSt. ${mwstVon(c, d)} % <b class="num">${Zahl.eur(s.steuer)}</b></span><span class="gesamt">Gesamt <b class="num">${Zahl.eur(s.brutto)}</b></span>`;
+    }
+    function lesen() {
+      if (gesperrt) return;
+      $$('#pos-liste tr[data-pos]', hg).forEach((tr) => {
+        const p = positionen[Number(tr.dataset.pos)]; if (!p) return;
+        p.text = $('.p-text', tr).value; p.menge = zahl($('.p-menge', tr).value); p.einheit = $('.p-einheit', tr).value; p.preis = zahl($('.p-preis', tr).value);
+      });
+    }
+    function sichern() {
+      if (gesperrt) return d.id;
+      lesen(); const w = Fenster.werte(hg);
+      if (!w.kunde.trim()) { meldung('Bitte einen Kunden eintragen.', 'fehler'); return null; }
+      const daten = { kunde: w.kunde.trim(), kundenart: w.kundenart, adresse: w.adresse.trim(), email: w.email.trim(), betreff: w.betreff.trim(), positionen: positionen.filter((p) => p.text.trim() || zahl(p.preis)), extra: Zusatz.lesen(hg) };
+      if (istR) daten.leistung = w.leistung; else if (w.bs !== undefined) daten.bs = w.bs;
+      if (d.id) { Store.aendere(d.id, daten); return d.id; }
+      const neu = istR ? { typ: 'rechnung', status: 'entwurf', ...daten } : { typ: 'angebot', status: 'entwurf', nr: naechsteNummer(c, 'angebot'), datum: c.heute, gueltigBis: Datum.plus(c.heute, Number(c.R.p('angebote').gueltig)), mwst: Number(c.R.p('angebote').mwst), ...daten };
+      if (d.telefon) neu.telefon = d.telefon;
+      const id = d._id || Store.uid('d'); Store.neu({ ...neu, id });
+      if (d._vorgang) Store.aendere(d._vorgang, { angebot: id, spalte: 'angebot' });
+      d = { ...neu, id };
+      return id;
+    }
+    $('#pos-liste', hg).addEventListener('input', (e) => {
+      const tr = e.target.closest('tr[data-pos]'); if (!tr) return;
+      if (e.target.classList.contains('p-text')) { e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px'; }
+      const g = rund(zahl($('.p-menge', tr).value) * zahl($('.p-preis', tr).value)); $('.p-gesamt', tr).textContent = Zahl.eur(g);
+      lesen(); summeZeigen();
+    });
+    const kSel = $('#katalog', hg);
+    if (kSel) kSel.addEventListener('change', () => { if (kSel.value === '') return; lesen(); const k = kat[Number(kSel.value)]; positionen.push({ text: k.text, menge: 1, einheit: k.einheit, preis: k.preis }); kSel.value = ''; zeichnen(); });
+    zeichnen(); bilderNachladen(hg, Store.items);
+    $$('.p-text', hg).forEach((t) => { t.style.height = t.scrollHeight + 'px'; });
+  }
+  function linkFenster(c, a) {
+    const url = kundenLink(Store.fid, a);
+    const betreff = `Ihr Angebot ${a.nr} von ${c.cfg.name}`;
+    const text = `Guten Tag,\n\nanbei unser Angebot ${a.nr}${a.betreff ? ' für ' + a.betreff : ''}. Sie können es hier ansehen, ausdrucken und direkt annehmen:\n${url}\n\nBei Fragen sind wir gern für Sie da.\n\nMit freundlichen Grüßen\n${c.cfg.inhaber || c.cfg.name}`;
+    Fenster.oeffne({
+      titel: `Link für ${esc(a.kunde)}`, bereich: 'ui-buero-fenster',
+      inhalt: `<p style="margin:0 0 12px">Mit diesem Link sieht ${esc(a.kunde)} das Angebot und die AGB und kann es mit Unterschrift verbindlich annehmen oder eine Frage stellen. Die Annahme erscheint sofort hier im Büro.</p>
+        <label class="feld"><span>Link</span><input id="kunden-link" readonly value="${esc(url)}"></label>`,
+      fuss: `<a class="k" style="margin-right:auto" href="mailto:${esc(a.email || '')}?subject=${encodeURIComponent(betreff)}&body=${encodeURIComponent(text)}">${Icon('angebot')} Per E-Mail</a>
+        <a class="k" href="${esc(url)}" target="_blank" rel="noopener">Ansehen wie der Kunde</a>
+        <button class="k haupt" data-f="kopieren">Link kopieren</button>`,
+      aktionen: {
+        kopieren: async () => { const i = $('#kunden-link'); i.select(); try { await navigator.clipboard.writeText(url); } catch { try { document.execCommand('copy'); } catch { /* egal */ } } meldung('Link kopiert'); },
+      },
+    });
+  }
+  function leistungszeitraum(c, bs) {
+    const tage = c.typ('stunden').filter((s) => s.bs === bs && s.bis).map((s) => s.datum).sort();
+    if (!tage.length) return '';
+    return `${Datum.kurz(tage[0])}${tage[0].slice(0, 4)} bis ${Datum.kurz(tage[tage.length - 1])}${tage[tage.length - 1].slice(0, 4)}`;
+  }
+  const ctxNeu = () => kontext(Store.cfg, Store.items, (Sitzung.lies('buero') || {}).pid);
+
+  /* Aufgaben für die Übersicht */
+  function aufgaben(c) {
+    const out = [];
+    if (c.R.hat('rechnungen')) {
+      const grenze = Number(c.R.p('rechnungen').mahnung);
+      const mahnen = c.typ('rechnung').filter((r) => ueberfaellig(c, r) && tageUeber(c, r) >= grenze);
+      if (mahnen.length) out.push({ titel: `${mahnen.length} ${mahnen.length === 1 ? 'Rechnung' : 'Rechnungen'} überfällig`, unter: mahnen.map((r) => `${r.kunde} ${Zahl.eur(summen(r, mwstVon(c, r)).brutto)}`).join(' · '), a: 'rechnung', id: mahnen[0].id });
+    }
+    if (c.R.hat('angebote')) {
+      c.typ('angebot').filter((a) => offeneFragen(a).length).forEach((a) => out.push({ titel: `Frage zu Angebot ${a.nr}`, unter: `${a.kunde}: „${offeneFragen(a)[0].text.slice(0, 90)}“`, a: 'angebot', id: a.id }));
+      c.typ('angebot').filter((a) => a.angenommenOnline && !a.gesehen).forEach((a) => out.push({ titel: `Online angenommen: ${a.nr}`, unter: `${a.kunde} · ${a.betreff} · ${Zahl.eur(summen(a, mwstVon(c, a)).brutto)}`, a: 'angebot', id: a.id }));
+      const nachfassen = c.typ('angebot').filter((a) => a.status === 'gesendet' && Datum.plus(a.datum, 10) <= c.heute);
+      if (nachfassen.length) out.push({ titel: `${nachfassen.length} ${nachfassen.length === 1 ? 'Angebot' : 'Angebote'} nachfassen`, unter: nachfassen.map((a) => `${a.kunde} (seit ${Datum.kurz(a.datum)})`).join(' · '), a: 'angebot', id: nachfassen[0].id });
+    }
+    return out;
+  }
+
+  Buero.erweitern({
+    nav: [
+      { id: 'angebote', name: 'Angebote', icon: 'angebot', braucht: 'angebote', gruppe: 'Aufträge', zahl: (o, c) => c.typ('angebot').filter((a) => a.status === 'gesendet').length },
+      { id: 'rechnungen', name: 'Rechnungen', icon: 'rechnung', braucht: 'rechnungen', gruppe: 'Aufträge', zahl: (o, c) => c.typ('rechnung').filter((r) => ueberfaellig(c, r)).length },
+    ],
+    seiten: { angebote: angeboteSeite, rechnungen: rechnungenSeite },
+    aktionen: {
+      'angebot-neu'(el, c) { editor(c, { typ: 'angebot', status: 'entwurf', positionen: [{ text: '', menge: 1, einheit: 'm²', preis: '' }] }); },
+      angebot(el, c) { const d = c.items.find((i) => i.id === el.dataset.id); if (!d) return; if (d.angenommenOnline && !d.gesehen) Store.aendere(d.id, { gesehen: Date.now() }); editor(c, d); },
+      'rechnung-neu'(el, c) { editor(c, { typ: 'rechnung', status: 'entwurf', positionen: [{ text: '', menge: 1, einheit: 'Std', preis: '' }] }); },
+      rechnung(el, c) { const d = c.items.find((i) => i.id === el.dataset.id); if (d) editor(c, d); },
+      'rechnung-export'(el, c) {
+        const j = c.heute.slice(0, 4); const m = c.heute.slice(0, 7);
+        Fenster.oeffne({ titel: 'Rechnungen für die Buchhaltung', bereich: 'ui-buero-fenster',
+          inhalt: `<p style="margin:0 0 12px">Eine Liste aller gestellten Rechnungen (CSV) und zu jeder Rechnung die E-Rechnung im XRechnung-Format. Damit lassen sich die Rechnungen in Buchhaltungsprogrammen wie lexoffice oder sevDesk erfassen oder ans Steuerbüro geben.</p>
+            <div class="reihe"><label class="feld"><span>Von</span><input type="date" name="von" value="${m}-01"></label><label class="feld"><span>Bis</span><input type="date" name="bis" value="${c.heute}"></label></div>
+            <p style="margin:0;color:#6a726c;font-size:13px">Schnellwahl: <button class="k klein" data-f="zeit" data-von="${m}-01">Dieser Monat</button> <button class="k klein" data-f="zeit" data-von="${j}-01-01">Dieses Jahr</button></p>`,
+          fuss: `<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="los">${Icon('download')} Herunterladen</button>`,
+          aktionen: {
+            zeit: (b, hg) => { $('[name=von]', hg).value = b.dataset.von; $('[name=bis]', hg).value = c.heute; },
+            los: (b, hg) => { const w = Fenster.werte(hg); Uebergabe.buchhaltungsPaket(c, w.von, w.bis); },
+          } });
+      },
+      'auf-filter'(el) { zustand.filter = el.dataset.id; Buero.neuZeichnen(); },
+    },
+    aufgaben,
+  });
+
+  return { summen, xrechnung, dokumentHtml, mwstVon, ueberfaellig, baustelleAusAngebot, offeneFragen, editor, chipDoc, STATUS };
+})();
+
+/* ---- tafel.js ---- */
+/* =========================================================================
+   Auftragstafel (Büro): jeder Auftrag ist eine Karte, die von links nach
+   rechts wandert: Anfrage → Angebot → Auftrag → Baustelle → Rechnung → Bezahlt.
+   Karten rücken von selbst weiter, wenn im Angebot, auf der Baustelle oder
+   in der Rechnung etwas passiert. Von Hand verschieben geht per Ziehen oder
+   mit dem Pfeil auf der Karte (Handy, Tastatur).
+
+   Übergabe an bewährte Programme: Rechnungsliste (CSV) mit E-Rechnungen für
+   Buchhaltung und Steuerbüro, Wochenplan als Kalenderdatei (.ics).
+   ========================================================================= */
+const Uebergabe = (() => {
+  const csv = (zeilen) => '\ufeff' + zeilen.map((z) => z.map((v) => { const s = String(v ?? ''); return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; }).join(';')).join('\r\n');
+  const dez = (n) => Number(n || 0).toFixed(2).replace('.', ',');
+  const dt = (iso) => (iso ? `${Datum.kurz(iso)}${iso.slice(0, 4)}` : '');
+
+  function rechnungsZeilen(c, liste) {
+    const z = [['Rechnungsnummer', 'Rechnungsdatum', 'Faellig', 'Kunde', 'Kundenart', 'Betreff', 'Netto', 'USt-Satz', 'USt', 'Brutto', 'Status', 'Bezahlt am', 'Angebot']];
+    liste.forEach((r) => { const m = Auftraege.mwstVon(c, r); const s = Auftraege.summen(r, m); z.push([r.nr, dt(r.datum), dt(r.faellig), r.kunde, r.kundenart === 'gewerblich' ? 'Firma' : 'Privat', r.betreff, dez(s.netto), m, dez(s.steuer), dez(s.brutto), { gestellt: 'offen', bezahlt: 'bezahlt', storniert: 'storniert' }[r.status] || r.status, dt(r.bezahltAm), r.angebotNr || '']); });
+    return z;
+  }
+  const gestellte = (c, filter = () => true) => c.typ('rechnung').filter((r) => r.nr && r.status !== 'entwurf').filter(filter).sort((a, b) => a.nr.localeCompare(b.nr));
+
+  /* In einen ZIP-Ordner: Liste + eine E-Rechnung je Rechnung */
+  function rechnungenInZip(c, ordner, filter) {
+    const liste = gestellte(c, filter); if (!liste.length) return 0;
+    ordner.file('Ausgangsrechnungen.csv', csv(rechnungsZeilen(c, liste)));
+    if (c.R.p('rechnungen').erechnung !== 'aus') { const x = ordner.folder('E-Rechnungen'); liste.filter((r) => r.status !== 'storniert').forEach((r) => x.file(`${r.nr}_XRechnung.xml`, Auftraege.xrechnung(c, r))); }
+    return liste.length;
+  }
+
+  async function buchhaltungsPaket(c, von, bis) {
+    if (!window.JSZip) return meldung('Das ZIP-Werkzeug konnte nicht geladen werden (keine Internetverbindung?).', 'fehler');
+    const zip = new JSZip(); const n = rechnungenInZip(c, zip, (r) => r.datum >= von && r.datum <= bis);
+    if (!n) return meldung('In diesem Zeitraum gibt es keine gestellten Rechnungen.', 'fehler');
+    zip.file('LIESMICH.txt', `Ausgangsrechnungen ${c.cfg.name}, ${dt(von)} bis ${dt(bis)}\r\n\r\nAusgangsrechnungen.csv: eine Zeile je Rechnung, Trennzeichen Semikolon, Beträge mit Komma.\r\nE-Rechnungen: je Rechnung eine XRechnung-Datei (UBL). Buchhaltungsprogramme und das Steuerbüro können sie einlesen.\r\n`);
+    const blob = await zip.generateAsync({ type: 'blob' });
+    speichern(`Rechnungen_${c.cfg.kennung || 'betrieb'}_${von}_${bis}.zip`, blob);
+    meldung(`${n} Rechnungen exportiert`);
+  }
+
+  /* Wochenplan als Kalenderdatei: ein ganztägiger Termin je Baustelle und Tag */
+  function planIcs(c, montag) {
+    const w = c.planWoche(montag); const n = Number(c.R.p('wochenplan').tage) || 5;
+    const stempel = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+    const t = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+    const ereignisse = [];
+    for (let i = 0; i < n; i++) {
+      const d = Datum.plus(montag, i);
+      c.baustellenOffen().forEach((b) => {
+        const leute = c.arbeiter().filter((p) => !c.abwesend(p.id, d) && w && w.zellen && w.zellen[p.id] && w.zellen[p.id][i] === b.id);
+        if (!leute.length) return;
+        const tag = d.replace(/-/g, ''); const naechster = Datum.plus(d, 1).replace(/-/g, '');
+        ereignisse.push(['BEGIN:VEVENT', `UID:${b.id}-${tag}@${c.cfg.kennung || 'richtwerk'}`, `DTSTAMP:${stempel}`, `DTSTART;VALUE=DATE:${tag}`, `DTEND;VALUE=DATE:${naechster}`,
+          `SUMMARY:${t(b.name)}: ${t(leute.map((p) => p.name.split(' ')[0]).join(', '))}`, `LOCATION:${t(b.adresse || b.ort)}`, `DESCRIPTION:${t([b.arbeit, b.kunde && 'Kunde: ' + b.kunde, b.telefon && 'Tel. ' + b.telefon, b.notiz].filter(Boolean).join('\n'))}`, 'END:VEVENT'].join('\r\n'));
+      });
+    }
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0', `PRODID:-//${t(c.cfg.name)}//Wochenplan//DE`, 'CALSCALE:GREGORIAN', `X-WR-CALNAME:Wochenplan ${t(c.cfg.name)}`, ...ereignisse, 'END:VCALENDAR', ''].join('\r\n');
+  }
+
+  return { rechnungenInZip, buchhaltungsPaket, planIcs, gestellte };
+})();
+
+const Tafel = (() => {
+  const { seitenkopf, leer } = Buero.teile;
+  const STUFEN = ['anfrage', 'angebot', 'auftrag', 'baustelle', 'rechnung', 'bezahlt'];
+  const spaltenNamen = (c) => { const n = c.R.liste('tafel', 'spalten'); const std = ['Anfrage', 'Angebot', 'Auftrag', 'Auf der Baustelle', 'Rechnung', 'Bezahlt']; return std.map((s, i) => n[i] || s); };
+
+  /* Alle Karten: eigene Vorgänge (Anfragen) plus Angebote und Rechnungen, die noch keinen Vorgang haben */
+  function karten(c) {
+    const vorgaenge = c.typ('vorgang').filter((v) => !v.archiv);
+    const angeboteMitV = new Set(vorgaenge.map((v) => v.angebot).filter(Boolean));
+    const rechnungenMitV = new Set();
+    const out = vorgaenge.map((v) => ({ v, id: v.id, angebot: c.items.find((i) => i.id === v.angebot), bs: v.bs }));
+    c.typ('angebot').filter((a) => !angeboteMitV.has(a.id) && a.status !== 'abgelehnt').forEach((a) => out.push({ id: 'a:' + a.id, angebot: a, bs: a.bs }));
+    out.forEach((k) => {
+      const a = k.angebot; k.bs = k.bs || (a && a.bs) || '';
+      k.rechnung = c.typ('rechnung').filter((r) => r.status !== 'storniert' && ((a && r.angebot === a.id) || (k.v && r.id === k.v.rechnung))).sort((x, y) => (x.status === 'bezahlt') - (y.status === 'bezahlt'))[0];
+      if (k.rechnung) rechnungenMitV.add(k.rechnung.id);
+    });
+    c.typ('rechnung').filter((r) => !rechnungenMitV.has(r.id) && r.status !== 'storniert').forEach((r) => out.push({ id: 'r:' + r.id, rechnung: r, bs: r.bs }));
+    out.forEach((k) => { k.auto = automatisch(c, k); k.stufe = Math.max(k.auto, k.v ? STUFEN.indexOf(k.v.spalte) : 0); });
+    return out;
+  }
+  /* Wie weit ist der Auftrag laut Angebot, Baustelle und Rechnung? */
+  function automatisch(c, k) {
+    const r = k.rechnung; const a = k.angebot; const b = k.bs && c.baustelle(k.bs);
+    if (r && r.status === 'bezahlt') return 5;
+    if (r && r.status === 'gestellt') return 4;
+    if (b && (b.status === 'laufend' || b.status === 'fertig') && c.typ('stunden').some((s) => s.bs === b.id)) return 3;
+    if (a && a.status === 'angenommen') return 2;
+    if (a) return 1;
+    return 0;
+  }
+  const kunde = (k) => (k.v && k.v.kunde) || (k.angebot && k.angebot.kunde) || (k.rechnung && k.rechnung.kunde) || '';
+  const titel = (k) => (k.v && k.v.titel) || (k.angebot && k.angebot.betreff) || (k.rechnung && k.rechnung.betreff) || 'Ohne Titel';
+
+  function karteHtml(c, k, namen) {
+    const doc = k.rechnung || k.angebot; const betrag = doc ? Auftraege.summen(doc, Auftraege.mwstVon(c, doc)).netto : 0;
+    const chips = [];
+    if (k.angebot && Auftraege.offeneFragen(k.angebot).length) chips.push('<span class="chip warn">Kundenfrage</span>');
+    if (k.angebot && k.angebot.angenommenOnline && k.stufe === 2) chips.push('<span class="chip ok">online angenommen</span>');
+    if (k.rechnung && Auftraege.ueberfaellig(c, k.rechnung)) chips.push('<span class="chip bad">überfällig</span>');
+    if (k.stufe === 1 && k.angebot && k.angebot.status === 'entwurf') chips.push('<span class="chip">Entwurf</span>');
+    if (k.v && k.v.termin) chips.push(`<span class="chip info">${Icon('kalender')} ${Datum.kurz(k.v.termin)}</span>`);
+    const links = [];
+    if (k.angebot) links.push(`<button class="t-link" data-a="angebot" data-id="${k.angebot.id}">${Icon('angebot')} ${esc(k.angebot.nr || 'Angebot')}</button>`);
+    else if (k.v && c.R.hat('angebote')) links.push(`<button class="t-link" data-a="tafel-angebot" data-id="${k.id}">${Icon('plus')} Angebot schreiben</button>`);
+    if (k.bs && c.baustelle(k.bs)) links.push(`<button class="t-link" data-a="akte" data-id="${k.bs}">${Icon('karte')} Akte</button>`);
+    if (k.rechnung) links.push(`<button class="t-link" data-a="rechnung" data-id="${k.rechnung.id}">${Icon('rechnung')} ${esc(k.rechnung.nr || 'Entwurf')}</button>`);
+    return `<article class="t-karte" draggable="true" data-karte="${k.id}" tabindex="0" aria-label="${esc(kunde(k))}: ${esc(titel(k))}, ${esc(namen[k.stufe])}">
+      <div class="t-oben"><b>${esc(kunde(k) || 'Neuer Kunde')}</b>${betrag ? `<span class="num">${Zahl.eur(betrag)}</span>` : ''}</div>
+      <p>${esc(titel(k))}</p>
+      ${k.v && k.v.notiz && k.stufe === 0 ? `<small>${esc(k.v.notiz)}</small>` : ''}
+      ${chips.length ? `<div class="t-chips">${chips.join('')}</div>` : ''}
+      <div class="t-unten"><div class="t-links">${links.join('')}</div>
+        <span class="t-pfeile">${k.v && k.stufe > k.auto ? `<button class="k klein" data-a="tafel-schieben" data-id="${k.id}" data-wohin="-1" aria-label="Eine Spalte zurück">${Icon('zurueck')}</button>` : ''}${k.stufe < 5 ? `<button class="k klein" data-a="tafel-schieben" data-id="${k.id}" data-wohin="1" aria-label="Eine Spalte weiter">${Icon('pfeil')}</button>` : ''}</span></div>
+    </article>`;
+  }
+
+  function seite(c) {
+    const alle = karten(c); const namen = spaltenNamen(c);
+    const grenze = Datum.plus(c.heute, -Number(c.R.p('tafel').bezahltTage || 30));
+    const sichtbar = alle.filter((k) => k.stufe < 5 || !k.rechnung || (k.rechnung.bezahltAm || c.heute) >= grenze);
+    const spalten = STUFEN.map((s, i) => {
+      const hier = sichtbar.filter((k) => k.stufe === i).sort((a, b) => kunde(a).localeCompare(kunde(b)));
+      const summe = hier.reduce((x, k) => { const d = k.rechnung || k.angebot; return x + (d ? Auftraege.summen(d, Auftraege.mwstVon(c, d)).netto : 0); }, 0);
+      return `<section class="t-spalte" data-spalte="${i}" aria-label="${esc(namen[i])}">
+        <header><b>${esc(namen[i])}</b><span class="t-zahl">${hier.length}</span>${summe ? `<small class="num">${Zahl.eur(summe)}</small>` : ''}</header>
+        <div class="t-liste">${hier.map((k) => karteHtml(c, k, namen)).join('') || '<div class="t-leer">Karte hierher ziehen</div>'}</div>
+        ${i === 0 ? `<button class="t-neu" data-a="tafel-neu">${Icon('plus')} Anfrage</button>` : ''}
+      </section>`;
+    }).join('');
+    return seitenkopf(esc(c.R.name('tafel')), 'Jeder Auftrag eine Karte. Sie rückt von selbst weiter, wenn Angebot, Baustelle oder Rechnung sich ändern.', `<button class="k haupt" data-a="tafel-neu">${Icon('plus')} Neue Anfrage</button>`)
+      + `<div class="tafel">${spalten}</div>`;
+  }
+
+  function anfrageFenster(c, v = {}) {
+    Fenster.oeffne({
+      titel: v.id ? 'Anfrage bearbeiten' : 'Neue Anfrage', bereich: 'ui-buero-fenster',
+      inhalt: `<div class="reihe"><label class="feld"><span>Kunde</span><input name="kunde" value="${esc(v.kunde || '')}" placeholder="Name oder Firma"></label><label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(v.telefon || '')}"></label></div>
+        <div class="reihe"><label class="feld"><span>Was soll gemacht werden?</span><input name="titel" value="${esc(v.titel || '')}" placeholder="z. B. Carport 6 x 3 m"></label><label class="feld"><span>Besichtigung (optional)</span><input name="termin" type="date" value="${esc(v.termin || '')}"></label></div>
+        <label class="feld"><span>Anschrift (Straße, PLZ Ort)</span><textarea name="adresse" rows="2">${esc(v.adresse || '')}</textarea></label>
+        <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(v.notiz || '')}" placeholder="z. B. kam über Empfehlung Gerdes"></label>`,
+      fuss: `${v.id ? '<button class="k nein" data-f="weg" style="margin-right:auto">Karte entfernen</button>' : '<span style="margin-right:auto"></span>'}<button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Speichern</button>`,
+      aktionen: {
+        ok: (b, hg) => {
+          const w = Fenster.werte(hg); if (!w.kunde.trim()) return meldung('Bitte einen Kunden eintragen.', 'fehler');
+          const daten = { kunde: w.kunde.trim(), telefon: w.telefon.trim(), titel: w.titel.trim(), termin: w.termin, adresse: w.adresse.trim(), notiz: w.notiz.trim() };
+          if (v.id) Store.aendere(v.id, daten); else Store.neu({ typ: 'vorgang', spalte: 'anfrage', datum: c.heute, ...daten });
+          Fenster.schliesse(); meldung('Gespeichert');
+        },
+        weg: (b) => { if (!b.dataset.sicher) { b.dataset.sicher = '1'; b.textContent = 'Wirklich entfernen?'; return; } Store.aendere(v.id, { archiv: true }); Fenster.schliesse(); },
+      },
+    });
+  }
+
+  /* Karte verschieben. Nach vorn geht immer, zurück nur so weit, wie Angebot und Rechnung es zulassen. */
+  async function schieben(c, kid, ziel) {
+    const k = karten(c).find((x) => x.id === kid); if (!k || ziel === k.stufe) return;
+    if (ziel < k.auto) return meldung(`Das geht nicht zurück: ${k.auto >= 4 ? 'die Rechnung ist schon gestellt' : k.auto === 3 ? 'auf der Baustelle wurde schon gearbeitet' : k.auto === 2 ? 'das Angebot ist angenommen' : 'es gibt schon ein Angebot'}.`, 'fehler');
+    let vid = k.v && k.v.id;
+    if (!vid) vid = await Store.neu({ typ: 'vorgang', spalte: STUFEN[ziel], datum: c.heute, kunde: kunde(k), titel: titel(k), angebot: k.angebot ? k.angebot.id : '', rechnung: k.rechnung ? k.rechnung.id : '', bs: k.bs || '' });
+    else Store.aendere(vid, { spalte: STUFEN[ziel] });
+    if (ziel === 2 && k.angebot && ['entwurf', 'gesendet'].includes(k.angebot.status)) {
+      const patch = { status: 'angenommen', entschieden: Date.now() };
+      if (!k.angebot.bs && c.R.an('angebote', 'baustelleAnlegen')) { patch.bs = Auftraege.baustelleAusAngebot(k.angebot); Store.aendere(vid, { bs: patch.bs }); }
+      Store.aendere(k.angebot.id, patch); meldung(`Angebot ${k.angebot.nr} als angenommen markiert${patch.bs ? ', Baustelle angelegt' : ''}.`);
+    } else if (ziel === 1 && !k.angebot && c.R.hat('angebote')) {
+      neuesAngebot(c, { ...k.v, id: vid });
+    } else if (ziel === 3 && k.bs && c.baustelle(k.bs) && c.baustelle(k.bs).status === 'geplant') {
+      Store.speichereCfg({ ...Store.cfg, baustellen: Store.cfg.baustellen.map((b) => (b.id === k.bs ? { ...b, status: 'laufend' } : b)) }); meldung('Baustelle läuft');
+    } else if (ziel === 4 && !k.rechnung) {
+      meldung('Rechnung erstellen: Öffnen Sie das Angebot und klicken Sie auf „Rechnung erstellen“.');
+    } else if (ziel === 5 && k.rechnung && k.rechnung.status === 'gestellt') {
+      Store.aendere(k.rechnung.id, { status: 'bezahlt', bezahltAm: c.heute }); meldung(`Rechnung ${k.rechnung.nr} als bezahlt markiert`);
+    }
+  }
+  async function neuesAngebot(c, v) {
+    const id = Store.uid('d');
+    const a = { id, typ: 'angebot', status: 'entwurf', kunde: v.kunde, adresse: v.adresse || '', betreff: v.titel || '', kundenart: 'privat', telefon: v.telefon || '', positionen: [{ text: '', menge: 1, einheit: 'm²', preis: '' }] };
+    // Nummer, Datum, Gültigkeit vergibt der Editor beim ersten Speichern, dann hängt er das Angebot an die Karte
+    Auftraege.editor(c, { ...a, id: undefined, _vorgang: v.id, _id: id });
+  }
+
+  /* Ziehen und Ablegen */
+  let gezogen = null;
+  document.addEventListener('dragstart', (e) => { const k = e.target.closest && e.target.closest('.t-karte'); if (!k) return; gezogen = k.dataset.karte; k.classList.add('zieht'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', gezogen); } catch { /* alt */ } });
+  document.addEventListener('dragend', () => { gezogen = null; $$('.t-karte.zieht, .t-spalte.ueber').forEach((x) => x.classList.remove('zieht', 'ueber')); });
+  document.addEventListener('dragover', (e) => { const s = e.target.closest && e.target.closest('.t-spalte'); if (!s || !gezogen) return; e.preventDefault(); $$('.t-spalte.ueber').forEach((x) => x !== s && x.classList.remove('ueber')); s.classList.add('ueber'); });
+  document.addEventListener('drop', (e) => { const s = e.target.closest && e.target.closest('.t-spalte'); if (!s || !gezogen) return; e.preventDefault(); const kid = gezogen; gezogen = null; s.classList.remove('ueber'); schieben(ctxNeu(), kid, Number(s.dataset.spalte)); });
+  const ctxNeu = () => kontext(Store.cfg, Store.items, (Sitzung.lies('buero') || {}).pid);
+
+  Buero.erweitern({
+    nav: [{ id: 'tafel', name: 'Auftragstafel', icon: 'plan', braucht: 'tafel', gruppe: 'Aufträge', zahl: (o, c) => c.typ('vorgang').filter((v) => !v.archiv && v.spalte === 'anfrage' && !v.angebot).length }],
+    seiten: { tafel: seite },
+    aktionen: {
+      'tafel-neu'(el, c) { anfrageFenster(c); },
+      'tafel-schieben'(el, c) { const k = karten(c).find((x) => x.id === el.dataset.id); if (k) schieben(c, k.id, k.stufe + Number(el.dataset.wohin)); },
+      'tafel-angebot'(el, c) { const v = c.items.find((i) => i.id === el.dataset.id); if (v) neuesAngebot(c, v); },
+    },
+  });
+  // Doppelklick auf eine Anfrage öffnet sie
+  document.addEventListener('dblclick', (e) => { const k = e.target.closest && e.target.closest('.t-karte'); if (!k) return; const c = ctxNeu(); const v = c.items.find((i) => i.id === k.dataset.karte); if (v && v.typ === 'vorgang') anfrageFenster(c, v); });
+
+  return { karten };
+})();
+
+/* ---- kunde.js ---- */
+/* =========================================================================
+   Angebot online annehmen (Seite für den Kunden des Betriebs)
+   #angebot/<betrieb>/<angebot>/<schlüssel>
+   Links: Überblick, Haken (AGB, Widerruf, Datenschutz), Unterschrift,
+          verbindliche Annahme oder eine Frage ans Büro.
+   Rechts: das Angebot so, wie es gedruckt aussieht.
+   Was der Kunde hier tut, steht sofort in der Betriebszentrale.
+   ========================================================================= */
+const KundenSeite = (() => {
+  let leer = true;
+
+  function warteAufDaten(fid, id) {
+    return new Promise((fertig) => {
+      Store.oeffne(fid);
+      const pruefe = () => Store.cfg && Store.items.some((i) => i.id === id);
+      if (pruefe()) return fertig(true);
+      const ab = Store.abonniere(() => { if (pruefe()) { ab(); clearTimeout(t); fertig(true); } });
+      const t = setTimeout(() => { ab(); fertig(pruefe()); }, 6000);
+    });
+  }
+
+  async function start(ziel) {
+    const [, fid, id, schluessel] = ziel.split('/');
+    document.body.className = 'kunde-modus';
+    Wurzel().innerHTML = `<div class="laden"><div>Angebot wird geladen<div class="balken"><i></i></div></div></div>`;
+    const da = await warteAufDaten(fid, id);
+    const a = da && Store.items.find((i) => i.id === id);
+    if (!a || a.typ !== 'angebot' || !a.schluessel || a.schluessel !== schluessel) return hinweis('Dieses Angebot wurde nicht gefunden', 'Der Link ist unvollständig oder nicht mehr gültig. Bitte wenden Sie sich an den Betrieb, von dem Sie den Link bekommen haben.');
+    Store.setzeBenutzer('kunde');
+    zeichne(id);
+  }
+
+  function hinweis(titel, text) {
+    Wurzel().innerHTML = `<div class="kd-leer"><h1>${esc(titel)}</h1><p>${esc(text)}</p></div>`;
+  }
+
+  const ctx = () => kontext(Store.cfg, Store.items, null);
+  const datum = (iso) => `${Datum.kurz(iso)}${iso.slice(0, 4)}`;
+
+  function zeichne(id) {
+    const c = ctx(); const a = Store.items.find((i) => i.id === id); const f = c.cfg;
+    const P = c.R.p('angebote'); const s = Auftraege.summen(a, Auftraege.mwstVon(c, a)); const mwst = Auftraege.mwstVon(c, a);
+    document.documentElement.style.setProperty('--firma', f.farbe || '#2f5e4e');
+    document.title = `Angebot ${a.nr} · ${f.name}`;
+    const privat = a.kundenart !== 'gewerblich';
+    const widerruf = !privat || P.widerruf === 'nicht anzeigen' ? '' : P.widerruf === 'Ausschluss Maßanfertigung' ? 'massanfertigung' : 'belehrung';
+    const mitAgb = String(P.agb || '').trim() !== '';
+    const abgelaufen = a.status === 'gesendet' && a.gueltigBis && a.gueltigBis < c.heute;
+    const online = c.R.an('angebote', 'onlineAnnahme');
+
+    let links;
+    if (a.status === 'angenommen') {
+      const o = a.angenommenOnline;
+      links = `<div class="kd-fertig">${Icon('haken')}<h2>Vielen Dank für Ihren Auftrag!</h2>
+        <p>${o ? `Sie haben das Angebot am ${datum(Datum.iso(new Date(o.wann)))} verbindlich angenommen.` : 'Dieses Angebot ist angenommen.'} Wir melden uns in den nächsten Tagen bei Ihnen, um den Termin abzustimmen.</p>
+        ${c.R.an('angebote', 'bestaetigung') ? `<button class="kd-knopf" data-k="bestaetigung">${Icon('drucken')} Auftragsbestätigung drucken oder als PDF speichern</button>` : ''}
+        <p class="kd-klein">Fragen? ${f.telefon ? `Telefon <a href="tel:${esc(f.telefon.replace(/\s+/g, ''))}">${esc(f.telefon)}</a>` : ''}${f.telefon && f.email ? ' · ' : ''}${f.email ? `<a href="mailto:${esc(f.email)}">${esc(f.email)}</a>` : ''}</p></div>`;
+    } else if (a.status === 'abgelehnt' || a.status === 'storniert' || !online) {
+      links = `<div class="kd-fertig neutral"><h2>Dieses Angebot ist nicht mehr offen</h2><p>Bitte sprechen Sie uns an, wenn Sie den Auftrag doch vergeben möchten. Wir erstellen Ihnen gern ein neues Angebot.</p></div>`;
+    } else {
+      const haken = (name, text) => `<label class="kd-haken"><input type="checkbox" name="${name}"><span>${text}</span></label>`;
+      links = `
+        <form id="kd-annahme" autocomplete="off">
+          ${abgelaufen ? `<p class="kd-warn">Die Annahmefrist ist am ${datum(a.gueltigBis)} abgelaufen. Bitte rufen Sie uns kurz an, damit wir Preise und Termin bestätigen können.</p>` : ''}
+          <fieldset ${abgelaufen ? 'disabled' : ''}>
+          ${mitAgb ? haken('agb', `Ich habe die <button type="button" class="kd-link" data-k="lesen" data-id="agb">Allgemeinen Geschäftsbedingungen</button> gelesen und akzeptiere sie. Ich kann sie speichern und ausdrucken.`) : ''}
+          ${widerruf === 'massanfertigung' ? haken('widerruf', `Mir ist bekannt, dass es sich um eine Anfertigung nach meinen Maßen und Wünschen handelt und ein Widerrufsrecht nach § 312g Abs. 2 Nr. 1 BGB nicht besteht. <button type="button" class="kd-link" data-k="lesen" data-id="widerruf">Widerrufsbelehrung</button>`) : ''}
+          ${widerruf === 'belehrung' ? haken('widerruf', `Ich habe die <button type="button" class="kd-link" data-k="lesen" data-id="widerruf">Widerrufsbelehrung</button> zur Kenntnis genommen.`) : ''}
+          ${widerruf === 'belehrung' ? `<label class="kd-haken frei"><input type="checkbox" name="beginn"><span>Optional: Ich verlange ausdrücklich, dass Sie schon vor Ende der 14-tägigen Widerrufsfrist mit den Arbeiten beginnen. Mir ist bekannt, dass ich bei einem Widerruf die bis dahin erbrachten Leistungen bezahlen muss.</span></label>` : ''}
+          ${haken('datenschutz', `Ich habe den <button type="button" class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutzhinweis</button> gelesen.`)}
+          ${c.R.an('angebote', 'unterschriftOnline') ? `<div class="kd-feld"><span>Ihre Unterschrift</span><div class="unterschrift-feld kd-unterschrift"><canvas id="kd-canvas" aria-label="Hier mit Finger oder Maus unterschreiben"></canvas><span class="linie">Hier mit Finger oder Maus unterschreiben</span><button type="button" data-k="neu-zeichnen">Neu zeichnen</button></div></div>` : ''}
+          <label class="kd-feld"><span>Vor- und Nachname</span><input name="name" autocomplete="name" value=""></label>
+          <p class="kd-recht">Mit Klick auf „Zahlungspflichtig annehmen“ nehmen Sie das Angebot Nr. ${esc(a.nr)} vom ${datum(a.datum)} verbindlich an. Gesamtpreis: <b>${Zahl.eur(s.brutto)}</b> inkl. ${mwst} % USt. Danach erhalten Sie eine Auftragsbestätigung.</p>
+          <button class="kd-knopf voll" type="submit">Zahlungspflichtig annehmen</button>
+          </fieldset>
+        </form>
+        ${c.R.an('angebote', 'fragen') ? `<details class="kd-frage" ${abgelaufen ? 'open' : ''}><summary>Ich habe noch eine Frage zum Angebot</summary>
+          <form id="kd-frage"><label class="kd-feld"><span>Woran hakt es noch?</span><textarea name="text" rows="4" placeholder="z. B. Geht es auch mit Lärche statt Douglasie?"></textarea></label>
+          <label class="kd-feld"><span>Rückruf unter (optional)</span><input name="telefon" type="tel" autocomplete="tel"></label>
+          <button class="kd-knopf" type="submit">Frage senden</button></form></details>` : ''}`;
+    }
+
+    Wurzel().innerHTML = `<div class="kd">
+      <header class="kd-kopf"><div class="kd-firma"><span class="kd-zeichen">${esc((f.kuerzel || f.name || '?').slice(0, 2))}</span><div><b>${esc(f.name)}</b><small>${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}</small></div></div>
+        <button class="kd-knopf rand" data-k="drucken">${Icon('drucken')} Drucken / PDF</button></header>
+      <div class="kd-raster">
+        <aside class="kd-links">
+          <h1>Ihr Angebot von ${esc(f.name)}</h1>
+          <dl class="kd-uebersicht">
+            <dt>Angebot-Nr.</dt><dd>${esc(a.nr)}</dd>
+            <dt>Für</dt><dd>${esc(a.kunde)}</dd>
+            ${a.betreff ? `<dt>Leistung</dt><dd>${esc(a.betreff)}</dd>` : ''}
+            <dt>Betrag netto</dt><dd>${Zahl.eur(s.netto)}</dd>
+            <dt>Gesamtbetrag</dt><dd class="gross">${Zahl.eur(s.brutto)}</dd>
+            ${a.gueltigBis && a.status === 'gesendet' ? `<dt>Gültig bis</dt><dd>${datum(a.gueltigBis)}</dd>` : ''}
+          </dl>
+          ${links}
+        </aside>
+        <main class="kd-papier" aria-label="Angebot als Dokument">${Auftraege.dokumentHtml(c, a, a.status === 'angenommen' && c.R.an('angebote', 'bestaetigung') ? 'bestaetigung' : 'angebot')}</main>
+      </div>
+      <footer class="kd-fuss">${esc(f.name)}${f.inhaber ? ', Inh. ' + esc(f.inhaber) : ''} · ${esc([f.strasse, [f.plz, f.ort].filter(Boolean).join(' ')].filter(Boolean).join(', '))}${f.telefon ? ' · Tel. ' + esc(f.telefon) : ''} · <button class="kd-link" data-k="lesen" data-id="datenschutz">Datenschutz</button></footer>
+    </div>`;
+    bilderNachladen(Wurzel(), Store.items);
+    unterschrift();
+    verbinden(id, { widerruf, mitAgb });
+  }
+
+  function unterschrift() {
+    const cv = $('#kd-canvas'); leer = true; if (!cv) return;
+    const r = cv.getBoundingClientRect(); const f = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = r.width * f; cv.height = r.height * f;
+    const g = cv.getContext('2d'); g.scale(f, f); g.lineWidth = 2.4; g.lineCap = 'round'; g.lineJoin = 'round'; g.strokeStyle = '#1d2a4a';
+    let zieht = false;
+    const pos = (e) => { const b = cv.getBoundingClientRect(); return [e.clientX - b.left, e.clientY - b.top]; };
+    cv.addEventListener('pointerdown', (e) => { zieht = true; cv.setPointerCapture(e.pointerId); const [x, y] = pos(e); g.beginPath(); g.moveTo(x, y); e.preventDefault(); });
+    cv.addEventListener('pointermove', (e) => { if (!zieht) return; const [x, y] = pos(e); g.lineTo(x, y); g.stroke(); leer = false; cv.parentElement.classList.add('voll'); });
+    const ende = () => { zieht = false; }; cv.addEventListener('pointerup', ende); cv.addEventListener('pointercancel', ende);
+  }
+
+  function lesen(was) {
+    const P = ctx().R.p('angebote');
+    const titel = { agb: 'Allgemeine Geschäftsbedingungen', widerruf: 'Widerrufsbelehrung', datenschutz: 'Datenschutzhinweis' }[was];
+    const text = { agb: P.agb, widerruf: P.widerrufText, datenschutz: P.datenschutz }[was] || '';
+    Fenster.oeffne({ titel, bereich: 'ui-buero-fenster kd-fenster', inhalt: `<div class="kd-lesetext">${esc(text).replace(/\n/g, '<br>')}</div>`,
+      fuss: `<button class="k" data-f="druck">${Icon('drucken')} Drucken / speichern</button><button class="k haupt" data-f="zu">Schließen</button>`,
+      aktionen: { druck: () => drucken(`<div class="dokument"><h2>${esc(titel)}</h2><p>${esc(text).replace(/\n/g, '<br>')}</p></div>`) } });
+  }
+
+  function verbinden(id, { widerruf, mitAgb }) {
+    const w = Wurzel();
+    w.onclick = (e) => {
+      const el = e.target.closest('[data-k]'); if (!el) return;
+      const a = Store.items.find((i) => i.id === id); const c = ctx();
+      const k = el.dataset.k;
+      if (k === 'lesen') return lesen(el.dataset.id);
+      if (k === 'drucken') return drucken(Auftraege.dokumentHtml(c, a, a.status === 'angenommen' && c.R.an('angebote', 'bestaetigung') ? 'bestaetigung' : 'angebot'));
+      if (k === 'bestaetigung') return drucken(Auftraege.dokumentHtml(c, a, 'bestaetigung'));
+      if (k === 'neu-zeichnen') { const cv = $('#kd-canvas'); cv.getContext('2d').clearRect(0, 0, cv.width, cv.height); cv.parentElement.classList.remove('voll'); leer = true; }
+    };
+    const fa = $('#kd-annahme');
+    if (fa) fa.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const c = ctx(); const a = Store.items.find((i) => i.id === id);
+      const fd = new FormData(fa); const name = String(fd.get('name') || '').trim();
+      if (mitAgb && !fd.get('agb')) return meldung('Bitte bestätigen Sie die AGB.', 'fehler');
+      if (widerruf && !fd.get('widerruf')) return meldung('Bitte bestätigen Sie den Hinweis zum Widerruf.', 'fehler');
+      if (!fd.get('datenschutz')) return meldung('Bitte bestätigen Sie den Datenschutzhinweis.', 'fehler');
+      if ($('#kd-canvas') && leer) return meldung('Bitte unterschreiben Sie im Feld.', 'fehler');
+      if (name.length < 3) return meldung('Bitte geben Sie Ihren Vor- und Nachnamen ein.', 'fehler');
+      const knopf = $('button[type=submit]', fa); knopf.disabled = true; knopf.textContent = 'Wird gesendet …';
+      try {
+        const bild = $('#kd-canvas') ? await Store.speichereDatei($('#kd-canvas').toDataURL('image/png'), 'unterschrift.png') : '';
+        const patch = { status: 'angenommen', entschieden: Date.now(), angenommenOnline: { name, wann: Date.now(), unterschrift: bild, agb: mitAgb, widerruf, beginnVorFrist: !!fd.get('beginn'), datenschutz: true, geraet: navigator.userAgent.slice(0, 160) } };
+        if (!a.bs && c.R.an('angebote', 'baustelleAnlegen')) patch.bs = Auftraege.baustelleAusAngebot(a);
+        await Store.aendere(id, patch);
+        window.scrollTo(0, 0); zeichne(id);
+      } catch (err) { knopf.disabled = false; knopf.textContent = 'Zahlungspflichtig annehmen'; meldung(err.message || 'Das hat nicht geklappt. Bitte noch einmal versuchen.', 'fehler'); }
+    });
+    const ff = $('#kd-frage');
+    if (ff) ff.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(ff); const text = String(fd.get('text') || '').trim(); const tel = String(fd.get('telefon') || '').trim();
+      if (!text) return meldung('Bitte schreiben Sie Ihre Frage ins Feld.', 'fehler');
+      const a = Store.items.find((i) => i.id === id);
+      Store.aendere(id, { fragen: [...(a.fragen || []), { text: tel ? `${text} (Rückruf: ${tel})` : text, wann: Date.now() }] });
+      ff.closest('details').innerHTML = `<p class="kd-danke">${Icon('haken')} Danke, Ihre Frage ist angekommen. Wir melden uns bei Ihnen.</p>`;
+    });
+  }
+
+  return { start };
+})();
 
 /* ---- handy.js ---- */
 /* =========================================================================
@@ -2732,13 +3861,13 @@ const Handy = (() => {
   BILD.erfassen = (c) => {
     const R = c.R; const k = [];
     if (R.imApp('belege')) k.push(`<button class="erfassen-kachel gross" data-a="unter" data-id="beleg"><span class="sym">${Icon('kamera')}</span><span><b>Beleg scannen</b><small>Tankquittung, Baumarkt, Werkzeug</small></span></button>`);
-    if (R.imApp('lieferscheine')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="lieferschein"><span class="sym">${Icon('liefer')}</span><span><b>Lieferschein</b><small>abfotografieren</small></span></button>`);
+    if (R.imApp('lieferscheine')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="lieferschein"><span class="sym">${Icon('liefer')}</span><span><b>${esc(R.name('lieferscheine').replace(/e$/, ''))}</b><small>${esc(R.hinweis('lieferscheine') || 'abfotografieren')}</small></span></button>`);
     if (R.stundenImApp()) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="stunden"><span class="sym">${Icon('uhr')}</span><span><b>Stunden</b><small>nachtragen</small></span></button>`);
     if (R.imApp('urlaub')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="urlaubsantrag"><span class="sym">${Icon('kalender')}</span><span><b>Urlaub</b><small>beantragen</small></span></button>`);
     if (R.imApp('urlaub') && R.p('urlaub').krank === 'ja') k.push(`<button class="erfassen-kachel" data-a="unter" data-id="krank"><span class="sym">${Icon('krank')}</span><span><b>Krank melden</b><small>geht direkt ans Büro</small></span></button>`);
-    if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>Regiezettel</b><small>Zusatzarbeit, Kunde unterschreibt</small></span></button>`);
-    if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>Bautagebuch</b><small>Fotos und Notiz zum Tag</small></span></button>`);
-    if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>Material</b><small>fehlt auf der Baustelle</small></span></button>`);
+    if (R.imApp('regie')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="regie"><span class="sym">${Icon('unterschrift')}</span><span><b>${esc(R.name('regie'))}</b><small>${esc(R.hinweis('regie') || 'Zusatzarbeit, Kunde unterschreibt')}</small></span></button>`);
+    if (R.imApp('bautagebuch')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="tagebuch"><span class="sym">${Icon('foto')}</span><span><b>${esc(R.name('bautagebuch'))}</b><small>${esc(R.hinweis('bautagebuch') || 'Fotos und Notiz zum Tag')}</small></span></button>`);
+    if (R.imApp('material')) k.push(`<button class="erfassen-kachel" data-a="unter" data-id="material"><span class="sym">${Icon('material')}</span><span><b>${esc(R.name('material') === 'Materialbedarf' ? 'Material' : R.name('material'))}</b><small>${esc(R.hinweis('material') || 'fehlt auf der Baustelle')}</small></span></button>`);
     return `<div class="unterseite-kopf"><h2>Erfassen</h2></div>${k.length ? `<div class="erfassen-raster">${k.join('')}</div>` : '<div class="a-karte"><div class="leer">Für dich ist noch nichts freigeschaltet.</div></div>'}`;
   };
 
@@ -2828,6 +3957,7 @@ const Handy = (() => {
   UNTER.material = (c) => `${unterKopf('Material anfordern')}<div class="a-karte" style="padding:16px">
     ${c.R.mitBaustelle('material') ? bsAuswahl(c, (c.baustellenOffen()[0] || {}).id) : ''}
     <label class="a-feld"><span>Was fehlt?</span><textarea name="text" placeholder="z. B. 10 Bund Dachlatten 30/50"></textarea></label>
+    ${Zusatz.app(c, 'material')}
     <button class="gross-knopf firma" data-a="speichere-material">${Icon('haken')} An den Chef senden</button></div>`;
 
   function scanFormular(c, art) {
@@ -2846,6 +3976,7 @@ const Handy = (() => {
     return `${unterKopf(istBeleg ? 'Beleg scannen' : 'Lieferschein')}${flaeche}
       <div class="a-karte" style="padding:16px">${felder}${c.R.mitBaustelle(istBeleg ? 'belege' : 'lieferscheine') ? bsAuswahl(c, d.bs !== undefined ? d.bs : (c.laeuft(c.ich.id) || c.baustellenOffen()[0] || {}).bs || (c.baustellenOffen()[0] || {}).id) : ''}
       <label class="a-feld"><span>Notiz (optional)</span><input name="notiz" value="${esc(d.notiz || '')}"></label>
+      ${Zusatz.app(c, istBeleg ? 'belege' : 'lieferscheine', d.extra)}
       <button class="gross-knopf firma" data-a="speichere-scan" data-id="${art}" ${d.bild ? '' : 'disabled'}>${Icon('upload')} Ans Büro senden</button></div>`;
   }
   UNTER.beleg = (c) => scanFormular(c, 'beleg');
@@ -2869,6 +4000,7 @@ const Handy = (() => {
       <label class="a-feld"><span>Was wurde gemacht? Besonderheiten?</span><textarea name="text" placeholder="z. B. Sparren gesetzt, Holz am Ortgang morsch">${esc(d.text || '')}</textarea></label>
       <div class="a-feld"><span>Fotos (${fotos.length} von ${max})</span><div class="foto-reihe">${fotos.map((f, i) => `<span class="foto"><img src="${f}" alt="Foto ${i + 1}"><button data-a="foto-weg" data-id="${i}" aria-label="Foto entfernen">${Icon('x')}</button></span>`).join('')}
         ${fotos.length < max ? `<button class="foto neu" data-a="tb-foto" aria-label="Foto aufnehmen">${Icon('kamera')}</button>` : ''}</div></div>
+      ${Zusatz.app(c, 'bautagebuch', d.extra)}
       <button class="gross-knopf firma" data-a="speichere-tagebuch">${Icon('haken')} Speichern</button></div>`;
   };
 
@@ -2881,7 +4013,7 @@ const Handy = (() => {
         ${bsAuswahl(c, d.bs !== undefined ? d.bs : ((c.laeuft(c.ich.id) || {}).bs || (c.baustellenOffen()[0] || {}).id))}
         <label class="a-feld"><span>Was wurde zusätzlich gemacht?</span><textarea name="text" placeholder="z. B. 2 Sparren ausgetauscht, morsch">${esc(d.text || '')}</textarea></label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><label class="a-feld"><span>Leute</span><input type="number" name="leute" inputmode="numeric" min="1" max="9" value="${esc(d.leute || 1)}"></label><label class="a-feld"><span>Stunden je Person</span><input name="stunden" inputmode="decimal" placeholder="z. B. 2,5" value="${esc(d.stunden || '')}"></label></div>
-        <label class="a-feld"><span>Material (optional)</span><input name="material" placeholder="z. B. KVH 80x180, 2 x 5 m" value="${esc(d.material || '')}"></label></div>`;
+        <label class="a-feld"><span>Material (optional)</span><input name="material" placeholder="z. B. KVH 80x180, 2 x 5 m" value="${esc(d.material || '')}"></label>${Zusatz.app(c, 'regie', d.extra)}</div>`;
     return `${unterKopf(nach ? 'Unterschrift einholen' : 'Regiezettel')}${kopf}
       <div class="a-titel">Bestätigung durch den Kunden</div>
       <div class="a-karte" style="padding:16px"><label class="a-feld"><span>Name des Kunden</span><input name="kunde" value="${esc(d.kunde || (nach ? '' : (c.baustelle(d.bs || (c.laeuft(c.ich.id) || {}).bs) || {}).kunde || ''))}"></label>
@@ -3091,10 +4223,11 @@ const Handy = (() => {
     async 'speichere-tagebuch'(el, c) {
       const w = werte(); const fotos = zustand.daten.fotos || [];
       if (!(w.text || '').trim() && !fotos.length) return meldung('Bitte ein Foto oder eine Notiz.', 'fehler');
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'bautagebuch', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
       el.disabled = true; el.textContent = 'Wird gespeichert …';
       try {
         const ids = []; for (const f of fotos) ids.push(await Store.speichereDatei(f, 'foto.jpg'));
-        Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: c.heute, bs: w.bs || '', wetter: w.wetter || '', text: (w.text || '').trim(), fotos: ids });
+        Store.neu({ typ: 'tagebuch', pid: c.ich.id, datum: c.heute, bs: w.bs || '', wetter: w.wetter || '', text: (w.text || '').trim(), fotos: ids, extra });
         gesendet('Im Bautagebuch', ids.length ? `${ids.length} ${ids.length === 1 ? 'Foto' : 'Fotos'} gespeichert. Das Büro sieht sie bei der Baustelle.` : 'Das Büro sieht den Eintrag bei der Baustelle.', 'tagebuch');
       } catch (err) { el.disabled = false; el.textContent = 'Speichern'; meldung(err.message, 'fehler'); }
     },
@@ -3109,7 +4242,8 @@ const Handy = (() => {
         const stunden = Number(String(w.stunden || '').replace(',', '.'));
         if (!(w.text || '').trim()) return meldung('Was wurde zusätzlich gemacht?', 'fehler');
         if (!stunden || stunden <= 0) return meldung('Bitte die Stunden eintragen.', 'fehler');
-        neu = { typ: 'regie', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), leute: Math.max(1, Number(w.leute) || 1), stunden, material: (w.material || '').trim() };
+        const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'regie', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
+        neu = { typ: 'regie', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), leute: Math.max(1, Number(w.leute) || 1), stunden, material: (w.material || '').trim(), extra };
       }
       el.disabled = true;
       try {
@@ -3169,22 +4303,25 @@ const Handy = (() => {
     },
     'speichere-material'(el, c) {
       const w = werte(); if (!w.text || !w.text.trim()) return meldung('Was fehlt denn?', 'fehler');
-      Store.neu({ typ: 'material', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), status: 'offen' });
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, 'material', extra); if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
+      Store.neu({ typ: 'material', pid: c.ich.id, datum: c.heute, bs: w.bs || '', text: w.text.trim(), extra, status: 'offen' });
       gesendet('Gesendet', 'Der Chef sieht deine Anforderung.', 'material');
     },
     async 'speichere-scan'(el, c) {
       const art = el.dataset.id; const w = werte(); const d = zustand.daten;
       if (!d.bild) return;
+      const extra = Zusatz.lesen($('.a-inhalt')); const fehlt = Zusatz.fehlt(c, art === 'beleg' ? 'belege' : 'lieferscheine', extra);
+      if (fehlt) return meldung(`Bitte „${fehlt}“ ausfüllen.`, 'fehler');
       let betrag = 0;
       if (art === 'beleg') { betrag = Number(String(w.betrag || '').replace(/\./g, '').replace(',', '.')); if (!betrag || betrag <= 0) return meldung('Bitte den Betrag eingeben.', 'fehler'); }
       el.disabled = true; el.innerHTML = 'Wird gesendet …';
       try {
         const datei = await Store.speichereDatei(d.bild, `${art}.jpg`);
         if (art === 'beleg') {
-          Store.neu({ typ: 'beleg', pid: c.ich.id, datum: c.heute, betrag, kategorie: w.kategorie, haendler: w.haendler, bs: w.bs || '', notiz: w.notiz, datei, status: startStatus(c.R, 'beleg', { betrag }) });
+          Store.neu({ typ: 'beleg', pid: c.ich.id, datum: c.heute, betrag, kategorie: w.kategorie, haendler: w.haendler, bs: w.bs || '', notiz: w.notiz, datei, extra, status: startStatus(c.R, 'beleg', { betrag }) });
           gesendet('Beleg gesendet', `${Zahl.eur(betrag)} · ${w.kategorie}. Den Zettel kannst du wegwerfen, wenn der Chef es sagt.`, 'beleg');
         } else {
-          Store.neu({ typ: 'lieferschein', pid: c.ich.id, datum: c.heute, lieferant: w.lieferant, nummer: w.nummer, bs: w.bs || '', notiz: w.notiz, datei, status: 'neu' });
+          Store.neu({ typ: 'lieferschein', pid: c.ich.id, datum: c.heute, lieferant: w.lieferant, nummer: w.nummer, bs: w.bs || '', notiz: w.notiz, datei, extra, status: 'neu' });
           gesendet('Lieferschein gesendet', 'Liegt jetzt beim Auftrag im Büro.', 'lieferschein');
         }
       } catch (err) { el.disabled = false; el.textContent = 'Ans Büro senden'; meldung(err.message, 'fehler'); }
@@ -3311,6 +4448,7 @@ const Studio = (() => {
     const info = (k) => {
       const B = BAUSTEINE[k.typ]; if (B.gruppe === 'geplant') return 'in Entwicklung';
       const p = R.p(k.typ); const def = B.p;
+      if (k.typ === 'angebote' || k.typ === 'rechnungen') return `${(Store.items || []).filter((i) => i.typ === (k.typ === 'angebote' ? 'angebot' : 'rechnung')).length} im Betrieb · ${(ABLAEUFE[k.typ] || []).length} Schritte`;
       const teile = Object.entries(def).filter(([, d]) => d.typ === 'zahl').slice(0, 2).map(([n, d]) => `${String(p[n]).replace('.', ',')} ${d.einheit}`);
       if (k.typ === 'app') return `${cfg().personen.length} Zugänge`;
       if (k.typ === 'baustellen') return `${c_offen()} laufend`;
@@ -3323,7 +4461,7 @@ const Studio = (() => {
       ${kn.filter((k) => BAUSTEINE[k.typ]).map((k) => { const B = BAUSTEINE[k.typ]; const g = GRUPPEN[B.gruppe];
         return `<div class="knoten ${zustand.gewaehlt === k.typ ? 'an' : ''} ${B.gruppe === 'geplant' ? 'geplant' : ''}" style="left:${k.x}px;top:${k.y}px;height:${KN_H}px;--g:${g.farbe}" data-knoten="${k.typ}">
           ${B.ein.length ? `<span class="port ein" data-port="ein" data-typ="${k.typ}"></span>` : ''}
-          <div class="k-kopf">${Icon(B.icon)}${esc(B.name)}</div><div class="k-info">${esc(info(k))}</div>
+          <div class="k-kopf">${Icon(B.icon)}${esc(k.name || B.name)}</div><div class="k-info">${esc(info(k))}</div>
           ${B.gruppe !== 'geplant' && Object.values(BAUSTEINE).some((x) => x.ein.includes(k.typ)) ? `<span class="port aus" data-port="aus" data-typ="${k.typ}"></span>` : ''}</div>`; }).join('')}`;
   }
 
@@ -3344,10 +4482,15 @@ const Studio = (() => {
     const params = Object.entries(B.p).map(([name, d]) => {
       const w = werte[name];
       if (d.typ === 'wahl') return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><select data-param="${name}">${d.optionen.map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></div></div>`;
+      if (d.typ === 'langtext') return '';
+      if (d.typ === 'schalter') return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><select data-param="${name}">${['ja', 'nein'].map((o) => `<option ${o === w ? 'selected' : ''}>${o}</option>`).join('')}</select></div></div>`;
       if (d.typ === 'text') return `<div class="s-param text"><label>${esc(d.name)}</label><div class="wert"><input data-param="${name}" value="${esc(w)}"></div></div>`;
       return `<div class="s-param"><label>${esc(d.name)}</label><div class="wert"><input type="number" data-param="${name}" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${d.min % 1 ? 0.1 : 1}"><em>${esc(d.einheit)}</em></div></div>`;
     }).join('');
-    p.innerHTML = `<div class="block" style="--g:${g.farbe}"><div class="s-titel">${esc(g.name)}</div><h3>${Icon(B.icon)}${esc(B.name)}</h3><div class="klein">${esc(B.kurz)}</div>
+    const kn = knoten(typ);
+    const anpassung = [kn.name && 'eigener Name', (kn.felder || []).length && `${kn.felder.length} eigene Felder`, Object.values(B.p).some((x) => x.typ === 'langtext') && 'Texte'].filter(Boolean);
+    p.innerHTML = `<div class="block" style="--g:${g.farbe}"><div class="s-titel">${esc(g.name)}</div><h3>${Icon(B.icon)}${esc(kn.name || B.name)}</h3><div class="klein">${esc(B.kurz)}</div>
+        <button class="s-knopf orange" style="margin-top:12px;width:100%;justify-content:center" data-s="oeffnen">${Icon('stift')} Baustein öffnen${anpassung.length ? ` · ${esc(anpassung.join(', '))}` : ''}</button>
         <div class="problem"><b>Problem im Betrieb</b>${esc(B.wofuer)}</div></div>
       ${params ? `<div class="block"><div class="s-titel">Werte für ${esc(c.name)}</div>${params}</div>` : ''}
       <div class="block"><div class="s-titel">Wirkung</div><ul class="wirkung">${wirkungen(c, typ).map((w) => `<li>${esc(w)}</li>`).join('')}</ul></div>
@@ -3362,7 +4505,7 @@ const Studio = (() => {
     app: { app: 'start' }, stempeln: { app: 'start' }, stunden: { buero: 'stunden', app: 'zeiten' }, urlaub: { buero: 'urlaub', app: 'urlaub' },
     belege: { buero: 'belege', app: 'u:beleg' }, lieferscheine: { buero: 'lieferscheine', app: 'u:lieferschein' }, material: { buero: 'material', app: 'u:material' },
     tagelohn: { buero: 'tagelohn' }, freigabe: { buero: 'uebersicht', app: 'freigaben' }, export: { buero: 'steuer' }, dokumente: { buero: 'steuer', app: 'mehr' },
-    baustellen: { buero: 'baustellen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' },
+    baustellen: { buero: 'baustellen' }, angebote: { buero: 'angebote' }, rechnungen: { buero: 'rechnungen' }, bautagebuch: { buero: 'akte', app: 'u:tagebuch' }, regie: { buero: 'akte', app: 'u:regie' }, wochenplan: { buero: 'plan', app: 'zeiten' }, tafel: { buero: 'tafel' },
   };
   const OHNE_AUSWAHL = { buero: 'uebersicht', app: 'start' };
   function vorschauZiel(typ) { return typ ? (VORSCHAU[typ] || null) : OHNE_AUSWAHL; }
@@ -3470,6 +4613,10 @@ const Studio = (() => {
     fl.addEventListener('pointerup', ende);
     fl.addEventListener('pointercancel', () => { zustand.aktion = null; zeichne(); });
   }
+  document.addEventListener('dblclick', (e) => {
+    if (aktiverBereich !== Studio) return;
+    const kn = e.target.closest('#welt [data-knoten]'); if (kn) bausteinFenster(kn.dataset.knoten);
+  });
   function zielUnter(e) {
     const el = document.elementFromPoint(e.clientX, e.clientY);
     const k = el && el.closest('[data-knoten]'); return k ? k.dataset.knoten : null;
@@ -3555,6 +4702,7 @@ const Studio = (() => {
       case 'einpassen': einpassen(); break;
       case 'vmodus': zustand.vorschau = id; pruefZeichnen(); break;
       case 'vgross': vorschauGross(); break;
+      case 'oeffnen': bausteinFenster(zustand.gewaehlt); break;
       case 'entfernen': {
         const typ = zustand.gewaehlt; if (typ === 'app') { meldung('Die Mitarbeiter-App ist der Start jedes Betriebs.', 'fehler'); break; }
         aendereBaukasten((b) => { b.knoten = b.knoten.filter((k) => k.typ !== typ); b.kanten = b.kanten.filter((k) => k.von !== typ && k.zu !== typ); });
@@ -3625,6 +4773,66 @@ const Studio = (() => {
       await Store.speichereCfg(c); standZeigen('gespeichert');
     }
   });
+
+  /* ---------- Baustein öffnen: Werte, Texte, Ablauf, eigene Felder ---------- */
+  function bausteinFenster(typ, reiter = 'werte') {
+    const B = BAUSTEINE[typ]; const k = knoten(typ); if (!B || !k) return;
+    const R = regeln(cfg()); const werte = R.p(typ);
+    const felder = JSON.parse(JSON.stringify(k.felder || []));
+    const hatAblauf = !!ABLAEUFE[typ]; const hatFelder = MIT_FELDERN.includes(typ);
+    const tabs = [['werte', 'Werte'], ['kunde', 'Beim Kunden'], ...(hatAblauf ? [['ablauf', 'Ablauf']] : []), ...(hatFelder ? [['felder', 'Eigene Felder']] : [])];
+    const param = ([name, d]) => {
+      const w = werte[name];
+      if (d.typ === 'langtext') return `<label class="feld"><span>${esc(d.name)}</span><textarea data-bp="${name}" rows="${name === 'agb' || name === 'katalog' ? 8 : 3}" class="${name === 'katalog' ? 'mono' : ''}">${esc(w)}</textarea></label>`;
+      if (d.typ === 'wahl' || d.typ === 'schalter') return `<label class="feld"><span>${esc(d.name)}</span><select data-bp="${name}">${(d.optionen || ['ja', 'nein']).map((o) => `<option ${o === w ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+      if (d.typ === 'text') return `<label class="feld"><span>${esc(d.name)}</span><input data-bp="${name}" value="${esc(w)}"></label>`;
+      return `<label class="feld"><span>${esc(d.name)} (${esc(d.einheit)}, ${d.min} bis ${d.max})</span><input type="number" data-bp="${name}" value="${esc(w)}" min="${d.min}" max="${d.max}" step="${d.min % 1 ? 0.1 : 1}"></label>`;
+    };
+    const feldZeile = (f, i) => `<tr data-feld="${i}"><td><input class="f-name" value="${esc(f.name)}" placeholder="z. B. Kostenstelle" aria-label="Feldname"></td>
+      <td><select class="f-typ" aria-label="Art">${[['text', 'Text'], ['zahl', 'Zahl'], ['wahl', 'Auswahl'], ['janein', 'Ja/Nein']].map(([v, t]) => `<option value="${v}" ${f.typ === v ? 'selected' : ''}>${t}</option>`).join('')}</select></td>
+      <td><input class="f-opt" value="${esc(f.optionen || '')}" placeholder="nur bei Auswahl: A, B, C" aria-label="Auswahlmöglichkeiten"></td>
+      <td style="text-align:center"><input type="checkbox" class="f-pflicht" ${f.pflicht ? 'checked' : ''} aria-label="Pflichtfeld"></td>
+      <td><button class="k klein" data-f="feld-weg" data-id="${i}" aria-label="Feld entfernen">${Icon('x')}</button></td></tr>`;
+    const inhalt = {
+      werte: Object.keys(B.p).length ? `<div class="bf-raster">${Object.entries(B.p).filter(([, d]) => d.typ !== 'langtext').map(param).join('')}</div>${Object.entries(B.p).filter(([, d]) => d.typ === 'langtext').map(param).join('')}` : '<p class="hinweis-zeile">Dieser Baustein hat keine einstellbaren Werte.</p>',
+      kunde: `<p class="hinweis-zeile">So heißt der Baustein im Büro und in der App dieses Betriebs. Leer lassen für den Standard.</p>
+        <label class="feld"><span>Name beim Kunden</span><input data-k="name" value="${esc(k.name || '')}" placeholder="${esc(B.name)}"></label>
+        <label class="feld"><span>Kurzer Hinweis in der App</span><input data-k="hinweis" value="${esc(k.hinweis || '')}" placeholder="z. B. Nur für Arbeiten über 1 Stunde"></label>`,
+      ablauf: hatAblauf ? `<ol class="bf-ablauf">${ABLAEUFE[typ].map((st) => { const an = !st.schalter || werte[st.schalter] === 'ja';
+        return `<li class="${an ? '' : 'aus'}"><div><b>${esc(st.name)}</b><small>${esc(st.text)}</small></div>${st.schalter ? `<label class="schalter"><input type="checkbox" data-schalter="${st.schalter}" ${an ? 'checked' : ''}><span>${an ? 'an' : 'aus'}</span></label>` : '<span class="fest">immer</span>'}</li>`; }).join('')}</ol>` : '',
+      felder: hatFelder ? `<p class="hinweis-zeile">Eigene Felder erscheinen beim Erfassen ${['angebote', 'rechnungen'].includes(typ) ? 'im Büro' : 'in der App'} und in der Ansicht im Büro. Mit * sind Pflichtfelder.</p>
+        <table class="t bf-felder"><thead><tr><th>Name</th><th>Art</th><th>Auswahl</th><th>Pflicht</th><th></th></tr></thead><tbody id="bf-felder">${felder.map(feldZeile).join('')}</tbody></table>
+        <button class="k klein" data-f="feld-neu" style="margin-top:10px">${Icon('plus')} Feld hinzufügen</button>` : '',
+    };
+    const hg = Fenster.oeffne({
+      titel: `${Icon(B.icon)} ${esc(k.name || B.name)}`, breit: true, bereich: 'ui-buero-fenster bf',
+      inhalt: `<nav class="bf-reiter">${tabs.map(([t, n]) => `<button class="${t === reiter ? 'an' : ''}" data-f="reiter" data-id="${t}">${n}</button>`).join('')}</nav>${tabs.map(([t]) => `<section data-tab="${t}" ${t === reiter ? '' : 'hidden'}>${inhalt[t]}</section>`).join('')}`,
+      fuss: `<span class="bf-fuer">für ${esc(cfg().name)}</span><button class="k" data-f="zu">Abbrechen</button><button class="k haupt" data-f="ok">Übernehmen</button>`,
+      aktionen: {
+        reiter: (b) => { $$('.bf-reiter button', hg).forEach((x) => x.classList.toggle('an', x === b)); $$('[data-tab]', hg).forEach((sec) => { sec.hidden = sec.dataset.tab !== b.dataset.id; }); },
+        'feld-neu': () => { lesen(); felder.push({ id: Store.uid('x'), name: '', typ: 'text', optionen: '', pflicht: false }); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); $$('.f-name', hg).pop().focus(); },
+        'feld-weg': (b) => { lesen(); felder.splice(Number(b.dataset.id), 1); $('#bf-felder', hg).innerHTML = felder.map(feldZeile).join(''); },
+        ok: () => {
+          lesen();
+          const p = {}; $$('[data-bp]', hg).forEach((el) => { const d = B.p[el.dataset.bp]; let w = el.value; if (d.typ === 'zahl') { w = Math.min(d.max, Math.max(d.min, Number(w) || d.wert)); } p[el.dataset.bp] = w; });
+          $$('[data-schalter]', hg).forEach((el) => { p[el.dataset.schalter] = el.checked ? 'ja' : 'nein'; });
+          const name = ($('[data-k=name]', hg).value || '').trim(); const hinweis = ($('[data-k=hinweis]', hg).value || '').trim();
+          const fertig = felder.filter((f) => f.name.trim()).map((f) => ({ ...f, name: f.name.trim() }));
+          aendereBaukasten((b) => { const x = b.knoten.find((y) => y.typ === typ); x.p = { ...(x.p || {}), ...p }; x.name = name || undefined; x.hinweis = hinweis || undefined; x.felder = fertig.length ? fertig : undefined; if (!x.name) delete x.name; if (!x.hinweis) delete x.hinweis; if (!x.felder) delete x.felder; });
+          Fenster.schliesse(); meldung(`${name || B.name} übernommen. Büro und App zeigen es sofort.`);
+          setTimeout(() => { flaecheZeichnen(); pruefZeichnen(); }, 40);
+        },
+      },
+    });
+    hg.addEventListener('change', (e) => {
+      const cb = e.target.closest('[data-schalter]'); if (!cb) return;
+      cb.nextElementSibling.textContent = cb.checked ? 'an' : 'aus'; cb.closest('li').classList.toggle('aus', !cb.checked);
+      const sel = $(`[data-bp="${cb.dataset.schalter}"]`, hg); if (sel) sel.value = cb.checked ? 'ja' : 'nein';
+    });
+    function lesen() {
+      $$('#bf-felder tr[data-feld]', hg).forEach((tr) => { const f = felder[Number(tr.dataset.feld)]; if (!f) return; f.name = $('.f-name', tr).value; f.typ = $('.f-typ', tr).value; f.optionen = $('.f-opt', tr).value; f.pflicht = $('.f-pflicht', tr).checked; });
+    }
+  }
 
   function einpassen() {
     const fl = $('#flaeche'); if (!fl) return; const kn = bk().knoten; if (!kn.length) return;
@@ -3714,6 +4922,7 @@ function zeige() {
   if (ziel === 'buero') return Buero.start();
   if (ziel === 'app') return Handy.start();
   if (ziel === 'studio') return Studio.start();
+  if (ziel.startsWith('angebot/')) { aktiverBereich = null; return KundenSeite.start(ziel); }
   aktiverBereich = null;
   return startseite();
 }
@@ -3807,7 +5016,7 @@ async function boot() {
     } else {
       // Musterbetrieb auf den neuen Stand bringen (neue Funktionen brauchen neue Daten)
       const cfg = await Store.ladeCfg('ahlers');
-      if (cfg && (cfg.version || 1) < 2) {
+      if (cfg && (cfg.version || 1) < 4) {
         const t = $('.laden > div');
         await Muster.zuruecksetzen('ahlers', (n) => { if (t) t.firstChild.textContent = `Daten werden aktualisiert … ${n}`; });
       }

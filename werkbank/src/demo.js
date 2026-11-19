@@ -12,11 +12,20 @@ const Muster = (() => {
     const knoten = (typ, x, y, p = {}) => ({ id: 'k_' + typ, typ, x, y, p });
     return {
       id: 'ahlers',
-      version: 2,
+      version: 4,
       kennung: 'ahlers',
       name: 'Zimmerei Ahlers',
       zusatz: 'Holzbau · Dachstühle · Carports',
       ort: 'Ganderkesee',
+      inhaber: 'Jan Ahlers',
+      strasse: 'Gewerbestraße 9',
+      plz: '27777',
+      telefon: '04222 70 41 90',
+      email: 'info@zimmerei-ahlers.example',
+      steuernr: '64/123/45678',
+      ustid: 'DE299999999',
+      bank: 'Volksbank Ganderkesee',
+      iban: 'DE89 3704 0044 0532 0130 00',
       farbe: '#2f5e4e',
       kuerzel: 'ZA',
       paket: 'Start',
@@ -54,6 +63,9 @@ const Muster = (() => {
           knoten('bautagebuch', 330, 740),
           knoten('regie', 330, 830),
           knoten('wochenplan', 330, 920),
+          knoten('angebote', 890, 640),
+          knoten('rechnungen', 1170, 760),
+          knoten('tafel', 1170, 580),
           knoten('stunden', 610, 60),
           knoten('freigabe', 890, 230),
           knoten('export', 1170, 400),
@@ -65,6 +77,7 @@ const Muster = (() => {
           ['stunden', 'freigabe'], ['urlaub', 'freigabe'], ['belege', 'freigabe'],
           ['freigabe', 'export'], ['lieferscheine', 'export'], ['tagelohn', 'export'],
           ['app', 'bautagebuch'], ['app', 'regie'], ['baustellen', 'bautagebuch'], ['baustellen', 'regie'], ['baustellen', 'wochenplan'],
+          ['baustellen', 'angebote'], ['angebote', 'rechnungen'], ['regie', 'rechnungen'], ['rechnungen', 'export'], ['angebote', 'tafel'], ['rechnungen', 'tafel'],
         ].map(([von, zu]) => ({ von, zu })),
       },
       notizen: '',
@@ -161,6 +174,28 @@ const Muster = (() => {
     };
     planWoche(montag, plan[2]);
     planWoche(Datum.plus(montag, 7), { p3: 'b1', p4: 'b3', p5: 'b2', p6: 'b3', p7: 'b1' });
+    // Angebote und Rechnungen
+    const j = heute.slice(0, 4);
+    const pos = (text, menge, einheit, preis) => ({ text, menge, einheit, preis });
+    add('an1', { typ: 'angebot', nr: `A-${j}-014`, datum: Datum.plus(heute, -40), gueltigBis: Datum.plus(heute, -10), kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', status: 'angenommen', entschieden: Date.now() - 30 * 864e5, bs: 'b2', mwst: 19,
+      positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    add('an2', { typ: 'angebot', nr: `A-${j}-017`, datum: Datum.plus(heute, -21), gueltigBis: Datum.plus(heute, 9), kunde: 'Jörg Steenken', kundenart: 'privat', adresse: 'Stedinger Straße 120\n27753 Delmenhorst', betreff: 'Schleppgaube Dachgeschoss', status: 'angenommen', entschieden: Date.now() - 6 * 864e5, bs: 'b4', mwst: 19, schluessel: 'k7Q2m9xTe4Lw', gesehen: Date.now() - 5 * 864e5,
+      angenommenOnline: { name: 'Jörg Steenken', wann: Date.now() - 6 * 864e5 - 3 * 36e5, unterschrift: 'muster-unterschrift', agb: true, widerruf: 'belehrung', beginnVorFrist: true, datenschutz: true },
+      positionen: [pos('Dachöffnung herstellen, Sparren auswechseln', 1, 'psch', 1850), pos('Schleppgaube 3,2 m breit abbinden und aufstellen', 1, 'psch', 6400), pos('Aufsparrendämmung 160 mm inkl. Unterdeckbahn', 14, 'm²', 89), pos('Zimmerer-Facharbeiter', 24, 'Std', 58)] });
+    add('an3', { typ: 'angebot', nr: `A-${j}-019`, datum: Datum.plus(heute, -12), gueltigBis: Datum.plus(heute, 18), kunde: 'Bäckerei Logemann GmbH', kundenart: 'gewerblich', adresse: 'Bremer Straße 41\n27777 Ganderkesee', email: 'buchhaltung@logemann.example', betreff: 'Vordach Lieferzone', status: 'gesendet', mwst: 19, schluessel: 'p3Vn8sRc1Hy6',
+      fragen: [{ text: 'Ist die Rinne inklusive Fallrohr bis zum Kanalanschluss? Und könnten Sie in den Herbstferien anfangen, dann ist bei uns weniger Lieferverkehr. (Rückruf: 04222 81 33 0)', wann: Date.now() - 20 * 36e5 }],
+      positionen: [pos('Vordach 8,0 x 2,5 m, BSH GL24h, sichtbar gehobelt', 1, 'psch', 5200), pos('Dacheindeckung Trapezblech mit Rinne', 20, 'm²', 74), pos('Montage mit Hubsteiger', 16, 'Std', 58)] });
+    add('an4', { typ: 'angebot', nr: `A-${j}-020`, datum: Datum.plus(heute, -2), gueltigBis: Datum.plus(heute, 28), kunde: 'Familie Brinkmann', kundenart: 'privat', adresse: 'Am Sportplatz 7\n27798 Hude', betreff: 'Terrassenüberdachung', status: 'entwurf', mwst: 19,
+      positionen: [pos('Terrassenüberdachung 5,0 x 3,5 m, Douglasie, Stegplatten', 1, 'psch', 6800), pos('Zimmerer-Facharbeiter', 16, 'Std', 58)] });
+    add('re1', { typ: 'rechnung', nr: `R-${j}-031`, datum: Datum.plus(heute, -26), faellig: Datum.plus(heute, -12), bezahltAm: Datum.plus(heute, -14), kunde: 'Renate Wilkens', kundenart: 'privat', adresse: 'Hauptstraße 52\n26203 Wardenburg', betreff: 'Abschlag Dachsanierung', leistung: 'Abschlag nach Baufortschritt', status: 'bezahlt', mwst: 19,
+      positionen: [pos('1. Abschlag Dachsanierung lt. Angebot A-' + j + '-009, 40 %', 1, 'psch', 9200)] });
+    add('re2', { typ: 'rechnung', nr: `R-${j}-033`, datum: Datum.plus(heute, -29), faellig: Datum.plus(heute, -15), kunde: 'Hausverwaltung Nordlicht GmbH', kundenart: 'gewerblich', adresse: 'Lange Straße 12\n27749 Delmenhorst', email: 'rechnung@nordlicht.example', betreff: 'Reparatur Dachstuhl nach Sturmschaden', leistung: `${Datum.kurz(Datum.plus(heute, -36))}${j} bis ${Datum.kurz(Datum.plus(heute, -33))}${j}`, status: 'gestellt', mwst: 19,
+      positionen: [pos('Sparren austauschen bis 5 m', 3, 'Stk', 185), pos('KVH C24 liefern, gehobelt', 0.4, 'm³', 620), pos('Zimmerer-Facharbeiter', 14, 'Std', 58), pos('Entsorgung Altholz', 1, 'psch', 120)] });
+    add('re3', { typ: 'rechnung', status: 'entwurf', kunde: 'Holger Gerdes', kundenart: 'privat', adresse: 'Lindenstraße 3\n27777 Ganderkesee', betreff: 'Doppelcarport mit Abstellraum', bs: 'b2', angebot: 'an1', angebotNr: `A-${j}-014`, mwst: 19, leistung: '',
+      positionen: [pos('Baustelleneinrichtung', 1, 'psch', 450), pos('Doppelcarport 6,0 x 6,0 m, KVH C24, Flachdach mit Trapezblech, inkl. Abbund', 1, 'psch', 8900), pos('Abstellraum 2,0 x 6,0 m, Lärchenschalung', 12, 'm²', 165), pos('Pfostenträger setzen, Punktfundamente', 6, 'Stk', 95), pos('Zimmerer-Facharbeiter für Montage', 32, 'Std', 58)] });
+    // Auftragstafel: zwei frische Anfragen
+    add('vg1', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -2), kunde: 'Familie Thölken', telefon: '04222 93 17 52', titel: 'Zwei Dachfenster tauschen', adresse: 'Birkenweg 11\n27777 Ganderkesee', termin: Datum.plus(heute, 3), notiz: 'Empfehlung von Gerdes' });
+    add('vg2', { typ: 'vorgang', spalte: 'anfrage', datum: Datum.plus(heute, -1), kunde: 'Autohaus Meyer', telefon: '04221 45 60 0', titel: 'Hallendach, Sturmschaden an der Traufe', adresse: 'Oldenburger Straße 88\n27753 Delmenhorst', notiz: 'Versicherung ist informiert, braucht Angebot für Gutachter' });
     // Lohnzettel Vormonat
     const vm = Datum.plus(heute.slice(0, 8) + '01', -1).slice(0, 7);
     for (const p of arbeiter) add(`d_lohn_${p}`, { typ: 'dokument', fuer: p, titel: `Lohnabrechnung ${Datum.monatName(vm)}`, monat: vm, datei: 'muster', name: `Lohnabrechnung_${vm}.pdf`, gelesen: p === 'p3', datum: Datum.plus(heute, -12) });

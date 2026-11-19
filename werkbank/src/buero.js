@@ -23,6 +23,13 @@ const Buero = (() => {
     { id: 'team', name: 'Team & Zugänge', icon: 'team', gruppe: 'Stammdaten' },
     { id: 'einstellungen', name: 'Einstellungen', icon: 'zahnrad', gruppe: 'Stammdaten', nurChef: true },
   ];
+  /* Erweiterungen aus anderen Dateien (z. B. Angebote & Rechnungen) */
+  const EXTRA = { aufgaben: [] };
+  function erweitern({ nav = [], seiten = {}, aktionen = {}, aufgaben }) {
+    nav.forEach((n) => { const i = NAV.findIndex((x) => x.id === 'baustellen'); NAV.splice(i, 0, n); });
+    Object.assign(SEITEN, seiten); Object.assign(AKTION, aktionen);
+    if (aufgaben) EXTRA.aufgaben.push(aufgaben);
+  }
   const sichtbar = (n, c) => {
     if (n.nurChef && c.ich && c.ich.rolle !== 'chef') return false;
     if (!n.braucht) return true;
@@ -36,7 +43,7 @@ const Buero = (() => {
   const verlauf = (c, e) => {
     const v = (e && e.verlauf) || []; if (!v.length) return '';
     const l = v[v.length - 1]; const d = new Date(l.wann);
-    return `<p class="verlauf">Zuletzt geändert ${l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
+    return `<p class="verlauf">Zuletzt geändert ${l.wer === 'kunde' ? 'vom Kunden (online) ' : l.wer ? 'von ' + esc(c.person(l.wer).name) + ' ' : ''}am ${Datum.kurz(Datum.iso(d))} um ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')} Uhr</p>`;
   };
   const bsOptionen = (c, gewaehlt, mitLeer = true) => (mitLeer ? `<option value="">ohne Baustelle</option>` : '') + c.baustellenOffen().map((b) => `<option value="${b.id}" ${b.id === gewaehlt ? 'selected' : ''}>${esc(b.name)}</option>`).join('');
   const personOptionen = (c, gewaehlt, liste = c.arbeiter()) => liste.map((p) => `<option value="${p.id}" ${p.id === gewaehlt ? 'selected' : ''}>${esc(p.name)}</option>`).join('');
@@ -92,6 +99,7 @@ const Buero = (() => {
     }
     const regieOffen = o.regie.filter((r) => r.status === 'unterschrieben');
     if (regieOffen.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${regieOffen.length} Regiezettel abrechnen</b><small>zusammen ${Zahl.eur(regieOffen.reduce((s, r) => s + regieBetrag(c, r), 0))} · unterschrieben vom Kunden</small></div><div class="aktionen"><button class="k klein" data-a="regie" data-id="${regieOffen[0].id}">Ansehen</button></div></div>`);
+    EXTRA.aufgaben.forEach((fn) => fn(c).forEach((t) => aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${esc(t.titel)}</b><small>${esc(t.unter)}</small></div><div class="aktionen"><button class="k klein" data-a="${t.a}" data-id="${t.id}">Ansehen</button></div></div>`)));
     if (o.material.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.material.length} Materialwünsche</b><small>${esc(o.material.map((m) => m.text).join(' · ').slice(0, 90))}</small></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="material">Ansehen</button></div></div>`);
     if (o.tagelohn.length) aufgaben.push(`<div class="liste-zeile"><div class="text"><b>${o.tagelohn.length} Tagelohn-Einsätze freigeben</b></div><div class="aktionen"><button class="k klein" data-a="gehe" data-id="tagelohn">Ansehen</button></div></div>`);
     if (c.R.hat('export')) {
@@ -188,7 +196,7 @@ const Buero = (() => {
     const kopf = tage.map((d) => `<th${d === c.heute ? ' style="color:var(--firma)"' : ''}>${Datum.WT[Datum.wochentag(d)]} ${Datum.kurz(d)}</th>`).join('');
     return seitenkopf('Wochenplan', `KW ${Datum.kw(mo)} · Die Mitarbeiter sehen ihren Plan in der App, sobald er hier eingetragen ist`,
       `<span class="wochenwahl"><button class="k klein" data-a="planwoche" data-id="-7" aria-label="Vorige Woche">${Icon('zurueck')}</button><b>${Datum.kurz(mo)} – ${Datum.kurz(tage[n - 1])}${tage[n - 1].slice(0, 4)}</b><button class="k klein" data-a="planwoche" data-id="7" aria-label="Nächste Woche">${Icon('pfeil')}</button></span>
-       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
+       <button class="k" data-a="plan-vorwoche">Vorwoche übernehmen</button><button class="k" data-a="plan-ics">${Icon('kalender')} Kalenderdatei</button><button class="k" data-a="drucken" data-id="plan">${Icon('drucken')} Drucken</button>`)
       + `<div class="karte" id="druck-plan"><div class="kopf"><h3>Wer ist wo</h3></div><div class="tabelle-huelle"><table class="t plan"><thead><tr><th>Mitarbeiter</th>${kopf}</tr></thead><tbody>${zeilen || `<tr><td colspan="7">${leer('Noch keine Mitarbeiter.')}</td></tr>`}</tbody></table></div></div>
       <div class="karte"><div class="kopf"><h3>Nach Baustelle</h3></div><div class="tabelle-huelle"><table class="t"><thead><tr><th>Baustelle</th>${kopf}</tr></thead><tbody>${proBaustelle || `<tr><td colspan="7">${leer('Keine laufenden Baustellen.')}</td></tr>`}</tbody></table></div></div>`;
   };
@@ -321,6 +329,10 @@ const Buero = (() => {
       const fehlt = inh.tl.length - inh.tlOk.length;
       liste.push(punkt(!fehlt, `Tagelohn: ${inh.tlOk.length} Einsätze, ${Zahl.eur(inh.tlOk.reduce((s, e) => s + e.stunden * e.satz, 0))}`, fehlt ? `${fehlt} ${fehlt === 1 ? 'Einsatz' : 'Einsätze'} noch nicht freigegeben.` : 'mit Name, Datum, Stunden und Satz'));
     }
+    if (R.imExport('rechnungen')) {
+      const rn = Uebergabe.gestellte(c, (r) => (r.datum || '').startsWith(ym));
+      liste.push(punkt(true, `Ausgangsrechnungen: ${rn.length} Stück`, 'Liste als CSV und je Rechnung die E-Rechnung (XRechnung)'));
+    }
     const doks = c.typ('dokument').sort((a, b) => b.erstellt - a.erstellt);
     const exportKarte = R.hat('export') ? `<div class="karte"><div class="kopf"><h3>Monatspaket für ${esc(p.empfaenger)}</h3><div class="rechts"><button class="k klein" data-a="monat" data-id="-1">${Icon('zurueck')}</button><b style="min-width:130px;text-align:center">${esc(Datum.monatName(ym))}</b><button class="k klein" data-a="monat" data-id="1">${Icon('pfeil')}</button></div></div>
         <ul class="pruefliste">${liste.join('') || `<li>${leer('Im Baukasten ist noch nichts an das Steuerbüro-Paket angeschlossen.')}</li>`}</ul>
@@ -378,7 +390,7 @@ const Buero = (() => {
         ${regie.length ? `<div class="tabelle-huelle"><table class="t"><thead><tr><th>Datum</th><th>Arbeit</th><th class="r">Stunden</th><th class="r">Betrag</th><th>Kunde</th><th>Status</th></tr></thead><tbody>${regie.map((r) => `<tr class="klickbar" data-a="regie" data-id="${r.id}"><td>${Datum.kurz(r.datum)}</td><td>${esc(r.text)}</td><td class="r num">${r.leute > 1 ? `${r.leute} × ${Zahl.std(r.stunden)}` : Zahl.std(r.stunden)}</td><td class="r num">${Zahl.eur(regieBetrag(c, r))}</td><td>${esc(r.kunde || '–')}</td><td>${r.status === 'offen' ? '<span class="chip warn">Ohne Unterschrift</span>' : chip(r.status)}</td></tr>`).join('')}</tbody></table></div>` : leer('Noch keine Zusatzarbeiten. Die Gesellen schreiben sie in der App auf, der Kunde unterschreibt auf dem Handy.')}</div>` : ''}
       ${c.R.hat('bautagebuch') ? `<div class="karte"><div class="kopf"><h3>Bautagebuch</h3>${tagebuch.length ? `<button class="k klein" data-a="drucken" data-id="tagebuch">${Icon('drucken')} Drucken</button>` : ''}</div>
         <div id="druck-tagebuch">${tagebuch.length ? tagebuch.map((t) => `<div class="tagebuch-eintrag"><div class="wann"><b>${esc(Datum.mittel(t.datum))}</b><small>${esc(WETTER[t.wetter] || t.wetter || '')}</small><small>${esc(c.person(t.pid).name)}</small></div>
-          <div class="was"><p>${esc(t.text)}</p>${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
+          <div class="was"><p>${esc(t.text)}</p>${Zusatz.anzeige(c, 'bautagebuch', t.extra) ? `<dl class="daten" style="margin-bottom:10px">${Zusatz.anzeige(c, 'bautagebuch', t.extra)}</dl>` : ''}${(t.fotos || []).length ? `<div class="fotos">${t.fotos.map((f) => `<button class="foto" data-a="foto" data-id="${esc(f)}" aria-label="Foto vergrößern"><img data-datei="${esc(f)}" alt="Foto vom ${esc(Datum.kurz(t.datum))}"></button>`).join('')}</div>` : ''}</div></div>`).join('') : leer('Noch keine Einträge. Fotos und Notizen kommen aus der App oder werden hier ergänzt.')}</div></div>` : ''}
       <div class="karte"><div class="kopf"><h3>Lieferscheine und Belege</h3></div>
         ${[...ls.map((x) => ({ ...x, art: 'Lieferschein' })), ...belege.map((x) => ({ ...x, art: 'Beleg' }))].sort((x, y) => y.datum.localeCompare(x.datum)).map((x) => `<button class="liste-zeile klickbar" data-a="${x.typ}" data-id="${x.id}" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0">${Icon(x.typ === 'beleg' ? 'beleg' : 'liefer')}<div class="text"><b>${x.typ === 'beleg' ? `${Zahl.eur(x.betrag)} · ${esc(x.haendler || x.kategorie)}` : `${esc(x.lieferant)} ${esc(x.nummer || '')}`}</b><small>${Datum.kurz(x.datum)} · ${esc(c.person(x.pid).name)}</small></div>${chip(x.status)}</button>`).join('') || leer('Noch nichts gebucht.')}</div>`;
   };
@@ -403,8 +415,18 @@ const Buero = (() => {
           <label class="feld"><span>Name</span><input name="name" value="${esc(c.cfg.name)}"></label>
           <label class="feld"><span>Kürzel (2 Buchstaben)</span><input name="kuerzel" maxlength="2" value="${esc(c.cfg.kuerzel)}"></label>
           <label class="feld"><span>Zusatz</span><input name="zusatz" value="${esc(c.cfg.zusatz)}"></label>
+          <label class="feld"><span>Inhaber</span><input name="inhaber" value="${esc(c.cfg.inhaber || '')}"></label>
+          <label class="feld"><span>Straße</span><input name="strasse" value="${esc(c.cfg.strasse || '')}"></label>
+          <label class="feld"><span>PLZ</span><input name="plz" inputmode="numeric" maxlength="5" value="${esc(c.cfg.plz || '')}"></label>
           <label class="feld"><span>Ort</span><input name="ort" value="${esc(c.cfg.ort)}"></label>
+          <label class="feld"><span>Telefon</span><input name="telefon" type="tel" value="${esc(c.cfg.telefon || '')}"></label>
+          <label class="feld"><span>E-Mail</span><input name="email" type="email" value="${esc(c.cfg.email || '')}"></label>
+          <label class="feld"><span>Steuernummer</span><input name="steuernr" value="${esc(c.cfg.steuernr || '')}"></label>
+          <label class="feld"><span>USt-IdNr.</span><input name="ustid" value="${esc(c.cfg.ustid || '')}"></label>
+          <label class="feld"><span>Bank</span><input name="bank" value="${esc(c.cfg.bank || '')}"></label>
+          <label class="feld"><span>IBAN</span><input name="iban" value="${esc(c.cfg.iban || '')}"></label>
         </div>
+        <p style="color:#6a726c;font-size:13px;margin:0 0 14px">Anschrift, Steuernummer und Bankverbindung stehen auf Angeboten und Rechnungen.</p>
         <div class="feld"><span>Firmenfarbe</span><div class="farbwahl">${FARBEN.map((f) => `<button type="button" style="background:${f}" class="${c.cfg.farbe === f ? 'an' : ''}" data-a="farbe" data-id="${f}" aria-label="Farbe ${f}"></button>`).join('')}</div></div>
         <button class="k haupt" type="submit">Speichern</button></form></div>
         <div class="karte"><div class="kopf"><h3>Ihr Funktionsumfang</h3><span class="chip info">Paket ${esc(c.cfg.paket || 'Start')}</span></div>
@@ -424,8 +446,9 @@ const Buero = (() => {
     let gruppe = '';
     const nav = NAV.filter((n) => sichtbar(n, c)).map((n) => {
       const kopf = n.gruppe !== gruppe ? `<div class="gruppe">${n.gruppe}</div>` : ''; gruppe = n.gruppe;
-      const z = n.zahl ? n.zahl(o) : 0;
-      return `${kopf}<button class="${zustand.seite === n.id ? 'aktiv' : ''}" data-a="gehe" data-id="${n.id}">${Icon(n.icon)}${n.name}${z ? `<span class="zahl">${z}</span>` : ''}</button>`;
+      const z = n.zahl ? n.zahl(o, c) : 0;
+      const name = typeof n.braucht === 'string' && c.R.hat(n.braucht) && c.R.name(n.braucht) !== BAUSTEINE[n.braucht].name ? esc(c.R.name(n.braucht)) : n.name;
+      return `${kopf}<button class="${zustand.seite === n.id ? 'aktiv' : ''}" data-a="gehe" data-id="${n.id}" ${zustand.seite === n.id ? 'aria-current="page"' : ''}>${Icon(n.icon)}${name}${z ? `<span class="zahl">${z}</span>` : ''}</button>`;
     }).join('');
     return `<div class="ui-buero ${kompakt() ? 'kompakt' : ''} ${zustand.navOffen ? 'nav-offen' : ''}" style="--firma:${esc(c.cfg.farbe)}">
       <header class="b-kopf">
@@ -518,7 +541,8 @@ const Buero = (() => {
     if (aktiverBereich !== Buero || e.target.id !== 'f-einst') return;
     e.preventDefault();
     const w = Object.fromEntries(new FormData(e.target));
-    Store.speichereCfg({ ...Store.cfg, name: w.name.trim() || Store.cfg.name, kuerzel: w.kuerzel.trim().toUpperCase(), zusatz: w.zusatz, ort: w.ort });
+    const felder = ['zusatz', 'ort', 'inhaber', 'strasse', 'plz', 'telefon', 'email', 'steuernr', 'ustid', 'bank', 'iban'];
+    Store.speichereCfg({ ...Store.cfg, name: w.name.trim() || Store.cfg.name, kuerzel: w.kuerzel.trim().toUpperCase(), ...Object.fromEntries(felder.map((k) => [k, (w[k] || '').trim()])) });
     document.activeElement.blur(); meldung('Gespeichert');
     setTimeout(zeichne, 50);
   });
@@ -534,6 +558,7 @@ const Buero = (() => {
     'stunden-ansicht'(el) { zustand.stundenAnsicht = el.dataset.id; zeichne(); },
     nachweis(el, c) { nachweisFenster(c, el.dataset.id); },
     planwoche(el) { zustand.planWoche = Datum.plus(zustand.planWoche, Number(el.dataset.id)); zeichne(); },
+    'plan-ics'(el, c) { speichern(`Wochenplan_KW${Datum.kw(zustand.planWoche)}.ics`, new Blob([Uebergabe.planIcs(c, zustand.planWoche)], { type: 'text/calendar' })); meldung('Kalenderdatei gespeichert. Sie lässt sich in Outlook, Google- oder Apple-Kalender öffnen.'); },
     'plan-vorwoche'(el, c) {
       const alt = c.planWoche(Datum.plus(zustand.planWoche, -7));
       if (!alt) return meldung('In der Vorwoche ist nichts geplant.', 'fehler');
@@ -649,7 +674,7 @@ const Buero = (() => {
         : `<div class="reihe"><label class="feld"><span>Lieferant</span><input name="lieferant" value="${esc(e.lieferant)}"></label><label class="feld"><span>Lieferschein-Nr.</span><input name="nummer" value="${esc(e.nummer || '')}"></label></div>`}
         ${c.R.hat('baustellen') ? `<label class="feld"><span>Baustelle</span><select name="bs">${bsOptionen(c, e.bs)}</select></label>` : ''}
         <label class="feld"><span>Notiz</span><input name="notiz" value="${esc(e.notiz || '')}"></label>
-        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}</dl>${verlauf(c, e)}
+        <dl class="daten"><dt>Datum</dt><dd>${esc(Datum.lang(e.datum))}</dd><dt>Von</dt><dd>${esc(c.person(e.pid).name)}</dd><dt>Status</dt><dd>${chip(e.status)}</dd>${e.positionen ? `<dt>Positionen</dt><dd>${e.positionen.map(esc).join('<br>')}</dd>` : ''}${Zusatz.anzeige(c, istBeleg ? 'belege' : 'lieferscheine', e.extra)}</dl>${verlauf(c, e)}
       </div></div>`,
       fuss: `<button class="k nein" data-f="loeschen" style="margin-right:auto">${Icon('muell')} Löschen</button>
         ${e.status === 'offen' && darf ? `<button class="k nein" data-f="status" data-id="abgelehnt">Ablehnen</button><button class="k haupt" data-f="status" data-id="freigegeben">${Icon('haken')} Freigeben</button>` : ''}
@@ -838,7 +863,7 @@ const Buero = (() => {
       <div class="nw-kopf"><div><b>${esc(c.cfg.name)}</b><br>${esc(c.cfg.ort || '')}</div><div style="text-align:right"><b>Regiebericht</b><br>${esc(Datum.lang(r.datum))}</div></div>
       <dl class="daten"><dt>Baustelle</dt><dd>${esc(b.name)}${b.adresse ? `, ${esc(b.adresse)}` : ''}</dd><dt>Ausgeführte Arbeit</dt><dd>${esc(r.text)}</dd>
       <dt>Arbeitszeit</dt><dd>${r.leute > 1 ? `${r.leute} Mitarbeiter × ${Zahl.std(r.stunden)} Std. = ` : ''}<b>${Zahl.std(regieStunden(r))} Std.</b></dd>
-      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
+      ${r.material ? `<dt>Material</dt><dd>${esc(r.material)}</dd>` : ''}${Zusatz.anzeige(c, 'regie', r.extra)}<dt>Aufgeschrieben von</dt><dd>${esc(c.person(r.pid).name)}</dd></dl>
       <div class="nw-unterschrift"><div>${r.unterschrift ? `<img data-datei="${esc(r.unterschrift)}" alt="Unterschrift" style="height:64px;display:block">` : '<div style="height:64px"></div>'}Auftraggeber${r.kunde ? ': ' + esc(r.kunde) : ''}</div><div><div style="height:64px"></div>${esc(c.cfg.name)}</div></div>
       <p class="nw-fuss">Die oben genannten Arbeiten wurden zusätzlich zum Auftrag ausgeführt und werden nach Aufwand abgerechnet.</p></div>`;
   }
@@ -958,6 +983,7 @@ const Buero = (() => {
         }
         z.file('Lieferscheine.csv', csv(zeilen));
       }
+      if (c.R.imExport('rechnungen')) Uebergabe.rechnungenInZip(c, z.folder('Rechnungen'), (r) => (r.datum || '').startsWith(ym));
       if (inh.tlOk.length) {
         const zeilen = [['Datum', 'Name', 'Stunden', 'Satz', 'Betrag', 'Baustelle', 'Bezahlt']];
         inh.tlOk.forEach((e) => zeilen.push([Datum.kurz(e.datum) + e.datum.slice(0, 4), c.tageloehner(e.tid).name, dez(e.stunden), dez(e.satz), dez(e.stunden * e.satz), c.bsName(e.bs), e.bezahlt ? 'bar' : 'offen']));
@@ -977,7 +1003,7 @@ const Buero = (() => {
     return `${name}.${endung}`;
   }
 
-  return { start, neuZeichnen: zeichne, html, ROLLEN };
+  return { start, neuZeichnen: zeichne, html, ROLLEN, erweitern, teile: { seitenkopf, leer } };
 })();
 
 /* Datei an den Nutzer geben (Artifact-Download, sonst normaler Link) */

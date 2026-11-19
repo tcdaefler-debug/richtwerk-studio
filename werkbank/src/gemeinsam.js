@@ -160,3 +160,21 @@ function bilderNachladen(wurzel, items) {
     if (url && img.isConnected) img.src = url;
   });
 }
+
+/* Eigene Felder, die Richtwerk pro Betrieb in einen Baustein einbaut
+   (im Entwickler-Tool: Baustein öffnen → Felder). Werte landen in eintrag.extra. */
+const Zusatz = {
+  liste: (c, typ) => (c && c.R ? c.R.felder(typ) : []),
+  feld(f, wert, klasse, gesperrt) {
+    const dis = gesperrt ? 'disabled' : ''; const name = `data-zusatz="${esc(f.id)}"`;
+    const pflicht = f.pflicht ? ' *' : '';
+    if (f.typ === 'wahl') return `<label class="${klasse}"><span>${esc(f.name)}${pflicht}</span><select ${name} ${dis}><option value=""></option>${String(f.optionen || '').split(',').map((o) => o.trim()).filter(Boolean).map((o) => `<option ${o === wert ? 'selected' : ''}>${esc(o)}</option>`).join('')}</select></label>`;
+    if (f.typ === 'janein') return `<label class="${klasse} janein"><input type="checkbox" ${name} ${wert === 'ja' ? 'checked' : ''} ${dis}><span>${esc(f.name)}</span></label>`;
+    return `<label class="${klasse}"><span>${esc(f.name)}${pflicht}</span><input ${name} ${f.typ === 'zahl' ? 'inputmode="decimal"' : ''} value="${esc(wert ?? '')}" ${dis}></label>`;
+  },
+  app(c, typ, extra = {}) { return Zusatz.liste(c, typ).map((f) => Zusatz.feld(f, (extra || {})[f.id], 'a-feld', false)).join(''); },
+  buero(c, typ, extra = {}, gesperrt = false) { const l = Zusatz.liste(c, typ); return l.length ? `<div class="reihe zusatz">${l.map((f) => Zusatz.feld(f, (extra || {})[f.id], 'feld', gesperrt)).join('')}</div>` : ''; },
+  lesen(wurzel) { const out = {}; $$('[data-zusatz]', wurzel).forEach((el) => { out[el.dataset.zusatz] = el.type === 'checkbox' ? (el.checked ? 'ja' : 'nein') : el.value.trim(); }); return out; },
+  fehlt(c, typ, extra) { const f = Zusatz.liste(c, typ).find((x) => x.pflicht && !(extra || {})[x.id]); return f ? f.name : ''; },
+  anzeige(c, typ, extra) { return Zusatz.liste(c, typ).filter((f) => extra && extra[f.id]).map((f) => `<dt>${esc(f.name)}</dt><dd>${esc(extra[f.id])}</dd>`).join(''); },
+};
